@@ -1,0 +1,30 @@
+# Project Overview
+
+This is a multi-tenant SaaS product.
+
+Stack:
+
+Backend:
+- NestJS, TypeScript strict mode
+- MySQL, Prisma ORM
+- JWT auth (access token in-memory, refresh token in httpOnly cookie)
+- RBAC with permission-based guards
+- Global user model + tenant membership (one user, multiple tenants)
+
+Frontend:
+- Next.js App Router, TypeScript strict mode
+- Tailwind CSS, shadcn/ui components
+- React Hook Form + Zod for forms
+- TanStack Query for server state
+- Zustand for client state
+- next-intl for i18n (English + Arabic, RTL support)
+
+User levels:
+1. Super Admin — platform owner, manages tenants and global settings
+2. Tenant Admin — manages their own workspace (users, roles, settings)
+3. Tenant User — regular member with role-based access
+
+Key rules:
+- Every tenant-owned API query must include tenantId
+- Never trust frontend permissions — backend enforces RBAC
+- Read cursor-pitfalls.md before touching auth, API client, CSP, env, storage, or Prisma
