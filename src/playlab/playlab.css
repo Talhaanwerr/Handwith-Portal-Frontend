@@ -1,0 +1,51 @@
+/**
+ * PlayLab CSS bundle — imported by the (play) layout only.
+ *
+ * Deliberately OMITS the html/body overflow:hidden rules from base.css
+ * (those would break the portal's scroll). Instead the game shell div
+ * itself provides the full-viewport, overflow-hidden context via
+ * Tailwind classes in the layout component.
+ */
+
+/* @import must appear before all other rules (CSS spec) */
+@import "./shared/styles/utilities.css";
+@import "./games/letter-tracing/styles/letter-tracing.css";
+@import "./games/jungle-spy/styles/jungle-spy.css";
+@import "./games/letter-hunt/styles/letter-hunt.css";
+@import "./games/magnet-match/styles/magnet-match.css";
+@import "./games/feed-the-shark/styles/feed-the-shark.css";
+@import "./games/dino-dig/styles/dino-dig.css";
+
+/* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
+.pl-shell canvas {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+
+.pl-shell button,
+.pl-shell a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.pl-shell ::-webkit-scrollbar {
+  width: 4px;
+}
+.pl-shell ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.pl-shell ::-webkit-scrollbar-thumb {
+  background: var(--color-plum-light);
+  border-radius: 99px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-shell *,
+  .pl-shell *::before,
+  .pl-shell *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

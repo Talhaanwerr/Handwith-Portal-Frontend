@@ -1,6 +1,6 @@
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "SaaS Boilerplate";
-export const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3005";
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4600/api/v1";
+export const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3007";
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api/v1";
 
 export const ROUTES = {
   LOGIN: "/login",

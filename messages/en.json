@@ -15,7 +15,8 @@
     "plans": "Plans & Billing",
     "auditLogs": "Audit Logs",
     "superAdmin": "Super Admin",
-    "platformMgmt": "Platform management"
+    "platformMgmt": "Platform management",
+    "library": "Library"
   },
   "common": {
     "save": "Save Changes",

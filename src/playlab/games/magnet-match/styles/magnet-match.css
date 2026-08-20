@@ -1,0 +1,181 @@
+/**
+ * Magnet Match — game-specific visual identity (the kitchen).
+ * All values verbatim from the original screens. The kitchen backdrop's flame
+ * and steam positions are tied to the fixtures SVG geometry — the calc()
+ * expressions mirror that SVG's own centring math, so they stay aligned at
+ * every viewport width.
+ */
+
+/* ── The one measurement the whole station is built from ──────────────────
+   Everything the child touches — pot, gray targets, tray magnets, the chef,
+   the gaps between them — is a fixed multiple of --mm-pot. Before this they
+   were independent clamp()s in mixed units (vmin for one, vw for another,
+   % of an auto-height box for a third), so they only agreed at the exact
+   viewport they were tuned on and drifted apart everywhere else: letters
+   spilling over the rim, gaps collapsing to zero, magnets bigger than the
+   holes they drop into. One variable makes the proportions exact at every
+   size, because they are literally the same number scaled.
+
+   The pot is bounded on BOTH axes: min() against 40vh means a short
+   landscape phone shrinks the pot instead of pushing the tray off-screen. */
+.mm-stage {
+  /* Bounded by HEIGHT first (72vh) and width second (42vw), because what
+     actually limits this screen is the tray: three stacked magnets plus their
+     gaps are taller than the pot itself, so the station's height — not the
+     pot's — is what has to fit the viewport. The old 34vmin was the real
+     culprit behind a tiny pot: on any landscape screen vmin IS the height, so
+     the pot was sized off the short axis and then only a third of it used. */
+  --mm-pot: clamp(210px, min(72vh, 42vw), 600px);
+  /* a tray magnet — the drag target, never below a 48px finger */
+  --mm-magnet: calc(var(--mm-pot, 240px) * 0.28);
+  /* a gray target letter sitting in the soup */
+  --mm-slot: calc(var(--mm-pot, 240px) * 0.2);
+}
+
+/* ── Kitchen stage ── */
+
+.mm-wall {
+  background: linear-gradient(180deg, #fbe7a2 0%, #f7d97e 100%);
+}
+.mm-backsplash {
+  bottom: clamp(64px, 16vh, 140px);
+  height: clamp(40px, 10vh, 84px);
+}
+/* The kitchen furniture lives on the two SIDE walls, never the middle.
+   One centred fixtures strip meant that on any wide screen the whole
+   kitchen bunched into a narrow column directly behind the pot — cluttering
+   the one area that has to stay readable — while the side walls sat empty.
+   Two edge-anchored clusters read as a room the child is standing in AND
+   leave the centre clear for the game. */
+.mm-fixtures-left,
+.mm-fixtures-right {
+  bottom: clamp(64px, 16vh, 140px);
+  width: clamp(132px, 27vw, 470px);
+  height: clamp(120px, 30vh, 300px);
+}
+.mm-fixtures-left {
+  left: 0;
+}
+.mm-fixtures-right {
+  right: 0;
+}
+
+/* The flame + steam now live INSIDE the stove's own SVG, so they track the
+   burner automatically at every viewport instead of being re-derived from
+   the layout with hand-written calc() (which is what made them drift off
+   the stove on wide screens). These only set the transform box. */
+.mm-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.mm-steam {
+  transform-box: fill-box;
+}
+.mm-counter {
+  height: clamp(64px, 16vh, 140px);
+}
+
+/* ── Headings / copy ── */
+
+.mm-heading {
+  color: var(--color-kitchen-ink);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+}
+.mm-heading--finale {
+  color: var(--color-kitchen-ink);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ── Characters & station ── */
+
+.mm-chef-splash {
+  width: calc(var(--mm-pot, 240px) * 0.4);
+}
+.mm-chef-level {
+  width: calc(var(--mm-pot, 240px) * 0.62);
+}
+.mm-chef-finale {
+  width: clamp(140px, 32vmin, 220px);
+}
+/** The white cooking-station card the pot + tray live on. */
+.mm-station {
+  border: 3px solid rgba(201, 123, 74, 0.25);
+}
+/** Station padding + inner gap scale with the pot, so the card hugs its
+    contents identically at every size (vw/vmin padding did not). */
+.mm-station--level {
+  gap: calc(var(--mm-pot, 240px) * 0.05);
+  padding: calc(var(--mm-pot, 240px) * 0.05);
+}
+.mm-pot-splash {
+  width: calc(var(--mm-pot, 240px) * 0.5);
+  aspect-ratio: 260 / 240;
+}
+.mm-pot {
+  width: var(--mm-pot, 240px);
+}
+
+/** The play row: chef | station. The cap is wide enough for the largest pot
+    plus the chef and tray beside it (~2.1x the pot); it used to be max-w-3xl
+    (768px), which capped the pot at roughly 345px however big the screen was. */
+.mm-play-row {
+  gap: calc(var(--mm-pot, 240px) * 0.06);
+  max-width: 1440px;
+}
+
+/** The tray column beside the pot. Tighter gaps than the magnets are wide:
+    this column is the tallest thing on the screen, so every percent here buys
+    the pot more room. */
+.mm-tray {
+  gap: calc(var(--mm-pot, 240px) * 0.05);
+}
+
+/** The three gray targets, stacked in the soup.
+    Top offset lands the first letter exactly ON the soup surface: the pot
+    art is 260x240 with its surface at y=52, and the box is width-driven, so
+    52/240 * (240/260) = 0.20 of the pot's WIDTH. The gap is a calc() rather
+    than a percentage because a percentage row-gap resolves against an auto
+    height — it silently computed to zero and the letters touched. */
+.mm-slot-column {
+  top: calc(var(--mm-pot, 240px) * 0.21);
+  gap: calc(var(--mm-pot, 240px) * 0.025);
+}
+.mm-pot-art {
+  aspect-ratio: 260 / 240;
+}
+/** The glossy magnet piece's lifted drop shadow (SVG filter). */
+.mm-piece-shadow {
+  filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.16));
+}
+
+/* ── Gameplay feedback ── */
+
+.mm-progress-fill {
+  background: linear-gradient(90deg, #f2b84d, #e88a5d);
+}
+/** A gray target slot, staggered inside the pot (offset via cssVars). */
+.mm-slot {
+  margin-left: var(--pl-ml);
+}
+/** "Drop here" halo behind an open slot while a magnet is dragged. */
+.mm-slot-halo {
+  background: radial-gradient(ellipse, rgba(242, 184, 77, 0.65), transparent 70%);
+}
+/** Landing burst ring around a just-filled slot. */
+.mm-burst-ring {
+  border: 3px solid var(--color-kitchen-amber);
+}
+/** The dragged magnet, floating above the finger. */
+.mm-ghost {
+  transform: translate(-50%, -60%) scale(1.12) rotate(-3deg);
+}
+
+/* ── Group-complete overlay ── */
+
+.mm-celebrate-tint {
+  background: rgba(251, 231, 162, 0.6);
+}
+.mm-cheer {
+  font-size: clamp(26px, 6.5vmin, 42px);
+  color: var(--color-kitchen);
+}

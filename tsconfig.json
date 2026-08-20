@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@shared/*": ["./src/playlab/shared/*"],
+      "@games/*": ["./src/playlab/games/*"]
     }
   },
   "include": [

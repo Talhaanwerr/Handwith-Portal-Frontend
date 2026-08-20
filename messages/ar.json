@@ -15,7 +15,8 @@
     "plans": "الخطط والفواتير",
     "auditLogs": "سجل التدقيق",
     "superAdmin": "المدير العام",
-    "platformMgmt": "إدارة المنصة"
+    "platformMgmt": "إدارة المنصة",
+    "library": "المكتبة"
   },
   "common": {
     "save": "حفظ التغييرات",

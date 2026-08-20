@@ -5,6 +5,7 @@ import { authApi } from "@/lib/auth";
 import { tokenManager } from "@/lib/token";
 import { setSessionCookie, clearSessionCookie } from "@/lib/session-cookie";
 import { ROUTES } from "@/constants";
+import { getPostLoginPath } from "@/lib/post-login-path";
 import type { User, UserRole, UserStatus, WorkspaceTenant } from "@/types";
 import type { BELoginUser, BEMeUser, LoginCredentials, LoginTokens } from "@/lib/auth";
 
@@ -147,14 +148,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       setSessionCookie({ role: feUser.role });
       set({ user: feUser, userTenants, activeTenant, isLoading: false });
 
-      if (redirectTo && redirectTo.startsWith("/") && !redirectTo.startsWith("//")) {
-        window.location.href = redirectTo;
-        return;
-      }
-
-      window.location.href = feUser.isSuperAdmin
-        ? ROUTES.SUPER_ADMIN_DASHBOARD
-        : ROUTES.TENANT_DASHBOARD;
+      window.location.href = getPostLoginPath(feUser.role, redirectTo);
     } catch (err) {
       set({ isLoading: false });
       throw err;

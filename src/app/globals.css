@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -70,6 +71,151 @@
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
   --ring: 224.3 76.3% 48%;
+}
+
+/* ─── PlayLab design tokens ────────────────────────────────────────────────────
+   Kept in a separate @theme block so they never collide with the portal theme.
+   Colors follow the --color-* namespace so Tailwind generates bg-*, text-* etc. */
+@theme {
+  /* Font */
+  --font-rounded: "Nunito", "Varela Round", "Arial Rounded MT Bold", sans-serif;
+
+  /* Core pastel palette */
+  --color-sky-pastel: #d4eeff;
+  --color-peach: #ffd6bc;
+  --color-peach-soft: #ffeade;
+  --color-peach-edge: #ffaa80;
+  --color-peach-ink: #c06030;
+  --color-mint: #c8f0d8;
+  --color-mint-soft: #e5f7ed;
+  --color-lavender: #ddd5f5;
+  --color-lavender-soft: #eee9ff;
+  --color-lavender-line: #ede7fa;
+  --color-lavender-mist: #f0e8ff;
+  --color-sunshine: #fff0b3;
+  --color-sunshine-soft: #fffadd;
+  --color-coral: #ff8b6a;
+  --color-coral-light: #ffbda8;
+
+  /* Brand */
+  --color-plum: #7c5cbf;
+  --color-plum-light: #a882e8;
+  --color-plum-ink: #8b63d6;
+  --color-plum-muted: #a594c8;
+  --color-jade: #3daa72;
+  --color-jade-light: #66cc94;
+
+  /* Rewards */
+  --color-gold: #ffd93d;
+  --color-gold-deep: #f4a73e;
+  --color-gold-pale: #ffe79c;
+  --color-gold-dim: #c08a2d;
+  --color-gold-sun: #f2c94c;
+  --color-star-empty: #e7dffa;
+  --color-star-empty-edge: #d8cdf2;
+
+  /* Per-game accents */
+  --color-jungle: #3daa72;
+  --color-jungle-light: #66cc94;
+  --color-jungle-pale: #c8f0d8;
+  --color-jungle-leaf: #8fd6a8;
+  --color-jungle-mist: #a8e3bc;
+  --color-jungle-muted: #9ab8a6;
+  --color-jungle-stem: #5fae7e;
+
+  --color-ocean: #2980b9;
+  --color-ocean-light: #74b9ff;
+  --color-ocean-surface: #6fc7ef;
+  --color-ocean-mid: #3fa7dc;
+  --color-ocean-deep: #2e8fc4;
+
+  --color-kitchen: #c97b4a;
+  --color-kitchen-ink: #8a5a2e;
+  --color-kitchen-wall: #fbe7a2;
+  --color-kitchen-wall-deep: #f7d97e;
+  --color-kitchen-amber: #f2b84d;
+  --color-kitchen-ember: #e88a5d;
+  --color-kitchen-gold: #e8b33d;
+
+  --color-blush: #ff8fa3;
+  --color-blush-deep: #d14d82;
+  --color-blush-pale: #ffd6e8;
+  --color-blush-soft: #ff9ebc;
+
+  --color-dino: #00c4cc;
+  --color-dino-night: #0a1a3a;
+  --color-dino-deep: #061027;
+  --color-dino-dusk: #14295a;
+  --color-dino-ink: #0a1a3a;
+  --color-dino-orange: #ff7f00;
+  --color-dino-ember: #ff5a2b;
+  --color-dino-lime: #a8ff00;
+  --color-dino-dirt: #4a2c17;
+  --color-dino-dirt-light: #6b4423;
+  --color-dino-stone: #dce5f0;
+
+  --color-paper: #fdf9f0;
+  --color-paper-desk: #efe7d8;
+  --color-paper-edge: #e3d9c6;
+  --color-paper-inner: #eadfc9;
+  --color-paper-curl: #f3ecdd;
+  --color-paper-curl-deep: #e8dfcb;
+
+  /* Shadows */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-button: 0 6px 0 rgba(0, 0, 0, 0.12);
+  --shadow-button-pressed: 0 2px 0 rgba(0, 0, 0, 0.12);
+  --shadow-board: 0 10px 36px rgba(124, 92, 191, 0.16);
+  --shadow-pill: 0 2px 8px rgba(124, 92, 191, 0.18);
+  --shadow-pill-jungle: 0 2px 8px rgba(61, 170, 114, 0.2);
+  --shadow-page:
+    0 12px 40px rgba(90, 72, 50, 0.18), inset 0 0 0 10px #fdf9f0, inset 0 0 0 11px #eadfc9;
+
+  /* Radii (extra values beyond Tailwind defaults) */
+  --radius-4xl: 2rem;
+  --radius-5xl: 3rem;
+  --radius-board: 28px;
+
+  /* Easing */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Animations */
+  --animate-float-slow: float 6s ease-in-out infinite;
+  --animate-float-medium: float 4s ease-in-out infinite;
+  --animate-bounce-gentle: bounce-gentle 2s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-spin-slow: spin 8s linear infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes bounce-gentle {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.97);
+  }
 }
 
 @layer base {

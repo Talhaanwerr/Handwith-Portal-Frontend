@@ -12,6 +12,7 @@ import {
   ScrollText,
   LogOut,
   X,
+  Library,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -31,6 +32,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/super-admin/plans", labelKey: "plans", icon: CreditCard },
   { href: "/super-admin/feature-flags", labelKey: "featureFlags", icon: Flag },
   { href: "/super-admin/audit-logs", labelKey: "auditLogs", icon: ScrollText },
+  { href: "/super-admin/library", labelKey: "library", icon: Library },
   { href: "/super-admin/settings", labelKey: "settings", icon: Settings },
 ];
 

@@ -1,0 +1,131 @@
+/**
+ * Jungle Spy — game-specific visual identity.
+ * All values verbatim from the original screens.
+ */
+
+/** Splash + letter grid: pale canopy light. */
+.jsp-bg-canopy {
+  background: linear-gradient(165deg, #e8f8ee 0%, #fff6d6 100%);
+}
+
+/* ── Splash ── */
+
+.jsp-sun {
+  width: clamp(48px, 8vw, 90px);
+}
+.jsp-mascot-lg {
+  width: clamp(52px, 9vmin, 84px);
+}
+.jsp-mascot-sm {
+  width: clamp(40px, 7vmin, 64px);
+}
+/** The ABC / abc case-picker tiles. */
+.jsp-case-btn {
+  width: clamp(110px, 20vmin, 160px);
+  height: clamp(90px, 16vmin, 130px);
+}
+.jsp-case-btn--upper {
+  background: var(--color-jungle-pale);
+  border: 3px solid var(--color-jungle-light);
+}
+.jsp-case-btn--lower {
+  background: var(--color-sunshine);
+  border: 3px solid var(--color-gold-sun);
+}
+.jsp-case-glyph {
+  font-size: clamp(30px, 6vmin, 44px);
+}
+.jsp-case-glyph--upper {
+  color: var(--color-jungle);
+}
+.jsp-case-glyph--lower {
+  color: var(--color-gold-dim);
+}
+
+/* ── Letter grid ── */
+
+/** The A–Z board.
+ *
+ * A wrapping flex row, NOT an auto-fill grid. An auto-fill grid assigns every
+ * tile to a column track starting from column 1, so a part-filled final row
+ * (W X Y Z out of 26) hangs off to the left of the board instead of sitting
+ * under its middle. Centring the wrap keeps every row balanced at whatever
+ * column count the width works out to — and 26 never divides evenly, so
+ * there is always a part-filled row to balance. */
+.jsp-letter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/** Flex items have no column track to stretch into, so the tile needs a
+ *  definite width of its own. Bounded so it stays a comfortable target on a
+ *  phone without turning into a slab on a desktop. */
+.jsp-letter-tile {
+  width: clamp(48px, 6vw, 60px);
+}
+
+.jsp-progress-fill {
+  background: linear-gradient(90deg, #ff8fa3, #ffd93d, #8fd6a8, #74b9ff, #c9a9f5);
+}
+.jsp-tile-glyph {
+  font-size: clamp(19px, 2.8vw, 26px);
+}
+
+/* ── Level ── */
+
+/** The animal as a framed print: a SQUARE white mount with a thin white
+ *  border, not a circular medallion. A circle cropped the corners off every
+ *  photo — a long animal (a snake, a whale) lost its ends, which is exactly
+ *  the identifying detail a child is being asked to recognise. Square keeps
+ *  the whole picture, and the photo inside uses object-contain so nothing is
+ *  cut off whatever its proportions are.
+ *
+ *  Slightly smaller than the old circle: a square shows more picture at the
+ *  same width, and the extra room lets the scattered letters breathe. */
+.jsp-photo-frame {
+  width: clamp(124px, 27vmin, 208px);
+  height: clamp(124px, 27vmin, 208px);
+  background: white;
+  border: 3px solid white;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.jsp-animal-name {
+  font-size: clamp(13px, 2.6vmin, 17px);
+}
+/** A tappable letter bubble — position + colour arrive per-round via cssVars. */
+.jsp-bubble {
+  transform: translate(-50%, -50%);
+  touch-action: manipulation;
+}
+
+/* ── Win overlay ── */
+
+.jsp-win-tint {
+  background: rgba(232, 248, 238, 0.92);
+}
+/** Same frame on the win overlay, a touch larger for the celebration. */
+.jsp-win-photo {
+  width: clamp(132px, 30vmin, 224px);
+  height: clamp(132px, 30vmin, 224px);
+}
+.jsp-win-heading {
+  font-size: clamp(28px, 7vmin, 44px);
+}
+
+/** The hanging vine on the splash's canopy. */
+.jsp-vine {
+  left: 30%;
+  top: -2%;
+  width: clamp(20px, 3vw, 36px);
+}
+
+/* ── Finale ── */
+
+.jsp-finale-heading {
+  font-size: clamp(30px, 7.5vmin, 52px);
+}
+.jsp-finale-mascot {
+  width: clamp(88px, 20vmin, 150px);
+}

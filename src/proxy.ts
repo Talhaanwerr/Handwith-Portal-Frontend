@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { parseSessionCookie } from "@/lib/session-cookie";
+import { getHomePath } from "@/lib/post-login-path";
 
 // ─── Route definitions ────────────────────────────────────────────────────────
 
@@ -81,8 +82,7 @@ export function proxy(request: NextRequest) {
       if (session.tenantStatus === "SUSPENDED") {
         return NextResponse.redirect(new URL("/account-suspended", request.url));
       }
-      const destination = session.role === "SUPER_ADMIN" ? "/super-admin/dashboard" : "/dashboard";
-      return NextResponse.redirect(new URL(destination, request.url));
+      return NextResponse.redirect(new URL(getHomePath(session.role), request.url));
     }
     return NextResponse.next();
   }
@@ -90,8 +90,16 @@ export function proxy(request: NextRequest) {
   // Everything else requires a session cookie hint
   if (!isAuthenticated) {
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
+    // Do not stamp `redirect=/` — that would send super admins to the tenant dashboard
+    // after login because `/` used to hard-redirect to `/dashboard`.
+    if (pathname !== "/") {
+      loginUrl.searchParams.set("redirect", pathname);
+    }
     return NextResponse.redirect(loginUrl);
+  }
+
+  if (pathname === "/") {
+    return NextResponse.redirect(new URL(getHomePath(session.role), request.url));
   }
 
   // Suspended tenants — lock down the app
@@ -113,5 +121,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

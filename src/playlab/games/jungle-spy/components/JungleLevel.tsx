@@ -1,0 +1,581 @@
+"use client";
+import { StarRow } from "@shared/components/ui/StarRow";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useJungleStore, foundFor } from "@games/jungle-spy/store/jungleStore";
+import { animalFor, JUNGLE_ANIMALS, animalPhotoPath } from "@games/jungle-spy/constants/animals";
+import { AnimalDisplay } from "@games/jungle-spy/components/AnimalDisplay";
+import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
+import { useElementSize } from "@shared/hooks/useElementSize";
+import { cssVars } from "@shared/styles/cssVars";
+import { JungleBackdrop } from "@games/jungle-spy/components/JungleScreens";
+import { shuffle } from "@shared/utils/random";
+import {
+  playCorrectSound,
+  playIncorrectSound,
+  playClickSound,
+  playFanfare,
+} from "@shared/audio/sfx";
+import { playClip, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
+
+/** Age-5 tuning: big, well-spaced letters; no failure states. Always exactly
+ *  5 copies of the target to find (that is what the 5 stars count), among as
+ *  many decoys as the measured play area comfortably holds — see bubbleCount. */
+const TARGET_COUNT = 5;
+
+/** ── Board layout ─────────────────────────────────────────────────────────
+ *
+ *  The board is laid out in PIXELS against the measured play area, then
+ *  stored as percentages. Percentages alone are not enough: a 13%-of-width
+ *  gap is 250px on a desktop and 45px on a phone, so a single set of percent
+ *  numbers cannot keep letters both spread out AND non-overlapping on every
+ *  screen. Working in pixels makes spacing mean the same thing everywhere;
+ *  storing percentages means the board still reflows if the window changes.
+ *
+ *  Three things scale with the measured area:
+ *    - the letter size (the CSS clamp used to be viewport-based, which on a
+ *      short wide screen sized letters off the viewport HEIGHT while they
+ *      were being spaced by container WIDTH — the two disagreed),
+ *    - the spacing between letters, which is a multiple of the letter size,
+ *    - how many letters the board holds, so a big screen fills out to its
+ *      edges instead of leaving the sides empty.
+ */
+interface PlayArea {
+  /** play-area size in CSS px */
+  w: number;
+  h: number;
+  /** the animal's occupied box in px, relative to the play area */
+  keep: { left: number; top: number; right: number; bottom: number };
+}
+
+/** Letter size tiers as a fraction of the play area's SHORT side, so letters
+ *  stay in proportion whatever the aspect ratio. Bounded: never too small to
+ *  tap, never comically large on a big display. */
+const FONT_TIERS = [0.115, 0.096, 0.08, 0.065] as const;
+const FONT_MIN = 30;
+const FONT_MAX = 104;
+
+/** Worst-case glyph metrics for this face at font-weight 900. A capital W or
+ *  M is ~0.90em wide — measuring by an average letter is what lets a WW pair
+ *  touch. Tap floor is the button's own min-w/min-h (48px) plus its padding,
+ *  so the invisible hit areas cannot overlap either: two letters far enough
+ *  apart to look separate but with overlapping buttons means a tap lands on
+ *  whichever happens to be on top, which reads as a broken game. */
+const GLYPH_W = 0.9;
+const GLYPH_H = 0.8;
+const TAP_MIN = 52;
+
+function letterFontPx(tier: number, play: PlayArea): number {
+  const base = Math.min(play.w, play.h);
+  return Math.round(Math.min(FONT_MAX, Math.max(FONT_MIN, FONT_TIERS[tier] * base)));
+}
+
+/** Half-width / half-height of everything a letter occupies, in px. */
+function letterHalfBox(tier: number, play: PlayArea): { hw: number; hh: number } {
+  const f = letterFontPx(tier, play);
+  return { hw: Math.max(f * GLYPH_W, TAP_MIN) / 2, hh: Math.max(f * GLYPH_H, TAP_MIN) / 2 };
+}
+
+/** How many letters a board holds — derived from the actual area the letters
+ *  occupy rather than a magic constant, so the answer stays right when the
+ *  sizes change. 2.15x the mean letter box leaves room for the gaps between
+ *  them. Capped at 28: only 25 other letters exist, so past that a decoy
+ *  would have to appear twice. */
+function bubbleCount(play: PlayArea): number {
+  let boxSum = 0;
+  for (let t = 0; t < 4; t++) {
+    const { hw, hh } = letterHalfBox(t, play);
+    boxSum += 4 * hw * hh;
+  }
+  const meanBox = boxSum / 4;
+  const keepW = Math.max(0, play.keep.right - play.keep.left);
+  const keepH = Math.max(0, play.keep.bottom - play.keep.top);
+  const usable = play.w * play.h - keepW * keepH;
+  return Math.max(12, Math.min(28, Math.floor(usable / (meanBox * 2.15))));
+}
+
+/** Place one letter of each given size tier, scattered across the WHOLE play
+ *  area, and return percent coordinates (index-aligned with `tiers`).
+ *
+ *  Overlap is impossible BY CONSTRUCTION, not by luck:
+ *
+ *  - Every candidate is tested as a RECTANGLE against every rectangle already
+ *    placed, using each letter's own worst-case size. A single global minimum
+ *    distance cannot do this job, because the letters are four different
+ *    sizes: a gap that separates two small letters lets two large ones touch.
+ *  - The extra breathing room between letters relaxes towards zero if a board
+ *    is hard to fill, but NEVER below zero — touching is not a fallback.
+ *  - A letter that still cannot be placed is DROPPED rather than overlapped.
+ *    Placement runs targets first, then largest first (both because targets
+ *    must never be the ones dropped, and because placing big shapes before
+ *    small ones is what makes tight packing succeed), so anything dropped is
+ *    always a decoy and the board is simply a little sparser.
+ *  - Letters are kept a whole half-box inside the edges, and clear of the
+ *    animal's measured box, so nothing is clipped or hidden.
+ *
+ *  Coordinates are rounded to 2dp — they end up in inline custom properties,
+ *  and full float precision is a needless hydration risk. */
+function scatterSlots(
+  tiers: readonly number[],
+  priority: readonly number[],
+  play: PlayArea
+): ([number, number] | null)[] {
+  const out: ([number, number] | null)[] = tiers.map(() => null);
+  const placed: { x: number; y: number; hw: number; hh: number }[] = [];
+  const breathBase = letterFontPx(0, play) * 0.5;
+
+  for (const i of priority) {
+    const { hw, hh } = letterHalfBox(tiers[i], play);
+    const spanX = Math.max(1, play.w - hw * 2);
+    const spanY = Math.max(1, play.h - hh * 2);
+    let done = false;
+
+    for (let relax = 0; relax < 7 && !done; relax++) {
+      const breath = breathBase * (1 - relax / 6); // → 0, never negative
+      for (let tries = 0; tries < 400 && !done; tries++) {
+        const x = hw + Math.random() * spanX;
+        const y = hh + Math.random() * spanY;
+        // clear of the animal (its own box, plus a little air)
+        const air = breath * 0.3;
+        if (
+          x + hw > play.keep.left - air &&
+          x - hw < play.keep.right + air &&
+          y + hh > play.keep.top - air &&
+          y - hh < play.keep.bottom + air
+        ) {
+          continue;
+        }
+        // clear of every letter already placed
+        if (
+          placed.some(
+            (p) => Math.abs(p.x - x) < p.hw + hw + breath && Math.abs(p.y - y) < p.hh + hh + breath
+          )
+        ) {
+          continue;
+        }
+        placed.push({ x, y, hw, hh });
+        out[i] = [Number(((x / play.w) * 100).toFixed(2)), Number(((y / play.h) * 100).toFixed(2))];
+        done = true;
+      }
+    }
+  }
+  return out;
+}
+
+interface Bubble {
+  id: number;
+  letter: string; // display letter (case follows mode)
+  isTarget: boolean;
+  x: number;
+  y: number;
+  popped: boolean;
+  /** four size tiers — playful variety; tap area stays comfortable */
+  size: 0 | 1 | 2 | 3;
+  color: string;
+}
+
+/** Bright, friendly letter colors (reference-sheet palette) */
+const LETTER_COLORS = [
+  "#E85D9E", // pink
+  "#2BB3A3", // teal
+  "#F2913D", // orange
+  "#7C4DBE", // purple
+  "#6FBF44", // green
+  "#4D9EE8", // blue
+  "#E8B33D", // golden
+  "#E86A6A", // coral
+];
+
+function buildBubbles(target: string, letterCase: "upper" | "lower", play: PlayArea): Bubble[] {
+  const total = bubbleCount(play);
+  const others = JUNGLE_ANIMALS.map((a) => a.letter).filter((l) => l !== target);
+  const decoys = shuffle(others).slice(0, total - TARGET_COUNT);
+  const letters = shuffle([
+    ...Array.from({ length: TARGET_COUNT }, () => ({ letter: target, isTarget: true })),
+    ...decoys.map((l) => ({ letter: l, isTarget: false })),
+  ]);
+  // Sizes cycle big→medium→small so every board mixes clearly different
+  // letter sizes without any becoming a tiny target. Tiers are assigned to the
+  // ALREADY SHUFFLED list, so a target is never predictably large or small.
+  const tiers = letters.map((_, i) => (i % 4) as 0 | 1 | 2 | 3);
+  // Targets first (they must never be the ones dropped), then largest first
+  // (big shapes placed before small ones is what makes tight packing work).
+  const priority = letters
+    .map((_, i) => i)
+    .sort((a, b) => {
+      // targets first, then biggest first — NOT reversed afterwards: reversing
+      // would put the decoys first and let a TARGET be the letter dropped
+      const byTarget = Number(letters[b].isTarget) - Number(letters[a].isTarget);
+      return byTarget !== 0
+        ? byTarget
+        : letterFontPx(tiers[b], play) - letterFontPx(tiers[a], play);
+    });
+  const slots = scatterSlots(tiers, priority, play);
+
+  return (
+    letters
+      .map((l, i) => ({
+        id: i,
+        letter: letterCase === "lower" ? l.letter.toLowerCase() : l.letter,
+        isTarget: l.isTarget,
+        slot: slots[i],
+        popped: false,
+        size: tiers[i],
+        color: LETTER_COLORS[i % LETTER_COLORS.length],
+      }))
+      // a letter with nowhere to go is left OUT rather than stacked on another
+      .filter((b) => b.slot !== null)
+      .map(({ slot, ...b }) => ({ ...b, x: slot![0], y: slot![1] }))
+  );
+}
+
+/** Re-scatter the letters already on the board into a changed play area —
+ *  after an orientation flip or a window resize. Every letter, and every
+ *  letter already found, is preserved: only the positions change, so a child
+ *  mid-puzzle never loses progress to a layout change. */
+function respread(bubbles: Bubble[], play: PlayArea): Bubble[] {
+  const tiers = bubbles.map((b) => b.size);
+  const priority = bubbles
+    .map((_, i) => i)
+    .sort((a, b) => {
+      const byTarget = Number(bubbles[b].isTarget) - Number(bubbles[a].isTarget);
+      return byTarget !== 0
+        ? byTarget
+        : letterFontPx(tiers[b], play) - letterFontPx(tiers[a], play);
+    });
+  const slots = scatterSlots(tiers, priority, play);
+  // If the new shape cannot hold every letter, keep the old positions rather
+  // than silently dropping letters mid-puzzle.
+  if (slots.some((sl) => sl === null)) return bubbles;
+  return bubbles.map((b, i) => ({ ...b, x: slots[i]![0], y: slots[i]![1] }));
+}
+
+export function JungleLevel() {
+  const router = useRouter();
+  const store = useJungleStore();
+  const { currentLetter, letterCase, markFound, setLetter, setScreen } = store;
+  const found = foundFor(store, letterCase);
+  /** The letter just won is the 26th of this case's run — nothing left to find. */
+  const runComplete =
+    found.length >= JUNGLE_ANIMALS.length ||
+    (found.length === JUNGLE_ANIMALS.length - 1 && !found.includes(currentLetter));
+  const animal = animalFor(currentLetter);
+  const display = letterCase === "lower" ? currentLetter.toLowerCase() : currentLetter;
+
+  const [bubbles, setBubbles] = useState<Bubble[]>([]);
+  const [shakeId, setShakeId] = useState<number | null>(null);
+  const [round, setRound] = useState(0);
+  const levelKey = `${currentLetter}|${letterCase}|${round}`;
+  const [sessionKey, setSessionKey] = useState(levelKey);
+  const [won, setWon] = useState(false);
+  if (sessionKey !== levelKey) {
+    setSessionKey(levelKey);
+    setWon(false);
+  }
+
+  // The board is scattered against the MEASURED play area and the animal's
+  // MEASURED box, so it fills whatever screen it is on and never covers the
+  // picture. Measured in a layout effect (before paint) and re-measured on
+  // resize, so an orientation flip re-scatters into the new shape.
+  const playRef = useRef<HTMLDivElement>(null);
+  const animalRef = useRef<HTMLDivElement>(null);
+  const [play, setPlay] = useState<PlayArea | null>(null);
+  useLayoutEffect(() => {
+    const el = playRef.current;
+    if (!el) return;
+    const measure = () => {
+      const box = el.getBoundingClientRect();
+      const a = animalRef.current?.getBoundingClientRect();
+      const keep = a
+        ? {
+            left: a.left - box.left,
+            top: a.top - box.top,
+            right: a.right - box.left,
+            bottom: a.bottom - box.top,
+          }
+        : {
+            left: box.width * 0.36,
+            top: box.height * 0.3,
+            right: box.width * 0.64,
+            bottom: box.height * 0.8,
+          };
+      setPlay({ w: el.offsetWidth, h: el.offsetHeight, keep });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  /** A coarse fingerprint of the play area: changes on a real resize or an
+   *  orientation flip, not on every sub-pixel reflow. */
+  const layoutKey = play ? `${Math.round(play.w / 40)}x${Math.round(play.h / 40)}` : null;
+  const boardKey = `${currentLetter}|${letterCase}|${round}`;
+  const builtRef = useRef<{ board: string; layout: string } | null>(null);
+  // Measured from the actual rendered root — NOT window.innerWidth/height via
+  // position:fixed, which breaks (confetti bunches to one side) inside any
+  // transformed Framer Motion ancestor. This matches the tracing game's
+  // reliable CelebrationScreen pattern.
+  const [rootRef, dims] = useElementSize();
+
+  const targetsLeft = useMemo(
+    () => (bubbles.length ? bubbles.filter((b) => b.isTarget && !b.popped).length : TARGET_COUNT),
+    [bubbles]
+  );
+  const targetsTotal = useMemo(
+    () => (bubbles.length ? bubbles.filter((b) => b.isTarget).length : TARGET_COUNT),
+    [bubbles]
+  );
+
+  // A fresh board for a new letter / replay, and a re-scatter (progress kept)
+  // when the play area itself changes shape.
+  useEffect(() => {
+    if (!play || !layoutKey) return;
+    const prev = builtRef.current;
+    if (prev?.board === boardKey && prev.layout === layoutKey) return;
+    if (prev?.board === boardKey) {
+      builtRef.current = { board: boardKey, layout: layoutKey };
+      setBubbles((current) => (current.length ? respread(current, play) : current));
+      return;
+    }
+    builtRef.current = { board: boardKey, layout: layoutKey };
+    setBubbles(buildBubbles(currentLetter, letterCase, play));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boardKey, layoutKey, play]);
+
+  // Fresh board + the pre-generated intro sentence on letter change / replay;
+  // preload everything this level needs (same clip system as letter tracing)
+  useEffect(() => {
+    const l = currentLetter.toLowerCase();
+    preloadClips([
+      `jungle-find-${l}`,
+      `letter-${l}`,
+      "instr-try-again",
+      "cheer-great-job",
+      "instr-again",
+      "instr-next",
+    ]);
+    const t = setTimeout(() => void playClip(`jungle-find-${l}`), 350);
+    return () => {
+      clearTimeout(t);
+      stopVoice();
+    };
+  }, [currentLetter, letterCase, round]);
+
+  const tapBubble = useCallback(
+    (b: Bubble) => {
+      if (won || b.popped) return;
+      if (b.isTarget) {
+        playCorrectSound();
+        void playClip(`letter-${currentLetter.toLowerCase()}`);
+        setBubbles((prev) => {
+          const next = prev.map((p) => (p.id === b.id ? { ...p, popped: true } : p));
+          if (next.every((p) => !p.isTarget || p.popped)) {
+            // Level complete
+            setTimeout(() => {
+              setWon(true);
+              markFound(currentLetter);
+              // warm the next letter's photo while the child celebrates
+              const idx = JUNGLE_ANIMALS.findIndex((a) => a.letter === currentLetter);
+              const nxt = JUNGLE_ANIMALS[(idx + 1) % JUNGLE_ANIMALS.length];
+              new Image().src = animalPhotoPath(nxt.art);
+              void playClip("cheer-great-job").then(() => playFanfare());
+            }, 350);
+          }
+          return next;
+        });
+      } else {
+        // Never a failure — a gentle wiggle and a friendly nudge
+        playIncorrectSound();
+        setShakeId(b.id);
+        setTimeout(() => setShakeId(null), 500);
+        void playClip("instr-try-again");
+      }
+    },
+    [won, currentLetter, markFound]
+  );
+
+  const goNext = useCallback(() => {
+    stopVoice(); // never let the cheer keep talking into the next level
+    // Last animal of this run? Go to the finale rather than wrapping round to A
+    // and quietly starting the whole alphabet again.
+    if (runComplete) {
+      setScreen("complete");
+      return;
+    }
+    void playClip("instr-next");
+    const idx = JUNGLE_ANIMALS.findIndex((a) => a.letter === currentLetter);
+    // skip straight to the next animal still to find, not just the next letter
+    const order = JUNGLE_ANIMALS.map(
+      (_, k) => JUNGLE_ANIMALS[(idx + 1 + k) % JUNGLE_ANIMALS.length]
+    );
+    const next = order.find((a) => !found.includes(a.letter)) ?? order[0];
+    setRound((r) => r + 1); // fresh keys — the win overlay and board fully reset
+    setLetter(next.letter);
+  }, [currentLetter, setLetter, runComplete, setScreen, found]);
+
+  const playAgain = useCallback(() => {
+    void playClip("instr-again");
+    setRound((r) => r + 1);
+  }, []);
+
+  return (
+    <div
+      ref={rootRef}
+      className="bg-wash-mint relative flex h-full w-full flex-col items-center overflow-hidden px-4 py-3"
+    >
+      <JungleBackdrop />
+
+      {/* Top bar */}
+      <div className="relative z-10 flex w-full max-w-2xl items-center justify-between gap-2">
+        <button
+          onClick={() => {
+            playClickSound();
+            router.back();
+          }}
+          className="shadow-soft flex min-h-[44px] items-center gap-1.5 rounded-full bg-white/80 px-3.5 py-2"
+          aria-label="Back to the letter grid"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M15 18l-6-6 6-6"
+              stroke="#3DAA72"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="font-rounded text-jungle text-xs font-bold">Letters</span>
+        </button>
+
+        <div className="shadow-soft flex items-center gap-2 rounded-full bg-white/80 px-4 py-2">
+          <span className="font-rounded text-plum/70 text-sm font-bold">I spy the letter</span>
+          <span className="font-rounded text-jungle text-2xl font-black">{display}</span>
+        </div>
+
+        {/* spacer balances the back button so the title stays centered */}
+        <div className="min-h-[44px] w-[84px]" aria-hidden="true" />
+      </div>
+
+      {/* Collected stars — the shared gold-star row every game uses */}
+      <div
+        className="shadow-soft relative z-10 mt-2 flex items-center justify-center rounded-2xl bg-white/85 px-4 py-1.5"
+        role="status"
+      >
+        <StarRow earned={targetsTotal - targetsLeft} total={targetsTotal} />
+      </div>
+
+      {/* Play area — FULL WIDTH on purpose. It used to be capped at max-w-3xl
+          (768px), so on any wider screen the letters could only ever be
+          scattered inside a centred 768px column and the sides of the screen
+          stayed empty however many letters were added. */}
+      <div ref={playRef} className="relative z-10 mt-1 w-full flex-1">
+        {/* Animal center */}
+        {/* anchored at (50%, 55%) — the SAME point ANIMAL_KEEP_OUT excludes,
+            so a scattered letter can never land on top of the picture */}
+        <div
+          ref={animalRef}
+          className="pointer-events-none absolute top-[55%] left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+        >
+          <motion.div
+            className="flex flex-col items-center"
+            initial={{ scale: 0.6, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 18 }}
+            aria-label={animal.name}
+            role="img"
+          >
+            {/* the animal as a framed print — a square photo with a thin white
+              border, so nothing of the animal is cropped away by a circle */}
+            <div className="jsp-photo-frame flex items-center justify-center shadow-lg">
+              <AnimalDisplay art={animal.art} />
+            </div>
+            <p className="jsp-animal-name font-rounded text-plum/80 shadow-soft mt-1.5 rounded-full bg-white/85 px-3 py-0.5 text-center font-black">
+              {animal.name}
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Letter bubbles */}
+        <AnimatePresence>
+          {bubbles.map(
+            (b) =>
+              !b.popped && (
+                <motion.button
+                  key={`${round}-${b.id}`}
+                  onClick={() => tapBubble(b)}
+                  className="jsp-bubble pl-at absolute flex min-h-[48px] min-w-[48px] items-center justify-center p-1.5"
+                  style={cssVars({ "--pl-x": `${b.x}%`, "--pl-y": `${b.y}%` })}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={
+                    shakeId === b.id
+                      ? { scale: 1, opacity: 1, x: [-6, 6, -5, 5, -3, 3, 0] }
+                      : { scale: 1, opacity: 1, x: 0 }
+                  }
+                  exit={{ scale: 1.5, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                  aria-label={`Letter ${b.letter}`}
+                >
+                  <span
+                    className="pl-glyph pl-tint font-rounded leading-none font-black drop-shadow-sm"
+                    style={cssVars({
+                      "--pl-color": b.color,
+                      "--pl-font-size": `${play ? letterFontPx(b.size, play) : 40}px`,
+                    })}
+                  >
+                    {b.letter}
+                  </span>
+                </motion.button>
+              )
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Win overlay */}
+      <AnimatePresence>
+        {won && (
+          <CelebrationOverlay
+            tintClassName="jsp-win-tint"
+            gapClassName="gap-4"
+            blur="3px"
+            size={dims}
+          >
+            <motion.div
+              className="jsp-photo-frame jsp-win-photo shadow-lg"
+              initial={{ scale: 0.5, y: 20 }}
+              animate={{ scale: 1, y: [0, -14, 0] }}
+              transition={{
+                scale: { type: "spring", stiffness: 220, damping: 16 },
+                y: { duration: 0.9, repeat: 2, ease: "easeInOut", delay: 0.3 },
+              }}
+            >
+              <AnimalDisplay art={animal.art} />
+            </motion.div>
+            <h2 className="jsp-win-heading font-rounded text-plum font-black">
+              {clipText("cheer-great-job")}
+            </h2>
+            <p className="font-rounded text-plum/60 text-base font-semibold">
+              You found every {display}! {display} is for {animal.name}.
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={playAgain}
+                className="font-rounded text-plum min-h-[52px] rounded-full bg-white px-6 text-base font-black shadow-lg"
+                aria-label="Play this letter again"
+              >
+                Again
+              </button>
+              <button
+                onClick={goNext}
+                className="bg-jungle font-rounded min-h-[52px] rounded-full px-6 text-base font-black text-white shadow-lg"
+                aria-label="Go to the next letter"
+              >
+                <span>{runComplete ? "Finish!" : "Next"}</span>
+              </button>
+            </div>
+          </CelebrationOverlay>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

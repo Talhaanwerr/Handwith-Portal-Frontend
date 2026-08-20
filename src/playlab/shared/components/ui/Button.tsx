@@ -1,0 +1,62 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+
+type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonSize = "sm" | "md" | "lg" | "xl";
+
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  disabled?: boolean;
+  className?: string;
+  "aria-label"?: string;
+}
+
+const variantStyles: Record<ButtonVariant, string> = {
+  primary: "bg-plum text-white shadow-button active:shadow-button-pressed active:translate-y-1",
+  secondary:
+    "bg-white text-plum border-2 border-plum shadow-soft active:shadow-none active:translate-y-1",
+  ghost: "bg-white/60 text-plum shadow-soft active:bg-white/80",
+};
+
+const sizeStyles: Record<ButtonSize, string> = {
+  sm: "px-5 py-2 text-base rounded-2xl min-h-[44px] min-w-[44px]",
+  md: "px-8 py-3 text-lg rounded-3xl min-h-[52px]",
+  lg: "px-10 py-4 text-xl rounded-3xl min-h-[60px]",
+  xl: "px-12 py-5 text-2xl rounded-4xl min-h-[72px]",
+};
+
+export function Button({
+  children,
+  onClick,
+  variant = "primary",
+  size = "md",
+  disabled = false,
+  className = "",
+  "aria-label": ariaLabel,
+}: ButtonProps) {
+  return (
+    <motion.button
+      whileTap={{ scale: disabled ? 1 : 0.96 }}
+      whileHover={{ scale: disabled ? 1 : 1.03 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      className={[
+        "font-rounded cursor-pointer font-bold transition-colors duration-150 select-none",
+        "focus-visible:ring-plum/30 focus:outline-none focus-visible:ring-4",
+        variantStyles[variant],
+        sizeStyles[size],
+        disabled ? "cursor-not-allowed opacity-50" : "",
+        className,
+      ].join(" ")}
+    >
+      {children}
+    </motion.button>
+  );
+}
