@@ -1,0 +1,4 @@
+{
+  "framework": "nextjs",
+  "installCommand": "HUSKY=0 npm install"
+}

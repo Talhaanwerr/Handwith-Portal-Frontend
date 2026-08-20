@@ -34,9 +34,9 @@ const contentSecurityPolicy = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  // Required for Docker standalone builds — emits a minimal server.js with
-  // only the files needed at runtime (no node_modules copy required).
-  output: "standalone",
+  // Docker needs standalone `server.js`. Vercel must not use it — it has its
+  // own tracing. VERCEL=1 is set on every Vercel build.
+  ...(process.env.VERCEL ? {} : { output: "standalone" as const }),
   outputFileTracingRoot: path.join(__dirname),
   async headers() {
     return [
