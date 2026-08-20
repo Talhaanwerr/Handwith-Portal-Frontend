@@ -414,7 +414,11 @@ export function HuntLevel() {
                         rotate: c.rotate,
                       }
                 }
-                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                transition={
+                  shakeId === c.id || c.found
+                    ? { duration: shakeId === c.id ? 0.4 : 0.35, ease: "easeOut" }
+                    : { type: "spring", stiffness: 260, damping: 20 }
+                }
                 aria-label={`Letter ${letterCase === "lower" ? c.letter.toLowerCase() : c.letter}${c.found ? " — found!" : ""}`}
                 disabled={c.found}
               >

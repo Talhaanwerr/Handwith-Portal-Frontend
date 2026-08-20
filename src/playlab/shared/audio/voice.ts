@@ -1,23 +1,19 @@
 "use client";
 
 /**
- * voice.ts — the narration engine. Plays pre-generated local clips (built by
- * scripts/generate-audio.mjs from manifest.json) through Howler.
+ * voice.ts — the narration engine. Prefers pre-generated MP3s (Howler).
+ * MP3s are optional: if a file is missing (typical after clone — they are
+ * not in git), the clip's manifest `speak`/`text` is spoken via Web Speech
+ * so games never hang waiting on a 404.
  *
- * Design rules (the audio spec, distilled):
- *  - ONE spoken voice event at a time: starting any clip cleanly stops the
- *    previous one. No overlap, ever.
- *  - Deterministic timing: play() resolves on Howler's real `onend` event —
- *    never on a guessed setTimeout — so game states can `await` speech.
- *  - Text↔audio pairing: components read displayed text from the manifest via
- *    clipText(), so what is shown and what is spoken cannot drift apart.
- *  - NO silent Web Speech fallback. A missing file logs an unmissable dev
- *    error and resolves quickly so the game flow continues and the gap is
- *    obvious and fixable.
+ *  - ONE spoken voice event at a time.
+ *  - play() resolves when speech/audio actually ends (or a short fail-safe).
+ *  - UI text still comes from clipText() / the manifest.
  */
 
 import { Howl } from "howler";
 import { duckMusic } from "@shared/audio/music";
+import { speak } from "@shared/audio/speech";
 import manifest from "./manifest.json";
 
 type ClipId = string;
@@ -25,36 +21,58 @@ type ClipId = string;
 interface ClipDef {
   file: string;
   text: string;
+  speak?: string;
 }
 
 const CLIPS: Record<string, ClipDef> = manifest.clips as Record<string, ClipDef>;
 
 const cache = new Map<ClipId, Howl>();
+const failedIds = new Set<ClipId>();
 let current: Howl | null = null;
 
 function missing(id: ClipId, reason: string): void {
-  // Loud and unmistakable in development — per spec, never silently ignored,
-  // never replaced with Web Speech.
-  console.error(
-    `%c[voice] MISSING/FAILED AUDIO CLIP: "${id}" (${reason}).\n` +
-      `Run \`node scripts/generate-audio.mjs ${id}\` to (re)generate it.`,
-    "color:#fff;background:#c0392b;font-weight:bold;padding:2px 6px;"
-  );
+  console.warn(`[voice] clip "${id}" ${reason} — using browser speech so the game can continue.`);
+}
+
+function spokenText(def: ClipDef): string {
+  return (def.speak || def.text || "").trim();
+}
+
+function playSpoken(def: ClipDef): Promise<void> {
+  return new Promise((resolve) => {
+    const text = spokenText(def);
+    if (!text) {
+      setTimeout(resolve, 200);
+      return;
+    }
+    duckMusic(true);
+    speak(
+      text,
+      0.92,
+      1.18,
+      () => {
+        duckMusic(false);
+        resolve();
+      },
+      true
+    );
+  });
 }
 
 function getClip(id: ClipId): Howl | null {
   const def = CLIPS[id];
-  if (!def) {
-    missing(id, "no such id in manifest.json");
-    return null;
-  }
+  if (!def || failedIds.has(id)) return null;
   let h = cache.get(id);
   if (!h) {
     h = new Howl({
       src: [def.file],
       preload: true,
       html5: false,
-      onloaderror: () => missing(id, "file failed to load — not generated yet?"),
+      onloaderror: () => {
+        failedIds.add(id);
+        cache.delete(id);
+        missing(id, "failed to load (file missing?)");
+      },
     });
     cache.set(id, h);
   }
@@ -76,46 +94,69 @@ export function preloadClips(ids: ClipId[]): void {
 export function stopVoice(): void {
   current?.stop();
   current = null;
+  if (typeof window !== "undefined") window.speechSynthesis?.cancel();
   duckMusic(false);
 }
 
 /**
- * Play one clip. Resolves when the clip actually ENDS (real Howler onend).
- * Starting a clip stops whatever was playing — one voice at a time.
- * On load failure it resolves after a short beat so sequences continue.
+ * Play one clip. Resolves when the clip actually ENDS.
+ * Missing MP3s fall back to Web Speech using the manifest line.
  */
 export function playClip(id: ClipId): Promise<void> {
+  const def = CLIPS[id];
+  if (!def) {
+    missing(id, "is not in manifest.json");
+    return new Promise((r) => setTimeout(r, 250));
+  }
+  if (failedIds.has(id)) {
+    return playSpoken(def);
+  }
+
   return new Promise((resolve) => {
     const h = getClip(id);
-    if (!h) return void setTimeout(resolve, 250);
+    if (!h) {
+      void playSpoken(def).then(resolve);
+      return;
+    }
+
     stopVoice();
     current = h;
-    duckMusic(true); // narration over quiet music, never fighting it
+    duckMusic(true);
 
     let settled = false;
-    const finish = () => {
+    const finish = (useSpeech = false) => {
       if (settled) return;
       settled = true;
       if (current === h) current = null;
       duckMusic(false);
-      h.off("end", finish);
+      h.off("end", onEnd);
+      if (useSpeech) {
+        failedIds.add(id);
+        cache.delete(id);
+        void playSpoken(def).then(resolve);
+        return;
+      }
       resolve();
     };
-    h.once("end", finish);
-    h.once("loaderror", () => setTimeout(finish, 250));
-    h.once("playerror", () => setTimeout(finish, 250));
+    const onEnd = () => finish(false);
+
+    h.once("end", onEnd);
+    h.once("loaderror", () => finish(true));
+    h.once("playerror", () => finish(true));
 
     if (h.state() === "loaded") {
       h.play();
+      setTimeout(() => {
+        if (!settled) finish(false);
+      }, 6000);
     } else {
       h.once("load", () => {
         if (!settled) h.play();
       });
       h.load();
-      // dev safety: if the file never loads, don't hang the game
       setTimeout(() => {
-        if (h.state() !== "loaded") finish();
-      }, 4000);
+        if (!settled && h.state() !== "loaded") finish(true);
+      }, 1200);
     }
   });
 }

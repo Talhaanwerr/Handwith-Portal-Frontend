@@ -119,7 +119,7 @@ Export name examples already in the repo:
 | Game images        | `public/games/<game-id>/...` | `/games/<game-id>/file.png` |
 | Shared audio files | `public/audio/...`           | `/audio/file.mp3`           |
 
-Most SFX are generated in code via `@shared/audio/sfx` (`playClickSound`, `playCorrectSound`, …). Voice lines: `@shared/audio/voice`. Do not invent a second audio system.
+Most SFX are generated in code via `@shared/audio/sfx`. Voice lines: `@shared/audio/voice` — MP3s under `public/audio/` if present, otherwise browser speech from `manifest.json`. Do not invent a second audio system.
 
 ### 4. Wire it into Library (required — game will not show/load without this)
 

@@ -114,6 +114,12 @@ export function TracingScreen({ letter, mode, onComplete, onHome }: TracingScree
     };
   }, [letter, speakLetterIntro, sayWatchMe, preloadForLetter]);
 
+  // If narration hangs (missing MP3, blocked autoplay), still release the pencil.
+  useEffect(() => {
+    const t = setTimeout(() => setIntroDone(true), 10000);
+    return () => clearTimeout(t);
+  }, [letter.letter]);
+
   const handleFirstTurn = useCallback(() => {
     sayNowYourTurn();
   }, [sayNowYourTurn]);
