@@ -9,3 +9,11 @@ export interface GameMeta {
   /** Pastel card colors, matching the game's own identity */
   colors: { bg: string; border: string; text: string };
 }
+
+/**
+ * The two ways an alphabet game can be played, shared by Letter Tracing and
+ * Letter Hunt: Free = one repetition per letter, five-star = five, one gold
+ * star each. Lives with the types rather than with the picker component so a
+ * zustand store can reference it without importing a React component.
+ */
+export type PlayMode = "free" | "five-star";

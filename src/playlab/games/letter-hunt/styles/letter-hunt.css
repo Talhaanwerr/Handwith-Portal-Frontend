@@ -29,6 +29,52 @@
   font-size: clamp(16px, 3.2vmin, 22px);
 }
 
+/* ── Mode select (Free / 5 Star) ──────────────────────────────────────────
+   The screen itself is shared with Letter Tracing
+   (@shared/components/game/ModeSelect); only the card trim is per-game, and
+   these mirror .lt-mode-card so the two picks feel like the same product. */
+
+.hunt-mode-card {
+  min-height: 150px;
+}
+.hunt-mode-card--free {
+  border: 3px solid var(--color-jade-light);
+}
+.hunt-mode-card--star {
+  border: 3px solid var(--color-plum-light);
+}
+
+/* ── Background letter field ──────────────────────────────────────────────
+   The faint alphabet the hunt happens inside (HuntLetterField.tsx). Purely
+   decorative: the layer is pointer-events:none and z-0, so it sits under every
+   gameplay element and can never take a tap meant for a real card. Per-glyph
+   position, scale, tilt and opacity arrive via cssVars; the declarations stay
+   here. No animation — a moving background behind a scanning task is exactly
+   what a hunting game must not have. */
+
+.hunt-field {
+  /* one place to retune the whole field's weight */
+  --hunt-field-base: clamp(26px, 5.2vmin, 52px);
+}
+.hunt-field-glyph {
+  font-size: calc(var(--hunt-field-base) * var(--pl-scale, 1));
+  color: var(--color-plum);
+  opacity: var(--pl-opacity, 0.14);
+  line-height: 1;
+  transform: translate(-50%, -50%) rotate(var(--pl-rotate, 0deg));
+  user-select: none;
+}
+
+/** The celebration star in flight. Much bigger than the old text-6xl (60px):
+ *  this is the payoff for finding all five, so at its peak it should be the
+ *  largest thing on the screen. Sized in vmin so it stays proportionally big
+ *  on a phone and does not become a billboard on a desktop. */
+.hunt-flying-star {
+  font-size: clamp(76px, 17vmin, 148px);
+  line-height: 1;
+  filter: drop-shadow(0 6px 18px rgba(255, 190, 40, 0.6));
+}
+
 /* ── Penny + notebook ── */
 
 /** Penny's pointing arm pivots at her shoulder. */

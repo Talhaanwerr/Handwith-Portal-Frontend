@@ -324,9 +324,9 @@
       "$freeNote": "speakFree is the free-path approximation; the Google path uses exact IPA. Edit + regenerate this one clip if it sounds off."
     },
     "word-p": {
-      "file": "/audio/words/pig.mp3",
-      "text": "pig",
-      "speak": "pig!"
+      "file": "/audio/words/penguin.mp3",
+      "text": "penguin",
+      "speak": "penguin!"
     },
     "letter-q": {
       "file": "/audio/letters/q.mp3",
@@ -967,8 +967,8 @@
     },
     "magnet-intro": {
       "file": "/audio/magnet/intro.mp3",
-      "text": "Help the chef make his soup! Find the matching letter and place it into the pot.",
-      "speak": "Help the chef make his soup! Find the matching letter, and place it into the pot."
+      "text": "Help the chef!",
+      "speak": "Help the chef!"
     },
     "magnet-excellent": {
       "file": "/audio/magnet/excellent.mp3",

@@ -61,6 +61,9 @@ export function FeedLevel({ onComplete }: FeedLevelProps) {
   /** Servings already swallowed — onAnimationComplete can fire twice, and a
    *  second swallow would double-schedule the advance and skip a serving. */
   const servedRef = useRef(-1);
+  /** The confirmation clip for the letter just eaten — the next serving's ask
+   *  chains off it rather than off a guessed timeout. */
+  const confirmRef = useRef<Promise<void>>(Promise.resolve());
   useEffect(() => () => stopVoice(), []);
 
   /** This session's menu: ten letters, shuffled once per mount, no repeats. */
@@ -78,11 +81,22 @@ export function FeedLevel({ onComplete }: FeedLevelProps) {
   );
 
   // Each serving announces itself: "Find the letter X!"
+  //
+  // TIMING: the flat 550ms setTimeout that used to gate this is gone. It was
+  // there to keep the ask from cutting off the confirmation clip of the letter
+  // just eaten (playClip stops any current narration when it starts), so the
+  // wait is now on that clip's REAL end via its own promise — immediate for the
+  // first serving, and never overlapping for the rest.
   useEffect(() => {
     if (fed >= FEED_TOTAL) return;
     preloadClips([findClip, `letter-${target.toLowerCase()}`]);
-    const t = setTimeout(() => void playClip(findClip), 550);
-    return () => clearTimeout(t);
+    let cancelled = false;
+    void confirmRef.current.then(() => {
+      if (!cancelled) void playClip(findClip);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [fed, target, findClip]);
 
   const swallow = useCallback(
@@ -91,7 +105,7 @@ export function FeedLevel({ onComplete }: FeedLevelProps) {
       servedRef.current = servingIndex;
       setFlying(null);
       playCorrectSound();
-      void playClip(`letter-${letter.toLowerCase()}`);
+      confirmRef.current = playClip(`letter-${letter.toLowerCase()}`);
       setMood("cheer");
       schedule(() => setMood("idle"), 850);
       const next = fed + 1;

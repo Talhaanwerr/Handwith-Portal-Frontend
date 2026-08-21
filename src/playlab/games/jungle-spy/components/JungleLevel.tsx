@@ -3,7 +3,7 @@ import { StarRow } from "@shared/components/ui/StarRow";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useJungleStore, foundFor } from "@games/jungle-spy/store/jungleStore";
+import { useJungleStore } from "@games/jungle-spy/store/jungleStore";
 import { animalFor, JUNGLE_ANIMALS, animalPhotoPath } from "@games/jungle-spy/constants/animals";
 import { AnimalDisplay } from "@games/jungle-spy/components/AnimalDisplay";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
@@ -56,111 +56,72 @@ const FONT_TIERS = [0.115, 0.096, 0.08, 0.065] as const;
 const FONT_MIN = 30;
 const FONT_MAX = 104;
 
-/** Worst-case glyph metrics for this face at font-weight 900. A capital W or
- *  M is ~0.90em wide — measuring by an average letter is what lets a WW pair
- *  touch. Tap floor is the button's own min-w/min-h (48px) plus its padding,
- *  so the invisible hit areas cannot overlap either: two letters far enough
- *  apart to look separate but with overlapping buttons means a tap lands on
- *  whichever happens to be on top, which reads as a broken game. */
-const GLYPH_W = 0.9;
-const GLYPH_H = 0.8;
-const TAP_MIN = 52;
-
 function letterFontPx(tier: number, play: PlayArea): number {
   const base = Math.min(play.w, play.h);
   return Math.round(Math.min(FONT_MAX, Math.max(FONT_MIN, FONT_TIERS[tier] * base)));
 }
 
-/** Half-width / half-height of everything a letter occupies, in px. */
-function letterHalfBox(tier: number, play: PlayArea): { hw: number; hh: number } {
-  const f = letterFontPx(tier, play);
-  return { hw: Math.max(f * GLYPH_W, TAP_MIN) / 2, hh: Math.max(f * GLYPH_H, TAP_MIN) / 2 };
-}
-
-/** How many letters a board holds — derived from the actual area the letters
- *  occupy rather than a magic constant, so the answer stays right when the
- *  sizes change. 2.15x the mean letter box leaves room for the gaps between
- *  them. Capped at 28: only 25 other letters exist, so past that a decoy
- *  would have to appear twice. */
-function bubbleCount(play: PlayArea): number {
-  let boxSum = 0;
-  for (let t = 0; t < 4; t++) {
-    const { hw, hh } = letterHalfBox(t, play);
-    boxSum += 4 * hw * hh;
-  }
-  const meanBox = boxSum / 4;
-  const keepW = Math.max(0, play.keep.right - play.keep.left);
-  const keepH = Math.max(0, play.keep.bottom - play.keep.top);
-  const usable = play.w * play.h - keepW * keepH;
-  return Math.max(12, Math.min(28, Math.floor(usable / (meanBox * 2.15))));
-}
-
-/** Place one letter of each given size tier, scattered across the WHOLE play
- *  area, and return percent coordinates (index-aligned with `tiers`).
+/**
+ * THE FIXED LETTER MAP — the answer to "why does every round look different?"
  *
- *  Overlap is impossible BY CONSTRUCTION, not by luck:
+ * Positions used to be produced by a randomised rejection sampler, so each
+ * round scattered letters somewhere new: one board bunched right, the next left
+ * a corner empty, and a letter the sampler could not place was silently
+ * dropped. The layout was never designed, only rolled.
  *
- *  - Every candidate is tested as a RECTANGLE against every rectangle already
- *    placed, using each letter's own worst-case size. A single global minimum
- *    distance cannot do this job, because the letters are four different
- *    sizes: a gap that separates two small letters lets two large ones touch.
- *  - The extra breathing room between letters relaxes towards zero if a board
- *    is hard to fill, but NEVER below zero — touching is not a fallback.
- *  - A letter that still cannot be placed is DROPPED rather than overlapped.
- *    Placement runs targets first, then largest first (both because targets
- *    must never be the ones dropped, and because placing big shapes before
- *    small ones is what makes tight packing succeed), so anything dropped is
- *    always a decoy and the board is simply a little sparser.
- *  - Letters are kept a whole half-box inside the edges, and clear of the
- *    animal's measured box, so nothing is clipped or hidden.
+ * These are hand-placed percent coordinates covering every region and corner of
+ * the play area, ordered so that any PREFIX of the list is still a balanced
+ * board — the first 12 cover the screen, the first 18 cover it more densely,
+ * and so on. That is what keeps the map responsive without making it random:
+ * a small viewport uses fewer slots, but on a given device the SAME slots are
+ * used every round and only the letter sitting in each one changes.
  *
- *  Coordinates are rounded to 2dp — they end up in inline custom properties,
- *  and full float precision is a needless hydration risk. */
-function scatterSlots(
-  tiers: readonly number[],
-  priority: readonly number[],
-  play: PlayArea
-): ([number, number] | null)[] {
-  const out: ([number, number] | null)[] = tiers.map(() => null);
-  const placed: { x: number; y: number; hw: number; hh: number }[] = [];
-  const breathBase = letterFontPx(0, play) * 0.5;
+ * Every value is inset from the edges (nothing below 6% or above 94%) and the
+ * render clamps in px on top of that, so a letter can never be clipped.
+ *
+ * The centre band is deliberately empty — that is where the animal sits.
+ */
+const FIXED_SLOTS: readonly [number, number][] = [
+  // pass 1 — the eight anchors: corners and mid-edges, whole-screen coverage
+  [10, 14],
+  [50, 8],
+  [90, 14],
+  [7, 45],
+  [93, 45],
+  [10, 84],
+  [50, 92],
+  [90, 84],
+  // pass 2 — fill the diagonals between the anchors
+  [29, 26],
+  [71, 26],
+  [29, 72],
+  [71, 72],
+  // pass 3 — outer thirds, still clear of the animal
+  [19, 60],
+  [81, 60],
+  [33, 47],
+  [67, 47],
+  // pass 4 — the remaining gaps
+  [21, 33],
+  [79, 33],
+  [40, 18],
+  [60, 18],
+  [40, 84],
+  [60, 84],
+  [6, 26],
+  [94, 26],
+  [6, 70],
+  [94, 70],
+];
 
-  for (const i of priority) {
-    const { hw, hh } = letterHalfBox(tiers[i], play);
-    const spanX = Math.max(1, play.w - hw * 2);
-    const spanY = Math.max(1, play.h - hh * 2);
-    let done = false;
-
-    for (let relax = 0; relax < 7 && !done; relax++) {
-      const breath = breathBase * (1 - relax / 6); // → 0, never negative
-      for (let tries = 0; tries < 400 && !done; tries++) {
-        const x = hw + Math.random() * spanX;
-        const y = hh + Math.random() * spanY;
-        // clear of the animal (its own box, plus a little air)
-        const air = breath * 0.3;
-        if (
-          x + hw > play.keep.left - air &&
-          x - hw < play.keep.right + air &&
-          y + hh > play.keep.top - air &&
-          y - hh < play.keep.bottom + air
-        ) {
-          continue;
-        }
-        // clear of every letter already placed
-        if (
-          placed.some(
-            (p) => Math.abs(p.x - x) < p.hw + hw + breath && Math.abs(p.y - y) < p.hh + hh + breath
-          )
-        ) {
-          continue;
-        }
-        placed.push({ x, y, hw, hh });
-        out[i] = [Number(((x / play.w) * 100).toFixed(2)), Number(((y / play.h) * 100).toFixed(2))];
-        done = true;
-      }
-    }
-  }
-  return out;
+/** How many of the fixed slots this viewport uses. Bigger screens use more of
+ *  the map; the slots themselves never move. */
+function slotCount(play: PlayArea): number {
+  const area = play.w * play.h;
+  if (area < 220_000) return 12;
+  if (area < 420_000) return 18;
+  if (area < 700_000) return 22;
+  return FIXED_SLOTS.length;
 }
 
 interface Bubble {
@@ -188,78 +149,47 @@ const LETTER_COLORS = [
 ];
 
 function buildBubbles(target: string, letterCase: "upper" | "lower", play: PlayArea): Bubble[] {
-  const total = bubbleCount(play);
+  const total = Math.min(slotCount(play), FIXED_SLOTS.length);
   const others = JUNGLE_ANIMALS.map((a) => a.letter).filter((l) => l !== target);
-  const decoys = shuffle(others).slice(0, total - TARGET_COUNT);
+  const decoys = shuffle(others).slice(0, Math.max(0, total - TARGET_COUNT));
+  // Only the ASSIGNMENT is shuffled — which letter lands in which fixed slot.
+  // The slots themselves are identical every round, which is the whole point.
   const letters = shuffle([
     ...Array.from({ length: TARGET_COUNT }, () => ({ letter: target, isTarget: true })),
     ...decoys.map((l) => ({ letter: l, isTarget: false })),
   ]);
-  // Sizes cycle big→medium→small so every board mixes clearly different
-  // letter sizes without any becoming a tiny target. Tiers are assigned to the
-  // ALREADY SHUFFLED list, so a target is never predictably large or small.
-  const tiers = letters.map((_, i) => (i % 4) as 0 | 1 | 2 | 3);
-  // Targets first (they must never be the ones dropped), then largest first
-  // (big shapes placed before small ones is what makes tight packing work).
-  const priority = letters
-    .map((_, i) => i)
-    .sort((a, b) => {
-      // targets first, then biggest first — NOT reversed afterwards: reversing
-      // would put the decoys first and let a TARGET be the letter dropped
-      const byTarget = Number(letters[b].isTarget) - Number(letters[a].isTarget);
-      return byTarget !== 0
-        ? byTarget
-        : letterFontPx(tiers[b], play) - letterFontPx(tiers[a], play);
-    });
-  const slots = scatterSlots(tiers, priority, play);
 
-  return (
-    letters
-      .map((l, i) => ({
-        id: i,
-        letter: letterCase === "lower" ? l.letter.toLowerCase() : l.letter,
-        isTarget: l.isTarget,
-        slot: slots[i],
-        popped: false,
-        size: tiers[i],
-        color: LETTER_COLORS[i % LETTER_COLORS.length],
-      }))
-      // a letter with nowhere to go is left OUT rather than stacked on another
-      .filter((b) => b.slot !== null)
-      .map(({ slot, ...b }) => ({ ...b, x: slot![0], y: slot![1] }))
-  );
+  return letters.map((l, i) => ({
+    id: i,
+    letter: letterCase === "lower" ? l.letter.toLowerCase() : l.letter,
+    isTarget: l.isTarget,
+    popped: false,
+    // Size varies for visual interest but is tied to the SLOT, not to the
+    // letter, so a target is never predictably the big one.
+    size: (i % 4) as 0 | 1 | 2 | 3,
+    color: LETTER_COLORS[i % LETTER_COLORS.length],
+    x: FIXED_SLOTS[i][0],
+    y: FIXED_SLOTS[i][1],
+  }));
 }
 
-/** Re-scatter the letters already on the board into a changed play area —
- *  after an orientation flip or a window resize. Every letter, and every
- *  letter already found, is preserved: only the positions change, so a child
- *  mid-puzzle never loses progress to a layout change. */
-function respread(bubbles: Bubble[], play: PlayArea): Bubble[] {
-  const tiers = bubbles.map((b) => b.size);
-  const priority = bubbles
-    .map((_, i) => i)
-    .sort((a, b) => {
-      const byTarget = Number(bubbles[b].isTarget) - Number(bubbles[a].isTarget);
-      return byTarget !== 0
-        ? byTarget
-        : letterFontPx(tiers[b], play) - letterFontPx(tiers[a], play);
-    });
-  const slots = scatterSlots(tiers, priority, play);
-  // If the new shape cannot hold every letter, keep the old positions rather
-  // than silently dropping letters mid-puzzle.
-  if (slots.some((sl) => sl === null)) return bubbles;
-  return bubbles.map((b, i) => ({ ...b, x: slots[i]![0], y: slots[i]![1] }));
+/** Positions are FIXED, so a resize or orientation flip no longer needs to
+ *  re-scatter anything — the same slots simply resolve against the new box.
+ *  Kept as a named no-op so the call sites still read honestly. */
+function respread(bubbles: Bubble[]): Bubble[] {
+  return bubbles;
 }
 
 export function JungleLevel() {
   const router = useRouter();
   const store = useJungleStore();
-  const { currentLetter, letterCase, markFound, setLetter, setScreen } = store;
-  const found = foundFor(store, letterCase);
-  /** The letter just won is the 26th of this case's run — nothing left to find. */
-  const runComplete =
-    found.length >= JUNGLE_ANIMALS.length ||
-    (found.length === JUNGLE_ANIMALS.length - 1 && !found.includes(currentLetter));
+  const { currentLetter, letterCase, markFound, setScreen, advance } = store;
+  /** Last animal of the RUN the child is actually playing — not "every animal
+   *  in the game is found". A fresh Start-from-A run ends at Z even when the
+   *  child had already found everything before starting it, which is why this
+   *  can no longer be derived from `found`. */
+  const run = store.run;
+  const runComplete = !run || run.index >= run.queue.length - 1;
   const animal = animalFor(currentLetter);
   const display = letterCase === "lower" ? currentLetter.toLowerCase() : currentLetter;
 
@@ -335,7 +265,7 @@ export function JungleLevel() {
     if (prev?.board === boardKey && prev.layout === layoutKey) return;
     if (prev?.board === boardKey) {
       builtRef.current = { board: boardKey, layout: layoutKey };
-      setBubbles((current) => (current.length ? respread(current, play) : current));
+      setBubbles((current) => (current.length ? respread(current) : current));
       return;
     }
     builtRef.current = { board: boardKey, layout: layoutKey };
@@ -397,22 +327,13 @@ export function JungleLevel() {
 
   const goNext = useCallback(() => {
     stopVoice(); // never let the cheer keep talking into the next level
-    // Last animal of this run? Go to the finale rather than wrapping round to A
-    // and quietly starting the whole alphabet again.
-    if (runComplete) {
-      setScreen("complete");
-      return;
-    }
     void playClip("instr-next");
-    const idx = JUNGLE_ANIMALS.findIndex((a) => a.letter === currentLetter);
-    // skip straight to the next animal still to find, not just the next letter
-    const order = JUNGLE_ANIMALS.map(
-      (_, k) => JUNGLE_ANIMALS[(idx + 1 + k) % JUNGLE_ANIMALS.length]
-    );
-    const next = order.find((a) => !found.includes(a.letter)) ?? order[0];
+    // Walk the RUN the child started, NOT the found list. Consulting `found`
+    // here is precisely what made "Start from A" skip animals already found:
+    // a fresh run deliberately contains them.
     setRound((r) => r + 1); // fresh keys — the win overlay and board fully reset
-    setLetter(next.letter);
-  }, [currentLetter, setLetter, runComplete, setScreen, found]);
+    if (!advance()) setScreen("complete");
+  }, [advance, setScreen]);
 
   const playAgain = useCallback(() => {
     void playClip("instr-again");
@@ -485,9 +406,10 @@ export function JungleLevel() {
             aria-label={animal.name}
             role="img"
           >
-            {/* the animal as a framed print — a square photo with a thin white
-              border, so nothing of the animal is cropped away by a circle */}
-            <div className="jsp-photo-frame flex items-center justify-center shadow-lg">
+            {/* The animal itself is the visual — no frame, no mount, no card.
+                object-contain inside keeps the whole animal and its true
+                proportions; the silhouette drop-shadow comes from .jsp-animal */}
+            <div className="jsp-animal flex items-center justify-center">
               <AnimalDisplay art={animal.art} />
             </div>
             <p className="jsp-animal-name font-rounded text-plum/80 shadow-soft mt-1.5 rounded-full bg-white/85 px-3 py-0.5 text-center font-black">
@@ -541,7 +463,7 @@ export function JungleLevel() {
             size={dims}
           >
             <motion.div
-              className="jsp-photo-frame jsp-win-photo shadow-lg"
+              className="jsp-animal jsp-win-photo"
               initial={{ scale: 0.5, y: 20 }}
               animate={{ scale: 1, y: [0, -14, 0] }}
               transition={{

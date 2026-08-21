@@ -11,12 +11,23 @@ import type {
 } from "@games/letter-tracing/types";
 import { symbolsFor } from "@games/letter-tracing/constants/symbols";
 import { getThemeForProgress } from "@games/letter-tracing/constants/rewards";
+import {
+  buildRun,
+  jumpRunTo,
+  advanceRun,
+  type LetterRun,
+  type RunIntent,
+} from "@shared/utils/progression";
 
 interface GameState {
   screen: GameScreen;
   module: Module;
   /** Chosen once per session; null until the child picks Free or 5 Star */
   practiceMode: PracticeMode | null;
+  /** This session's letter queue — session-only, never persisted. See
+   *  @shared/utils/progression: it is what makes Start from A replay letters
+   *  the child has already completed instead of skipping them. */
+  run: LetterRun | null;
   progress: GameProgress;
   lowercaseProgress: GameProgress;
   numbersProgress: GameProgress;
@@ -26,10 +37,27 @@ interface GameState {
   setModule: (module: Module) => void;
   setPracticeMode: (mode: PracticeMode) => void;
   goToLetter: (index: number) => void;
+  beginRun: (startAt: string | number, intent: RunIntent) => void;
+  jumpTo: (letter: string) => void;
+  /** Step to the next letter; false when the run is finished. */
+  advance: () => boolean;
   completeCurrentLetter: () => void;
   resetProgress: () => void;
   resetLowercaseProgress: () => void;
   resetNumbersProgress: () => void;
+}
+
+/** The progress record for whichever module is active — one place, so the
+ *  three near-identical branches below never drift apart. */
+function currentProgressOf(state: {
+  module: Module;
+  progress: GameProgress;
+  lowercaseProgress: GameProgress;
+  numbersProgress: GameProgress;
+}): GameProgress {
+  if (state.module === "lowercase") return state.lowercaseProgress;
+  if (state.module === "numbers") return state.numbersProgress;
+  return state.progress;
 }
 
 const defaultProgress: GameProgress = {
@@ -45,6 +73,7 @@ export const useGameStore = create<GameState>()(
       screen: "splash",
       module: "uppercase",
       practiceMode: null,
+      run: null,
       progress: { ...defaultProgress },
       lowercaseProgress: { ...defaultProgress },
       numbersProgress: { ...defaultProgress },
@@ -54,6 +83,35 @@ export const useGameStore = create<GameState>()(
       setModule: (module) => set({ module }),
 
       setPracticeMode: (practiceMode) => set({ practiceMode }),
+
+      beginRun: (startAt, intent) => {
+        const { module } = get();
+        const all = symbolsFor(module);
+        const completed = currentProgressOf(get()).completedLetters;
+        const run = buildRun(all, startAt, completed, intent);
+        set({ run });
+        get().goToLetter(Math.max(0, all.indexOf(run.queue[0] ?? all[0])));
+      },
+
+      jumpTo: (letter) => {
+        const { module, run } = get();
+        const all = symbolsFor(module);
+        const completed = currentProgressOf(get()).completedLetters;
+        const next = run ? jumpRunTo(run, letter) : buildRun(all, letter, completed, "fresh");
+        set({ run: next });
+        get().goToLetter(Math.max(0, all.indexOf(letter)));
+      },
+
+      advance: () => {
+        const { run, module } = get();
+        const all = symbolsFor(module);
+        if (!run) return false;
+        const stepped = advanceRun(run);
+        set({ run: stepped.run });
+        if (stepped.isDone) return false;
+        get().goToLetter(Math.max(0, all.indexOf(stepped.run.queue[stepped.run.index])));
+        return true;
+      },
 
       goToLetter: (index) => {
         const { module } = get();

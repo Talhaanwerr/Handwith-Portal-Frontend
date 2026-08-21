@@ -16,14 +16,20 @@
    200×200 space) and scales to whatever the current viewport allows:
    - portrait / tall screens: limited by width, minus room for header + hint
    - landscape phones: limited by height, using nearly the full viewport
-   - tablets / desktop: grows generously but caps so lines stay proportionate */
-.trace-board {
+   - tablets / desktop: grows generously but caps so lines stay proportionate
+
+   Declared on the tracing SCREEN (.trace-stage) rather than on the board
+   element, so that elements which are siblings of the board — the anchor-word
+   picture — can position themselves against the board's real width instead of
+   guessing at it. Custom properties inherit downward, so the canvas inside the
+   board still reads exactly the same value it always did. */
+.trace-stage {
   --trace-size: min(80vw, calc(100dvh - 240px), 560px);
 }
 
 /* Phone (and any short) landscape viewport — canvas dominates the screen */
 @media (orientation: landscape) and (max-height: 560px) {
-  .trace-board {
+  .trace-stage {
     --trace-size: min(calc(100dvh - 92px), 48vw);
   }
 }

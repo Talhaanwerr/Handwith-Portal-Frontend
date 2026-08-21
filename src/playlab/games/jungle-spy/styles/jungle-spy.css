@@ -42,6 +42,23 @@
   color: var(--color-gold-dim);
 }
 
+/* ── Letter-choosing screen title ── */
+
+.jsp-title {
+  font-size: clamp(30px, 7vmin, 54px);
+  line-height: 1.05;
+}
+/** Animals perched either side of the title. Plain art, no card or frame —
+ *  they belong to the scene rather than sitting in a container. */
+.jsp-title-animal {
+  width: clamp(34px, 7.5vmin, 68px);
+  pointer-events: none;
+  filter: drop-shadow(0 4px 7px rgba(28, 64, 44, 0.22));
+}
+.jsp-title-row {
+  gap: clamp(6px, 1.6vmin, 16px);
+}
+
 /* ── Letter grid ── */
 
 /** The A–Z board.
@@ -74,22 +91,40 @@
 
 /* ── Level ── */
 
-/** The animal as a framed print: a SQUARE white mount with a thin white
- *  border, not a circular medallion. A circle cropped the corners off every
- *  photo — a long animal (a snake, a whale) lost its ends, which is exactly
- *  the identifying detail a child is being asked to recognise. Square keeps
- *  the whole picture, and the photo inside uses object-contain so nothing is
- *  cut off whatever its proportions are.
+/** The animal itself IS the visual — no mount, no border, no card, no
+ *  medallion. The white square frame made every animal look like a stamp on a
+ *  page and, worse, capped how big the animal could be: half the frame was
+ *  empty white on any photo that was not square.
  *
- *  Slightly smaller than the old circle: a square shows more picture at the
- *  same width, and the extra room lets the scattered letters breathe. */
-.jsp-photo-frame {
-  width: clamp(124px, 27vmin, 208px);
-  height: clamp(124px, 27vmin, 208px);
-  background: white;
-  border: 3px solid white;
-  border-radius: 14px;
-  overflow: hidden;
+ *  Now the picture is the element and it is far larger (≈1.7x the old frame's
+ *  edge, so well over twice the drawn area). The photo inside still uses
+ *  object-contain, so the aspect ratio is untouched and nothing is cropped —
+ *  a long snake keeps its ends, a tall giraffe keeps its neck.
+ *
+ *  A drop-shadow FILTER (not a box-shadow) traces the animal's own silhouette,
+ *  which is what lets it sit on the mint background with no container and
+ *  still read as a distinct object. */
+.jsp-animal {
+  width: clamp(200px, 46vmin, 360px);
+  height: clamp(200px, 46vmin, 360px);
+  filter: drop-shadow(0 10px 16px rgba(28, 64, 44, 0.28));
+}
+
+/* Short landscape (a phone on its side) is the one viewport where the 200px
+   floor above would backfire: the play area is only ~250px tall there, so a
+   200px animal plus its keep-out box would leave the scattered letters almost
+   no room — bubbleCount() would collapse toward its floor and scatterSlots()
+   would start dropping letters it cannot place. Still far larger than the old
+   framed print (124px), just not larger than the screen. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .jsp-animal {
+    width: clamp(120px, 34vmin, 200px);
+    height: clamp(120px, 34vmin, 200px);
+  }
+  .jsp-win-photo {
+    width: clamp(132px, 38vmin, 224px);
+    height: clamp(132px, 38vmin, 224px);
+  }
 }
 .jsp-animal-name {
   font-size: clamp(13px, 2.6vmin, 17px);
@@ -105,10 +140,10 @@
 .jsp-win-tint {
   background: rgba(232, 248, 238, 0.92);
 }
-/** Same frame on the win overlay, a touch larger for the celebration. */
+/** Same frameless animal on the win overlay, a touch larger for the celebration. */
 .jsp-win-photo {
-  width: clamp(132px, 30vmin, 224px);
-  height: clamp(132px, 30vmin, 224px);
+  width: clamp(216px, 50vmin, 396px);
+  height: clamp(216px, 50vmin, 396px);
 }
 .jsp-win-heading {
   font-size: clamp(28px, 7vmin, 44px);

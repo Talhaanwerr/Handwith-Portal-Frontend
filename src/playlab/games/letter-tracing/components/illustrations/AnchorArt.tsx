@@ -16,6 +16,7 @@ import {
   Octopus,
   Rabbit,
   Zebra,
+  ANIMAL_ART,
 } from "@shared/components/illustrations/AnimalArt";
 
 type Art = () => React.ReactElement;
@@ -161,19 +162,6 @@ const Moon: Art = () => (
     <circle cx="76" cy="26" r="3" fill="#FFD93D" />
     <circle cx="84" cy="46" r="2.4" fill="#FFD93D" />
     <circle cx="78" cy="66" r="3" fill="#FFD93D" />
-  </svg>
-);
-
-const Pig: Art = () => (
-  <svg viewBox="0 0 100 100">
-    <path d="M30 30 L24 18 L38 24 Z" fill="#F5A8BC" />
-    <path d="M70 30 L76 18 L62 24 Z" fill="#F5A8BC" />
-    <circle cx="50" cy="52" r="30" fill="#FFC2D1" />
-    <circle cx="40" cy="45" r="4" fill="#3D3D5C" />
-    <circle cx="60" cy="45" r="4" fill="#3D3D5C" />
-    <ellipse cx="50" cy="60" rx="11" ry="8" fill="#F79FB6" />
-    <circle cx="46" cy="60" r="2.4" fill="#C96A85" />
-    <circle cx="54" cy="60" r="2.4" fill="#C96A85" />
   </svg>
 );
 
@@ -354,7 +342,10 @@ export const ANCHOR_ART: Record<string, Art> = {
   M: Moon,
   N: Nest,
   O: Octopus,
-  P: Pig,
+  // P is a penguin. The SVG fallback reuses the shared Penguin from
+  // AnimalArt (Jungle Spy already draws it for P) rather than adding a
+  // second, slightly-different penguin to this file.
+  P: ANIMAL_ART.penguin,
   Q: Queen,
   R: Rabbit,
   S: Sun,

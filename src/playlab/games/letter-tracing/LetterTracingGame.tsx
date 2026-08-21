@@ -28,15 +28,15 @@ import { LetterSequencingScreen } from "@games/letter-tracing/components/screens
  * Coarse history bucket for the tracing game's larger screen graph:
  *   entry  — splash
  *   menu   — main-menu, home (the letter/number shelf — browsing, not play)
- *   mode   — mode-select (five-star vs free)
+ *   mode-select shares "menu": like Letter Hunt, it is a gate the child passes
+ *   THROUGH, not a screen they retreat to — Back from tracing goes to the menu.
  *   play   — tracing, celebration, sequencing, completion (gameplay itself;
  *            collapsed together deliberately — a 26-letter session would
  *            otherwise leave 26+ stacked history entries)
  */
-function toBucket(screen: GameScreen): "entry" | "menu" | "mode" | "play" {
+function toBucket(screen: GameScreen): "entry" | "menu" | "play" {
   if (screen === "splash") return "entry";
-  if (screen === "main-menu" || screen === "home") return "menu";
-  if (screen === "mode-select") return "mode";
+  if (screen === "main-menu" || screen === "home" || screen === "mode-select") return "menu";
   return "play"; // tracing, celebration, sequencing, completion
 }
 
@@ -52,10 +52,9 @@ export function LetterTracingGame() {
     progress,
     lowercaseProgress,
     completeCurrentLetter,
-    goToLetter,
-    resetProgress,
-    resetLowercaseProgress,
-    resetNumbersProgress,
+    beginRun,
+    jumpTo,
+    advance,
   } = useGameStore();
 
   const { numbersProgress } = useGameStore();
@@ -68,7 +67,6 @@ export function LetterTracingGame() {
         ? NUMBER_DATA
         : LETTER_DATA;
   const currentLetter = letterData[currentProgress.currentLetterIndex];
-  const isLastLetter = currentProgress.currentLetterIndex >= letterData.length - 1;
 
   // Handle splash → main-menu transition
   // Back button: step backward through entry → menu → mode → play instead
@@ -79,7 +77,6 @@ export function LetterTracingGame() {
   const handlePop = useCallback(
     (bucket: string) => {
       if (bucket === "menu") setScreen("main-menu");
-      else if (bucket === "mode") setScreen("mode-select");
       // "entry" and "play" popped-to have no reconstruction to do — entry
       // is only ever the initial state, and play's exact screen (tracing vs
       // sequencing vs celebration) was already set by whichever forward
@@ -112,41 +109,40 @@ export function LetterTracingGame() {
   }, [setScreen, practiceMode]);
 
   // Home → tracing (via mode-select the first time in a session)
+  // CONTINUE — a run of only the letters still outstanding.
   const handleContinue = useCallback(() => {
     if (currentProgress.completedLetters.length >= letterData.length) {
       setScreen("completion");
       return;
     }
-    enterTracing();
-  }, [setScreen, currentProgress.completedLetters.length, letterData.length, enterTracing]);
-
-  // Home → start from beginning
-  const handleStartFromA = useCallback(() => {
-    if (module === "lowercase") {
-      resetLowercaseProgress();
-    } else if (module === "numbers") {
-      resetNumbersProgress();
-    } else {
-      resetProgress();
-    }
-    goToLetter(0);
+    beginRun(0, "continue");
     enterTracing();
   }, [
-    module,
-    resetProgress,
-    resetLowercaseProgress,
-    resetNumbersProgress,
-    goToLetter,
+    setScreen,
+    currentProgress.completedLetters.length,
+    letterData.length,
     enterTracing,
+    beginRun,
   ]);
+
+  // Home → start from beginning
+  // START FROM A — a FRESH run: every letter from the top, completed or not.
+  //
+  // This used to call resetProgress(), which wiped the child's saved record to
+  // fake the behaviour. Replaying the alphabet must not cost them their 26/26,
+  // so the run simply ignores completion instead of deleting it.
+  const handleStartFromA = useCallback(() => {
+    beginRun(0, "fresh");
+    enterTracing();
+  }, [beginRun, enterTracing]);
 
   // Home → the child taps ANY letter on the alphabet shelf
   const handleSelectLetter = useCallback(
     (index: number) => {
-      goToLetter(index);
+      jumpTo(letterData[index]?.letter ?? "");
       enterTracing();
     },
-    [goToLetter, enterTracing]
+    [jumpTo, letterData, enterTracing]
   );
 
   // Mode select → tracing (mode remembered for the rest of the session)
@@ -175,14 +171,12 @@ export function LetterTracingGame() {
   }, [setScreen]);
 
   // Celebration → NEXT: advance to the next letter (or completion)
+  // Walk the RUN, not the completion list — a fresh run intentionally holds
+  // letters the child has already finished.
   const handleNext = useCallback(() => {
-    if (isLastLetter || currentProgress.completedLetters.length >= letterData.length) {
-      setScreen("completion");
-    } else {
-      goToLetter(currentProgress.currentLetterIndex + 1);
-      setScreen("tracing");
-    }
-  }, [setScreen, isLastLetter, currentProgress, letterData.length, goToLetter]);
+    if (advance()) setScreen("tracing");
+    else setScreen("completion");
+  }, [advance, setScreen]);
 
   // Completion → main menu
   const handlePlayAgain = useCallback(() => {
