@@ -27,6 +27,13 @@ interface ClipDef {
 const CLIPS: Record<string, ClipDef> = manifest.clips as Record<string, ClipDef>;
 
 const cache = new Map<ClipId, Howl>();
+/** Whether a missing MP3 may fall back to browser speech. Games that ship
+ *  only recorded/generated clips (Candy ABC) switch this off so the browser
+ *  never synthesises a line; a missing clip is then a short silence. */
+let speechFallback = true;
+export function setSpeechFallback(enabled: boolean): void {
+  speechFallback = enabled;
+}
 const failedIds = new Set<ClipId>();
 let current: Howl | null = null;
 
@@ -41,7 +48,7 @@ function spokenText(def: ClipDef): string {
 function playSpoken(def: ClipDef): Promise<void> {
   return new Promise((resolve) => {
     const text = spokenText(def);
-    if (!text) {
+    if (!text || !speechFallback) {
       setTimeout(resolve, 200);
       return;
     }
@@ -93,15 +100,21 @@ export function clipText(id: ClipId): string {
  *  synth costs up to ~1.1s. Warming both here means "preloaded" really does
  *  mean "ready to make a sound", whichever path ends up being used. */
 export function preloadClips(ids: ClipId[]): void {
-  primeVoices();
+  if (speechFallback) primeVoices();
   for (const id of ids) getClip(id);
 }
 
 /** Stop any narration immediately (used before starting a new sequence). */
+/** Bumped by every stopVoice(); a running playSequence compares it before
+ *  each part so a stop really ends the whole line, not just the clip that
+ *  happened to be playing. */
+let generation = 0;
+
 export function stopVoice(): void {
+  generation++;
   current?.stop();
   current = null;
-  if (typeof window !== "undefined") window.speechSynthesis?.cancel();
+  if (speechFallback && typeof window !== "undefined") window.speechSynthesis?.cancel();
   duckMusic(false);
 }
 
@@ -191,9 +204,19 @@ export async function playSequence(
   gapMs = 250,
   onPart?: (index: number) => void
 ): Promise<void> {
+  // playClip itself calls stopVoice() (which bumps `generation`), so the
+  // token is read AFTER each part starts; a stop from anywhere else - Back,
+  // unmount, another tap - then ends the sequence at the next boundary.
+  let token = -1;
   for (let i = 0; i < ids.length; i++) {
-    if (i > 0 && gapMs > 0) await new Promise((r) => setTimeout(r, gapMs));
+    if (i > 0) {
+      if (gapMs > 0) await new Promise((r) => setTimeout(r, gapMs));
+      if (generation !== token) return;
+    }
     onPart?.(i);
-    await playClip(ids[i]);
+    const play = playClip(ids[i]);
+    token = generation;
+    await play;
+    if (generation !== token) return;
   }
 }

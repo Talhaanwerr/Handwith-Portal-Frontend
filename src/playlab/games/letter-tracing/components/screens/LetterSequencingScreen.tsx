@@ -635,7 +635,18 @@ export function LetterSequencingScreen({ onHome }: LetterSequencingScreenProps) 
                       : { scale: 1, x: 0 }
                   }
                   exit={{ scale: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                  transition={{
+                    x: {
+                      type: "tween",
+                      duration: 0.4,
+                      ease: "easeInOut",
+                    },
+                    scale: {
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 18,
+                    },
+                  }}
                   onPointerDown={(e) => startDrag(letter, idx, -1, e)}
                   aria-label={`Drag letter ${letter}`}
                 >

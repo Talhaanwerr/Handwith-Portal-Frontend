@@ -5,7 +5,7 @@
     "name": "en-US-Neural2-H",
     "speakingRate": 0.92,
     "pitch": 0.0,
-    "$note": "Used by the GOOGLE generator (billing path) \u2014 supports exact IPA phonics."
+    "$note": "Used by the GOOGLE generator (billing path) — supports exact IPA phonics."
   },
   "clips": {
     "letter-a": {
@@ -17,7 +17,7 @@
     "phonics-a": {
       "file": "/audio/phonics/a.mp3",
       "text": "a",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"\u00e6\">a</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"æ\">a</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "aa",
       "speakFree": "ah",
@@ -37,7 +37,7 @@
     "phonics-b": {
       "file": "/audio/phonics/b.mp3",
       "text": "b",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"b\u0259\">b</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"bə\">b</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "buh",
       "speakFree": "buh",
@@ -57,7 +57,7 @@
     "phonics-c": {
       "file": "/audio/phonics/c.mp3",
       "text": "c",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"k\u0259\">c</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"kə\">c</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "kuh",
       "speakFree": "kuh",
@@ -77,7 +77,7 @@
     "phonics-d": {
       "file": "/audio/phonics/d.mp3",
       "text": "d",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"d\u0259\">d</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"də\">d</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "duh",
       "speakFree": "duh",
@@ -97,7 +97,7 @@
     "phonics-e": {
       "file": "/audio/phonics/e.mp3",
       "text": "e",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"\u025b\">e</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "eh",
       "speakFree": "eh",
@@ -117,7 +117,7 @@
     "phonics-f": {
       "file": "/audio/phonics/f.mp3",
       "text": "f",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"f\u02d0\">f</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"fː\">f</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "ff",
       "speakFree": "fff",
@@ -137,7 +137,7 @@
     "phonics-g": {
       "file": "/audio/phonics/g.mp3",
       "text": "g",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"\u0261\u0259\">g</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"ɡə\">g</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "guh",
       "speakFree": "guh",
@@ -157,7 +157,7 @@
     "phonics-h": {
       "file": "/audio/phonics/h.mp3",
       "text": "h",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"h\u0259\">h</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"hə\">h</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "huh",
       "speakFree": "huh",
@@ -177,7 +177,7 @@
     "phonics-i": {
       "file": "/audio/phonics/i.mp3",
       "text": "i",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"\u026a\">i</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"ɪ\">i</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "ih",
       "speakFree": "ih",
@@ -197,7 +197,7 @@
     "phonics-j": {
       "file": "/audio/phonics/j.mp3",
       "text": "j",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"d\u0292\u0259\">j</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"dʒə\">j</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "juh",
       "speakFree": "juh",
@@ -217,7 +217,7 @@
     "phonics-k": {
       "file": "/audio/phonics/k.mp3",
       "text": "k",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"k\u0259\">k</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"kə\">k</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "kuh",
       "speakFree": "kuh",
@@ -237,7 +237,7 @@
     "phonics-l": {
       "file": "/audio/phonics/l.mp3",
       "text": "l",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"l\u02d0\">l</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"lː\">l</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "ll",
       "speakFree": "lll",
@@ -257,7 +257,7 @@
     "phonics-m": {
       "file": "/audio/phonics/m.mp3",
       "text": "m",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"m\u02d0\">m</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"mː\">m</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "mm",
       "speakFree": "mmm",
@@ -277,7 +277,7 @@
     "phonics-n": {
       "file": "/audio/phonics/n.mp3",
       "text": "n",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"n\u02d0\">n</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"nː\">n</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "nn",
       "speakFree": "nnn",
@@ -297,7 +297,7 @@
     "phonics-o": {
       "file": "/audio/phonics/o.mp3",
       "text": "o",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"\u0251\u02d0\">o</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"ɑː\">o</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "o",
       "speakFree": "aw",
@@ -317,7 +317,7 @@
     "phonics-p": {
       "file": "/audio/phonics/p.mp3",
       "text": "p",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"p\u0259\">p</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"pə\">p</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "puh",
       "speakFree": "puh",
@@ -337,7 +337,7 @@
     "phonics-q": {
       "file": "/audio/phonics/q.mp3",
       "text": "q",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"kw\u0259\">q</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"kwə\">q</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "kwuh",
       "speakFree": "kwuh",
@@ -357,7 +357,7 @@
     "phonics-r": {
       "file": "/audio/phonics/r.mp3",
       "text": "r",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"\u0279\u02d0\">r</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"ɹː\">r</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "rr",
       "speakFree": "rrr",
@@ -377,7 +377,7 @@
     "phonics-s": {
       "file": "/audio/phonics/s.mp3",
       "text": "s",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"s\u02d0\">s</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"sː\">s</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "ss",
       "speakFree": "sss",
@@ -397,7 +397,7 @@
     "phonics-t": {
       "file": "/audio/phonics/t.mp3",
       "text": "t",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"t\u0259\">t</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"tə\">t</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "tuh",
       "speakFree": "tuh",
@@ -417,7 +417,7 @@
     "phonics-u": {
       "file": "/audio/phonics/u.mp3",
       "text": "u",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"\u028c\">u</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"ʌ\">u</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "uh",
       "speakFree": "uh",
@@ -437,7 +437,7 @@
     "phonics-v": {
       "file": "/audio/phonics/v.mp3",
       "text": "v",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"v\u02d0\">v</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"vː\">v</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "vv",
       "speakFree": "vvv",
@@ -457,7 +457,7 @@
     "phonics-w": {
       "file": "/audio/phonics/w.mp3",
       "text": "w",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"w\u0259\">w</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"wə\">w</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "wuh",
       "speakFree": "wuh",
@@ -497,7 +497,7 @@
     "phonics-y": {
       "file": "/audio/phonics/y.mp3",
       "text": "y",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"j\u0259\">y</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"jə\">y</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "yuh",
       "speakFree": "yuh",
@@ -517,7 +517,7 @@
     "phonics-z": {
       "file": "/audio/phonics/z.mp3",
       "text": "z",
-      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"z\u02d0\">z</phoneme></speak>",
+      "ssml": "<speak><phoneme alphabet=\"ipa\" ph=\"zː\">z</phoneme></speak>",
       "note": "phonetic SOUND via IPA - never the letter name",
       "speak": "zz",
       "speakFree": "zzz",
@@ -813,157 +813,157 @@
       "file": "/audio/jungle/find-a.mp3",
       "text": "Find the A!",
       "speak": "Find the A! A is for Ant!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-b": {
       "file": "/audio/jungle/find-b.mp3",
       "text": "Find the B!",
       "speak": "Find the B! B is for Bear!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-c": {
       "file": "/audio/jungle/find-c.mp3",
       "text": "Find the C!",
       "speak": "Find the C! C is for Cat!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-d": {
       "file": "/audio/jungle/find-d.mp3",
       "text": "Find the D!",
       "speak": "Find the D! D is for Dog!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-e": {
       "file": "/audio/jungle/find-e.mp3",
       "text": "Find the E!",
       "speak": "Find the E! E is for Elephant!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-f": {
       "file": "/audio/jungle/find-f.mp3",
       "text": "Find the F!",
       "speak": "Find the F! F is for Frog!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-g": {
       "file": "/audio/jungle/find-g.mp3",
       "text": "Find the G!",
       "speak": "Find the G! G is for Giraffe!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-h": {
       "file": "/audio/jungle/find-h.mp3",
       "text": "Find the H!",
       "speak": "Find the H! H is for Horse!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-i": {
       "file": "/audio/jungle/find-i.mp3",
       "text": "Find the I!",
       "speak": "Find the I! I is for Iguana!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-j": {
       "file": "/audio/jungle/find-j.mp3",
       "text": "Find the J!",
       "speak": "Find the J! J is for Jellyfish!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-k": {
       "file": "/audio/jungle/find-k.mp3",
       "text": "Find the K!",
       "speak": "Find the K! K is for Koala!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-l": {
       "file": "/audio/jungle/find-l.mp3",
       "text": "Find the L!",
       "speak": "Find the L! L is for Lion!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-m": {
       "file": "/audio/jungle/find-m.mp3",
       "text": "Find the M!",
       "speak": "Find the M! M is for Monkey!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-n": {
       "file": "/audio/jungle/find-n.mp3",
       "text": "Find the N!",
       "speak": "Find the N! N is for Nest!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-o": {
       "file": "/audio/jungle/find-o.mp3",
       "text": "Find the O!",
       "speak": "Find the O! O is for Octopus!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-p": {
       "file": "/audio/jungle/find-p.mp3",
       "text": "Find the P!",
       "speak": "Find the P! P is for Penguin!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-q": {
       "file": "/audio/jungle/find-q.mp3",
       "text": "Find the Q!",
       "speak": "Find the Q! Q is for Quail!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-r": {
       "file": "/audio/jungle/find-r.mp3",
       "text": "Find the R!",
       "speak": "Find the R! R is for Rabbit!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-s": {
       "file": "/audio/jungle/find-s.mp3",
       "text": "Find the S!",
       "speak": "Find the S! S is for Snake!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-t": {
       "file": "/audio/jungle/find-t.mp3",
       "text": "Find the T!",
       "speak": "Find the T! T is for Turtle!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-u": {
       "file": "/audio/jungle/find-u.mp3",
       "text": "Find the U!",
       "speak": "Find the U! U is for Umbrella Bird!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-v": {
       "file": "/audio/jungle/find-v.mp3",
       "text": "Find the V!",
       "speak": "Find the V! V is for Vulture!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-w": {
       "file": "/audio/jungle/find-w.mp3",
       "text": "Find the W!",
       "speak": "Find the W! W is for Whale!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-x": {
       "file": "/audio/jungle/find-x.mp3",
       "text": "Find the X!",
       "speak": "Find the X! X is for X-ray Fish!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-y": {
       "file": "/audio/jungle/find-y.mp3",
       "text": "Find the Y!",
       "speak": "Find the Y! Y is for Yak!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "jungle-find-z": {
       "file": "/audio/jungle/find-z.mp3",
       "text": "Find the Z!",
       "speak": "Find the Z! Z is for Zebra!",
-      "note": "jungle level intro + hint \u2014 one natural sentence per letter"
+      "note": "jungle level intro + hint — one natural sentence per letter"
     },
     "magnet-intro": {
       "file": "/audio/magnet/intro.mp3",
@@ -987,7 +987,7 @@
     },
     "shark-intro": {
       "file": "/audio/shark/intro.mp3",
-      "text": "Letters A to Z \u2014 feed the shark!",
+      "text": "Letters A to Z — feed the shark!",
       "speak": "Letters A to Z. Feed the shark!"
     },
     "shark-instruction": {
@@ -999,164 +999,2236 @@
       "file": "/audio/hunt/find-a.mp3",
       "text": "Can you find A?",
       "speak": "Can you find A?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-b": {
       "file": "/audio/hunt/find-b.mp3",
       "text": "Can you find B?",
       "speak": "Can you find B?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-c": {
       "file": "/audio/hunt/find-c.mp3",
       "text": "Can you find C?",
       "speak": "Can you find C?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-d": {
       "file": "/audio/hunt/find-d.mp3",
       "text": "Can you find D?",
       "speak": "Can you find D?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-e": {
       "file": "/audio/hunt/find-e.mp3",
       "text": "Can you find E?",
       "speak": "Can you find E?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-f": {
       "file": "/audio/hunt/find-f.mp3",
       "text": "Can you find F?",
       "speak": "Can you find F?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-g": {
       "file": "/audio/hunt/find-g.mp3",
       "text": "Can you find G?",
       "speak": "Can you find G?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-h": {
       "file": "/audio/hunt/find-h.mp3",
       "text": "Can you find H?",
       "speak": "Can you find H?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-i": {
       "file": "/audio/hunt/find-i.mp3",
       "text": "Can you find I?",
       "speak": "Can you find I?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-j": {
       "file": "/audio/hunt/find-j.mp3",
       "text": "Can you find J?",
       "speak": "Can you find J?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-k": {
       "file": "/audio/hunt/find-k.mp3",
       "text": "Can you find K?",
       "speak": "Can you find K?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-l": {
       "file": "/audio/hunt/find-l.mp3",
       "text": "Can you find L?",
       "speak": "Can you find L?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-m": {
       "file": "/audio/hunt/find-m.mp3",
       "text": "Can you find M?",
       "speak": "Can you find M?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-n": {
       "file": "/audio/hunt/find-n.mp3",
       "text": "Can you find N?",
       "speak": "Can you find N?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-o": {
       "file": "/audio/hunt/find-o.mp3",
       "text": "Can you find O?",
       "speak": "Can you find O?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-p": {
       "file": "/audio/hunt/find-p.mp3",
       "text": "Can you find P?",
       "speak": "Can you find P?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-q": {
       "file": "/audio/hunt/find-q.mp3",
       "text": "Can you find Q?",
       "speak": "Can you find Q?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-r": {
       "file": "/audio/hunt/find-r.mp3",
       "text": "Can you find R?",
       "speak": "Can you find R?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-s": {
       "file": "/audio/hunt/find-s.mp3",
       "text": "Can you find S?",
       "speak": "Can you find S?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-t": {
       "file": "/audio/hunt/find-t.mp3",
       "text": "Can you find T?",
       "speak": "Can you find T?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-u": {
       "file": "/audio/hunt/find-u.mp3",
       "text": "Can you find U?",
       "speak": "Can you find U?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-v": {
       "file": "/audio/hunt/find-v.mp3",
       "text": "Can you find V?",
       "speak": "Can you find V?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-w": {
       "file": "/audio/hunt/find-w.mp3",
       "text": "Can you find W?",
       "speak": "Can you find W?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-x": {
       "file": "/audio/hunt/find-x.mp3",
       "text": "Can you find X?",
       "speak": "Can you find X?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-y": {
       "file": "/audio/hunt/find-y.mp3",
       "text": "Can you find Y?",
       "speak": "Can you find Y?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
     },
     "hunt-find-z": {
       "file": "/audio/hunt/find-z.mp3",
       "text": "Can you find Z?",
       "speak": "Can you find Z?",
-      "note": "Letter Hunt prompt \u2014 displayed caption matches exactly"
+      "note": "Letter Hunt prompt — displayed caption matches exactly"
+    },
+    "treat-word-alligator": {
+      "file": "/audio/treats/word-alligator.mp3",
+      "text": "alligator",
+      "speak": "alligator!"
+    },
+    "treat-blend-alligator": {
+      "file": "/audio/treats/blend-alligator.mp3",
+      "text": "ah - alligator",
+      "speak": "ah... alligator!"
+    },
+    "treat-word-almond": {
+      "file": "/audio/treats/word-almond.mp3",
+      "text": "almond",
+      "speak": "almond!"
+    },
+    "treat-blend-almond": {
+      "file": "/audio/treats/blend-almond.mp3",
+      "text": "ah - almond",
+      "speak": "ah... almond!"
+    },
+    "treat-word-anchor": {
+      "file": "/audio/treats/word-anchor.mp3",
+      "text": "anchor",
+      "speak": "anchor!"
+    },
+    "treat-blend-anchor": {
+      "file": "/audio/treats/blend-anchor.mp3",
+      "text": "ah - anchor",
+      "speak": "ah... anchor!"
+    },
+    "treat-word-ant": {
+      "file": "/audio/treats/word-ant.mp3",
+      "text": "ant",
+      "speak": "ant!"
+    },
+    "treat-blend-ant": {
+      "file": "/audio/treats/blend-ant.mp3",
+      "text": "ah - ant",
+      "speak": "ah... ant!"
+    },
+    "treat-word-apple": {
+      "file": "/audio/words/apple.mp3",
+      "text": "apple",
+      "speak": "apple!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-apple": {
+      "file": "/audio/treats/blend-apple.mp3",
+      "text": "ah - apple",
+      "speak": "ah... apple!"
+    },
+    "treat-word-astronaut": {
+      "file": "/audio/treats/word-astronaut.mp3",
+      "text": "astronaut",
+      "speak": "astronaut!"
+    },
+    "treat-blend-astronaut": {
+      "file": "/audio/treats/blend-astronaut.mp3",
+      "text": "ah - astronaut",
+      "speak": "ah... astronaut!"
+    },
+    "treat-word-ball": {
+      "file": "/audio/words/ball.mp3",
+      "text": "ball",
+      "speak": "ball!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-ball": {
+      "file": "/audio/treats/blend-ball.mp3",
+      "text": "buh - ball",
+      "speak": "buh... ball!"
+    },
+    "treat-word-banana": {
+      "file": "/audio/treats/word-banana.mp3",
+      "text": "banana",
+      "speak": "banana!"
+    },
+    "treat-blend-banana": {
+      "file": "/audio/treats/blend-banana.mp3",
+      "text": "buh - banana",
+      "speak": "buh... banana!"
+    },
+    "treat-word-bear": {
+      "file": "/audio/treats/word-bear.mp3",
+      "text": "bear",
+      "speak": "bear!"
+    },
+    "treat-blend-bear": {
+      "file": "/audio/treats/blend-bear.mp3",
+      "text": "buh - bear",
+      "speak": "buh... bear!"
+    },
+    "treat-word-blueberry": {
+      "file": "/audio/treats/word-blueberry.mp3",
+      "text": "blueberry",
+      "speak": "blueberry!"
+    },
+    "treat-blend-blueberry": {
+      "file": "/audio/treats/blend-blueberry.mp3",
+      "text": "buh - blueberry",
+      "speak": "buh... blueberry!"
+    },
+    "treat-word-box": {
+      "file": "/audio/words/box.mp3",
+      "text": "box",
+      "speak": "box!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-box": {
+      "file": "/audio/treats/blend-box.mp3",
+      "text": "ks - box",
+      "speak": "ks... box!"
+    },
+    "treat-word-bus": {
+      "file": "/audio/treats/word-bus.mp3",
+      "text": "bus",
+      "speak": "bus!"
+    },
+    "treat-blend-bus": {
+      "file": "/audio/treats/blend-bus.mp3",
+      "text": "buh - bus",
+      "speak": "buh... bus!"
+    },
+    "treat-word-butter": {
+      "file": "/audio/treats/word-butter.mp3",
+      "text": "butter",
+      "speak": "butter!"
+    },
+    "treat-blend-butter": {
+      "file": "/audio/treats/blend-butter.mp3",
+      "text": "buh - butter",
+      "speak": "buh... butter!"
+    },
+    "treat-word-butterfly": {
+      "file": "/audio/treats/word-butterfly.mp3",
+      "text": "butterfly",
+      "speak": "butterfly!"
+    },
+    "treat-blend-butterfly": {
+      "file": "/audio/treats/blend-butterfly.mp3",
+      "text": "buh - butterfly",
+      "speak": "buh... butterfly!"
+    },
+    "treat-word-cake": {
+      "file": "/audio/treats/word-cake.mp3",
+      "text": "cake",
+      "speak": "cake!"
+    },
+    "treat-blend-cake": {
+      "file": "/audio/treats/blend-cake.mp3",
+      "text": "kuh - cake",
+      "speak": "kuh... cake!"
+    },
+    "treat-word-car": {
+      "file": "/audio/treats/word-car.mp3",
+      "text": "car",
+      "speak": "car!"
+    },
+    "treat-blend-car": {
+      "file": "/audio/treats/blend-car.mp3",
+      "text": "kuh - car",
+      "speak": "kuh... car!"
+    },
+    "treat-word-cat": {
+      "file": "/audio/words/cat.mp3",
+      "text": "cat",
+      "speak": "cat!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-cat": {
+      "file": "/audio/treats/blend-cat.mp3",
+      "text": "kuh - cat",
+      "speak": "kuh... cat!"
+    },
+    "treat-word-cherry": {
+      "file": "/audio/treats/word-cherry.mp3",
+      "text": "cherry",
+      "speak": "cherry!"
+    },
+    "treat-blend-cherry": {
+      "file": "/audio/treats/blend-cherry.mp3",
+      "text": "kuh - cherry",
+      "speak": "kuh... cherry!"
+    },
+    "treat-word-cocoa": {
+      "file": "/audio/treats/word-cocoa.mp3",
+      "text": "cocoa",
+      "speak": "cocoa!"
+    },
+    "treat-blend-cocoa": {
+      "file": "/audio/treats/blend-cocoa.mp3",
+      "text": "kuh - cocoa",
+      "speak": "kuh... cocoa!"
+    },
+    "treat-word-cow": {
+      "file": "/audio/treats/word-cow.mp3",
+      "text": "cow",
+      "speak": "cow!"
+    },
+    "treat-blend-cow": {
+      "file": "/audio/treats/blend-cow.mp3",
+      "text": "kuh - cow",
+      "speak": "kuh... cow!"
+    },
+    "treat-word-cream": {
+      "file": "/audio/treats/word-cream.mp3",
+      "text": "cream",
+      "speak": "cream!"
+    },
+    "treat-blend-cream": {
+      "file": "/audio/treats/blend-cream.mp3",
+      "text": "kuh - cream",
+      "speak": "kuh... cream!"
+    },
+    "treat-word-cup": {
+      "file": "/audio/treats/word-cup.mp3",
+      "text": "cup",
+      "speak": "cup!"
+    },
+    "treat-blend-cup": {
+      "file": "/audio/treats/blend-cup.mp3",
+      "text": "kuh - cup",
+      "speak": "kuh... cup!"
+    },
+    "treat-word-date": {
+      "file": "/audio/treats/word-date.mp3",
+      "text": "date",
+      "speak": "date!"
+    },
+    "treat-blend-date": {
+      "file": "/audio/treats/blend-date.mp3",
+      "text": "duh - date",
+      "speak": "duh... date!"
+    },
+    "treat-word-dog": {
+      "file": "/audio/words/dog.mp3",
+      "text": "dog",
+      "speak": "dog!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-dog": {
+      "file": "/audio/treats/blend-dog.mp3",
+      "text": "duh - dog",
+      "speak": "duh... dog!"
+    },
+    "treat-word-doll": {
+      "file": "/audio/treats/word-doll.mp3",
+      "text": "doll",
+      "speak": "doll!"
+    },
+    "treat-blend-doll": {
+      "file": "/audio/treats/blend-doll.mp3",
+      "text": "duh - doll",
+      "speak": "duh... doll!"
+    },
+    "treat-word-door": {
+      "file": "/audio/treats/word-door.mp3",
+      "text": "door",
+      "speak": "door!"
+    },
+    "treat-blend-door": {
+      "file": "/audio/treats/blend-door.mp3",
+      "text": "duh - door",
+      "speak": "duh... door!"
+    },
+    "treat-word-dough": {
+      "file": "/audio/treats/word-dough.mp3",
+      "text": "dough",
+      "speak": "dough!"
+    },
+    "treat-blend-dough": {
+      "file": "/audio/treats/blend-dough.mp3",
+      "text": "duh - dough",
+      "speak": "duh... dough!"
+    },
+    "treat-word-drum": {
+      "file": "/audio/treats/word-drum.mp3",
+      "text": "drum",
+      "speak": "drum!"
+    },
+    "treat-blend-drum": {
+      "file": "/audio/treats/blend-drum.mp3",
+      "text": "duh - drum",
+      "speak": "duh... drum!"
+    },
+    "treat-word-duck": {
+      "file": "/audio/treats/word-duck.mp3",
+      "text": "duck",
+      "speak": "duck!"
+    },
+    "treat-blend-duck": {
+      "file": "/audio/treats/blend-duck.mp3",
+      "text": "duh - duck",
+      "speak": "duh... duck!"
+    },
+    "treat-word-egg": {
+      "file": "/audio/words/egg.mp3",
+      "text": "egg",
+      "speak": "egg!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-egg": {
+      "file": "/audio/treats/blend-egg.mp3",
+      "text": "eh - egg",
+      "speak": "eh... egg!"
+    },
+    "treat-word-elephant": {
+      "file": "/audio/treats/word-elephant.mp3",
+      "text": "elephant",
+      "speak": "elephant!"
+    },
+    "treat-blend-elephant": {
+      "file": "/audio/treats/blend-elephant.mp3",
+      "text": "eh - elephant",
+      "speak": "eh... elephant!"
+    },
+    "treat-word-engine": {
+      "file": "/audio/treats/word-engine.mp3",
+      "text": "engine",
+      "speak": "engine!"
+    },
+    "treat-blend-engine": {
+      "file": "/audio/treats/blend-engine.mp3",
+      "text": "eh - engine",
+      "speak": "eh... engine!"
+    },
+    "treat-word-envelope": {
+      "file": "/audio/treats/word-envelope.mp3",
+      "text": "envelope",
+      "speak": "envelope!"
+    },
+    "treat-blend-envelope": {
+      "file": "/audio/treats/blend-envelope.mp3",
+      "text": "eh - envelope",
+      "speak": "eh... envelope!"
+    },
+    "treat-word-eye": {
+      "file": "/audio/treats/word-eye.mp3",
+      "text": "eye",
+      "speak": "eye!"
+    },
+    "treat-blend-eye": {
+      "file": "/audio/treats/blend-eye.mp3",
+      "text": "eh - eye",
+      "speak": "eh... eye!"
+    },
+    "treat-word-fan": {
+      "file": "/audio/treats/word-fan.mp3",
+      "text": "fan",
+      "speak": "fan!"
+    },
+    "treat-blend-fan": {
+      "file": "/audio/treats/blend-fan.mp3",
+      "text": "ff - fan",
+      "speak": "ff... fan!"
+    },
+    "treat-word-fig": {
+      "file": "/audio/treats/word-fig.mp3",
+      "text": "fig",
+      "speak": "fig!"
+    },
+    "treat-blend-fig": {
+      "file": "/audio/treats/blend-fig.mp3",
+      "text": "ff - fig",
+      "speak": "ff... fig!"
+    },
+    "treat-word-fish": {
+      "file": "/audio/words/fish.mp3",
+      "text": "fish",
+      "speak": "fish!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-fish": {
+      "file": "/audio/treats/blend-fish.mp3",
+      "text": "ff - fish",
+      "speak": "ff... fish!"
+    },
+    "treat-word-flag": {
+      "file": "/audio/treats/word-flag.mp3",
+      "text": "flag",
+      "speak": "flag!"
+    },
+    "treat-blend-flag": {
+      "file": "/audio/treats/blend-flag.mp3",
+      "text": "ff - flag",
+      "speak": "ff... flag!"
+    },
+    "treat-word-flour": {
+      "file": "/audio/treats/word-flour.mp3",
+      "text": "flour",
+      "speak": "flour!"
+    },
+    "treat-blend-flour": {
+      "file": "/audio/treats/blend-flour.mp3",
+      "text": "ff - flour",
+      "speak": "ff... flour!"
+    },
+    "treat-word-flower": {
+      "file": "/audio/treats/word-flower.mp3",
+      "text": "flower",
+      "speak": "flower!"
+    },
+    "treat-blend-flower": {
+      "file": "/audio/treats/blend-flower.mp3",
+      "text": "ff - flower",
+      "speak": "ff... flower!"
+    },
+    "treat-word-fox": {
+      "file": "/audio/treats/word-fox.mp3",
+      "text": "fox",
+      "speak": "fox!"
+    },
+    "treat-blend-fox": {
+      "file": "/audio/treats/blend-fox.mp3",
+      "text": "ks - fox",
+      "speak": "ks... fox!"
+    },
+    "treat-word-frog": {
+      "file": "/audio/treats/word-frog.mp3",
+      "text": "frog",
+      "speak": "frog!"
+    },
+    "treat-blend-frog": {
+      "file": "/audio/treats/blend-frog.mp3",
+      "text": "ff - frog",
+      "speak": "ff... frog!"
+    },
+    "treat-word-ginger": {
+      "file": "/audio/treats/word-ginger.mp3",
+      "text": "ginger",
+      "speak": "ginger!"
+    },
+    "treat-blend-ginger": {
+      "file": "/audio/treats/blend-ginger.mp3",
+      "text": "guh - ginger",
+      "speak": "guh... ginger!"
+    },
+    "treat-word-giraffe": {
+      "file": "/audio/treats/word-giraffe.mp3",
+      "text": "giraffe",
+      "speak": "giraffe!"
+    },
+    "treat-blend-giraffe": {
+      "file": "/audio/treats/blend-giraffe.mp3",
+      "text": "guh - giraffe",
+      "speak": "guh... giraffe!"
+    },
+    "treat-word-globe": {
+      "file": "/audio/treats/word-globe.mp3",
+      "text": "globe",
+      "speak": "globe!"
+    },
+    "treat-blend-globe": {
+      "file": "/audio/treats/blend-globe.mp3",
+      "text": "guh - globe",
+      "speak": "guh... globe!"
+    },
+    "treat-word-goat": {
+      "file": "/audio/words/goat.mp3",
+      "text": "goat",
+      "speak": "goat!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-goat": {
+      "file": "/audio/treats/blend-goat.mp3",
+      "text": "guh - goat",
+      "speak": "guh... goat!"
+    },
+    "treat-word-grapes": {
+      "file": "/audio/treats/word-grapes.mp3",
+      "text": "grapes",
+      "speak": "grapes!"
+    },
+    "treat-blend-grapes": {
+      "file": "/audio/treats/blend-grapes.mp3",
+      "text": "guh - grapes",
+      "speak": "guh... grapes!"
+    },
+    "treat-word-guitar": {
+      "file": "/audio/treats/word-guitar.mp3",
+      "text": "guitar",
+      "speak": "guitar!"
+    },
+    "treat-blend-guitar": {
+      "file": "/audio/treats/blend-guitar.mp3",
+      "text": "guh - guitar",
+      "speak": "guh... guitar!"
+    },
+    "treat-word-hand": {
+      "file": "/audio/treats/word-hand.mp3",
+      "text": "hand",
+      "speak": "hand!"
+    },
+    "treat-blend-hand": {
+      "file": "/audio/treats/blend-hand.mp3",
+      "text": "huh - hand",
+      "speak": "huh... hand!"
+    },
+    "treat-word-hat": {
+      "file": "/audio/words/hat.mp3",
+      "text": "hat",
+      "speak": "hat!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-hat": {
+      "file": "/audio/treats/blend-hat.mp3",
+      "text": "huh - hat",
+      "speak": "huh... hat!"
+    },
+    "treat-word-hazelnut": {
+      "file": "/audio/treats/word-hazelnut.mp3",
+      "text": "hazelnut",
+      "speak": "hazelnut!"
+    },
+    "treat-blend-hazelnut": {
+      "file": "/audio/treats/blend-hazelnut.mp3",
+      "text": "huh - hazelnut",
+      "speak": "huh... hazelnut!"
+    },
+    "treat-word-heart": {
+      "file": "/audio/treats/word-heart.mp3",
+      "text": "heart",
+      "speak": "heart!"
+    },
+    "treat-blend-heart": {
+      "file": "/audio/treats/blend-heart.mp3",
+      "text": "huh - heart",
+      "speak": "huh... heart!"
+    },
+    "treat-word-hen": {
+      "file": "/audio/treats/word-hen.mp3",
+      "text": "hen",
+      "speak": "hen!"
+    },
+    "treat-blend-hen": {
+      "file": "/audio/treats/blend-hen.mp3",
+      "text": "huh - hen",
+      "speak": "huh... hen!"
+    },
+    "treat-word-honey": {
+      "file": "/audio/treats/word-honey.mp3",
+      "text": "honey",
+      "speak": "honey!"
+    },
+    "treat-blend-honey": {
+      "file": "/audio/treats/blend-honey.mp3",
+      "text": "huh - honey",
+      "speak": "huh... honey!"
+    },
+    "treat-word-house": {
+      "file": "/audio/treats/word-house.mp3",
+      "text": "house",
+      "speak": "house!"
+    },
+    "treat-blend-house": {
+      "file": "/audio/treats/blend-house.mp3",
+      "text": "huh - house",
+      "speak": "huh... house!"
+    },
+    "treat-word-icecream": {
+      "file": "/audio/treats/word-icecream.mp3",
+      "text": "ice cream",
+      "speak": "ice cream!"
+    },
+    "treat-blend-icecream": {
+      "file": "/audio/treats/blend-icecream.mp3",
+      "text": "ih - ice cream",
+      "speak": "ih... ice cream!"
+    },
+    "treat-word-icing": {
+      "file": "/audio/treats/word-icing.mp3",
+      "text": "icing",
+      "speak": "icing!"
+    },
+    "treat-blend-icing": {
+      "file": "/audio/treats/blend-icing.mp3",
+      "text": "ih - icing",
+      "speak": "ih... icing!"
+    },
+    "treat-word-igloo": {
+      "file": "/audio/words/igloo.mp3",
+      "text": "igloo",
+      "speak": "igloo!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-igloo": {
+      "file": "/audio/treats/blend-igloo.mp3",
+      "text": "ih - igloo",
+      "speak": "ih... igloo!"
+    },
+    "treat-word-ink": {
+      "file": "/audio/treats/word-ink.mp3",
+      "text": "ink",
+      "speak": "ink!"
+    },
+    "treat-blend-ink": {
+      "file": "/audio/treats/blend-ink.mp3",
+      "text": "ih - ink",
+      "speak": "ih... ink!"
+    },
+    "treat-word-insect": {
+      "file": "/audio/treats/word-insect.mp3",
+      "text": "insect",
+      "speak": "insect!"
+    },
+    "treat-blend-insect": {
+      "file": "/audio/treats/blend-insect.mp3",
+      "text": "ih - insect",
+      "speak": "ih... insect!"
+    },
+    "treat-word-iron": {
+      "file": "/audio/treats/word-iron.mp3",
+      "text": "iron",
+      "speak": "iron!"
+    },
+    "treat-blend-iron": {
+      "file": "/audio/treats/blend-iron.mp3",
+      "text": "ih - iron",
+      "speak": "ih... iron!"
+    },
+    "treat-word-jacket": {
+      "file": "/audio/treats/word-jacket.mp3",
+      "text": "jacket",
+      "speak": "jacket!"
+    },
+    "treat-blend-jacket": {
+      "file": "/audio/treats/blend-jacket.mp3",
+      "text": "juh - jacket",
+      "speak": "juh... jacket!"
+    },
+    "treat-word-jam": {
+      "file": "/audio/words/jam.mp3",
+      "text": "jam",
+      "speak": "jam!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-jam": {
+      "file": "/audio/treats/blend-jam.mp3",
+      "text": "juh - jam",
+      "speak": "juh... jam!"
+    },
+    "treat-word-jar": {
+      "file": "/audio/treats/word-jar.mp3",
+      "text": "jar",
+      "speak": "jar!"
+    },
+    "treat-blend-jar": {
+      "file": "/audio/treats/blend-jar.mp3",
+      "text": "juh - jar",
+      "speak": "juh... jar!"
+    },
+    "treat-word-jelly": {
+      "file": "/audio/treats/word-jelly.mp3",
+      "text": "jelly",
+      "speak": "jelly!"
+    },
+    "treat-blend-jelly": {
+      "file": "/audio/treats/blend-jelly.mp3",
+      "text": "juh - jelly",
+      "speak": "juh... jelly!"
+    },
+    "treat-word-jet": {
+      "file": "/audio/treats/word-jet.mp3",
+      "text": "jet",
+      "speak": "jet!"
+    },
+    "treat-blend-jet": {
+      "file": "/audio/treats/blend-jet.mp3",
+      "text": "juh - jet",
+      "speak": "juh... jet!"
+    },
+    "treat-word-juice": {
+      "file": "/audio/treats/word-juice.mp3",
+      "text": "juice",
+      "speak": "juice!"
+    },
+    "treat-blend-juice": {
+      "file": "/audio/treats/blend-juice.mp3",
+      "text": "juh - juice",
+      "speak": "juh... juice!"
+    },
+    "treat-word-kangaroo": {
+      "file": "/audio/treats/word-kangaroo.mp3",
+      "text": "kangaroo",
+      "speak": "kangaroo!"
+    },
+    "treat-blend-kangaroo": {
+      "file": "/audio/treats/blend-kangaroo.mp3",
+      "text": "kuh - kangaroo",
+      "speak": "kuh... kangaroo!"
+    },
+    "treat-word-kettle": {
+      "file": "/audio/treats/word-kettle.mp3",
+      "text": "kettle",
+      "speak": "kettle!"
+    },
+    "treat-blend-kettle": {
+      "file": "/audio/treats/blend-kettle.mp3",
+      "text": "kuh - kettle",
+      "speak": "kuh... kettle!"
+    },
+    "treat-word-key": {
+      "file": "/audio/treats/word-key.mp3",
+      "text": "key",
+      "speak": "key!"
+    },
+    "treat-blend-key": {
+      "file": "/audio/treats/blend-key.mp3",
+      "text": "kuh - key",
+      "speak": "kuh... key!"
+    },
+    "treat-word-king": {
+      "file": "/audio/treats/word-king.mp3",
+      "text": "king",
+      "speak": "king!"
+    },
+    "treat-blend-king": {
+      "file": "/audio/treats/blend-king.mp3",
+      "text": "kuh - king",
+      "speak": "kuh... king!"
+    },
+    "treat-word-kite": {
+      "file": "/audio/words/kite.mp3",
+      "text": "kite",
+      "speak": "kite!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-kite": {
+      "file": "/audio/treats/blend-kite.mp3",
+      "text": "kuh - kite",
+      "speak": "kuh... kite!"
+    },
+    "treat-word-kiwi": {
+      "file": "/audio/treats/word-kiwi.mp3",
+      "text": "kiwi",
+      "speak": "kiwi!"
+    },
+    "treat-blend-kiwi": {
+      "file": "/audio/treats/blend-kiwi.mp3",
+      "text": "kuh - kiwi",
+      "speak": "kuh... kiwi!"
+    },
+    "treat-word-ladder": {
+      "file": "/audio/treats/word-ladder.mp3",
+      "text": "ladder",
+      "speak": "ladder!"
+    },
+    "treat-blend-ladder": {
+      "file": "/audio/treats/blend-ladder.mp3",
+      "text": "ll - ladder",
+      "speak": "ll... ladder!"
+    },
+    "treat-word-lamp": {
+      "file": "/audio/treats/word-lamp.mp3",
+      "text": "lamp",
+      "speak": "lamp!"
+    },
+    "treat-blend-lamp": {
+      "file": "/audio/treats/blend-lamp.mp3",
+      "text": "ll - lamp",
+      "speak": "ll... lamp!"
+    },
+    "treat-word-leaf": {
+      "file": "/audio/treats/word-leaf.mp3",
+      "text": "leaf",
+      "speak": "leaf!"
+    },
+    "treat-blend-leaf": {
+      "file": "/audio/treats/blend-leaf.mp3",
+      "text": "ll - leaf",
+      "speak": "ll... leaf!"
+    },
+    "treat-word-lemon": {
+      "file": "/audio/treats/word-lemon.mp3",
+      "text": "lemon",
+      "speak": "lemon!"
+    },
+    "treat-blend-lemon": {
+      "file": "/audio/treats/blend-lemon.mp3",
+      "text": "ll - lemon",
+      "speak": "ll... lemon!"
+    },
+    "treat-word-lime": {
+      "file": "/audio/treats/word-lime.mp3",
+      "text": "lime",
+      "speak": "lime!"
+    },
+    "treat-blend-lime": {
+      "file": "/audio/treats/blend-lime.mp3",
+      "text": "ll - lime",
+      "speak": "ll... lime!"
+    },
+    "treat-word-lion": {
+      "file": "/audio/words/lion.mp3",
+      "text": "lion",
+      "speak": "lion!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-lion": {
+      "file": "/audio/treats/blend-lion.mp3",
+      "text": "ll - lion",
+      "speak": "ll... lion!"
+    },
+    "treat-word-mango": {
+      "file": "/audio/treats/word-mango.mp3",
+      "text": "mango",
+      "speak": "mango!"
+    },
+    "treat-blend-mango": {
+      "file": "/audio/treats/blend-mango.mp3",
+      "text": "mm - mango",
+      "speak": "mm... mango!"
+    },
+    "treat-word-milk": {
+      "file": "/audio/treats/word-milk.mp3",
+      "text": "milk",
+      "speak": "milk!"
+    },
+    "treat-blend-milk": {
+      "file": "/audio/treats/blend-milk.mp3",
+      "text": "mm - milk",
+      "speak": "mm... milk!"
+    },
+    "treat-word-monkey": {
+      "file": "/audio/treats/word-monkey.mp3",
+      "text": "monkey",
+      "speak": "monkey!"
+    },
+    "treat-blend-monkey": {
+      "file": "/audio/treats/blend-monkey.mp3",
+      "text": "mm - monkey",
+      "speak": "mm... monkey!"
+    },
+    "treat-word-moon": {
+      "file": "/audio/words/moon.mp3",
+      "text": "moon",
+      "speak": "moon!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-moon": {
+      "file": "/audio/treats/blend-moon.mp3",
+      "text": "mm - moon",
+      "speak": "mm... moon!"
+    },
+    "treat-word-mountain": {
+      "file": "/audio/treats/word-mountain.mp3",
+      "text": "mountain",
+      "speak": "mountain!"
+    },
+    "treat-blend-mountain": {
+      "file": "/audio/treats/blend-mountain.mp3",
+      "text": "mm - mountain",
+      "speak": "mm... mountain!"
+    },
+    "treat-word-mouse": {
+      "file": "/audio/treats/word-mouse.mp3",
+      "text": "mouse",
+      "speak": "mouse!"
+    },
+    "treat-blend-mouse": {
+      "file": "/audio/treats/blend-mouse.mp3",
+      "text": "mm - mouse",
+      "speak": "mm... mouse!"
+    },
+    "treat-word-nail": {
+      "file": "/audio/treats/word-nail.mp3",
+      "text": "nail",
+      "speak": "nail!"
+    },
+    "treat-blend-nail": {
+      "file": "/audio/treats/blend-nail.mp3",
+      "text": "nn - nail",
+      "speak": "nn... nail!"
+    },
+    "treat-word-nest": {
+      "file": "/audio/words/nest.mp3",
+      "text": "nest",
+      "speak": "nest!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-nest": {
+      "file": "/audio/treats/blend-nest.mp3",
+      "text": "nn - nest",
+      "speak": "nn... nest!"
+    },
+    "treat-word-net": {
+      "file": "/audio/treats/word-net.mp3",
+      "text": "net",
+      "speak": "net!"
+    },
+    "treat-blend-net": {
+      "file": "/audio/treats/blend-net.mp3",
+      "text": "nn - net",
+      "speak": "nn... net!"
+    },
+    "treat-word-nose": {
+      "file": "/audio/treats/word-nose.mp3",
+      "text": "nose",
+      "speak": "nose!"
+    },
+    "treat-blend-nose": {
+      "file": "/audio/treats/blend-nose.mp3",
+      "text": "nn - nose",
+      "speak": "nn... nose!"
+    },
+    "treat-word-nut": {
+      "file": "/audio/treats/word-nut.mp3",
+      "text": "nut",
+      "speak": "nut!"
+    },
+    "treat-blend-nut": {
+      "file": "/audio/treats/blend-nut.mp3",
+      "text": "nn - nut",
+      "speak": "nn... nut!"
+    },
+    "treat-word-nutmeg": {
+      "file": "/audio/treats/word-nutmeg.mp3",
+      "text": "nutmeg",
+      "speak": "nutmeg!"
+    },
+    "treat-blend-nutmeg": {
+      "file": "/audio/treats/blend-nutmeg.mp3",
+      "text": "nn - nutmeg",
+      "speak": "nn... nutmeg!"
+    },
+    "treat-word-nuts": {
+      "file": "/audio/treats/word-nuts.mp3",
+      "text": "nuts",
+      "speak": "nuts!"
+    },
+    "treat-blend-nuts": {
+      "file": "/audio/treats/blend-nuts.mp3",
+      "text": "nn - nuts",
+      "speak": "nn... nuts!"
+    },
+    "treat-word-oats": {
+      "file": "/audio/treats/word-oats.mp3",
+      "text": "oats",
+      "speak": "oats!"
+    },
+    "treat-blend-oats": {
+      "file": "/audio/treats/blend-oats.mp3",
+      "text": "o - oats",
+      "speak": "o... oats!"
+    },
+    "treat-word-ocean": {
+      "file": "/audio/treats/word-ocean.mp3",
+      "text": "ocean",
+      "speak": "ocean!"
+    },
+    "treat-blend-ocean": {
+      "file": "/audio/treats/blend-ocean.mp3",
+      "text": "o - ocean",
+      "speak": "o... ocean!"
+    },
+    "treat-word-octopus": {
+      "file": "/audio/words/octopus.mp3",
+      "text": "octopus",
+      "speak": "octopus!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-octopus": {
+      "file": "/audio/treats/blend-octopus.mp3",
+      "text": "o - octopus",
+      "speak": "o... octopus!"
+    },
+    "treat-word-orange": {
+      "file": "/audio/treats/word-orange.mp3",
+      "text": "orange",
+      "speak": "orange!"
+    },
+    "treat-blend-orange": {
+      "file": "/audio/treats/blend-orange.mp3",
+      "text": "o - orange",
+      "speak": "o... orange!"
+    },
+    "treat-word-owl": {
+      "file": "/audio/treats/word-owl.mp3",
+      "text": "owl",
+      "speak": "owl!"
+    },
+    "treat-blend-owl": {
+      "file": "/audio/treats/blend-owl.mp3",
+      "text": "o - owl",
+      "speak": "o... owl!"
+    },
+    "treat-word-ox": {
+      "file": "/audio/treats/word-ox.mp3",
+      "text": "ox",
+      "speak": "ox!"
+    },
+    "treat-blend-ox": {
+      "file": "/audio/treats/blend-ox.mp3",
+      "text": "o - ox",
+      "speak": "o... ox!"
+    },
+    "treat-word-panda": {
+      "file": "/audio/treats/word-panda.mp3",
+      "text": "panda",
+      "speak": "panda!"
+    },
+    "treat-blend-panda": {
+      "file": "/audio/treats/blend-panda.mp3",
+      "text": "puh - panda",
+      "speak": "puh... panda!"
+    },
+    "treat-word-peach": {
+      "file": "/audio/treats/word-peach.mp3",
+      "text": "peach",
+      "speak": "peach!"
+    },
+    "treat-blend-peach": {
+      "file": "/audio/treats/blend-peach.mp3",
+      "text": "puh - peach",
+      "speak": "puh... peach!"
+    },
+    "treat-word-pen": {
+      "file": "/audio/treats/word-pen.mp3",
+      "text": "pen",
+      "speak": "pen!"
+    },
+    "treat-blend-pen": {
+      "file": "/audio/treats/blend-pen.mp3",
+      "text": "puh - pen",
+      "speak": "puh... pen!"
+    },
+    "treat-word-pig": {
+      "file": "/audio/words/pig.mp3",
+      "text": "pig",
+      "speak": "pig!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-pig": {
+      "file": "/audio/treats/blend-pig.mp3",
+      "text": "puh - pig",
+      "speak": "puh... pig!"
+    },
+    "treat-word-pineapple": {
+      "file": "/audio/treats/word-pineapple.mp3",
+      "text": "pineapple",
+      "speak": "pineapple!"
+    },
+    "treat-blend-pineapple": {
+      "file": "/audio/treats/blend-pineapple.mp3",
+      "text": "puh - pineapple",
+      "speak": "puh... pineapple!"
+    },
+    "treat-word-pizza": {
+      "file": "/audio/treats/word-pizza.mp3",
+      "text": "pizza",
+      "speak": "pizza!"
+    },
+    "treat-blend-pizza": {
+      "file": "/audio/treats/blend-pizza.mp3",
+      "text": "puh - pizza",
+      "speak": "puh... pizza!"
+    },
+    "treat-word-quail": {
+      "file": "/audio/treats/word-quail.mp3",
+      "text": "quail",
+      "speak": "quail!"
+    },
+    "treat-blend-quail": {
+      "file": "/audio/treats/blend-quail.mp3",
+      "text": "kwuh - quail",
+      "speak": "kwuh... quail!"
+    },
+    "treat-word-queen": {
+      "file": "/audio/words/queen.mp3",
+      "text": "queen",
+      "speak": "queen!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-queen": {
+      "file": "/audio/treats/blend-queen.mp3",
+      "text": "kwuh - queen",
+      "speak": "kwuh... queen!"
+    },
+    "treat-word-question": {
+      "file": "/audio/treats/word-question.mp3",
+      "text": "question",
+      "speak": "question!"
+    },
+    "treat-blend-question": {
+      "file": "/audio/treats/blend-question.mp3",
+      "text": "kwuh - question",
+      "speak": "kwuh... question!"
+    },
+    "treat-word-quilt": {
+      "file": "/audio/treats/word-quilt.mp3",
+      "text": "quilt",
+      "speak": "quilt!"
+    },
+    "treat-blend-quilt": {
+      "file": "/audio/treats/blend-quilt.mp3",
+      "text": "kwuh - quilt",
+      "speak": "kwuh... quilt!"
+    },
+    "treat-word-quince": {
+      "file": "/audio/treats/word-quince.mp3",
+      "text": "quince",
+      "speak": "quince!"
+    },
+    "treat-blend-quince": {
+      "file": "/audio/treats/blend-quince.mp3",
+      "text": "kwuh - quince",
+      "speak": "kwuh... quince!"
+    },
+    "treat-word-quokka": {
+      "file": "/audio/treats/word-quokka.mp3",
+      "text": "quokka",
+      "speak": "quokka!"
+    },
+    "treat-blend-quokka": {
+      "file": "/audio/treats/blend-quokka.mp3",
+      "text": "kwuh - quokka",
+      "speak": "kwuh... quokka!"
+    },
+    "treat-word-rabbit": {
+      "file": "/audio/words/rabbit.mp3",
+      "text": "rabbit",
+      "speak": "rabbit!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-rabbit": {
+      "file": "/audio/treats/blend-rabbit.mp3",
+      "text": "rr - rabbit",
+      "speak": "rr... rabbit!"
+    },
+    "treat-word-rain": {
+      "file": "/audio/treats/word-rain.mp3",
+      "text": "rain",
+      "speak": "rain!"
+    },
+    "treat-blend-rain": {
+      "file": "/audio/treats/blend-rain.mp3",
+      "text": "rr - rain",
+      "speak": "rr... rain!"
+    },
+    "treat-word-raisin": {
+      "file": "/audio/treats/word-raisin.mp3",
+      "text": "raisin",
+      "speak": "raisin!"
+    },
+    "treat-blend-raisin": {
+      "file": "/audio/treats/blend-raisin.mp3",
+      "text": "rr - raisin",
+      "speak": "rr... raisin!"
+    },
+    "treat-word-raspberry": {
+      "file": "/audio/treats/word-raspberry.mp3",
+      "text": "raspberry",
+      "speak": "raspberry!"
+    },
+    "treat-blend-raspberry": {
+      "file": "/audio/treats/blend-raspberry.mp3",
+      "text": "rr - raspberry",
+      "speak": "rr... raspberry!"
+    },
+    "treat-word-ring": {
+      "file": "/audio/treats/word-ring.mp3",
+      "text": "ring",
+      "speak": "ring!"
+    },
+    "treat-blend-ring": {
+      "file": "/audio/treats/blend-ring.mp3",
+      "text": "rr - ring",
+      "speak": "rr... ring!"
+    },
+    "treat-word-robot": {
+      "file": "/audio/treats/word-robot.mp3",
+      "text": "robot",
+      "speak": "robot!"
+    },
+    "treat-blend-robot": {
+      "file": "/audio/treats/blend-robot.mp3",
+      "text": "rr - robot",
+      "speak": "rr... robot!"
+    },
+    "treat-word-rocket": {
+      "file": "/audio/treats/word-rocket.mp3",
+      "text": "rocket",
+      "speak": "rocket!"
+    },
+    "treat-blend-rocket": {
+      "file": "/audio/treats/blend-rocket.mp3",
+      "text": "rr - rocket",
+      "speak": "rr... rocket!"
+    },
+    "treat-word-shoe": {
+      "file": "/audio/treats/word-shoe.mp3",
+      "text": "shoe",
+      "speak": "shoe!"
+    },
+    "treat-blend-shoe": {
+      "file": "/audio/treats/blend-shoe.mp3",
+      "text": "ss - shoe",
+      "speak": "ss... shoe!"
+    },
+    "treat-word-six": {
+      "file": "/audio/treats/word-six.mp3",
+      "text": "six",
+      "speak": "six!"
+    },
+    "treat-blend-six": {
+      "file": "/audio/treats/blend-six.mp3",
+      "text": "ks - six",
+      "speak": "ks... six!"
+    },
+    "treat-word-snake": {
+      "file": "/audio/treats/word-snake.mp3",
+      "text": "snake",
+      "speak": "snake!"
+    },
+    "treat-blend-snake": {
+      "file": "/audio/treats/blend-snake.mp3",
+      "text": "ss - snake",
+      "speak": "ss... snake!"
+    },
+    "treat-word-soup": {
+      "file": "/audio/treats/word-soup.mp3",
+      "text": "soup",
+      "speak": "soup!"
+    },
+    "treat-blend-soup": {
+      "file": "/audio/treats/blend-soup.mp3",
+      "text": "ss - soup",
+      "speak": "ss... soup!"
+    },
+    "treat-word-star": {
+      "file": "/audio/treats/word-star.mp3",
+      "text": "star",
+      "speak": "star!"
+    },
+    "treat-blend-star": {
+      "file": "/audio/treats/blend-star.mp3",
+      "text": "ss - star",
+      "speak": "ss... star!"
+    },
+    "treat-word-strawberry": {
+      "file": "/audio/treats/word-strawberry.mp3",
+      "text": "strawberry",
+      "speak": "strawberry!"
+    },
+    "treat-blend-strawberry": {
+      "file": "/audio/treats/blend-strawberry.mp3",
+      "text": "ss - strawberry",
+      "speak": "ss... strawberry!"
+    },
+    "treat-word-sugar": {
+      "file": "/audio/treats/word-sugar.mp3",
+      "text": "sugar",
+      "speak": "sugar!"
+    },
+    "treat-blend-sugar": {
+      "file": "/audio/treats/blend-sugar.mp3",
+      "text": "ss - sugar",
+      "speak": "ss... sugar!"
+    },
+    "treat-word-sun": {
+      "file": "/audio/words/sun.mp3",
+      "text": "sun",
+      "speak": "sun!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-sun": {
+      "file": "/audio/treats/blend-sun.mp3",
+      "text": "ss - sun",
+      "speak": "ss... sun!"
+    },
+    "treat-word-tiger": {
+      "file": "/audio/words/tiger.mp3",
+      "text": "tiger",
+      "speak": "tiger!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-tiger": {
+      "file": "/audio/treats/blend-tiger.mp3",
+      "text": "tuh - tiger",
+      "speak": "tuh... tiger!"
+    },
+    "treat-word-toffee": {
+      "file": "/audio/treats/word-toffee.mp3",
+      "text": "toffee",
+      "speak": "toffee!"
+    },
+    "treat-blend-toffee": {
+      "file": "/audio/treats/blend-toffee.mp3",
+      "text": "tuh - toffee",
+      "speak": "tuh... toffee!"
+    },
+    "treat-word-tooth": {
+      "file": "/audio/treats/word-tooth.mp3",
+      "text": "tooth",
+      "speak": "tooth!"
+    },
+    "treat-blend-tooth": {
+      "file": "/audio/treats/blend-tooth.mp3",
+      "text": "tuh - tooth",
+      "speak": "tuh... tooth!"
+    },
+    "treat-word-train": {
+      "file": "/audio/treats/word-train.mp3",
+      "text": "train",
+      "speak": "train!"
+    },
+    "treat-blend-train": {
+      "file": "/audio/treats/blend-train.mp3",
+      "text": "tuh - train",
+      "speak": "tuh... train!"
+    },
+    "treat-word-tree": {
+      "file": "/audio/treats/word-tree.mp3",
+      "text": "tree",
+      "speak": "tree!"
+    },
+    "treat-blend-tree": {
+      "file": "/audio/treats/blend-tree.mp3",
+      "text": "tuh - tree",
+      "speak": "tuh... tree!"
+    },
+    "treat-word-turtle": {
+      "file": "/audio/treats/word-turtle.mp3",
+      "text": "turtle",
+      "speak": "turtle!"
+    },
+    "treat-blend-turtle": {
+      "file": "/audio/treats/blend-turtle.mp3",
+      "text": "tuh - turtle",
+      "speak": "tuh... turtle!"
+    },
+    "treat-word-ukulele": {
+      "file": "/audio/treats/word-ukulele.mp3",
+      "text": "ukulele",
+      "speak": "ukulele!"
+    },
+    "treat-blend-ukulele": {
+      "file": "/audio/treats/blend-ukulele.mp3",
+      "text": "uh - ukulele",
+      "speak": "uh... ukulele!"
+    },
+    "treat-word-umbrella": {
+      "file": "/audio/words/umbrella.mp3",
+      "text": "umbrella",
+      "speak": "umbrella!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-umbrella": {
+      "file": "/audio/treats/blend-umbrella.mp3",
+      "text": "uh - umbrella",
+      "speak": "uh... umbrella!"
+    },
+    "treat-word-uniform": {
+      "file": "/audio/treats/word-uniform.mp3",
+      "text": "uniform",
+      "speak": "uniform!"
+    },
+    "treat-blend-uniform": {
+      "file": "/audio/treats/blend-uniform.mp3",
+      "text": "uh - uniform",
+      "speak": "uh... uniform!"
+    },
+    "treat-word-up": {
+      "file": "/audio/treats/word-up.mp3",
+      "text": "up",
+      "speak": "up!"
+    },
+    "treat-blend-up": {
+      "file": "/audio/treats/blend-up.mp3",
+      "text": "uh - up",
+      "speak": "uh... up!"
+    },
+    "treat-word-urchin": {
+      "file": "/audio/treats/word-urchin.mp3",
+      "text": "urchin",
+      "speak": "urchin!"
+    },
+    "treat-blend-urchin": {
+      "file": "/audio/treats/blend-urchin.mp3",
+      "text": "uh - urchin",
+      "speak": "uh... urchin!"
+    },
+    "treat-word-van": {
+      "file": "/audio/words/van.mp3",
+      "text": "van",
+      "speak": "van!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-van": {
+      "file": "/audio/treats/blend-van.mp3",
+      "text": "vv - van",
+      "speak": "vv... van!"
+    },
+    "treat-word-vanilla": {
+      "file": "/audio/treats/word-vanilla.mp3",
+      "text": "vanilla",
+      "speak": "vanilla!"
+    },
+    "treat-blend-vanilla": {
+      "file": "/audio/treats/blend-vanilla.mp3",
+      "text": "vv - vanilla",
+      "speak": "vv... vanilla!"
+    },
+    "treat-word-vase": {
+      "file": "/audio/treats/word-vase.mp3",
+      "text": "vase",
+      "speak": "vase!"
+    },
+    "treat-blend-vase": {
+      "file": "/audio/treats/blend-vase.mp3",
+      "text": "vv - vase",
+      "speak": "vv... vase!"
+    },
+    "treat-word-vest": {
+      "file": "/audio/treats/word-vest.mp3",
+      "text": "vest",
+      "speak": "vest!"
+    },
+    "treat-blend-vest": {
+      "file": "/audio/treats/blend-vest.mp3",
+      "text": "vv - vest",
+      "speak": "vv... vest!"
+    },
+    "treat-word-violin": {
+      "file": "/audio/treats/word-violin.mp3",
+      "text": "violin",
+      "speak": "violin!"
+    },
+    "treat-blend-violin": {
+      "file": "/audio/treats/blend-violin.mp3",
+      "text": "vv - violin",
+      "speak": "vv... violin!"
+    },
+    "treat-word-volcano": {
+      "file": "/audio/treats/word-volcano.mp3",
+      "text": "volcano",
+      "speak": "volcano!"
+    },
+    "treat-blend-volcano": {
+      "file": "/audio/treats/blend-volcano.mp3",
+      "text": "vv - volcano",
+      "speak": "vv... volcano!"
+    },
+    "treat-word-wagon": {
+      "file": "/audio/treats/word-wagon.mp3",
+      "text": "wagon",
+      "speak": "wagon!"
+    },
+    "treat-blend-wagon": {
+      "file": "/audio/treats/blend-wagon.mp3",
+      "text": "wuh - wagon",
+      "speak": "wuh... wagon!"
+    },
+    "treat-word-walnut": {
+      "file": "/audio/treats/word-walnut.mp3",
+      "text": "walnut",
+      "speak": "walnut!"
+    },
+    "treat-blend-walnut": {
+      "file": "/audio/treats/blend-walnut.mp3",
+      "text": "wuh - walnut",
+      "speak": "wuh... walnut!"
+    },
+    "treat-word-watch": {
+      "file": "/audio/treats/word-watch.mp3",
+      "text": "watch",
+      "speak": "watch!"
+    },
+    "treat-blend-watch": {
+      "file": "/audio/treats/blend-watch.mp3",
+      "text": "wuh - watch",
+      "speak": "wuh... watch!"
+    },
+    "treat-word-water": {
+      "file": "/audio/words/water.mp3",
+      "text": "water",
+      "speak": "water!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-water": {
+      "file": "/audio/treats/blend-water.mp3",
+      "text": "wuh - water",
+      "speak": "wuh... water!"
+    },
+    "treat-word-watermelon": {
+      "file": "/audio/treats/word-watermelon.mp3",
+      "text": "watermelon",
+      "speak": "watermelon!"
+    },
+    "treat-blend-watermelon": {
+      "file": "/audio/treats/blend-watermelon.mp3",
+      "text": "wuh - watermelon",
+      "speak": "wuh... watermelon!"
+    },
+    "treat-word-whale": {
+      "file": "/audio/treats/word-whale.mp3",
+      "text": "whale",
+      "speak": "whale!"
+    },
+    "treat-blend-whale": {
+      "file": "/audio/treats/blend-whale.mp3",
+      "text": "wuh - whale",
+      "speak": "wuh... whale!"
+    },
+    "treat-word-wind": {
+      "file": "/audio/treats/word-wind.mp3",
+      "text": "wind",
+      "speak": "wind!"
+    },
+    "treat-blend-wind": {
+      "file": "/audio/treats/blend-wind.mp3",
+      "text": "wuh - wind",
+      "speak": "wuh... wind!"
+    },
+    "treat-word-xray": {
+      "file": "/audio/treats/word-xray.mp3",
+      "text": "x-ray",
+      "speak": "x-ray!"
+    },
+    "treat-blend-xray": {
+      "file": "/audio/treats/blend-xray.mp3",
+      "text": "ks - x-ray",
+      "speak": "ks... x-ray!"
+    },
+    "treat-word-xylophone": {
+      "file": "/audio/treats/word-xylophone.mp3",
+      "text": "xylophone",
+      "speak": "xylophone!"
+    },
+    "treat-blend-xylophone": {
+      "file": "/audio/treats/blend-xylophone.mp3",
+      "text": "ks - xylophone",
+      "speak": "ks... xylophone!"
+    },
+    "treat-word-yacht": {
+      "file": "/audio/treats/word-yacht.mp3",
+      "text": "yacht",
+      "speak": "yacht!"
+    },
+    "treat-blend-yacht": {
+      "file": "/audio/treats/blend-yacht.mp3",
+      "text": "yuh - yacht",
+      "speak": "yuh... yacht!"
+    },
+    "treat-word-yak": {
+      "file": "/audio/treats/word-yak.mp3",
+      "text": "yak",
+      "speak": "yak!"
+    },
+    "treat-blend-yak": {
+      "file": "/audio/treats/blend-yak.mp3",
+      "text": "yuh - yak",
+      "speak": "yuh... yak!"
+    },
+    "treat-word-yarn": {
+      "file": "/audio/treats/word-yarn.mp3",
+      "text": "yarn",
+      "speak": "yarn!"
+    },
+    "treat-blend-yarn": {
+      "file": "/audio/treats/blend-yarn.mp3",
+      "text": "yuh - yarn",
+      "speak": "yuh... yarn!"
+    },
+    "treat-word-yellow": {
+      "file": "/audio/treats/word-yellow.mp3",
+      "text": "yellow",
+      "speak": "yellow!"
+    },
+    "treat-blend-yellow": {
+      "file": "/audio/treats/blend-yellow.mp3",
+      "text": "yuh - yellow",
+      "speak": "yuh... yellow!"
+    },
+    "treat-word-yogurt": {
+      "file": "/audio/treats/word-yogurt.mp3",
+      "text": "yogurt",
+      "speak": "yogurt!"
+    },
+    "treat-blend-yogurt": {
+      "file": "/audio/treats/blend-yogurt.mp3",
+      "text": "yuh - yogurt",
+      "speak": "yuh... yogurt!"
+    },
+    "treat-word-yoyo": {
+      "file": "/audio/words/yoyo.mp3",
+      "text": "yo-yo",
+      "speak": "yo-yo!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-yoyo": {
+      "file": "/audio/treats/blend-yoyo.mp3",
+      "text": "yuh - yo-yo",
+      "speak": "yuh... yo-yo!"
+    },
+    "treat-word-zebra": {
+      "file": "/audio/words/zebra.mp3",
+      "text": "zebra",
+      "speak": "zebra!",
+      "note": "reuses the existing recorded word clip - not regenerated"
+    },
+    "treat-blend-zebra": {
+      "file": "/audio/treats/blend-zebra.mp3",
+      "text": "zz - zebra",
+      "speak": "zz... zebra!"
+    },
+    "treat-word-zip": {
+      "file": "/audio/treats/word-zip.mp3",
+      "text": "zip",
+      "speak": "zip!"
+    },
+    "treat-blend-zip": {
+      "file": "/audio/treats/blend-zip.mp3",
+      "text": "zz - zip",
+      "speak": "zz... zip!"
+    },
+    "treat-word-zipper": {
+      "file": "/audio/treats/word-zipper.mp3",
+      "text": "zipper",
+      "speak": "zipper!"
+    },
+    "treat-blend-zipper": {
+      "file": "/audio/treats/blend-zipper.mp3",
+      "text": "zz - zipper",
+      "speak": "zz... zipper!"
+    },
+    "treat-word-zoo": {
+      "file": "/audio/treats/word-zoo.mp3",
+      "text": "zoo",
+      "speak": "zoo!"
+    },
+    "treat-blend-zoo": {
+      "file": "/audio/treats/blend-zoo.mp3",
+      "text": "zz - zoo",
+      "speak": "zz... zoo!"
+    },
+    "treat-word-zucchini": {
+      "file": "/audio/treats/word-zucchini.mp3",
+      "text": "zucchini",
+      "speak": "zucchini!"
+    },
+    "treat-blend-zucchini": {
+      "file": "/audio/treats/blend-zucchini.mp3",
+      "text": "zz - zucchini",
+      "speak": "zz... zucchini!"
+    },
+    "treat-which-a": {
+      "file": "/audio/treats/which-a.mp3",
+      "text": "Which one starts with A?",
+      "speak": "Which one starts with A?"
+    },
+    "treat-find-a": {
+      "file": "/audio/treats/find-a.mp3",
+      "text": "Find something that starts with A!",
+      "speak": "Find something that starts with A!"
+    },
+    "treat-which-b": {
+      "file": "/audio/treats/which-b.mp3",
+      "text": "Which one starts with B?",
+      "speak": "Which one starts with B?"
+    },
+    "treat-find-b": {
+      "file": "/audio/treats/find-b.mp3",
+      "text": "Find something that starts with B!",
+      "speak": "Find something that starts with B!"
+    },
+    "treat-which-c": {
+      "file": "/audio/treats/which-c.mp3",
+      "text": "Which one starts with C?",
+      "speak": "Which one starts with C?"
+    },
+    "treat-find-c": {
+      "file": "/audio/treats/find-c.mp3",
+      "text": "Find something that starts with C!",
+      "speak": "Find something that starts with C!"
+    },
+    "treat-which-d": {
+      "file": "/audio/treats/which-d.mp3",
+      "text": "Which one starts with D?",
+      "speak": "Which one starts with D?"
+    },
+    "treat-find-d": {
+      "file": "/audio/treats/find-d.mp3",
+      "text": "Find something that starts with D!",
+      "speak": "Find something that starts with D!"
+    },
+    "treat-which-e": {
+      "file": "/audio/treats/which-e.mp3",
+      "text": "Which one starts with E?",
+      "speak": "Which one starts with E?"
+    },
+    "treat-find-e": {
+      "file": "/audio/treats/find-e.mp3",
+      "text": "Find something that starts with E!",
+      "speak": "Find something that starts with E!"
+    },
+    "treat-which-f": {
+      "file": "/audio/treats/which-f.mp3",
+      "text": "Which one starts with F?",
+      "speak": "Which one starts with F?"
+    },
+    "treat-find-f": {
+      "file": "/audio/treats/find-f.mp3",
+      "text": "Find something that starts with F!",
+      "speak": "Find something that starts with F!"
+    },
+    "treat-which-g": {
+      "file": "/audio/treats/which-g.mp3",
+      "text": "Which one starts with G?",
+      "speak": "Which one starts with G?"
+    },
+    "treat-find-g": {
+      "file": "/audio/treats/find-g.mp3",
+      "text": "Find something that starts with G!",
+      "speak": "Find something that starts with G!"
+    },
+    "treat-which-h": {
+      "file": "/audio/treats/which-h.mp3",
+      "text": "Which one starts with H?",
+      "speak": "Which one starts with H?"
+    },
+    "treat-find-h": {
+      "file": "/audio/treats/find-h.mp3",
+      "text": "Find something that starts with H!",
+      "speak": "Find something that starts with H!"
+    },
+    "treat-which-i": {
+      "file": "/audio/treats/which-i.mp3",
+      "text": "Which one starts with I?",
+      "speak": "Which one starts with I?"
+    },
+    "treat-find-i": {
+      "file": "/audio/treats/find-i.mp3",
+      "text": "Find something that starts with I!",
+      "speak": "Find something that starts with I!"
+    },
+    "treat-which-j": {
+      "file": "/audio/treats/which-j.mp3",
+      "text": "Which one starts with J?",
+      "speak": "Which one starts with J?"
+    },
+    "treat-find-j": {
+      "file": "/audio/treats/find-j.mp3",
+      "text": "Find something that starts with J!",
+      "speak": "Find something that starts with J!"
+    },
+    "treat-which-k": {
+      "file": "/audio/treats/which-k.mp3",
+      "text": "Which one starts with K?",
+      "speak": "Which one starts with K?"
+    },
+    "treat-find-k": {
+      "file": "/audio/treats/find-k.mp3",
+      "text": "Find something that starts with K!",
+      "speak": "Find something that starts with K!"
+    },
+    "treat-which-l": {
+      "file": "/audio/treats/which-l.mp3",
+      "text": "Which one starts with L?",
+      "speak": "Which one starts with L?"
+    },
+    "treat-find-l": {
+      "file": "/audio/treats/find-l.mp3",
+      "text": "Find something that starts with L!",
+      "speak": "Find something that starts with L!"
+    },
+    "treat-which-m": {
+      "file": "/audio/treats/which-m.mp3",
+      "text": "Which one starts with M?",
+      "speak": "Which one starts with M?"
+    },
+    "treat-find-m": {
+      "file": "/audio/treats/find-m.mp3",
+      "text": "Find something that starts with M!",
+      "speak": "Find something that starts with M!"
+    },
+    "treat-which-n": {
+      "file": "/audio/treats/which-n.mp3",
+      "text": "Which one starts with N?",
+      "speak": "Which one starts with N?"
+    },
+    "treat-find-n": {
+      "file": "/audio/treats/find-n.mp3",
+      "text": "Find something that starts with N!",
+      "speak": "Find something that starts with N!"
+    },
+    "treat-which-o": {
+      "file": "/audio/treats/which-o.mp3",
+      "text": "Which one starts with O?",
+      "speak": "Which one starts with O?"
+    },
+    "treat-find-o": {
+      "file": "/audio/treats/find-o.mp3",
+      "text": "Find something that starts with O!",
+      "speak": "Find something that starts with O!"
+    },
+    "treat-which-p": {
+      "file": "/audio/treats/which-p.mp3",
+      "text": "Which one starts with P?",
+      "speak": "Which one starts with P?"
+    },
+    "treat-find-p": {
+      "file": "/audio/treats/find-p.mp3",
+      "text": "Find something that starts with P!",
+      "speak": "Find something that starts with P!"
+    },
+    "treat-which-q": {
+      "file": "/audio/treats/which-q.mp3",
+      "text": "Which one starts with Q?",
+      "speak": "Which one starts with Q?"
+    },
+    "treat-find-q": {
+      "file": "/audio/treats/find-q.mp3",
+      "text": "Find something that starts with Q!",
+      "speak": "Find something that starts with Q!"
+    },
+    "treat-which-r": {
+      "file": "/audio/treats/which-r.mp3",
+      "text": "Which one starts with R?",
+      "speak": "Which one starts with R?"
+    },
+    "treat-find-r": {
+      "file": "/audio/treats/find-r.mp3",
+      "text": "Find something that starts with R!",
+      "speak": "Find something that starts with R!"
+    },
+    "treat-which-s": {
+      "file": "/audio/treats/which-s.mp3",
+      "text": "Which one starts with S?",
+      "speak": "Which one starts with S?"
+    },
+    "treat-find-s": {
+      "file": "/audio/treats/find-s.mp3",
+      "text": "Find something that starts with S!",
+      "speak": "Find something that starts with S!"
+    },
+    "treat-which-t": {
+      "file": "/audio/treats/which-t.mp3",
+      "text": "Which one starts with T?",
+      "speak": "Which one starts with T?"
+    },
+    "treat-find-t": {
+      "file": "/audio/treats/find-t.mp3",
+      "text": "Find something that starts with T!",
+      "speak": "Find something that starts with T!"
+    },
+    "treat-which-u": {
+      "file": "/audio/treats/which-u.mp3",
+      "text": "Which one starts with U?",
+      "speak": "Which one starts with U?"
+    },
+    "treat-find-u": {
+      "file": "/audio/treats/find-u.mp3",
+      "text": "Find something that starts with U!",
+      "speak": "Find something that starts with U!"
+    },
+    "treat-which-v": {
+      "file": "/audio/treats/which-v.mp3",
+      "text": "Which one starts with V?",
+      "speak": "Which one starts with V?"
+    },
+    "treat-find-v": {
+      "file": "/audio/treats/find-v.mp3",
+      "text": "Find something that starts with V!",
+      "speak": "Find something that starts with V!"
+    },
+    "treat-which-w": {
+      "file": "/audio/treats/which-w.mp3",
+      "text": "Which one starts with W?",
+      "speak": "Which one starts with W?"
+    },
+    "treat-find-w": {
+      "file": "/audio/treats/find-w.mp3",
+      "text": "Find something that starts with W!",
+      "speak": "Find something that starts with W!"
+    },
+    "treat-which-x": {
+      "file": "/audio/treats/which-x.mp3",
+      "text": "Which one starts with X?",
+      "speak": "Which one starts with X?"
+    },
+    "treat-find-x": {
+      "file": "/audio/treats/find-x.mp3",
+      "text": "Find something that starts with X!",
+      "speak": "Find something that starts with X!"
+    },
+    "treat-which-y": {
+      "file": "/audio/treats/which-y.mp3",
+      "text": "Which one starts with Y?",
+      "speak": "Which one starts with Y?"
+    },
+    "treat-find-y": {
+      "file": "/audio/treats/find-y.mp3",
+      "text": "Find something that starts with Y!",
+      "speak": "Find something that starts with Y!"
+    },
+    "treat-which-z": {
+      "file": "/audio/treats/which-z.mp3",
+      "text": "Which one starts with Z?",
+      "speak": "Which one starts with Z?"
+    },
+    "treat-find-z": {
+      "file": "/audio/treats/find-z.mp3",
+      "text": "Find something that starts with Z!",
+      "speak": "Find something that starts with Z!"
+    },
+    "treat-sound-a": {
+      "file": "/audio/treats/sound-a.mp3",
+      "text": "Find something that starts with ah!",
+      "speak": "Find something that starts with ah... ah!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-b": {
+      "file": "/audio/treats/sound-b.mp3",
+      "text": "Find something that starts with buh!",
+      "speak": "Find something that starts with buh... buh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-c": {
+      "file": "/audio/treats/sound-c.mp3",
+      "text": "Find something that starts with kuh!",
+      "speak": "Find something that starts with kuh... kuh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-d": {
+      "file": "/audio/treats/sound-d.mp3",
+      "text": "Find something that starts with duh!",
+      "speak": "Find something that starts with duh... duh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-e": {
+      "file": "/audio/treats/sound-e.mp3",
+      "text": "Find something that starts with eh!",
+      "speak": "Find something that starts with eh... eh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-f": {
+      "file": "/audio/treats/sound-f.mp3",
+      "text": "Find something that starts with ff!",
+      "speak": "Find something that starts with ff... ff!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-g": {
+      "file": "/audio/treats/sound-g.mp3",
+      "text": "Find something that starts with guh!",
+      "speak": "Find something that starts with guh... guh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-h": {
+      "file": "/audio/treats/sound-h.mp3",
+      "text": "Find something that starts with huh!",
+      "speak": "Find something that starts with huh... huh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-i": {
+      "file": "/audio/treats/sound-i.mp3",
+      "text": "Find something that starts with ih!",
+      "speak": "Find something that starts with ih... ih!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-j": {
+      "file": "/audio/treats/sound-j.mp3",
+      "text": "Find something that starts with juh!",
+      "speak": "Find something that starts with juh... juh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-k": {
+      "file": "/audio/treats/sound-k.mp3",
+      "text": "Find something that starts with kuh!",
+      "speak": "Find something that starts with kuh... kuh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-l": {
+      "file": "/audio/treats/sound-l.mp3",
+      "text": "Find something that starts with ll!",
+      "speak": "Find something that starts with ll... ll!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-m": {
+      "file": "/audio/treats/sound-m.mp3",
+      "text": "Find something that starts with mm!",
+      "speak": "Find something that starts with mm... mm!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-n": {
+      "file": "/audio/treats/sound-n.mp3",
+      "text": "Find something that starts with nn!",
+      "speak": "Find something that starts with nn... nn!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-o": {
+      "file": "/audio/treats/sound-o.mp3",
+      "text": "Find something that starts with o!",
+      "speak": "Find something that starts with o... o!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-p": {
+      "file": "/audio/treats/sound-p.mp3",
+      "text": "Find something that starts with puh!",
+      "speak": "Find something that starts with puh... puh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-q": {
+      "file": "/audio/treats/sound-q.mp3",
+      "text": "Find something that starts with kwuh!",
+      "speak": "Find something that starts with kwuh... kwuh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-r": {
+      "file": "/audio/treats/sound-r.mp3",
+      "text": "Find something that starts with rr!",
+      "speak": "Find something that starts with rr... rr!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-s": {
+      "file": "/audio/treats/sound-s.mp3",
+      "text": "Find something that starts with ss!",
+      "speak": "Find something that starts with ss... ss!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-t": {
+      "file": "/audio/treats/sound-t.mp3",
+      "text": "Find something that starts with tuh!",
+      "speak": "Find something that starts with tuh... tuh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-u": {
+      "file": "/audio/treats/sound-u.mp3",
+      "text": "Find something that starts with uh!",
+      "speak": "Find something that starts with uh... uh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-v": {
+      "file": "/audio/treats/sound-v.mp3",
+      "text": "Find something that starts with vv!",
+      "speak": "Find something that starts with vv... vv!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-w": {
+      "file": "/audio/treats/sound-w.mp3",
+      "text": "Find something that starts with wuh!",
+      "speak": "Find something that starts with wuh... wuh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-x": {
+      "file": "/audio/treats/sound-x.mp3",
+      "text": "Find something that starts with ks!",
+      "speak": "Find something that starts with ks... ks!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-y": {
+      "file": "/audio/treats/sound-y.mp3",
+      "text": "Find something that starts with yuh!",
+      "speak": "Find something that starts with yuh... yuh!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-sound-z": {
+      "file": "/audio/treats/sound-z.mp3",
+      "text": "Find something that starts with zz!",
+      "speak": "Find something that starts with zz... zz!",
+      "note": "Alphabet Set challenge, sound round - phonic spelling matches phonics-* speak"
+    },
+    "treat-tap-pictures": {
+      "file": "/audio/treats/tap-pictures.mp3",
+      "text": "Tap the pictures to learn more!",
+      "speak": "Tap the pictures to learn more!"
+    },
+    "treat-bakery-intro": {
+      "file": "/audio/treats/bakery-intro.mp3",
+      "text": "Let's make something yummy!",
+      "speak": "Let's make something yummy!"
     }
   },
   "edgeVoice": {
     "name": "en-US-AnaNeural",
     "rate": "-8%",
     "pitch": "+0Hz",
-    "$note": "Used by the EDGE generator (no billing, no account). AnaNeural is a real child voice. Edge ignores custom <phoneme> SSML, so phonics use the 'speak' spellings below \u2014 listen and respell per clip if any sound is off."
+    "$note": "Used by the EDGE generator (no billing, no account). AnaNeural is a real child voice. Edge ignores custom <phoneme> SSML, so phonics use the 'speak' spellings below — listen and respell per clip if any sound is off."
   },
   "voiceFree": {
     "name": "en-US-AnaNeural",

@@ -48,6 +48,14 @@ export const GAMES: readonly GameMeta[] = [
     colors: { bg: "#CFF1F4", border: "#00C4CC", text: "#0A1A3A" },
   },
   {
+    id: "letter-treats",
+    title: "Letter Treats",
+    description: "Phonics in Candy World",
+    glyph: "🧁",
+    route: "/games/letter-treats",
+    colors: { bg: "#FFD3E4", border: "#FF9EC4", text: "#C2417A" },
+  },
+  {
     id: "feed-the-shark",
     title: "Feed the Shark",
     description: "Match big & small letters",
