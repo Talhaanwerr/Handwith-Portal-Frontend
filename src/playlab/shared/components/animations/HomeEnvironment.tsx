@@ -193,12 +193,17 @@ interface EnvItem {
   duration: number;
   delay?: number;
   z?: number;
+  /** A living thing (bird / butterfly) rather than scenery (bush, seed).
+   *  Screens that need a calm, motionless backdrop opt out of these via
+   *  <HomeEnvironment creatures={false} /> — see the prop below. */
+  creature?: boolean;
 }
 
 const ITEMS: EnvItem[] = [
   // ── Distant layer (small, upper background) ──
   {
     el: <DistantBird color="#A882E8" />,
+    creature: true,
     x: "30%",
     y: "3.5%",
     w: "clamp(18px, 2vw, 30px)",
@@ -208,6 +213,7 @@ const ITEMS: EnvItem[] = [
   },
   {
     el: <DistantBird color="#74B9FF" />,
+    creature: true,
     r: "34%",
     y: "5.5%",
     w: "clamp(15px, 1.7vw, 26px)",
@@ -255,6 +261,7 @@ const ITEMS: EnvItem[] = [
   // ── Mid layer butterflies (edges) ──
   {
     el: <BigButterfly wing="#A882E8" accent="#DDD5F5" />,
+    creature: true,
     r: "3%",
     y: "16%",
     w: "clamp(40px, 5vw, 84px)",
@@ -264,6 +271,7 @@ const ITEMS: EnvItem[] = [
   },
   {
     el: <BigButterfly wing="#74B9FF" accent="#D4EEFF" />,
+    creature: true,
     x: "5%",
     y: "48%",
     w: "clamp(36px, 4.4vw, 74px)",
@@ -273,6 +281,7 @@ const ITEMS: EnvItem[] = [
   },
   {
     el: <BigButterfly wing="#FFD93D" accent="#FFF0B3" />,
+    creature: true,
     r: "2%",
     y: "56%",
     w: "clamp(32px, 4vw, 66px)",
@@ -284,6 +293,7 @@ const ITEMS: EnvItem[] = [
   // ── Close layer (largest, lower corners) ──
   {
     el: <BigButterfly wing="#FF9EBC" accent="#FFD6E8" />,
+    creature: true,
     x: "3%",
     y: "12%",
     w: "clamp(52px, 6.5vw, 110px)",
@@ -293,6 +303,7 @@ const ITEMS: EnvItem[] = [
   },
   {
     el: <BigBird body="#74B9FF" belly="#EAF6FF" />,
+    creature: true,
     x: "2%",
     y: "70%",
     w: "clamp(64px, 8.5vw, 140px)",
@@ -303,6 +314,7 @@ const ITEMS: EnvItem[] = [
   },
   {
     el: <BigBird body="#FF9EBC" belly="#FFEDF4" flip />,
+    creature: true,
     r: "2%",
     y: "72%",
     w: "clamp(56px, 7.5vw, 122px)",
@@ -313,6 +325,7 @@ const ITEMS: EnvItem[] = [
   },
   {
     el: <BigBird body="#8FD6A8" belly="#EAFBEF" />,
+    creature: true,
     r: "1.5%",
     y: "30%",
     w: "clamp(44px, 5.5vw, 92px)",
@@ -323,10 +336,24 @@ const ITEMS: EnvItem[] = [
   },
 ];
 
-export function HomeEnvironment() {
+interface HomeEnvironmentProps {
+  /**
+   * Render the birds and butterflies. Default true — every menu keeps the
+   * backdrop it already has.
+   *
+   * Gameplay screens that ask a child to SCAN for something should pass false.
+   * Drifting creatures are exactly the kind of peripheral motion that pulls an
+   * eye away from a search task, and on Letter Hunt they were competing with
+   * the letters the child is hunting. Static scenery (bushes, seeds) stays.
+   */
+  creatures?: boolean;
+}
+
+export function HomeEnvironment({ creatures = true }: HomeEnvironmentProps = {}) {
+  const items = creatures ? ITEMS : ITEMS.filter((i) => !i.creature);
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      {ITEMS.map((item, i) => (
+      {items.map((item, i) => (
         <motion.div
           key={i}
           className="pl-pos absolute"

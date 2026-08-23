@@ -26,6 +26,36 @@ import {
 } from "@shared/audio/sfx";
 
 const NUM_RE = /^[0-9]+$/;
+const ALPHA_RE = /^[A-Za-z]$/;
+
+/**
+ * The letter INTRODUCTION is case-aware, and the case is read off the glyph
+ * itself — the tracing screen already renders exactly the character the child
+ * is learning, so nothing has to be threaded down from the module setting and
+ * no letter needs a special case of its own.
+ *
+ *   UPPERCASE  →  the letter NAME only          ("A")
+ *   lowercase  →  name · phonic sound · word    ("a … aa … apple")
+ *
+ * Uppercase is the child's first contact with a glyph and is taught by name;
+ * the phonic sound belongs with the lowercase form they will actually read.
+ * Numbers were already name-only and are unchanged.
+ */
+function introClips(letter: string): string[] {
+  if (NUM_RE.test(letter)) return [`number-${letter}`];
+  const l = letter.toLowerCase();
+  const isUppercase = ALPHA_RE.test(letter) && letter === letter.toUpperCase();
+  // Uppercase says the letter NAME and the OBJECT NAME — "A … apple" — but
+  // never the phonic sound. Only the phonics were unwanted; naming the picture
+  // is what makes the picture mean anything.
+  return isUppercase ? [`letter-${l}`, `word-${l}`] : [`letter-${l}`, `phonics-${l}`, `word-${l}`];
+}
+
+/** Index of the anchor-word clip in this letter's intro, or -1 when the intro
+ *  does not speak one (uppercase, numbers) — the screen syncs the picture to it. */
+function wordClipIndex(letter: string): number {
+  return introClips(letter).findIndex((id) => id.startsWith("word-"));
+}
 
 export function useAudio() {
   // Wire shared volume/mute settings once on mount
@@ -43,15 +73,12 @@ export function useAudio() {
   /** Preload every clip this letter's full flow will need (intro, guidance,
    *  success feedback) so no interaction waits on a fetch */
   const preloadForLetter = useCallback((letter: string) => {
-    if (NUM_RE.test(letter)) {
-      preloadClips([`number-${letter}`, "instr-watch-carefully", "instr-your-turn"]);
-      return;
-    }
-    const l = letter.toLowerCase();
+    // The intro's own clips FIRST — they are the ones with a deadline. Only
+    // what this letter will actually speak is fetched, so an uppercase letter
+    // no longer has its name clip queued behind a phonics and a word clip it
+    // is never going to play.
     preloadClips([
-      `letter-${l}`,
-      `phonics-${l}`,
-      `word-${l}`,
+      ...introClips(letter),
       "instr-watch-carefully",
       "instr-your-turn",
       "instr-try-again",
@@ -61,20 +88,25 @@ export function useAudio() {
   }, []);
 
   /**
-   * The letter introduction, choreographed from REAL audio durations:
-   * name → pause → phonics → pause → anchor word. Resolves only when the
-   * voice has completely finished, so the demonstration can never start over
-   * speech. onWord fires exactly when the anchor-word clip begins.
+   * The letter introduction, choreographed from REAL audio durations rather
+   * than guessed timers:
+   *
+   *   uppercase / numbers →  name
+   *   lowercase           →  name · pause · phonic sound · pause · anchor word
+   *
+   * onWord fires exactly when the anchor-word clip begins (lowercase only —
+   * see introClips), so the picture and the word are always in sync. onDone
+   * fires when the voice has genuinely finished.
+   *
+   * The inter-clip pause is short on purpose: it is a breath between two
+   * spoken parts, not padding. Every clip still plays to its real end.
    */
   const speakLetterIntro = useCallback(
     (letter: string, onDone?: () => void, onWord?: () => void) => {
-      if (NUM_RE.test(letter)) {
-        void playClip(`number-${letter}`).then(() => onDone?.());
-        return;
-      }
-      const l = letter.toLowerCase();
-      void playSequence([`letter-${l}`, `phonics-${l}`, `word-${l}`], 250, (i) => {
-        if (i === 2) onWord?.();
+      const clips = introClips(letter);
+      const wordAt = wordClipIndex(letter);
+      void playSequence(clips, 160, (i) => {
+        if (i === wordAt) onWord?.();
       }).then(() => onDone?.());
     },
     []

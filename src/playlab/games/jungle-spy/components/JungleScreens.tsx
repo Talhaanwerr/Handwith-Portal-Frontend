@@ -20,7 +20,12 @@ import {
 } from "@shared/components/illustrations/AnimalArt";
 import { playClip } from "@shared/audio/voice";
 import { playClickSound } from "@shared/audio/sfx";
+import { continueLetter } from "@shared/utils/progression";
 import { StartOptions } from "@shared/components/ui/StartOptions";
+import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
+
+/** Four familiar faces flanking the title — existing art, no new assets. */
+const JSP_TITLE_ANIMALS = ["monkey", "lion", "giraffe", "elephant"] as const;
 
 /** Soft jungle backdrop: layered pastel leaves and vines in the margins.
  *  Decorative only — pointer-events none, calm slow sway. */
@@ -255,7 +260,7 @@ export function JungleSplash({ onExitPortal }: { onExitPortal?: () => void }) {
 /** Alphabet grid on leafy tiles + rainbow progress */
 export function JungleGrid() {
   const store = useJungleStore();
-  const { letterCase, setLetter, setScreen, setCase } = store;
+  const { letterCase, setScreen, setCase, beginRun, jumpTo } = store;
   // progress is per case: switching BIG ↔ little switches to that run's board
   const found = foundFor(store, letterCase);
   const foundCount = found.length;
@@ -266,16 +271,19 @@ export function JungleGrid() {
     return () => clearTimeout(t);
   }, []);
 
+  /** Tapping a tile starts (or redirects) a run at that animal. */
   const openLetter = (l: string) => {
     playClickSound();
-    setLetter(l);
+    jumpTo(l);
     setScreen("level");
   };
 
   // Unified start flow (same as Letter Tracing / Letter Hunt): continue from
   // the first animal not yet found, or start over from A.
   const ALPHA = JUNGLE_ANIMALS.map((a) => a.letter);
-  const nextUnfound = ALPHA.find((l) => !found.includes(l)) ?? "A";
+  /** What Continue will ACTUALLY open — the shared calculation, identical to
+   *  the one beginRun("continue") uses. */
+  const nextUnfound = continueLetter(ALPHA, found);
   const runComplete = found.length >= ALPHA.length;
   const hasProgress = found.length > 0 && !runComplete;
 
@@ -296,9 +304,63 @@ export function JungleGrid() {
         }}
       />
 
+      {/* ── Jungle Spy identity: the title, with animals perched around it ──
+          Existing SVG art from ANIMAL_ART, laid straight onto the screen with
+          no cards or frames around them — they read as inhabitants of the
+          screen rather than as UI. Decorative only: aria-hidden and
+          pointer-events-none, so they never sit between a child and a tile. */}
+      <div className="relative z-10 mt-auto flex w-full flex-col items-center">
+        <div className="jsp-title-row relative flex items-end justify-center gap-3">
+          {JSP_TITLE_ANIMALS.slice(0, 2).map((key) => {
+            const Art = ANIMAL_ART[key];
+            return Art ? (
+              <motion.div
+                key={key}
+                className="jsp-title-animal"
+                animate={{ y: [0, -7, 0] }}
+                transition={{
+                  duration: 3.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: key.length * 0.2,
+                }}
+                aria-hidden="true"
+              >
+                <Art />
+              </motion.div>
+            ) : null;
+          })}
+
+          <h1 className="jsp-title font-rounded text-jungle text-center font-black">Jungle Spy</h1>
+
+          {JSP_TITLE_ANIMALS.slice(2).map((key) => {
+            const Art = ANIMAL_ART[key];
+            return Art ? (
+              <motion.div
+                key={key}
+                className="jsp-title-animal"
+                animate={{ y: [0, -7, 0] }}
+                transition={{
+                  duration: 3.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: key.length * 0.25,
+                }}
+                aria-hidden="true"
+              >
+                <Art />
+              </motion.div>
+            ) : null;
+          })}
+        </div>
+        <p className="font-rounded text-jungle-muted text-sm font-semibold">
+          Pick a letter to go spying
+        </p>
+      </div>
+
       {/* Top bar — case toggle now centered on its own, no longer sharing
           the row with the back button */}
-      <div className="relative z-10 mt-auto flex w-full max-w-md items-center justify-center md:max-w-2xl">
+      <div className="relative z-10 flex w-full max-w-md items-center justify-center md:max-w-2xl">
         <div className="flex rounded-full bg-white/70 p-1" role="group" aria-label="Letter size">
           {(["upper", "lower"] as const).map((c) => (
             <button
@@ -384,10 +446,21 @@ export function JungleGrid() {
                   playClickSound();
                   setScreen("complete");
                 }
-              : () => openLetter(nextUnfound)
+              : () => {
+                  // CONTINUE — only the animals still to find.
+                  playClickSound();
+                  beginRun(0, "continue");
+                  setScreen("level");
+                }
           }
           continueLabel={runComplete ? "See my alphabet!" : `Continue · ${nextUnfound}`}
-          onStartFromA={() => openLetter("A")}
+          onStartFromA={() => {
+            // START FROM A — a FRESH run: every animal from A onward, found or
+            // not. Saved progress is left untouched.
+            playClickSound();
+            beginRun(0, "fresh");
+            setScreen("level");
+          }}
         />
       </div>
     </div>

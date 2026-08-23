@@ -10,8 +10,8 @@ import { useElementSize } from "@shared/hooks/useElementSize";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { cssVars } from "@shared/styles/cssVars";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
-import { playClickSound, playStarPop, playIncorrectSound, playChime } from "@shared/audio/sfx";
-import { playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
+import { playClickSound, playStarPop, playIncorrectSound } from "@shared/audio/sfx";
+import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
 import { shuffle } from "@shared/utils/random";
 import { GROUPS, TOTAL_GROUPS, LOWERCASE } from "@games/magnet-match/constants/letters";
 import {
@@ -82,13 +82,7 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
   // child hears exactly what to look for.
   useEffect(() => {
     const letterClips = group.map((l) => `letter-${l}`);
-    preloadClips([
-      "magnet-intro",
-      "cheer-yoo-hoo",
-      "magnet-excellent",
-      "magnet-soup",
-      ...letterClips,
-    ]);
+    preloadClips(["magnet-intro", "magnet-excellent", ...letterClips]);
     let cancelled = false;
     const t = setTimeout(() => {
       if (cancelled) return;
@@ -185,7 +179,11 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
     (letter: string) => {
       setFlying(null);
       playStarPop();
-      void playSequence(["cheer-yoo-hoo", `letter-${letter}`], 150);
+      // The star pop already says "that was right" — a spoken "Yoo hoo!" on
+      // TOP of it, 26 times a game, was celebrating the same event twice and
+      // pushing the letter name (the only part that teaches anything) later.
+      // SFX for the verdict, voice for the letter.
+      void playClip(`letter-${letter}`);
       setBurstSlot(letter);
       schedule(() => setBurstSlot(null), 650);
       const now = [...matched, letter];
@@ -196,8 +194,8 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
         schedule(() => {
           setCelebrating(true);
           setOwlHop(true);
-          playChime(); // soft ding as the alphabet progress advances
-          void playSequence(["magnet-excellent", "magnet-soup"], 250);
+          // One line at group end, and it is the praise.
+          void playClip("magnet-excellent");
         }, 700);
         schedule(onGroupComplete, 700 + GROUP_DONE_MS);
       }
@@ -534,7 +532,7 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
               {clipText("magnet-excellent")}
             </motion.h2>
             <p className="font-rounded text-kitchen-ink text-base font-bold">
-              {clipText("magnet-soup")} {groupIndex + 1} / {TOTAL_GROUPS}
+              {groupIndex + 1} / {TOTAL_GROUPS}
             </p>
           </CelebrationOverlay>
         )}

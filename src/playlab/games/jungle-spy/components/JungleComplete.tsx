@@ -20,12 +20,15 @@ interface JungleCompleteProps {
  * just completed rather than always being A–Z.
  */
 export function JungleComplete({ onExitPortal }: JungleCompleteProps) {
-  const { letterCase, resetProgress, setLetter, setScreen } = useJungleStore();
+  const { letterCase, resetProgress, beginRun, setScreen } = useJungleStore();
   const lower = letterCase === "lower";
 
   const playAgain = () => {
     resetProgress(letterCase); // only the case just finished starts over
-    setLetter("A");
+    // A run, not a bare letter. setLetter("A") moved the pointer but left
+    // run === null, so the first "Next" called advance() on nothing, got false
+    // and bounced straight back to the finale — one animal into a fresh replay.
+    beginRun(0, "fresh");
     setScreen("grid");
   };
 

@@ -13,7 +13,7 @@
 
 import { Howl } from "howler";
 import { duckMusic } from "@shared/audio/music";
-import { speak } from "@shared/audio/speech";
+import { speak, primeVoices } from "@shared/audio/speech";
 import manifest from "./manifest.json";
 
 type ClipId = string;
@@ -85,8 +85,15 @@ export function clipText(id: ClipId): string {
   return CLIPS[id]?.text ?? "";
 }
 
-/** Warm the cache for clips the current interaction will need. */
+/** Warm the cache for clips the current interaction will need.
+ *
+ *  Also primes the Web Speech voice list, because that is the OTHER thing a
+ *  first spoken line can end up waiting on: if an MP3 is missing the fallback
+ *  cannot speak until the device has published its voices, which on a cold
+ *  synth costs up to ~1.1s. Warming both here means "preloaded" really does
+ *  mean "ready to make a sound", whichever path ends up being used. */
 export function preloadClips(ids: ClipId[]): void {
+  primeVoices();
   for (const id of ids) getClip(id);
 }
 
@@ -124,15 +131,21 @@ export function playClip(id: ClipId): Promise<void> {
     duckMusic(true);
 
     let settled = false;
-    const finish = (useSpeech = false) => {
+    /** `blacklist` marks the clip as permanently unavailable — only ever for a
+     *  REAL error. A slow load is not a broken file: blacklisting on a timeout
+     *  used to condemn a perfectly good MP3 to browser speech for the rest of
+     *  the session after one slow fetch. */
+    const finish = (useSpeech = false, blacklist = useSpeech) => {
       if (settled) return;
       settled = true;
       if (current === h) current = null;
       duckMusic(false);
       h.off("end", onEnd);
       if (useSpeech) {
-        failedIds.add(id);
-        cache.delete(id);
+        if (blacklist) {
+          failedIds.add(id);
+          cache.delete(id);
+        }
         void playSpoken(def).then(resolve);
         return;
       }
@@ -150,13 +163,20 @@ export function playClip(id: ClipId): Promise<void> {
         if (!settled) finish(false);
       }, 6000);
     } else {
+      // Play the INSTANT the fetch already in flight completes.
       h.once("load", () => {
         if (!settled) h.play();
       });
-      h.load();
+      // getClip() creates every Howl with preload:true, so a clip in the
+      // "loading" state is already fetching. Calling load() again there
+      // restarts that fetch from zero — which is exactly what made the first
+      // line of a screen arrive late. Only kick off a load that never started.
+      if (h.state() === "unloaded") h.load();
+      // Fail-safe only: give the fetch a realistic window on a slow
+      // connection, and fall back to speech WITHOUT condemning the file.
       setTimeout(() => {
-        if (!settled && h.state() !== "loaded") finish(true);
-      }, 1200);
+        if (!settled && h.state() !== "loaded") finish(true, false);
+      }, 2500);
     }
   });
 }

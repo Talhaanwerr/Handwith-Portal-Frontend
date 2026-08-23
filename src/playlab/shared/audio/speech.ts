@@ -172,6 +172,25 @@ function speakParts(
   next(0);
 }
 
+/**
+ * Ask the device for its voice list (and settle on THE voice) as early as
+ * possible — the moment a screen preloads its clips, long before anything is
+ * spoken.
+ *
+ * Why this matters for TIMING: speak() refuses to talk until the voice list
+ * has loaded, retrying every 180ms up to 6 times. On a cold synth that is up
+ * to ~1.1s of silence added to the first spoken line of a session. Priming
+ * here means the list is already resolved by the time anything needs saying.
+ * Safe and cheap to call repeatedly — pickVoice() is sticky.
+ */
+function primeVoices(): void {
+  if (typeof window === "undefined") return;
+  const synth = window.speechSynthesis;
+  if (!synth) return;
+  synth.getVoices();
+  pickVoice();
+}
+
 /** Pre-warm the device voice list; safe to call repeatedly. Returns an
  *  unsubscribe function for the voiceschanged listener. */
 function onVoicesLoaded(): () => void {
@@ -188,4 +207,4 @@ function onVoicesLoaded(): () => void {
   return () => synth.removeEventListener("voiceschanged", load);
 }
 
-export { speak, speakParts, onVoicesLoaded };
+export { speak, speakParts, onVoicesLoaded, primeVoices };

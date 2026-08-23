@@ -11,13 +11,23 @@ import { useHuntStore, type HuntScreen } from "@games/letter-hunt/store/huntStor
 import { HuntSplash, HuntHome } from "@games/letter-hunt/components/HuntScreens";
 import { HuntLevel } from "@games/letter-hunt/components/HuntLevel";
 import { HuntComplete } from "@games/letter-hunt/components/HuntComplete";
+import { HuntModeSelect } from "@games/letter-hunt/components/HuntModeSelect";
 
-/** Coarse history bucket for this game's screen graph. "level" (gameplay)
- *  is its own step; splash/home collapse into "menu" so switching letters
- *  from the home shelf never spams history — only entering/leaving actual
- *  play does. */
+/**
+ * Coarse history bucket for this game's screen graph.
+ *
+ * mode-select deliberately shares the "menu" bucket with splash/home rather
+ * than owning a step of its own. Giving it a step made Back from an active
+ * hunt pop to the mode picker — which is not a place the child was retreating
+ * *to*, it is a gate they already passed through. The hierarchy the UX implies
+ * is menu (choose letter / choose mode) → play, so that is what history models:
+ *
+ *   Back during a hunt  →  HOME
+ *
+ * The finale sits with gameplay, so Back from it returns home rather than
+ * dropping out of the game entirely.
+ */
 function toBucket(screen: HuntScreen): "menu" | "play" {
-  // the finale sits with gameplay: back from it returns home, not out of the game
   return screen === "level" || screen === "complete" ? "play" : "menu";
 }
 
@@ -31,6 +41,8 @@ export function LetterHuntGame() {
   // the forward push that created it already put the right screen in place.
   const handlePop = useCallback(
     (bucket: string) => {
+      // "menu" always resolves to home specifically — a safe, always-valid
+      // landing spot, and the screen the child expects Back to reach.
       if (bucket === "menu") setScreen("home");
     },
     [setScreen]
@@ -54,6 +66,11 @@ export function LetterHuntGame() {
         {screen === "home" && (
           <motion.div key="home" className="absolute inset-0" {...PAGE_TRANSITION}>
             <HuntHome onExitPortal={() => router.push(PORTAL_ROUTE)} />
+          </motion.div>
+        )}
+        {screen === "mode-select" && (
+          <motion.div key="mode-select" className="absolute inset-0" {...PAGE_TRANSITION}>
+            <HuntModeSelect />
           </motion.div>
         )}
         {screen === "level" && (

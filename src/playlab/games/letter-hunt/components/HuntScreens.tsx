@@ -10,6 +10,7 @@ import { ProgressBar } from "@shared/components/ui/ProgressBar";
 import { cssVars } from "@shared/styles/cssVars";
 import { StartOptions } from "@shared/components/ui/StartOptions";
 import { playClickSound } from "@shared/audio/sfx";
+import { continueLetter } from "@shared/utils/progression";
 
 export const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -70,20 +71,46 @@ export function HuntSplash() {
  *  (no separate "choose a letter" page to navigate to). */
 export function HuntHome({ onExitPortal }: { onExitPortal?: () => void }) {
   const store = useHuntStore();
-  const { currentIndex, letterCase, setIndex, setScreen, setCase } = store;
+  const { currentIndex, letterCase, setScreen, setCase, beginRun, jumpTo } = store;
   // BIG letters and little letters are separate runs with separate finales
   const completed = completedFor(store, letterCase);
   const cased = (l: string) => (letterCase === "lower" ? l.toLowerCase() : l);
+  /** What Continue will ACTUALLY open — the same calculation beginRun uses, so
+   *  the button can no longer promise one letter and deliver another. */
+  const continueAt = continueLetter(LETTERS, completed);
 
+  /**
+   * EVERY entry into play from this screen asks for the mode.
+   *
+   * This used to be `setScreen(mode ? "level" : "mode-select")` — a once-per-
+   * session gate copied from the tracing game. That was wrong here: the mode
+   * stuck after the first answer, so coming back to home and tapping a
+   * different letter dropped the child straight into a hunt under whichever
+   * mode they had picked earlier, with no way to change it short of reloading.
+   *
+   * A Letter Hunt round is one letter, so the mode is a per-round choice, not
+   * a per-session one. Advancing WITHIN a run (the Next button) keeps the mode
+   * and does not re-ask — only coming back out to home does.
+   */
+  const enterLevel = () => setScreen("mode-select");
+
+  /** START FROM A — a FRESH run: every letter from A onward, whether or not
+   *  it has been completed before. Saved progress is left untouched. */
   const startFromA = () => {
     playClickSound();
-    setIndex(0);
-    setScreen("level");
+    beginRun(0, "fresh");
+    enterLevel();
   };
+  /** Tapping a tile starts (or redirects) a run at that letter. */
   const pick = (i: number) => {
     playClickSound();
-    setIndex(i);
-    setScreen("level");
+    jumpTo(LETTERS[i]);
+    enterLevel();
+  };
+  /** CONTINUE — a run of only the letters still outstanding. */
+  const continueRun = () => {
+    beginRun(0, "continue");
+    enterLevel();
   };
 
   const runComplete = completed.length >= 26;
@@ -210,13 +237,9 @@ export function HuntHome({ onExitPortal }: { onExitPortal?: () => void }) {
                   playClickSound();
                   setScreen("complete");
                 }
-              : () => {
-                  setScreen("level");
-                }
+              : continueRun
           }
-          continueLabel={
-            runComplete ? "See my alphabet!" : `Continue · ${cased(LETTERS[currentIndex])}`
-          }
+          continueLabel={runComplete ? "See my alphabet!" : `Continue · ${cased(continueAt)}`}
           onStartFromA={startFromA}
         />
       </div>
