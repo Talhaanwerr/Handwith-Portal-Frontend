@@ -148,7 +148,7 @@ for (const [id, clip] of clips) {
   }
   await mkdir(dirname(out), { recursive: true });
   try {
-    const size = await generate(runner, id, clip, out);
+    await generate(runner, id, clip, out);
     made++;
     if (TEST) {
       break;
@@ -160,6 +160,8 @@ for (const [id, clip] of clips) {
     if (TEST) break;
   }
 }
+
+console.log(`\nDone: ${made} generated, ${skipped} skipped (already exist), ${failed} failed.`);
 
 if (failures.length) {
   console.error("\nFailed clips:\n  " + failures.join("\n  "));
