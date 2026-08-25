@@ -124,7 +124,6 @@ async function generate(runner, id, clip, out) {
 }
 
 const runner = await findRunner();
-console.log(`Edge TTS via: ${[runner.cmd, ...runner.pre].join(" ")}  (${runner.version})`);
 
 let clips = Object.entries(manifest.clips).filter(([id]) => id.startsWith("treat-"));
 if (ONLY) {
@@ -134,7 +133,7 @@ if (ONLY) {
     process.exit(1);
   }
 }
-console.log(`${clips.length} clips - voice ${voice} ${rate} ${pitch}${TEST ? " - TEST: one clip only" : ""}`);
+
 
 let made = 0,
   skipped = 0,
@@ -152,10 +151,8 @@ for (const [id, clip] of clips) {
     const size = await generate(runner, id, clip, out);
     made++;
     if (TEST) {
-      console.log(`  OK ${id} -> ${clip.file} (${size} bytes)\n\nTest clip generated. Run again without --test for the rest.`);
       break;
     }
-    if (made % 25 === 0) console.log(`  ${made} generated...`);
   } catch (err) {
     failed++;
     failures.push(`${id} (${clip.file}): ${err.message}`);
@@ -164,7 +161,6 @@ for (const [id, clip] of clips) {
   }
 }
 
-console.log(`\ndone - ${made} generated, ${skipped} skipped (already present), ${failed} failed`);
 if (failures.length) {
   console.error("\nFailed clips:\n  " + failures.join("\n  "));
   process.exitCode = 1;

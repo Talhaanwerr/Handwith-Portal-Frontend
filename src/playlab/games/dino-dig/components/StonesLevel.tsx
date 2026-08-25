@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { AlphabetStrip } from "@games/dino-dig/components/AlphabetStrip";
+import { displayLetter, type LetterCase } from "@games/dino-dig/store/dinoStore";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { cssVars } from "@shared/styles/cssVars";
@@ -24,6 +25,8 @@ import { DinoBackdrop } from "@games/dino-dig/components/DinoBackdrop";
 import { CAST, LetterStone } from "@games/dino-dig/components/DinoArt";
 
 interface StonesLevelProps {
+  /** BIG or small letters — display only; data stays canonical uppercase. */
+  letterCase: LetterCase;
   /** Which crossing this is (0–6) — also which cast member is waiting. */
   crossing: number;
   onCrossingDone: () => void;
@@ -60,7 +63,9 @@ const CHEERS = [
  * pointer capture, a root-relative ghost (never position:fixed — see
  * shared/utils/pointer.ts), and an inflated drop target.
  */
-export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
+export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLevelProps) {
+  /** The letter as the child sees it. */
+  const show = (l: string) => displayLetter(l, letterCase);
   const router = useRouter();
   const group = STONE_GROUPS[crossing];
   const crosser = CAST[crossing % CAST.length];
@@ -278,6 +283,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
       {/* ── The alphabet so far ── */}
       <div className="hide-on-short relative z-10 mt-2 w-full max-w-5xl">
         <AlphabetStrip
+          letterCase={letterCase}
           revealedIndex={revealedIndex}
           current={next ?? ""}
           targets={[]}
@@ -337,7 +343,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 16 }}
                   >
-                    {letter}
+                    {show(letter)}
                   </motion.div>
                 );
               }
@@ -352,7 +358,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
                     animate={wrongShake ? { x: [-6, 6, -4, 4, 0] } : { x: 0 }}
                     transition={{ duration: 0.42 }}
                     role="img"
-                    aria-label={`Bridge gap — drop the letter ${letter} here`}
+                    aria-label={`Bridge gap — drop the letter ${show(letter)} here`}
                   >
                     ?
                   </motion.div>
@@ -410,9 +416,9 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
                   onPointerDown={(e) => startDrag(e, letter)}
                   role="button"
                   tabIndex={0}
-                  aria-label={`Stone with the letter ${letter} — drag it to the bridge gap`}
+                  aria-label={`Stone with the letter ${show(letter)} — drag it to the bridge gap`}
                 >
-                  <LetterStone letter={letter} />
+                  <LetterStone letter={show(letter)} />
                 </motion.div>
               );
             })}
@@ -436,7 +442,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
               animate={{ scale: 0.8, rotate: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <LetterStone letter={flying.letter} />
+              <LetterStone letter={show(flying.letter)} />
             </motion.div>
           </div>
         </motion.div>
@@ -449,7 +455,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
           style={cssVars({ "--pl-x": `${drag.x}px`, "--pl-y": `${drag.y}px` })}
           aria-hidden="true"
         >
-          <LetterStone letter={drag.letter} />
+          <LetterStone letter={show(drag.letter)} />
         </div>
       )}
 

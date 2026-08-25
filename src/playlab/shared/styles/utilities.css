@@ -190,3 +190,77 @@
 .pl-overlay-blur {
   backdrop-filter: blur(var(--pl-blur, 2px));
 }
+
+/* ─── Letter puzzle ─────────────────────────────────────────────────────────
+   Structure for the shared letter-piece system (see
+   shared/components/game/LetterPuzzle.tsx). Layout and geometry only — every
+   colour is left to the game, which paints these same classes scoped under
+   its own root. Two games build letters this way (Space ABC, Ocean ABC), so
+   the structure is stated once here rather than copied into each. */
+
+/** Fills its parent; the game sizes the parent to make the letter big. */
+.pl-lp-assembly {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pl-lp-guide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pl-lp-guide-seam,
+.pl-lp-guide-rim {
+  fill: none;
+}
+
+/** A placed (or previewed) piece, at its own box within the letter square, so
+ *  it lands in exact register with the guide beneath. */
+.pl-lp-placed {
+  position: absolute;
+  width: var(--pl-w);
+  height: var(--pl-h);
+}
+
+/** A loose / dragged / in-flight piece. Width and height come from the
+ *  piece's real box — the part of the LETTER it holds — so each element is
+ *  tightly sized to the fragment it draws. */
+.pl-lp-loose {
+  position: absolute;
+  width: var(--pl-w);
+  height: var(--pl-h);
+}
+
+/** …and the same piece as a normal flow item (a row or tray of pieces). */
+.pl-lp-loose--flow {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.pl-lp-piece {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pl-lp-cut,
+.pl-lp-rim {
+  fill: none;
+  stroke-linejoin: round;
+}
+
+/** Off-screen glyph used only to measure the letter's real bounds (see
+ *  useGlyphFit). Must stay rendered — display:none has no geometry. */
+.pl-lp-measure {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}

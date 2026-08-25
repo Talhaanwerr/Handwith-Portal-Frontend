@@ -4,11 +4,14 @@ import { motion } from "framer-motion";
 import { AlphabetFinale } from "@shared/components/game/AlphabetFinale";
 import { clipText } from "@shared/audio/voice";
 import { ALPHABET } from "@games/dino-dig/constants/rounds";
+import { displayLetter, type LetterCase } from "@games/dino-dig/store/dinoStore";
 import { DinoBackdrop } from "@games/dino-dig/components/DinoBackdrop";
 import { CAST } from "@games/dino-dig/components/DinoArt";
 import type { DinoMode } from "@games/dino-dig/store/dinoStore";
 
 interface DinoCompleteProps {
+  /** BIG or small letters — the finale tiles mirror what was played. */
+  letterCase: LetterCase;
   mode: DinoMode;
   /** The letters served in the finished feed session (its finale tiles). */
   feedLetters: readonly string[];
@@ -22,11 +25,19 @@ interface DinoCompleteProps {
  * this game's palette, the seven-dino parade and per-mode wording: feed shows
  * the ten letters that were served, the river shows the whole alphabet bridge.
  */
-export function DinoComplete({ mode, feedLetters, onPlayAgain, onExitPortal }: DinoCompleteProps) {
+export function DinoComplete({
+  mode,
+  letterCase,
+  feedLetters,
+  onPlayAgain,
+  onExitPortal,
+}: DinoCompleteProps) {
   const isFeed = mode === "feed";
   return (
     <AlphabetFinale
-      symbols={isFeed && feedLetters.length > 0 ? [...feedLetters] : [...ALPHABET]}
+      symbols={(isFeed && feedLetters.length > 0 ? feedLetters : ALPHABET).map((l) =>
+        displayLetter(l, letterCase)
+      )}
       headline={clipText("cheer-you-did-it")}
       subline={isFeed ? "The dinos are all full!" : "All seven dinos made it across!"}
       clipId="cheer-you-did-it"

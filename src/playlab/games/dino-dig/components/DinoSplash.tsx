@@ -13,8 +13,6 @@ import type { DinoMode } from "@games/dino-dig/store/dinoStore";
 interface DinoSplashProps {
   onPick: (mode: DinoMode) => void;
   onExitPortal?: () => void;
-  /** True when a river crossing is saved mid-way — that button reads Continue. */
-  stonesInProgress: boolean;
 }
 
 /**
@@ -28,7 +26,7 @@ interface DinoSplashProps {
  * No auto-played intro clip here: with two modes there is no honest single
  * line to speak, and each mode announces itself the moment it opens instead.
  */
-export function DinoSplash({ onPick, onExitPortal, stonesInProgress }: DinoSplashProps) {
+export function DinoSplash({ onPick, onExitPortal }: DinoSplashProps) {
   useEffect(() => {
     // warm the clips both modes open with
     preloadClips(["hunt-find-a", "instr-put-letters-in-order", "letter-a"]);
@@ -126,13 +124,9 @@ export function DinoSplash({ onPick, onExitPortal, stonesInProgress }: DinoSplas
               playClickSound();
               onPick("stones");
             }}
-            aria-label={
-              stonesInProgress
-                ? "Continue River Crossing — build the letter bridge"
-                : "Play River Crossing — build the letter bridge"
-            }
+            aria-label="Play River Crossing — build the letter bridge"
           >
-            {stonesInProgress ? "Keep Crossing" : "River Crossing"}
+            River Crossing
           </Button>
         </motion.div>
       </div>

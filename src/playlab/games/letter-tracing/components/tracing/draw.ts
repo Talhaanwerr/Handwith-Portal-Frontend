@@ -69,7 +69,12 @@ export function drawPolyline(
 }
 
 /** Soft playful arrows along the active stroke — gentle pulse + tiny drift */
-export function drawArrows(ctx: CanvasRenderingContext2D, geom: StrokeGeom, time: number) {
+export function drawArrows(
+  ctx: CanvasRenderingContext2D,
+  geom: StrokeGeom,
+  time: number,
+  arrowColor: string = COLOR_ARROW
+) {
   for (let i = 0; i < geom.arrows.length; i++) {
     const a = geom.arrows[i];
     const phase = time * 1.6 + i * 0.9;
@@ -85,7 +90,7 @@ export function drawArrows(ctx: CanvasRenderingContext2D, geom: StrokeGeom, time
     ctx.rotate(angle);
     ctx.globalAlpha = 0.5 + pulse * 0.35;
     ctx.fillStyle = "white";
-    ctx.strokeStyle = COLOR_ARROW;
+    ctx.strokeStyle = arrowColor;
     ctx.lineWidth = 2.4;
     ctx.lineJoin = "round";
     ctx.lineCap = "round";

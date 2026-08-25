@@ -63,4 +63,20 @@ export const GAMES: readonly GameMeta[] = [
     route: "/games/feed-the-shark",
     colors: { bg: "#D4EEFF", border: "#74B9FF", text: "#2980B9" },
   },
+  {
+    id: "space-letters",
+    title: "Space ABC",
+    description: "Discover letters among the stars",
+    glyph: "🚀",
+    route: "/play/space-letters",
+    colors: { bg: "#0B1330", border: "#5B7FFF", text: "#FFFFFF" },
+  },
+  {
+    id: "ocean-abc",
+    title: "Ocean ABC",
+    description: "Build, pop & write letters",
+    glyph: "🫧",
+    route: "/play/ocean-abc",
+    colors: { bg: "#114A70", border: "#6FC7EF", text: "#FFFFFF" },
+  },
 ] as const;

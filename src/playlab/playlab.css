@@ -16,6 +16,8 @@
 @import "./games/feed-the-shark/styles/feed-the-shark.css";
 @import "./games/dino-dig/styles/dino-dig.css";
 @import "./games/letter-treats/styles/letter-treats.css";
+@import "./games/space-letters/styles/space-letters.css";
+@import "./games/ocean-abc/styles/ocean-abc.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

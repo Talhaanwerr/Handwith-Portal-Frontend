@@ -26,6 +26,12 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "feed-the-shark": lazy(() =>
     import("@games/feed-the-shark/FeedTheSharkGame").then((m) => ({ default: m.FeedTheSharkGame }))
   ),
+  "space-letters": lazy(() =>
+    import("@games/space-letters/SpaceLettersGame").then((m) => ({ default: m.SpaceLettersGame }))
+  ),
+  "ocean-abc": lazy(() =>
+    import("@games/ocean-abc/OceanAbcGame").then((m) => ({ default: m.OceanAbcGame }))
+  ),
 };
 
 interface GamePlayerProps {

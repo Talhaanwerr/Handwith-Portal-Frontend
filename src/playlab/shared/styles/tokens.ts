@@ -91,6 +91,22 @@ export const colors = {
     stone: "#DCE5F0",
   },
 
+  /**
+   * Space Letters — deep-blue/indigo world sitting over the space.jpg photo
+   * backdrop. `ink` matches `night` (same pairing dino uses): `night` names
+   * the wash colour, `ink` names the same hex used as legible text-on-white.
+   */
+  space: {
+    DEFAULT: "#5B7FFF",
+    night: "#0B1330",
+    deep: "#050814",
+    dusk: "#1B2B6B",
+    ink: "#0B1330",
+    indigo: "#4C4DDC",
+    violet: "#8B7CFF",
+    glow: "#BFD8FF",
+  },
+
   /** Portal "picture-book page" surface. */
   paper: {
     DEFAULT: "#FDF9F0",

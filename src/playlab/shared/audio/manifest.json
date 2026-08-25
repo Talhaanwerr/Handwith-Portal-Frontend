@@ -3218,6 +3218,162 @@
       "text": "Tap the pictures to learn more!",
       "speak": "Tap the pictures to learn more!"
     },
+    "space-find-a": {
+      "file": "/audio/space/find-a.mp3",
+      "text": "Find the A!",
+      "speak": "Find the A! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-b": {
+      "file": "/audio/space/find-b.mp3",
+      "text": "Find the B!",
+      "speak": "Find the B! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-c": {
+      "file": "/audio/space/find-c.mp3",
+      "text": "Find the C!",
+      "speak": "Find the C! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-d": {
+      "file": "/audio/space/find-d.mp3",
+      "text": "Find the D!",
+      "speak": "Find the D! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-e": {
+      "file": "/audio/space/find-e.mp3",
+      "text": "Find the E!",
+      "speak": "Find the E! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-f": {
+      "file": "/audio/space/find-f.mp3",
+      "text": "Find the F!",
+      "speak": "Find the F! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-g": {
+      "file": "/audio/space/find-g.mp3",
+      "text": "Find the G!",
+      "speak": "Find the G! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-h": {
+      "file": "/audio/space/find-h.mp3",
+      "text": "Find the H!",
+      "speak": "Find the H! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-i": {
+      "file": "/audio/space/find-i.mp3",
+      "text": "Find the I!",
+      "speak": "Find the I! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-j": {
+      "file": "/audio/space/find-j.mp3",
+      "text": "Find the J!",
+      "speak": "Find the J! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-k": {
+      "file": "/audio/space/find-k.mp3",
+      "text": "Find the K!",
+      "speak": "Find the K! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-l": {
+      "file": "/audio/space/find-l.mp3",
+      "text": "Find the L!",
+      "speak": "Find the L! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-m": {
+      "file": "/audio/space/find-m.mp3",
+      "text": "Find the M!",
+      "speak": "Find the M! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-n": {
+      "file": "/audio/space/find-n.mp3",
+      "text": "Find the N!",
+      "speak": "Find the N! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-o": {
+      "file": "/audio/space/find-o.mp3",
+      "text": "Find the O!",
+      "speak": "Find the O! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-p": {
+      "file": "/audio/space/find-p.mp3",
+      "text": "Find the P!",
+      "speak": "Find the P! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-q": {
+      "file": "/audio/space/find-q.mp3",
+      "text": "Find the Q!",
+      "speak": "Find the Q! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-r": {
+      "file": "/audio/space/find-r.mp3",
+      "text": "Find the R!",
+      "speak": "Find the R! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-s": {
+      "file": "/audio/space/find-s.mp3",
+      "text": "Find the S!",
+      "speak": "Find the S! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-t": {
+      "file": "/audio/space/find-t.mp3",
+      "text": "Find the T!",
+      "speak": "Find the T! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-u": {
+      "file": "/audio/space/find-u.mp3",
+      "text": "Find the U!",
+      "speak": "Find the U! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-v": {
+      "file": "/audio/space/find-v.mp3",
+      "text": "Find the V!",
+      "speak": "Find the V! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-w": {
+      "file": "/audio/space/find-w.mp3",
+      "text": "Find the W!",
+      "speak": "Find the W! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-x": {
+      "file": "/audio/space/find-x.mp3",
+      "text": "Find the X!",
+      "speak": "Find the X! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-y": {
+      "file": "/audio/space/find-y.mp3",
+      "text": "Find the Y!",
+      "speak": "Find the Y! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
+    "space-find-z": {
+      "file": "/audio/space/find-z.mp3",
+      "text": "Find the Z!",
+      "speak": "Find the Z! It's shining among the stars!",
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+    },
     "treat-bakery-intro": {
       "file": "/audio/treats/bakery-intro.mp3",
       "text": "Let's make something yummy!",
