@@ -1,0 +1,380 @@
+/* ── Screen base ── */
+
+.spl-screen {
+  color: var(--color-space-ink);
+}
+
+/* ── Backdrop ──
+   Solid gradient paints FIRST (no network request, never a flash of white),
+   the photo layer sits on top. If public/games/space-letters/space.jpg is
+   missing, the gradient alone still reads as a calm night-sky scene — the
+   game never shows a broken-image glyph or blank white screen. */
+.spl-bg-wash {
+  background: linear-gradient(
+    160deg,
+    var(--color-space-deep) 0%,
+    var(--color-space-night) 55%,
+    var(--color-space-dusk) 100%
+  );
+}
+
+/** The illustrated scene — the default world. `slice` keeps it filling any
+ *  aspect ratio without distortion; it is drawn with an empty centre (see
+ *  SpaceScene) so the container and letter always sit on quiet sky. */
+.spl-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/** The optional photo. Paints only when public/games/space-letters/space.jpg
+ *  exists — otherwise the declaration simply fails and the illustration
+ *  below shows through, which is the intended fallback. */
+.spl-bg {
+  background-image: url("/games/space-letters/space.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/**
+ * Readability layer, over whichever background is showing.
+ *
+ * Top and bottom bands darken behind the chrome (the pinned nav pill, the
+ * row of pieces). The centre gets a gentle radial dim as well: the scene's
+ * middle is already empty, but a photo dropped in later has no such
+ * guarantee, and this keeps the white container reading as the brightest
+ * thing on screen either way. Both are soft enough that the background
+ * stays clearly visible — it is never hidden behind a flat overlay.
+ */
+.spl-vignette {
+  background:
+    radial-gradient(
+      ellipse 62% 54% at 50% 50%,
+      rgba(5, 8, 20, 0.42) 0%,
+      rgba(5, 8, 20, 0.12) 62%,
+      rgba(5, 8, 20, 0) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 8, 20, 0.42) 0%,
+      rgba(5, 8, 20, 0.04) 20%,
+      rgba(5, 8, 20, 0.04) 70%,
+      rgba(5, 8, 20, 0.5) 100%
+    );
+}
+
+/* ── Frosted chrome over the photo ──
+   Same role as every other game's white/70-85 pill (NavPillButton, status
+   pills) but a touch more opaque + blurred, since a photo has far more
+   local contrast variation than a flat pastel gradient. */
+.spl-pill {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* ── Splash ── */
+
+.spl-title {
+  font-size: clamp(34px, 8vmin, 60px);
+  line-height: 1.05;
+}
+
+/* ── Grid (letter selection) ── */
+
+.spl-heading {
+  font-size: clamp(28px, 6vmin, 44px);
+}
+
+/** Flex-wrap, not an auto-fill grid — same reasoning as jungle-spy: 26 tiles
+ *  never divide evenly, so a wrap keeps the part-filled last row centred
+ *  instead of hanging off to one side. */
+.spl-letter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.spl-letter-tile {
+  width: clamp(48px, 6vw, 60px);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  border: 2.5px solid var(--color-space-indigo);
+  box-shadow: var(--shadow-soft);
+}
+
+.spl-letter-tile--found {
+  background: var(--color-gold-pale);
+  border-color: var(--color-gold-sun);
+}
+
+.spl-tile-glyph {
+  font-size: clamp(19px, 2.8vw, 26px);
+  color: var(--color-space-ink);
+}
+
+.spl-letter-tile--found .spl-tile-glyph {
+  color: var(--color-gold-dim);
+}
+
+.spl-progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--color-space) 0%,
+    var(--color-space-indigo) 50%,
+    var(--color-space-violet) 100%
+  );
+}
+
+/* ── Mode select (Big / small letters) ── */
+
+.sap-mode-btn {
+  width: clamp(140px, 30vmin, 230px);
+  min-height: clamp(120px, 24vmin, 190px);
+  padding: clamp(12px, 2.5vmin, 22px);
+  border-radius: clamp(20px, 4vmin, 34px);
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  background: linear-gradient(160deg, rgba(91, 127, 255, 0.42), rgba(27, 43, 107, 0.55));
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 14px 38px rgba(5, 8, 20, 0.42),
+    inset 0 0 40px rgba(191, 216, 255, 0.15);
+}
+.sap-mode-btn--lower {
+  background: linear-gradient(160deg, rgba(139, 124, 255, 0.42), rgba(27, 43, 107, 0.55));
+}
+.sap-mode-preview {
+  font-size: clamp(28px, 6.5vmin, 50px);
+  line-height: 1.1;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(191, 216, 255, 0.6);
+}
+.sap-mode-title {
+  font-size: clamp(13px, 2.2vmin, 18px);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Puzzle stage sizing ──
+   ONE number drives the whole puzzle. --sap-piece equals --sap-letter, so a
+   loose piece is exactly the size of the space it fills — the child can see
+   the match rather than having to infer it. (Same single-source contract as
+   magnet-match's --mm-pot/--mm-magnet.)
+
+   The ceiling is set by what must share the screen with it: the container
+   plus the row of pieces below, which is about 2.2 letters wide on one line
+   and up to 1.1 letters tall once it wraps. These three limits are the
+   largest values that still fit that stack on a small phone, a tall tablet
+   and a laptop alike — verified across those viewports rather than guessed,
+   because a bigger letter here silently pushes the pieces off-screen. */
+.spl-screen {
+  --sap-letter: max(180px, min(62vw, 40vh, 500px));
+  --sap-piece: var(--sap-letter);
+}
+
+/* Short landscape: height is the scarce axis and the chrome is already
+   compacted, so the letter leans on vh far harder. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .spl-screen {
+    --sap-letter: max(110px, min(30vw, 34vh, 220px));
+  }
+}
+
+/* ── The stage ── */
+
+.sap-arena {
+  min-height: 0;
+}
+
+/** Container + object side by side, the way letter tracing pairs its board
+ *  with the anchor picture. */
+.sap-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── The central container ──
+   White, per spec: the placeholder and the pieces landing in it need the
+   calmest possible ground, and white separates it cleanly from the photo
+   behind. Softly rounded and lifted, with a faint blue rim so it still
+   belongs to the space world rather than looking like a plain HTML panel. */
+.sap-card {
+  position: relative;
+  z-index: 1;
+  padding: clamp(14px, 3vmin, 30px);
+  border-radius: clamp(26px, 5vmin, 46px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: #ffffff;
+  box-shadow:
+    0 22px 60px rgba(5, 8, 20, 0.45),
+    0 0 0 6px rgba(191, 216, 255, 0.16);
+}
+
+/* ── The letter placeholder ── */
+
+.sap-assembly-wrap {
+  position: relative;
+  width: var(--sap-letter);
+  height: var(--sap-letter);
+}
+
+/* ── Space ABC's paint for the shared letter puzzle ──
+   Structure lives in shared/styles/utilities.css; only colour is set here,
+   scoped to this game's root so Ocean ABC can paint the same classes
+   differently. */
+
+.spl-screen .pl-lp-guide-ink {
+  fill: rgba(76, 77, 220, 0.13);
+}
+.spl-screen .pl-lp-guide-rim {
+  stroke: rgba(76, 77, 220, 0.4);
+  stroke-width: 1;
+}
+.spl-screen .pl-lp-guide-seam {
+  stroke: rgba(76, 77, 220, 0.3);
+  stroke-width: 0.9;
+}
+
+/** Solid indigo reads clearly both on the white container and over the
+ *  photo; the white rim vanishes on white and separates the piece when it is
+ *  loose over the background. One pairing that works on both grounds. */
+.spl-screen .pl-lp-ink {
+  fill: var(--color-space-indigo);
+}
+.spl-screen .pl-lp-rim {
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 1.4;
+}
+.spl-screen .pl-lp-cut {
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 1.1;
+}
+.spl-screen .pl-lp-piece {
+  /* traces the fragment's real silhouette, which is what lets it sit on the
+     background with no container and still read as a solid object */
+  filter: drop-shadow(0 5px 12px rgba(5, 8, 20, 0.5));
+}
+.spl-screen .sap-lifted {
+  filter: drop-shadow(0 12px 20px rgba(5, 8, 20, 0.55))
+    drop-shadow(0 0 14px rgba(191, 216, 255, 0.55));
+}
+.spl-screen .pl-lp-preview {
+  opacity: 0.4;
+}
+.spl-screen .pl-lp-preview .pl-lp-piece {
+  filter: none;
+}
+
+/* ── The row of pieces, directly below the container ──
+   Wraps rather than overflowing: at full letter size the three pieces need
+   about 2.2 letters of width, which a phone does not have, so on narrow
+   screens they fall onto a second line instead of shrinking away from the
+   placeholder size. The letter ceiling above accounts for both cases. */
+.sap-pieces {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vmin, 26px);
+  width: 100%;
+  padding: clamp(6px, 1.5vmin, 18px) 0;
+}
+
+/** The space a piece still has to fill — purely a hit region, no appearance. */
+.sap-slot {
+  position: absolute;
+  width: var(--pl-w);
+  height: var(--pl-h);
+}
+
+/* ── The object, docked beside the container ──
+   Sits on the container's edge at a slight diagonal, exactly like letter
+   tracing's docked anchor card. A flow item with a negative margin rather
+   than an absolute overlay, so it can never be pushed off-screen. */
+.sap-object {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-left: calc(-1 * clamp(10px, 2.4vmin, 30px));
+  padding: clamp(8px, 1.6vmin, 14px) clamp(10px, 1.8vmin, 16px) clamp(6px, 1.2vmin, 12px);
+  border-radius: clamp(16px, 3vmin, 26px);
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(5, 8, 20, 0.42);
+  transform: rotate(7deg);
+}
+
+.sap-object-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 16px;
+  width: clamp(64px, min(15vmin, calc(var(--sap-letter) * 0.5)), 150px);
+  height: clamp(64px, min(15vmin, calc(var(--sap-letter) * 0.5)), 150px);
+}
+
+.sap-object-word {
+  font-size: clamp(13px, 2.2vmin, 22px);
+  text-transform: capitalize;
+  color: var(--color-space-ink);
+}
+
+/* On a phone the object would eat the container's width, so it tucks under
+   the container's corner instead of beside it. */
+@media (max-width: 520px) {
+  .sap-stage {
+    flex-direction: column;
+    align-items: center;
+  }
+  .sap-object {
+    margin-left: clamp(80px, 34vw, 200px);
+    margin-top: calc(-1 * clamp(14px, 4vmin, 30px));
+  }
+}
+
+/* ── Win overlay ── */
+
+.spl-win-tint {
+  background: rgba(11, 19, 48, 0.88);
+}
+
+.spl-win-heading {
+  font-size: clamp(26px, 6vmin, 40px);
+  color: #ffffff;
+}
+
+/** The finished letter on the celebration overlay — the same assembly, with
+ *  the guide layer hidden since every piece is now filled in and the pale
+ *  under-letter would only muddy it. The pieces keep their white bodies, so
+ *  the completed letter reads clearly against the dark celebration wash. */
+.sap-win-assembly,
+.sap-win-assembly .pl-lp-assembly {
+  width: clamp(120px, 22vmin, 200px);
+  height: clamp(120px, 22vmin, 200px);
+}
+.sap-win-assembly .pl-lp-guide-ink,
+.sap-win-assembly .pl-lp-guide-seam,
+.sap-win-assembly .pl-lp-guide-rim {
+  display: none;
+}
+
+/** The object on the celebration overlay — same card, sitting straight
+ *  rather than tilted, since there is no container edge to hang off. */
+.sap-win-object .sap-object {
+  margin-left: 0;
+  transform: none;
+}
+
+/* ── Finale ── */
+
+.spl-finale-heading {
+  font-size: clamp(28px, 7vmin, 44px);
+}

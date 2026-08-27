@@ -1,8 +1,11 @@
 "use client";
 
+import { displayLetter, type LetterCase } from "@games/dino-dig/store/dinoStore";
 import { ALPHABET } from "@games/dino-dig/constants/rounds";
 
 interface AlphabetStripProps {
+  /** BIG or small letters — the strip mirrors what the child chose. */
+  letterCase: LetterCase;
   /** Highest alphabet index dug up so far (-1 before anything). */
   revealedIndex: number;
   /** The letter on the fossil ring — glows orange. */
@@ -22,7 +25,13 @@ interface AlphabetStripProps {
  * Wrapping keeps every tile legible and makes horizontal overflow impossible
  * at any width, which is the constraint that actually matters here.
  */
-export function AlphabetStrip({ revealedIndex, current, targets, placed }: AlphabetStripProps) {
+export function AlphabetStrip({
+  letterCase,
+  revealedIndex,
+  current,
+  targets,
+  placed,
+}: AlphabetStripProps) {
   const dug = revealedIndex + 1;
 
   return (
@@ -57,7 +66,7 @@ export function AlphabetStrip({ revealedIndex, current, targets, placed }: Alpha
                 ahead and see what was coming, which gives the answer away
                 before the round asks for it. The tile still occupies its slot,
                 so the strip's length always shows how far there is to go. */}
-            {isFuture ? "" : letter.toLowerCase()}
+            {isFuture ? "" : displayLetter(letter, letterCase)}
           </span>
         );
       })}

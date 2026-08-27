@@ -1,0 +1,388 @@
+/* ── Screen base ──
+   The water itself. The seabed, rays and rising bubbles come from Feed the
+   Shark's OceanBackdrop; this is only the column of water behind them, in
+   the same blues, so the two games read as one ocean. */
+
+.oab-screen {
+  color: #ffffff;
+}
+
+.oab-water {
+  background: linear-gradient(180deg, #2e8fc4 0%, #1f6f9e 45%, #114a70 100%);
+}
+
+/* ── Stage sizing ──
+   ONE number drives the letter and its pieces: a piece in a bubble is the
+   same size as the space it fills, so the match is visible rather than
+   inferred. The ceiling accounts for the whole column — chrome, the letter,
+   and the row of carrier bubbles under it. */
+.oab-screen {
+  --oab-letter: max(190px, min(72vw, 58vh, 620px));
+  --oab-piece: var(--oab-letter);
+  --oab-carrier: calc(var(--oab-letter) * 0.3);
+  /** How far the carrier bubbles float above the sand. The letter's zone is
+   *  measured off this, so the two can never overlap. */
+  --oab-floor: clamp(36px, 7vh, 80px);
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .oab-screen {
+    --oab-letter: max(104px, min(28vw, 40vh, 210px));
+    --oab-carrier: calc(var(--oab-letter) * 0.62);
+    --oab-floor: clamp(34px, 10vh, 70px);
+  }
+}
+
+/* ── Chrome ── */
+
+.oab-pill {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-soft);
+}
+
+.oab-title {
+  font-size: clamp(34px, 8vmin, 62px);
+  line-height: 1.05;
+  color: #ffffff;
+  text-shadow:
+    0 0 26px rgba(143, 201, 240, 0.7),
+    0 6px 16px rgba(4, 32, 52, 0.55);
+}
+
+.oab-heading {
+  font-size: clamp(28px, 6vmin, 46px);
+  color: #ffffff;
+  text-shadow: 0 4px 14px rgba(4, 32, 52, 0.5);
+}
+
+.oab-splash-shark {
+  width: clamp(150px, 34vmin, 320px);
+}
+
+/* ── Mode select ── */
+
+.oab-mode-btn {
+  width: clamp(140px, 30vmin, 230px);
+  min-height: clamp(120px, 24vmin, 190px);
+  padding: clamp(12px, 2.5vmin, 22px);
+  border-radius: clamp(20px, 4vmin, 34px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(160deg, rgba(111, 199, 239, 0.42), rgba(17, 74, 112, 0.55));
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 14px 38px rgba(4, 32, 52, 0.45),
+    inset 0 0 40px rgba(228, 244, 255, 0.16);
+}
+.oab-mode-btn--lower {
+  background: linear-gradient(160deg, rgba(255, 217, 61, 0.32), rgba(17, 74, 112, 0.58));
+}
+.oab-mode-preview {
+  font-size: clamp(28px, 6.5vmin, 50px);
+  line-height: 1.1;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(191, 226, 247, 0.65);
+}
+.oab-mode-title {
+  font-size: clamp(13px, 2.2vmin, 18px);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ── Letter grid: the alphabet as bubbles ── */
+
+/** Flex-wrap, not an auto-fill grid: 26 tiles never divide evenly, so a wrap
+ *  keeps the part-filled last row centred instead of hanging to one side. */
+.oab-letter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.oab-bubble-tile {
+  width: clamp(48px, 6vw, 62px);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 42%),
+    radial-gradient(circle at 50% 50%, rgba(228, 244, 255, 0.34), rgba(111, 199, 239, 0.22));
+  box-shadow:
+    inset 0 0 12px rgba(255, 255, 255, 0.45),
+    0 4px 12px rgba(4, 32, 52, 0.3);
+}
+
+.oab-bubble-tile--done {
+  border-color: var(--color-gold-sun);
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 42%),
+    radial-gradient(circle at 50% 50%, rgba(255, 231, 156, 0.5), rgba(242, 201, 76, 0.3));
+}
+
+.oab-tile-glyph {
+  font-size: clamp(19px, 2.8vw, 27px);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(4, 32, 52, 0.55);
+}
+
+.oab-bubble-tile--done .oab-tile-glyph {
+  color: var(--color-gold-pale);
+}
+
+.oab-progress-fill {
+  background: linear-gradient(90deg, #6fc7ef 0%, #ffd93d 60%, #ff9ebc 100%);
+}
+
+/* ── Level layout ── */
+
+.oab-topbar {
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+/** The play column: everything between the chrome and the bottom of the
+ *  screen. Each stage fills it absolutely, so switching stage never reflows
+ *  the page. */
+.oab-arena {
+  position: absolute;
+  inset: clamp(56px, 9vh, 78px) 0 0 0;
+}
+
+.oab-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Stage 1: build ── */
+
+/** The letter sits in open water, in the whole space ABOVE the carrier
+ *  bubbles — so it is centred in the room it actually has rather than pinned
+ *  near the top with a gulf beneath it.
+ *
+ *  Centring is done with flexbox, NOT a translate: Framer Motion writes an
+ *  inline `transform` on anything it animates, which silently overwrites a
+ *  CSS translate(-50%). Any element in this game that both moves and needs
+ *  centring is therefore centred by layout or by margin, never by transform. */
+.oab-letter-zone {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: calc(var(--oab-floor) + var(--oab-carrier) + clamp(8px, 2vh, 26px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oab-assembly {
+  position: relative;
+  width: var(--oab-letter);
+  height: var(--oab-letter);
+}
+
+/** The space a piece still has to fill — purely a hit region, no appearance.
+ *  A slot is a bounding rectangle around an irregular shape, so giving it a
+ *  visible state would put a floating square on screen. */
+.oab-slot {
+  position: absolute;
+  width: var(--pl-w);
+  height: var(--pl-h);
+}
+
+/** The band of water the carrier bubbles drift along, above the sand. */
+/** The band of water the carrier bubbles drift along, above the sand.
+ *
+ *  A FLEX ROW, not absolutely-placed children. The bubbles were previously
+ *  positioned with left/top percentages, which meant their layout depended on
+ *  a `position` from one rule and a `left` from another stylesheet, and on
+ *  neither being overwritten by the inline transform Framer Motion writes on
+ *  anything it animates. Too many ways to end up in a heap in the corner.
+ *  Flexbox needs none of it: the row spaces the bubbles itself, and a
+ *  transform can move a flex item without moving where it was laid out. */
+.oab-carriers {
+  position: absolute;
+  inset-inline: 0;
+  bottom: var(--oab-floor);
+  height: var(--oab-carrier);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 6vw, 90px);
+  padding-inline: clamp(8px, 3vw, 40px);
+}
+
+.oab-carrier {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--oab-carrier);
+  height: var(--oab-carrier);
+  touch-action: none;
+}
+
+/** The bubble skin — a real bubble around the piece, with its highlight. */
+.oab-carrier-skin,
+.oab-pop-skin {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  background:
+    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 50% 55%, rgba(228, 244, 255, 0.3), rgba(111, 199, 239, 0.18));
+  box-shadow:
+    inset 0 0 18px rgba(255, 255, 255, 0.4),
+    0 6px 16px rgba(4, 32, 52, 0.32);
+}
+
+/** The piece inside the bubble, centred on it. */
+.oab-carrier-piece {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--pl-w);
+  height: var(--pl-h);
+}
+
+/* ── Ocean ABC's paint for the shared letter puzzle ──
+   Structure lives in shared/styles/utilities.css; the colours come from the
+   letter's own material, set as --pl-* on the level root, so gold A and icy
+   B are the same component with different numbers. */
+
+.oab-screen .pl-lp-guide-ink {
+  fill: rgba(4, 32, 52, 0.34);
+}
+.oab-screen .pl-lp-guide-rim {
+  stroke: rgba(255, 255, 255, 0.32);
+  stroke-width: 1;
+}
+.oab-screen .pl-lp-guide-seam {
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 0.9;
+}
+
+.oab-screen .pl-lp-ink {
+  fill: var(--pl-to, #f2a93b);
+}
+.oab-screen .pl-lp-rim {
+  stroke: var(--pl-rim, #c97b1e);
+  stroke-width: 1.6;
+}
+.oab-screen .pl-lp-cut {
+  stroke: var(--pl-cut, #e8b94d);
+  stroke-width: 1.1;
+}
+.oab-screen .pl-lp-piece {
+  filter: drop-shadow(0 5px 12px rgba(4, 32, 52, 0.5));
+}
+.oab-screen .oab-lifted .pl-lp-piece {
+  filter: drop-shadow(0 12px 20px rgba(4, 32, 52, 0.55))
+    drop-shadow(0 0 16px var(--pl-glow, #ffd93d));
+}
+.oab-screen .pl-lp-preview {
+  opacity: 0.4;
+}
+.oab-screen .pl-lp-preview .pl-lp-piece {
+  filter: none;
+}
+
+/* ── Stage 2: pop ── */
+
+/** These ones really do rise up the screen, so they are placed rather than
+ *  laid out. Both `position` AND `left` are declared HERE, so the rule stands
+ *  on its own instead of relying on a second stylesheet for half of it. */
+.oab-pop {
+  position: absolute;
+  left: var(--pl-x, 50%);
+  width: calc(var(--oab-carrier) * var(--pl-scale, 1));
+  height: calc(var(--oab-carrier) * var(--pl-scale, 1));
+  margin-left: calc(var(--oab-carrier) * var(--pl-scale, 1) / -2);
+  touch-action: manipulation;
+}
+
+.oab-pop-glyph {
+  position: relative;
+  font-size: calc(var(--oab-carrier) * var(--pl-scale, 1) * 0.5);
+  color: var(--pl-to, #f2a93b);
+  text-shadow: 0 2px 8px rgba(4, 32, 52, 0.4);
+}
+
+/** The tap cue — a pulsing ring, not a dragging hand: this stage is a tap,
+ *  and the drag hand would teach the wrong gesture. */
+.oab-tap-cue {
+  position: absolute;
+  left: var(--pl-x, 50%);
+  top: var(--pl-y, 40%);
+  width: calc(var(--oab-carrier) * 1.1);
+  height: calc(var(--oab-carrier) * 1.1);
+  margin-left: calc(var(--oab-carrier) * 1.1 / -2);
+  margin-top: calc(var(--oab-carrier) * 1.1 / -2);
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+
+/* ── Stage 3: trace ── */
+
+.oab-trace {
+  gap: 0;
+}
+
+/** The tracing canvas is a fixed 460px square drawn by the shared engine;
+ *  scaling the wrapper keeps its internal geometry untouched while letting
+ *  it fit any viewport. */
+.oab-trace-board {
+  border-radius: var(--radius-board, 28px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 18px 44px rgba(4, 32, 52, 0.45);
+  width: min(460px, 82vw, 62vh);
+  height: min(460px, 82vw, 62vh);
+  overflow: hidden;
+}
+.oab-trace-board canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.oab-trace-caption {
+  margin-top: clamp(6px, 1.6vh, 14px);
+  font-size: clamp(14px, 2.4vmin, 20px);
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(4, 32, 52, 0.6);
+}
+
+/* ── Letter finished ── */
+
+.oab-win-tint {
+  background: rgba(9, 52, 80, 0.86);
+}
+
+.oab-win-letter {
+  font-size: clamp(90px, 24vmin, 200px);
+  line-height: 1;
+  color: var(--pl-to, #f2a93b);
+  text-shadow:
+    0 0 28px var(--pl-glow, #ffd93d),
+    0 8px 20px rgba(4, 32, 52, 0.5);
+}
+
+.oab-win-heading {
+  font-size: clamp(26px, 6vmin, 42px);
+  color: #ffffff;
+}
+
+.oab-next {
+  background: linear-gradient(135deg, #6fc7ef 0%, #2980b9 100%);
+}
+
+/* ── Finale ── */
+
+.oab-finale-heading {
+  font-size: clamp(28px, 7vmin, 44px);
+}
+
+.oab-finale-mascot {
+  width: clamp(120px, 26vmin, 240px);
+}

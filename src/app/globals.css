@@ -154,6 +154,15 @@
   --color-dino-dirt-light: #6b4423;
   --color-dino-stone: #dce5f0;
 
+  --color-space: #5b7fff;
+  --color-space-night: #0b1330;
+  --color-space-deep: #050814;
+  --color-space-dusk: #1b2b6b;
+  --color-space-ink: #0b1330;
+  --color-space-indigo: #4c4ddc;
+  --color-space-violet: #8b7cff;
+  --color-space-glow: #bfd8ff;
+
   --color-paper: #fdf9f0;
   --color-paper-desk: #efe7d8;
   --color-paper-edge: #e3d9c6;

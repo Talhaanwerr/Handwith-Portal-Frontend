@@ -18,9 +18,12 @@ import {
   decoysFor,
 } from "@games/dino-dig/constants/rounds";
 import { DinoBackdrop } from "@games/dino-dig/components/DinoBackdrop";
+import { displayLetter, type LetterCase } from "@games/dino-dig/store/dinoStore";
 import { CAST, LetterStone, type DinoMood } from "@games/dino-dig/components/DinoArt";
 
 interface FeedLevelProps {
+  /** BIG or small letters — display only; data stays canonical uppercase. */
+  letterCase: LetterCase;
   onComplete: (letters: string[]) => void;
 }
 
@@ -40,7 +43,9 @@ const DONE_CHEER_MS = 2800;
  * seven cast members steps up. Ten letters, shuffled fresh each session, no
  * repeats, no fail state — a wrong stone just wobbles and stays.
  */
-export function FeedLevel({ onComplete }: FeedLevelProps) {
+export function FeedLevel({ letterCase, onComplete }: FeedLevelProps) {
+  /** The letter as the child sees it. */
+  const show = (l: string) => displayLetter(l, letterCase);
   const router = useRouter();
   const [fed, setFed] = useState(0);
   const [locked, setLocked] = useState(false);
@@ -240,7 +245,7 @@ export function FeedLevel({ onComplete }: FeedLevelProps) {
               <span className="font-rounded text-dino-ink/70 text-[10px] font-black tracking-wide uppercase sm:text-xs">
                 I want
               </span>
-              <span className="dd-bubble-letter font-rounded font-black">{target}</span>
+              <span className="dd-bubble-letter font-rounded font-black">{show(target)}</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -268,9 +273,9 @@ export function FeedLevel({ onComplete }: FeedLevelProps) {
                     : { type: "spring", stiffness: 260, damping: 18, delay: i * 0.05 }
                 }
                 onClick={(e) => chooseStone(e, letter)}
-                aria-label={`Stone with the letter ${letter} — feed it to ${feeder.name}`}
+                aria-label={`Stone with the letter ${show(letter)} — feed it to ${feeder.name}`}
               >
-                <LetterStone letter={letter} />
+                <LetterStone letter={show(letter)} />
               </motion.button>
             ))}
         </AnimatePresence>
@@ -293,7 +298,7 @@ export function FeedLevel({ onComplete }: FeedLevelProps) {
               animate={{ scale: 0.45, rotate: 8 }}
               transition={{ duration: 0.35 }}
             >
-              <LetterStone letter={flying.letter} />
+              <LetterStone letter={show(flying.letter)} />
             </motion.div>
           </div>
         </motion.div>

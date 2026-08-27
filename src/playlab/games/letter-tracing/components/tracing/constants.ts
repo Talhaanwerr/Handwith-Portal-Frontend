@@ -37,3 +37,29 @@ export const COLOR_ACTIVE_GLOW = "#DCD4F0"; // gentle glow behind the active str
 export const COLOR_FUTURE = "#DCD4F2"; // upcoming strokes — subdued lavender
 export const COLOR_CHILD_INK = "#8B63D6"; // the child's own trace — richer purple
 export const COLOR_ARROW = "#8F7DBB"; // soft, playful directional arrows
+
+/**
+ * The tracing canvas' palette, as data.
+ *
+ * The COLOR_* constants above stay exactly as they were and remain the
+ * default, so Letter Tracing is untouched. A game with a different world
+ * (Ocean ABC's seabed) passes its own partial override to <TracingCanvas
+ * theme={...} /> rather than forking the canvas.
+ */
+export interface TracingTheme {
+  completed: string;
+  activeGuide: string;
+  activeGlow: string;
+  future: string;
+  childInk: string;
+  arrow: string;
+}
+
+export const DEFAULT_TRACING_THEME: TracingTheme = {
+  completed: COLOR_COMPLETED,
+  activeGuide: COLOR_ACTIVE_GUIDE,
+  activeGlow: COLOR_ACTIVE_GLOW,
+  future: COLOR_FUTURE,
+  childInk: COLOR_CHILD_INK,
+  arrow: COLOR_ARROW,
+};
