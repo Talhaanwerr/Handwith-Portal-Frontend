@@ -76,7 +76,7 @@ export function OceanAbcGame() {
         )}
         {screen === "mode" && (
           <motion.div key="mode" className="absolute inset-0" {...PAGE_TRANSITION}>
-            <OceanModeSelect onExitPortal={() => router.push(PORTAL_ROUTE)} />
+            <OceanModeSelect />
           </motion.div>
         )}
         {screen === "modules" && (

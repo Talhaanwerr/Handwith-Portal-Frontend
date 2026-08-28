@@ -317,7 +317,7 @@ export function MagnetMatchIcon() {
         <ChefArt happy />
       </At>
       <At x={50} y={16} w={40} z={2} r={6}>
-        <PuzzleMagnet letter="S" colorIndex={2} />
+        <PuzzleMagnet letter="S" colorIndex={2} size="100%" />
       </At>
       <DottedRoute d="M72 46 Q78 62 68 76" color="#8A5A2E" head={[68, 72, 190]} />
       <At x={58} y={72} w={34} z={2} r={-4}>
