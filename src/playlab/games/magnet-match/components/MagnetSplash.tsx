@@ -60,6 +60,9 @@ export function MagnetSplash({
           <p className="font-rounded text-kitchen mx-auto mt-0.5 w-fit rounded-full bg-white/90 px-4 py-1 text-xs font-black md:text-sm">
             🍲 Alphabet Soup Kitchen
           </p>
+          <p className="font-rounded mx-auto mt-1 text-xs font-bold text-white/90 md:text-sm">
+            Drag letter magnets into the chef&apos;s alphabet soup
+          </p>
         </motion.div>
 
         {/* chef standing beside the white station card, on the counter */}

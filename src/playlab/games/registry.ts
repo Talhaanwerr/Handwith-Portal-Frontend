@@ -14,7 +14,7 @@ export const GAMES: readonly GameMeta[] = [
     title: "ABC",
     description: "Trace letters & numbers",
     glyph: "✏️",
-    route: "/games/letter-tracing",
+    route: "/play/letter-tracing",
     colors: { bg: "#DDD5F5", border: "#A882E8", text: "#7C5CBF" },
   },
   {
@@ -22,7 +22,7 @@ export const GAMES: readonly GameMeta[] = [
     title: "Jungle Spy",
     description: "Find the hiding letters",
     glyph: "🔍",
-    route: "/games/jungle-spy",
+    route: "/play/jungle-spy",
     colors: { bg: "#C8F0D8", border: "#66CC94", text: "#3DAA72" },
   },
   {
@@ -30,7 +30,7 @@ export const GAMES: readonly GameMeta[] = [
     title: "Letter Hunt",
     description: "Find the matching letters",
     glyph: "🅰️",
-    route: "/games/letter-hunt",
+    route: "/play/letter-hunt",
     colors: { bg: "#FFE1EC", border: "#FF8FA3", text: "#D14D82" },
   },
   {
@@ -38,7 +38,7 @@ export const GAMES: readonly GameMeta[] = [
     title: "Magnet Match",
     description: "Alphabet soup with the chef",
     glyph: "🍲",
-    route: "/games/magnet-match",
+    route: "/play/magnet-match",
     colors: { bg: "#FBE7A2", border: "#E8B33D", text: "#8A5A2E" },
   },
   {
@@ -46,7 +46,7 @@ export const GAMES: readonly GameMeta[] = [
     title: "Dino Dig",
     description: "Feed dinos & bridge the river",
     glyph: "🦕",
-    route: "/games/dino-dig",
+    route: "/play/dino-dig",
     colors: { bg: "#CFF1F4", border: "#00C4CC", text: "#0A1A3A" },
   },
   {
@@ -54,7 +54,7 @@ export const GAMES: readonly GameMeta[] = [
     title: "Letter Treats",
     description: "Phonics in Candy World",
     glyph: "🧁",
-    route: "/games/letter-treats",
+    route: "/play/letter-treats",
     colors: { bg: "#FFD3E4", border: "#FF9EC4", text: "#C2417A" },
   },
   {
@@ -62,7 +62,7 @@ export const GAMES: readonly GameMeta[] = [
     title: "Feed the Shark",
     description: "Match big & small letters",
     glyph: "🦈",
-    route: "/games/feed-the-shark",
+    route: "/play/feed-the-shark",
     colors: { bg: "#D4EEFF", border: "#74B9FF", text: "#2980B9" },
   },
   {
@@ -80,5 +80,21 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🫧",
     route: "/play/ocean-abc",
     colors: { bg: "#114A70", border: "#6FC7EF", text: "#FFFFFF" },
+  },
+  {
+    id: "ocean-hunt",
+    title: "Ocean Hunt",
+    description: "Find the missing letter",
+    glyph: "\u{1F50E}",
+    route: "/play/ocean-hunt",
+    colors: { bg: "#0E5A86", border: "#FFD93D", text: "#FFFFFF" },
+  },
+  {
+    id: "pirate-match",
+    title: "Pirate Match",
+    description: "Match letters to treasures",
+    glyph: "\u{1F99C}",
+    route: "/play/pirate-match",
+    colors: { bg: "#5C3A1C", border: "#E9B44C", text: "#FFFFFF" },
   },
 ];

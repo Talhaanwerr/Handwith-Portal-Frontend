@@ -258,7 +258,7 @@ export function JungleSplash({ onExitPortal }: { onExitPortal?: () => void }) {
 }
 
 /** Alphabet grid on leafy tiles + rainbow progress */
-export function JungleGrid() {
+export function JungleGrid({ onExitPortal = () => {} }: { onExitPortal?: () => void }) {
   const store = useJungleStore();
   const { letterCase, setScreen, setCase, beginRun, jumpTo } = store;
   // progress is per case: switching BIG ↔ little switches to that run's board
@@ -294,13 +294,13 @@ export function JungleGrid() {
       {/* Back to this game's home (the ABC/abc splash) — pinned top-left */}
       <NavPillButton
         label="Back"
-        ariaLabel="Back to Jungle Spy home"
+        ariaLabel="Back to all games"
         tone="jungle"
         surface="soft"
         pinned
         onClick={() => {
           playClickSound();
-          setScreen("splash");
+          onExitPortal();
         }}
       />
 
@@ -354,7 +354,7 @@ export function JungleGrid() {
           })}
         </div>
         <p className="font-rounded text-jungle-muted text-sm font-semibold">
-          Pick a letter to go spying
+          Spy the letters hiding in the jungle — pick one to start
         </p>
       </div>
 

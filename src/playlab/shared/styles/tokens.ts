@@ -96,6 +96,42 @@ export const colors = {
    * backdrop. `ink` matches `night` (same pairing dino uses): `night` names
    * the wash colour, `ink` names the same hex used as legible text-on-white.
    */
+  /** Construction Site — the shared theme's UI chrome (steel panels, pills).
+   *  Illustration colours live in shared/components/construction/palette.ts
+   *  per the art-direction rule above; these are the CHROME colours only. */
+  builder: {
+    DEFAULT: "#F2B824",
+    deep: "#D89A12",
+    ink: "#4A3A10",
+    orange: "#F07F2E",
+    steel: "#65727F",
+    paper: "#F7F2E6",
+  },
+  /** Arctic World — the shared theme's UI chrome (frosted panels, pills).
+   *  Illustration colours live in shared/components/arctic/palette.ts per
+   *  the art-direction rule above; these are the CHROME colours only. */
+  arctic: {
+    DEFAULT: "#3E8FC4",
+    ice: "#7FC8EA",
+    deep: "#2B6C9A",
+    ink: "#123A56",
+    frost: "#EAF6FD",
+    snow: "#F2F9FE",
+  },
+  /** Pirate World — the shared theme's UI chrome (buttons, pills, panels).
+   *  Illustration colours live in shared/components/pirate/palette.ts per
+   *  the art-direction rule above; these are the CHROME colours only. */
+  pirate: {
+    DEFAULT: "#9A6534",
+    wood: "#9A6534",
+    deep: "#5C3A1C",
+    ink: "#4A2E14",
+    gold: "#E9B44C",
+    parchment: "#F4E6C4",
+    sand: "#F2DFA9",
+    sea: "#2E86AB",
+    seadeep: "#155E86",
+  },
   space: {
     DEFAULT: "#5B7FFF",
     night: "#0B1330",

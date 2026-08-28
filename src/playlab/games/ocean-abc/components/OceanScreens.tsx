@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 import {
   useOceanStore,
@@ -8,6 +9,7 @@ import {
   displayLetter,
   OCEAN_ALPHA,
   type LetterCase,
+  type OceanModule,
 } from "@games/ocean-abc/store/oceanStore";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { ProgressBar } from "@shared/components/ui/ProgressBar";
@@ -46,7 +48,7 @@ export function OceanSplash({ onExitPortal }: { onExitPortal?: () => void }) {
   const go = useCallback(() => {
     if (movedRef.current) return;
     movedRef.current = true;
-    setScreen("mode");
+    setScreen("modules");
   }, [setScreen]);
 
   useEffect(() => {
@@ -101,6 +103,7 @@ export function OceanSplash({ onExitPortal }: { onExitPortal?: () => void }) {
 
 /** BIG LETTERS / small letters — the only choice in the game. */
 export function OceanModeSelect() {
+  const router = useRouter();
   const { setCase, setScreen } = useOceanStore();
 
   const pick = (c: LetterCase) => {
@@ -120,13 +123,13 @@ export function OceanModeSelect() {
 
       <NavPillButton
         label="Back"
-        ariaLabel="Back to Ocean ABC home"
+        ariaLabel="Back to activity choice"
         tone="ocean"
         surface="strong"
         pinned
         onClick={() => {
           playClickSound();
-          setScreen("splash");
+          router.back();
         }}
       />
 
@@ -160,8 +163,110 @@ export function OceanModeSelect() {
   );
 }
 
+/**
+ * MODULE SELECT — after picking BIG/small, the child picks HOW to play:
+ * the full voyage (all three beats per letter) or one activity on its own.
+ * Four treasure-chest-sized cards in the same water: the combined card
+ * leads (biggest, first, starred) and each single module shows the icon of
+ * its own activity — the picture is the promise of what the button does.
+ */
+export function OceanModules({ onExitPortal = () => {} }: { onExitPortal?: () => void }) {
+  const { module, setModule, setScreen } = useOceanStore();
+
+  const pick = (m: OceanModule) => {
+    playClickSound();
+    setModule(m);
+    setScreen("mode");
+  };
+
+  const options: { m: OceanModule; icon: string; title: string; sub: string; aria: string }[] = [
+    {
+      m: "combined",
+      icon: "🌊",
+      title: "Full Voyage",
+      sub: "Build · Pop · Trace",
+      aria: "Play all three activities for every letter",
+    },
+    {
+      m: "build",
+      icon: "🧩",
+      title: "Build",
+      sub: "Piece letters together",
+      aria: "Play only the letter building activity",
+    },
+    {
+      m: "pop",
+      icon: "🫧",
+      title: "Pop",
+      sub: "Pop letter bubbles",
+      aria: "Play only the bubble popping activity",
+    },
+    {
+      m: "trace",
+      icon: "✏️",
+      title: "Trace",
+      sub: "Write the letters",
+      aria: "Play only the letter tracing activity",
+    },
+  ];
+
+  return (
+    <div className="oab-screen relative flex h-full w-full flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-8">
+      <OceanWorld />
+
+      <NavPillButton
+        label="Back"
+        ariaLabel="Back to all games"
+        tone="ocean"
+        surface="strong"
+        pinned
+        onClick={() => {
+          playClickSound();
+          onExitPortal();
+        }}
+      />
+
+      <motion.h1
+        className="oab-heading font-rounded relative z-10 text-center font-black"
+        initial={{ y: -12, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+      >
+        How do you want to play?
+      </motion.h1>
+      <p className="oab-tagline font-rounded relative z-10 text-center font-bold">
+        Build, pop and trace the alphabet under the sea
+      </p>
+
+      <div className="relative z-10 flex flex-wrap items-center justify-center gap-5">
+        {options.map((o, i) => (
+          <motion.button
+            key={o.m}
+            onClick={() => pick(o.m)}
+            className={`oab-module-btn flex flex-col items-center justify-center gap-1 ${
+              o.m === "combined" ? "oab-module-btn--hero" : ""
+            } ${module === o.m ? "oab-module-btn--current" : ""}`}
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.1 + i * 0.07, type: "spring", stiffness: 260, damping: 20 }}
+            whileTap={{ scale: 0.94 }}
+            whileHover={{ scale: 1.04 }}
+            aria-label={o.aria}
+          >
+            <span className="oab-module-icon" aria-hidden="true">
+              {o.icon}
+            </span>
+            <span className="oab-module-title font-rounded font-black">{o.title}</span>
+            <span className="oab-module-sub font-rounded font-bold">{o.sub}</span>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** Letter selection — A–Z (or a–z) as bubbles, plus Start from A / Continue. */
 export function OceanGrid() {
+  const router = useRouter();
   const store = useOceanStore();
   const { letterCase, setScreen, beginRun, jumpTo } = store;
   const done = doneFor(store, letterCase);
@@ -193,7 +298,7 @@ export function OceanGrid() {
         pinned
         onClick={() => {
           playClickSound();
-          setScreen("mode");
+          router.back();
         }}
       />
 

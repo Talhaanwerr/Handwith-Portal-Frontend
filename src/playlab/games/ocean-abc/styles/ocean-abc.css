@@ -17,17 +17,17 @@
    inferred. The ceiling accounts for the whole column — chrome, the letter,
    and the row of carrier bubbles under it. */
 .oab-screen {
-  --oab-letter: max(190px, min(72vw, 58vh, 620px));
+  --oab-letter: max(200px, min(64vw, 46vh, 560px));
   --oab-piece: var(--oab-letter);
-  --oab-carrier: calc(var(--oab-letter) * 0.3);
+  --oab-carrier: calc(var(--oab-letter) * 0.5);
   /** How far the carrier bubbles float above the sand. The letter's zone is
    *  measured off this, so the two can never overlap. */
-  --oab-floor: clamp(36px, 7vh, 80px);
+  --oab-floor: clamp(52px, 12vh, 130px);
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
   .oab-screen {
-    --oab-letter: max(104px, min(28vw, 40vh, 210px));
+    --oab-letter: max(140px, min(34vw, 50vh, 300px));
     --oab-carrier: calc(var(--oab-letter) * 0.62);
     --oab-floor: clamp(34px, 10vh, 70px);
   }
@@ -385,4 +385,61 @@
 
 .oab-finale-mascot {
   width: clamp(120px, 26vmin, 240px);
+}
+
+/* ── Module select — Full Voyage · Build · Pop · Trace ──
+   Same glass-in-the-water language as the case plates; the combined card is
+   the hero (bigger, golden rim) and the currently-chosen module wears a
+   quiet ring so returning players see their pick. */
+.oab-module-btn {
+  width: clamp(120px, 24vmin, 190px);
+  min-height: clamp(112px, 22vmin, 176px);
+  padding: clamp(10px, 2.2vmin, 18px);
+  border-radius: clamp(18px, 3.6vmin, 30px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(160deg, rgba(111, 199, 239, 0.42), rgba(17, 74, 112, 0.55));
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 14px 38px rgba(4, 32, 52, 0.45),
+    inset 0 0 40px rgba(228, 244, 255, 0.16);
+}
+.oab-module-btn--hero {
+  width: clamp(150px, 30vmin, 230px);
+  min-height: clamp(128px, 26vmin, 200px);
+  border-color: rgba(255, 217, 61, 0.75);
+  background: linear-gradient(160deg, rgba(255, 217, 61, 0.3), rgba(17, 74, 112, 0.58));
+}
+.oab-module-btn--current {
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.55),
+    0 14px 38px rgba(4, 32, 52, 0.45),
+    inset 0 0 40px rgba(228, 244, 255, 0.16);
+}
+.oab-module-icon {
+  font-size: clamp(30px, 7vmin, 54px);
+  line-height: 1.1;
+}
+.oab-module-title {
+  font-size: clamp(15px, 2.6vmin, 21px);
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(4, 32, 52, 0.6);
+}
+.oab-module-sub {
+  font-size: clamp(11px, 1.8vmin, 14px);
+  color: rgba(228, 244, 255, 0.85);
+}
+
+/* a bubble that is NOT the letter — same skin, dimmer glyph, so distractors
+   read as "other letters passing by", not broken buttons */
+.oab-pop--decoy .oab-pop-glyph {
+  color: rgba(228, 244, 255, 0.82);
+  text-shadow: none;
+}
+
+/* the one-line game explainer under the first menu heading */
+.oab-tagline {
+  font-size: clamp(13px, 2.4vmin, 18px);
+  color: rgba(228, 244, 255, 0.9);
+  text-shadow: 0 2px 10px rgba(4, 32, 52, 0.55);
+  max-width: 34ch;
 }

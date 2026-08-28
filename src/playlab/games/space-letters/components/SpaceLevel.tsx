@@ -48,6 +48,34 @@ import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shar
 const SNAP_RATIO = 0.18;
 const SNAP_MIN_PX = 44;
 
+/**
+ * A stable 0–1 from a string (FNV-1a via Math.imul).
+ *
+ * The tray must look scattered, not shuffled anew on every render — a piece
+ * that jumps while a child is reaching for it is worse than a tidy row. This
+ * is also why it is not Math.random: the value has to be identical on the
+ * server and the client, or the first paint hydrates into a different layout.
+ */
+function hash01(seed: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i += 1) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return ((h >>> 0) % 10000) / 10000;
+}
+
+/** Jitter ALONG the lane axis, as a share of the tray. Small by necessity:
+ *  three pieces divide the axis between them, so this is the only direction
+ *  where wandering can put two pieces on top of each other. */
+const SCATTER_MAIN = 1;
+/** Jitter ACROSS the lanes. The loose area is deliberately roomier on this
+ *  axis, so most of the scattered look comes from here. */
+const SCATTER_CROSS = 3;
+/** Peak tilt in degrees — enough to read as "dropped", small enough that a
+ *  piece's hit box stays close to its artwork. */
+const SCATTER_TILT = 3;
+
 interface DragState {
   piece: PieceKey;
   x: number;
@@ -86,10 +114,56 @@ export function SpaceLevel() {
   /** Small letters are cut as three stacked bands; big letters keep the T —
    *  see JigsawLayout in shared/utils/letterJigsaw. */
   const layout: JigsawLayout = letterCase === "lower" ? "stack" : "split";
-  const { fit, glyphBox, measure } = useGlyphFit(shown);
+  const { fit, glyphBox, cuts, measure } = useGlyphFit(shown);
   /** Where each piece is drawn and dropped, given where the glyph landed.
    *  Recomputed only when the measured glyph changes. */
-  const boxes = useMemo(() => pieceGeometry(glyphBox, layout), [glyphBox, layout]);
+  const boxes = useMemo(() => pieceGeometry(glyphBox, layout, cuts), [glyphBox, layout, cuts]);
+
+  /** Wide flat pieces stack one above another; tall narrow ones sit side by
+   *  side. Read from the PIECES, not from the case: a small letter is cut
+   *  whichever way keeps its pieces chunkiest, so "lowercase" no longer
+   *  implies bands. All three are equal thirds, so the first one speaks for
+   *  the set. */
+  const stacked = boxes[PIECE_ORDER[0]].box.w > boxes[PIECE_ORDER[0]].box.h;
+
+  /**
+   * Where each loose piece lies in the tray.
+   *
+   * Laid out in a row in PIECE_ORDER, the three pieces sat left-middle-right
+   * and re-formed the letter before the child had touched anything — the
+   * puzzle answered itself. So each piece takes a LANE, the lanes are dealt
+   * in an order derived from the letter, and each piece is nudged and tilted
+   * inside its own lane. Lanes (rather than free placement) are what keep
+   * two pieces from landing on top of each other; the jitter is what stops
+   * three lanes from reading as a row.
+   */
+  const scatter = useMemo(() => {
+    const n = PIECE_ORDER.length;
+    const lanes = PIECE_ORDER.map((p, i) => ({ i, k: hash01(`${shown}|lane|${p}`) }))
+      .sort((a, b) => a.k - b.k)
+      .map((entry) => entry.i);
+    // One deal in six comes back in the original order, which would put the
+    // pieces right back into a readable letter for that letter every time.
+    // Rotating by one is deterministic and cannot itself be the identity.
+    if (lanes.every((lane, i) => lane === i)) lanes.push(lanes.shift() as number);
+    // Lanes run along the piece's SHORT axis: tall narrow pieces side by
+    // side, wide flat ones one above another. Laying wide bands out side by
+    // side (or tall thirds one above another) is what would put them on top
+    // of each other.
+    const alongX = !stacked;
+    const out = {} as Record<PieceKey, { x: number; y: number; tilt: number }>;
+    PIECE_ORDER.forEach((p, i) => {
+      const main =
+        ((lanes[i] + 0.5) / n) * 100 + (hash01(`${shown}|m|${p}`) - 0.5) * 2 * SCATTER_MAIN;
+      const cross = 50 + (hash01(`${shown}|c|${p}`) - 0.5) * 2 * SCATTER_CROSS;
+      out[p] = {
+        x: alongX ? main : cross,
+        y: alongX ? cross : main,
+        tilt: (hash01(`${shown}|t|${p}`) - 0.5) * 2 * SCATTER_TILT,
+      };
+    });
+    return out;
+  }, [shown, stacked]);
 
   const [placed, setPlaced] = useState<PieceKey[]>([]);
   const [drag, setDrag] = useState<DragState | null>(null);
@@ -337,45 +411,58 @@ export function SpaceLevel() {
                 );
               })}
             </div>
+
+            {/* ── The pieces, lying loose INSIDE the container ── */}
+            <div className={`sap-pieces ${stacked ? "sap-pieces--stack" : ""}`}>
+              <AnimatePresence>
+                {PIECE_ORDER.filter((p) => !placed.includes(p)).map((p) => {
+                  const { box } = boxes[p];
+                  const beingDragged = drag?.piece === p;
+                  const spot = scatter[p];
+                  return (
+                    <motion.div
+                      key={p}
+                      ref={(el) => registerTarget(looseRefs.current, p, el)}
+                      className={`pl-lp-loose sap-loose touch-none ${
+                        beingDragged ? "cursor-grabbing opacity-25" : "cursor-grab"
+                      }`}
+                      style={cssVars({
+                        "--pl-w": `calc(var(--sap-piece) * ${(box.w / 100).toFixed(3)})`,
+                        "--pl-h": `calc(var(--sap-piece) * ${(box.h / 100).toFixed(3)})`,
+                        "--sap-lx": `${spot.x.toFixed(2)}%`,
+                        "--sap-ly": `${spot.y.toFixed(2)}%`,
+                      })}
+                      /* The tilt rides in the ANIMATION, not in a CSS transform:
+                         Framer owns this element's transform for the scale, and a
+                         rotate in the stylesheet would simply be overwritten. */
+                      initial={{ scale: 0, opacity: 0, rotate: 0 }}
+                      animate={{ scale: 1, opacity: 1, rotate: spot.tilt }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                      onPointerDown={(e) => startDrag(e, p)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Puzzle piece of the letter ${shown} — drag it into place`}
+                    >
+                      <LetterPiece
+                        letter={shown}
+                        piece={p}
+                        fit={fit}
+                        box={box}
+                        layout={layout}
+                        outline={boxes[p].outline}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* The object, tilted on the side and overlapping the container's
               edge — the same docked treatment as letter tracing. */}
           <VocabObject letter={currentLetter} />
         </div>
-      </div>
-
-      {/* ── The pieces, in a row directly below the container ── */}
-      <div className="sap-pieces relative z-10">
-        <AnimatePresence>
-          {PIECE_ORDER.filter((p) => !placed.includes(p)).map((p) => {
-            const { box } = boxes[p];
-            const beingDragged = drag?.piece === p;
-            return (
-              <motion.div
-                key={p}
-                ref={(el) => registerTarget(looseRefs.current, p, el)}
-                className={`pl-lp-loose pl-lp-loose--flow touch-none ${
-                  beingDragged ? "cursor-grabbing opacity-25" : "cursor-grab"
-                }`}
-                style={cssVars({
-                  "--pl-w": `calc(var(--sap-piece) * ${(box.w / 100).toFixed(3)})`,
-                  "--pl-h": `calc(var(--sap-piece) * ${(box.h / 100).toFixed(3)})`,
-                })}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                onPointerDown={(e) => startDrag(e, p)}
-                role="button"
-                tabIndex={0}
-                aria-label={`Puzzle piece of the letter ${shown} — drag it into place`}
-              >
-                <LetterPiece letter={shown} piece={p} fit={fit} box={box} layout={layout} />
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
       </div>
 
       {/* Ghost hand — visual instruction first, so a child who cannot read
@@ -410,6 +497,7 @@ export function SpaceLevel() {
               fit={fit}
               box={boxes[flying.piece].box}
               layout={layout}
+              outline={boxes[flying.piece].outline}
             />
           </div>
         </motion.div>
@@ -433,6 +521,7 @@ export function SpaceLevel() {
             fit={fit}
             box={boxes[drag.piece].box}
             layout={layout}
+            outline={boxes[drag.piece].outline}
             className="sap-lifted"
           />
         </div>

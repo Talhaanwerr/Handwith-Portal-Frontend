@@ -52,6 +52,9 @@ export function DinoCaseSelect() {
         <h1 className="font-rounded text-3xl font-black text-white drop-shadow-md md:text-5xl">
           Which letters?
         </h1>
+        <p className="font-rounded text-sm font-bold text-white/90 drop-shadow-md md:text-base">
+          Feed the dinos and cross the river with letters
+        </p>
         <p className="font-rounded text-dino-ink mt-1 rounded-full bg-white/85 px-4 py-1 text-xs font-bold md:text-sm">
           {mode === "stones" ? "For your river crossing" : "For your hungry dinos"}
         </p>

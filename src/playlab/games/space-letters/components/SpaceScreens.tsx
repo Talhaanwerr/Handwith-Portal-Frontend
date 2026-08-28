@@ -116,7 +116,7 @@ export function SpaceSplash({ onExitPortal }: { onExitPortal?: () => void }) {
  * shape as jungle-spy's ABC/abc picker, which is the repo's existing
  * case-choice pattern; no settings screen, no extra modes.
  */
-export function SpaceModeSelect() {
+export function SpaceModeSelect({ onExitPortal = () => {} }: { onExitPortal?: () => void }) {
   const { setCase, setScreen } = useSpaceStore();
 
   const pick = (c: LetterCase) => {
@@ -136,13 +136,13 @@ export function SpaceModeSelect() {
 
       <NavPillButton
         label="Back"
-        ariaLabel="Back to Space ABC home"
+        ariaLabel="Back to all games"
         tone="space"
         surface="strong"
         pinned
         onClick={() => {
           playClickSound();
-          setScreen("splash");
+          onExitPortal();
         }}
       />
 
@@ -153,6 +153,9 @@ export function SpaceModeSelect() {
       >
         Which letters?
       </motion.h1>
+      <p className="font-rounded relative z-10 text-center text-sm font-bold text-white/85 md:text-base">
+        Build each letter from its puzzle pieces
+      </p>
 
       <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
         {options.map((o, i) => (

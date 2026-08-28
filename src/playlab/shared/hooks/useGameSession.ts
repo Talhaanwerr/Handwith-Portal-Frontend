@@ -50,7 +50,13 @@ export function useGameSession({
 
   useEffect(() => {
     initAudio();
-    enterRef.current?.();
+    // Fresh entries come in with a clean URL and get the intro. Re-entries
+    // (browser back/forward into the game, or a reload mid-session) carry
+    // ?step= — for those the history pop handler restores the right screen,
+    // and the intro must not stomp it with the splash.
+    const hasStep =
+      typeof window !== "undefined" && new URLSearchParams(window.location.search).has("step");
+    if (!hasStep) enterRef.current?.();
   }, []);
 
   // startMusic is a shared singleton and idempotent, so calling it on every

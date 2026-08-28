@@ -29,7 +29,12 @@ export function SpaceLettersGame() {
 
   const handlePop = useCallback(
     (bucket: string) => {
+      // land on the grid for menu pops; restore the round when history says
+      // "play" (reload, forward-nav, back-from-portal) — ignoring it left
+      // the game on the splash with a ?step=play URL, so the next Back
+      // press appeared to do nothing.
       if (bucket === "menu") setScreen("grid");
+      else if (bucket === "play") setScreen(useSpaceStore.getState().run ? "level" : "grid");
     },
     [setScreen]
   );
@@ -51,7 +56,7 @@ export function SpaceLettersGame() {
         )}
         {screen === "mode" && (
           <motion.div key="mode" className="absolute inset-0" {...PAGE_TRANSITION}>
-            <SpaceModeSelect />
+            <SpaceModeSelect onExitPortal={() => router.push(PORTAL_ROUTE)} />
           </motion.div>
         )}
         {screen === "grid" && (

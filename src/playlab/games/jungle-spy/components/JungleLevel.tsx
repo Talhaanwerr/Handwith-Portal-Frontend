@@ -81,7 +81,7 @@ function letterFontPx(tier: number, play: PlayArea): number {
  *
  * The centre band is deliberately empty — that is where the animal sits.
  */
-const FIXED_SLOTS: readonly [number, number][] = [
+const BASE_SLOTS: readonly [number, number][] = [
   // pass 1 — the eight anchors: corners and mid-edges, whole-screen coverage
   [10, 14],
   [50, 8],
@@ -114,14 +114,42 @@ const FIXED_SLOTS: readonly [number, number][] = [
   [94, 70],
 ];
 
+/**
+ * THREE ORIENTATIONS of the map, and the board ALTERNATES between them per
+ * letter — the same designed coverage, seen three ways, so consecutive
+ * rounds never look identical without a single random number:
+ *
+ *   0 — the base map;
+ *   1 — the base map mirrored left↔right;
+ *   2 — the base map flipped top↕bottom.
+ *
+ * Mirroring preserves everything the base map guarantees (whole-screen
+ * coverage, balanced prefixes, edge insets, the empty centre band for the
+ * animal), which is why the variants are TRANSFORMS of the designed map
+ * rather than three separately-rolled layouts.
+ */
+const LAYOUTS: readonly (readonly [number, number][])[] = [
+  BASE_SLOTS,
+  BASE_SLOTS.map(([x, y]) => [100 - x, y] as [number, number]),
+  BASE_SLOTS.map(([x, y]) => [x, 100 - y] as [number, number]),
+];
+
+/** Which orientation this letter's board uses — deterministic, so a replay
+ *  of the same letter shows the same board, and A/B/C walk the cycle. */
+function layoutFor(target: string): readonly [number, number][] {
+  return LAYOUTS[Math.abs(target.toUpperCase().charCodeAt(0) - 65) % LAYOUTS.length];
+}
+
 /** How many of the fixed slots this viewport uses. Bigger screens use more of
  *  the map; the slots themselves never move. */
 function slotCount(play: PlayArea): number {
   const area = play.w * play.h;
-  if (area < 220_000) return 12;
-  if (area < 420_000) return 18;
-  if (area < 700_000) return 22;
-  return FIXED_SLOTS.length;
+  // Denser boards across the board — phones now hold 16 letters (the old 12
+  // left mobile rounds feeling sparse), and every tier fills its screen.
+  if (area < 220_000) return 16;
+  if (area < 420_000) return 20;
+  if (area < 700_000) return 24;
+  return BASE_SLOTS.length;
 }
 
 interface Bubble {
@@ -149,7 +177,8 @@ const LETTER_COLORS = [
 ];
 
 function buildBubbles(target: string, letterCase: "upper" | "lower", play: PlayArea): Bubble[] {
-  const total = Math.min(slotCount(play), FIXED_SLOTS.length);
+  const slots = layoutFor(target);
+  const total = Math.min(slotCount(play), slots.length);
   const others = JUNGLE_ANIMALS.map((a) => a.letter).filter((l) => l !== target);
   const decoys = shuffle(others).slice(0, Math.max(0, total - TARGET_COUNT));
   // Only the ASSIGNMENT is shuffled — which letter lands in which fixed slot.
@@ -168,8 +197,8 @@ function buildBubbles(target: string, letterCase: "upper" | "lower", play: PlayA
     // letter, so a target is never predictably the big one.
     size: (i % 4) as 0 | 1 | 2 | 3,
     color: LETTER_COLORS[i % LETTER_COLORS.length],
-    x: FIXED_SLOTS[i][0],
-    y: FIXED_SLOTS[i][1],
+    x: slots[i][0],
+    y: slots[i][1],
   }));
 }
 

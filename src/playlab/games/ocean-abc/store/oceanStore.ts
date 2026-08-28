@@ -11,7 +11,7 @@ import {
 } from "@shared/utils/progression";
 
 export type LetterCase = "upper" | "lower";
-export type OceanScreen = "splash" | "mode" | "grid" | "level" | "complete";
+export type OceanScreen = "splash" | "mode" | "modules" | "grid" | "level" | "complete";
 
 /**
  * The three things a child does with each letter, in order:
@@ -23,6 +23,17 @@ export type OceanScreen = "splash" | "mode" | "grid" | "level" | "complete";
 export type Stage = "build" | "pop" | "trace";
 export const STAGES: readonly Stage[] = ["build", "pop", "trace"];
 
+/** Which activity the child picked after choosing BIG/small letters:
+ *  everything, or one module on its own. */
+export type OceanModule = "combined" | "build" | "pop" | "trace";
+
+/** The stages a letter plays under a module — "combined" is all three in
+ *  order; a single module is just itself. One list drives the level, the
+ *  star row and nextStage, so no screen needs to know which module runs. */
+export function stagesFor(module: OceanModule): readonly Stage[] {
+  return module === "combined" ? STAGES : [module];
+}
+
 /** Letters are always stored UPPERCASE — only the DISPLAY case changes — so
  *  one progression implementation serves both modes. */
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -32,6 +43,7 @@ interface OceanState {
   letterCase: LetterCase;
   currentLetter: string;
   stage: Stage;
+  module: OceanModule;
   run: LetterRun | null;
   /** Progress per case — building "A" is different learning from "a", so
    *  each case earns its own finale (the pattern jungle-spy established). */
@@ -40,6 +52,7 @@ interface OceanState {
   setScreen: (s: OceanScreen) => void;
   setCase: (c: LetterCase) => void;
   setStage: (s: Stage) => void;
+  setModule: (m: OceanModule) => void;
   /** Move to the next stage; false when the letter's three stages are done. */
   nextStage: () => boolean;
   markDone: (l: string) => void;
@@ -57,17 +70,20 @@ export const useOceanStore = create<OceanState>()(
       letterCase: "upper",
       currentLetter: "A",
       stage: "build",
+      module: "combined",
       run: null,
       done: [],
       doneLower: [],
       setScreen: (screen) => set({ screen }),
       setCase: (letterCase) => set({ letterCase }),
       setStage: (stage) => set({ stage }),
+      setModule: (module) => set({ module, stage: stagesFor(module)[0] }),
 
       nextStage: () => {
-        const i = STAGES.indexOf(get().stage);
-        if (i < 0 || i >= STAGES.length - 1) return false;
-        set({ stage: STAGES[i + 1] });
+        const active = stagesFor(get().module);
+        const i = active.indexOf(get().stage);
+        if (i < 0 || i >= active.length - 1) return false;
+        set({ stage: active[i + 1] });
         return true;
       },
 
@@ -75,14 +91,14 @@ export const useOceanStore = create<OceanState>()(
         set((s) => {
           const finished = s.letterCase === "lower" ? s.doneLower : s.done;
           const run = buildRun(ALPHA, startAt, finished, intent);
-          return { run, currentLetter: run.queue[0] ?? "A", stage: "build" };
+          return { run, currentLetter: run.queue[0] ?? "A", stage: stagesFor(s.module)[0] };
         }),
 
       jumpTo: (letter) =>
         set((s) => {
           const finished = s.letterCase === "lower" ? s.doneLower : s.done;
           const run = s.run ? jumpRunTo(s.run, letter) : buildRun(ALPHA, letter, finished, "fresh");
-          return { run, currentLetter: letter, stage: "build" };
+          return { run, currentLetter: letter, stage: stagesFor(s.module)[0] };
         }),
 
       advance: () => {
@@ -93,7 +109,7 @@ export const useOceanStore = create<OceanState>()(
           set({ run });
           return false;
         }
-        set({ run, currentLetter: run.queue[run.index], stage: "build" });
+        set({ run, currentLetter: run.queue[run.index], stage: stagesFor(s.module)[0] });
         return true;
       },
 
@@ -114,7 +130,12 @@ export const useOceanStore = create<OceanState>()(
     {
       name: "ocean-abc-progress",
       // screen/letter/stage/run are session flow, not progress
-      partialize: (s) => ({ done: s.done, doneLower: s.doneLower, letterCase: s.letterCase }),
+      partialize: (s) => ({
+        done: s.done,
+        doneLower: s.doneLower,
+        letterCase: s.letterCase,
+        module: s.module,
+      }),
     }
   )
 );
