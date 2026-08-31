@@ -18,6 +18,11 @@
 @import "./games/letter-treats/styles/letter-treats.css";
 @import "./games/space-letters/styles/space-letters.css";
 @import "./games/ocean-abc/styles/ocean-abc.css";
+@import "./games/ocean-hunt/styles/ocean-hunt.css";
+@import "./shared/styles/pirate.css";
+@import "./shared/styles/arctic.css";
+@import "./shared/styles/construction.css";
+@import "./games/pirate-match/styles/pirate-match.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

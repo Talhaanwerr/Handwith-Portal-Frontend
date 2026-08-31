@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useOceanStore, displayLetter, STAGES } from "@games/ocean-abc/store/oceanStore";
+import { useOceanStore, displayLetter, stagesFor } from "@games/ocean-abc/store/oceanStore";
 import { OceanWorld } from "@games/ocean-abc/components/OceanScreens";
 import { BuildStage } from "@games/ocean-abc/components/BuildStage";
 import { PopStage } from "@games/ocean-abc/components/PopStage";
@@ -16,6 +16,8 @@ import { useElementSize } from "@shared/hooks/useElementSize";
 import { cssVars } from "@shared/styles/cssVars";
 import { playClickSound, playFanfare } from "@shared/audio/sfx";
 import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
+import { cheerFor } from "@shared/audio/cheers";
+import { Confetti } from "@shared/components/game/Confetti";
 
 /** One spoken line per stage, all from clips that already exist. */
 const STAGE_CLIP: Record<string, string> = {
@@ -46,9 +48,15 @@ export function OceanLevel() {
 
   const shown = displayLetter(currentLetter, letterCase);
   const material = materialFor(currentLetter);
-  const stageIndex = Math.max(0, STAGES.indexOf(stage));
+  /** This letter's praise — deterministic; word and voice from the same clip. */
+  const cheerId = cheerFor(currentLetter);
+  /** The module's own stage list — one stage when a single activity was
+   *  picked, three on the full voyage. */
+  const activeStages = stagesFor(store.module);
+  const stageIndex = Math.max(0, activeStages.indexOf(stage));
 
   const [celebrating, setCelebrating] = useState(false);
+  const advancedRef = useRef(false);
   const [rootRef, dims] = useElementSize();
   const dragRootRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +66,7 @@ export function OceanLevel() {
   // the two lines never talk over each other.
   useEffect(() => {
     const key = currentLetter.toLowerCase();
-    preloadClips([`letter-${key}`, "instr-watch-carefully", "instr-your-turn", "cheer-great-job"]);
+    preloadClips([`letter-${key}`, "instr-watch-carefully", "instr-your-turn", cheerId]);
     const t = setTimeout(() => {
       void playSequence([`letter-${key}`, STAGE_CLIP[stage] ?? "instr-your-turn"], 280);
     }, 350);
@@ -66,6 +74,7 @@ export function OceanLevel() {
       clearTimeout(t);
       stopVoice();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLetter, letterCase, stage]);
 
   /** A stage finished: move to the next, or finish the letter. */
@@ -73,14 +82,27 @@ export function OceanLevel() {
     if (nextStage()) return;
     markDone(currentLetter);
     setCelebrating(true);
-    void playClip("cheer-great-job").then(() => playFanfare());
-  }, [nextStage, markDone, currentLetter]);
+    void playClip(cheerId).then(() => playFanfare());
+  }, [nextStage, markDone, currentLetter, cheerId]);
 
   const goNext = useCallback(() => {
+    if (advancedRef.current) return; // tap + timer must not both advance
+    advancedRef.current = true;
     stopVoice();
     setCelebrating(false);
     if (!advance()) setScreen("complete");
   }, [advance, setScreen]);
+
+  /** The celebration holds for a fixed beat, then moves on by itself —
+   *  1.5s max, per the portal's celebration pacing. */
+  useEffect(() => {
+    if (!celebrating) return;
+    // A NEW celebration re-arms the guard. Without this the ref stayed true
+    // after the first advance and every later celebration hung on screen.
+    advancedRef.current = false;
+    const t = setTimeout(goNext, 1500);
+    return () => clearTimeout(t);
+  }, [celebrating, goNext]);
 
   return (
     <div
@@ -113,7 +135,14 @@ export function OceanLevel() {
           <span className="font-rounded text-ocean text-2xl font-black">{shown}</span>
         </div>
         <div className="oab-pill flex items-center rounded-full px-3 py-2" role="status">
-          <StarRow earned={stageIndex} total={STAGES.length} size={18} />
+          {/* a star per finished stage — and the LAST star actually fills:
+              while celebrating, the whole row is earned (it used to advance
+              to the next letter before the final star ever showed) */}
+          <StarRow
+            earned={celebrating ? activeStages.length : stageIndex}
+            total={activeStages.length}
+            size={18}
+          />
         </div>
       </div>
 
@@ -172,6 +201,7 @@ export function OceanLevel() {
             blur="3px"
             size={dims}
           >
+            <Confetti count={44} />
             <motion.span
               className="oab-win-letter font-rounded font-black"
               initial={{ scale: 0.5, y: 20 }}
@@ -183,9 +213,7 @@ export function OceanLevel() {
             >
               {shown}
             </motion.span>
-            <h2 className="oab-win-heading font-rounded font-black">
-              {clipText("cheer-great-job")}
-            </h2>
+            <h2 className="oab-win-heading font-rounded font-black">{clipText(cheerId)}</h2>
             <button
               onClick={goNext}
               className="oab-next font-rounded min-h-[52px] rounded-full px-7 text-base font-black text-white shadow-lg"

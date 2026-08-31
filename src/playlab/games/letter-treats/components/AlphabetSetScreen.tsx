@@ -47,6 +47,9 @@ export function AlphabetSetScreen({ onExitPortal }: { onExitPortal: () => void }
           <span className="lt-title-word">Candy</span>{" "}
           <span className="lt-title-word lt-title-word--b">ABC</span>
         </motion.h1>
+        <p className="font-rounded relative z-10 text-center text-sm font-bold text-white/90 md:text-base">
+          Learn letter sounds with sweet treats — pick a letter
+        </p>
 
         <div className="ab-grid grid w-full" role="list">
           {TREAT_LETTERS.map((letter, i) => (

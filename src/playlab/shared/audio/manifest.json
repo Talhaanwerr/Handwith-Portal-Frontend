@@ -985,6 +985,11 @@
       "text": "Yoo hoo!",
       "speak": "Yoo hoo!"
     },
+    "cheer-excellent": {
+      "file": "/audio/cheers/excellent.mp3",
+      "text": "Excellent!",
+      "speak": "Excellent!"
+    },
     "shark-intro": {
       "file": "/audio/shark/intro.mp3",
       "text": "Letters A to Z — feed the shark!",

@@ -64,9 +64,18 @@ export function useScreenHistorySync(
   useEffect(() => {
     if (fromUrl.current) {
       fromUrl.current = false;
+      // A URL-driven first run still counts as mounting: the entry we
+      // arrived on IS the initial entry. Leaving `mounted` false here made
+      // the game's next real step router.replace() over the menu entry,
+      // which deleted the back stack (back from a level then left the game
+      // instead of returning to its menu).
+      mounted.current = true;
       return;
     }
-    if (step === lastSynced.current) return;
+    if (step === lastSynced.current) {
+      mounted.current = true;
+      return;
+    }
     lastSynced.current = step;
 
     const params = new URLSearchParams(searchParams.toString());

@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import type { GameMeta } from "@/types/games";
+import { GAME_SCENE_ICONS } from "@shared/components/icons/GameSceneIcons";
 
 interface GameCardProps {
   game: GameMeta;
 }
 
 export function GameCard({ game }: GameCardProps) {
+  const SceneIcon = GAME_SCENE_ICONS[game.id];
   return (
     <Link
       href={`/play/${game.id}`}
@@ -18,15 +20,21 @@ export function GameCard({ game }: GameCardProps) {
       }}
       aria-label={`Play ${game.title}`}
     >
-      {/* Glyph */}
-      <div className="flex items-center justify-center px-6 pt-8 pb-4">
-        <span
-          className="text-6xl transition-transform duration-200 group-hover:scale-110 sm:text-7xl"
-          role="img"
+      {/* The game's miniature scene — a tiny picture of the gameplay itself.
+          The emoji glyph remains only as a fallback for ids without a scene. */}
+      <div className="flex items-center justify-center px-6 pt-6 pb-3">
+        <div
+          className="h-24 w-24 transition-transform duration-200 group-hover:scale-105 sm:h-28 sm:w-28"
           aria-hidden="true"
         >
-          {game.glyph}
-        </span>
+          {SceneIcon ? (
+            <SceneIcon />
+          ) : (
+            <span className="flex h-full w-full items-center justify-center text-6xl" role="img">
+              {game.glyph}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Info */}

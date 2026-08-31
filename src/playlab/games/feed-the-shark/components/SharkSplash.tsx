@@ -61,6 +61,9 @@ export function SharkSplash({ onStart, onExitPortal, hasProgress }: SharkSplashP
           <h1 className="font-rounded text-3xl font-black text-white drop-shadow-md md:text-5xl">
             Letters A–Z
           </h1>
+          <p className="font-rounded text-sm font-bold text-white/90 drop-shadow-md md:text-base">
+            Feed the shark by matching big and small letters
+          </p>
           <h2 className="fs-subtitle font-rounded text-2xl font-black md:text-4xl">
             Feed the Shark
           </h2>

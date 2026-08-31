@@ -77,10 +77,16 @@ export function LetterTracingGame() {
   const handlePop = useCallback(
     (bucket: string) => {
       if (bucket === "menu") setScreen("main-menu");
-      // "entry" and "play" popped-to have no reconstruction to do — entry
-      // is only ever the initial state, and play's exact screen (tracing vs
-      // sequencing vs celebration) was already set by whichever forward
-      // action pushed that entry in the first place.
+      // "entry" pops have no reconstruction to do — entry is only ever the
+      // initial state. A popped "play" IS restored when a session run
+      // exists (tracing is the right screen for any letter mid-run); with
+      // no run (a stale ?step=play URL on a fresh mount — the session
+      // queue is never persisted) it lands on the menu so Back is never
+      // stuck showing a screen the URL disagrees with.
+      else if (bucket === "play") {
+        const st = useGameStore.getState();
+        setScreen(st.run ? "tracing" : "main-menu");
+      }
     },
     [setScreen]
   );

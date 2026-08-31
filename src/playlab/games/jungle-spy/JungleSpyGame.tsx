@@ -28,6 +28,12 @@ export function JungleSpyGame() {
   const handlePop = useCallback(
     (bucket: string) => {
       if (bucket === "menu") setScreen("grid");
+      // Restore the round when history says "play" (reload, forward-nav,
+      // re-entry with a stale ?step=play URL) — ignoring it left the game on
+      // a menu screen while the URL claimed play, so the next Back press
+      // appeared to do nothing (the space-letters routing bug, fixed
+      // portal-wide).
+      else if (bucket === "play") setScreen(useJungleStore.getState().run ? "level" : "grid");
     },
     [setScreen]
   );
@@ -50,7 +56,7 @@ export function JungleSpyGame() {
         )}
         {screen === "grid" && (
           <motion.div key="grid" className="absolute inset-0" {...PAGE_TRANSITION}>
-            <JungleGrid />
+            <JungleGrid onExitPortal={() => router.push(PORTAL_ROUTE)} />
           </motion.div>
         )}
         {screen === "level" && (

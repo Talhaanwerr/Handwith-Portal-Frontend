@@ -32,6 +32,12 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "ocean-abc": lazy(() =>
     import("@games/ocean-abc/OceanAbcGame").then((m) => ({ default: m.OceanAbcGame }))
   ),
+  "ocean-hunt": lazy(() =>
+    import("@games/ocean-hunt/OceanHuntGame").then((m) => ({ default: m.OceanHuntGame }))
+  ),
+  "pirate-match": lazy(() =>
+    import("@games/pirate-match/PirateMatchGame").then((m) => ({ default: m.PirateMatchGame }))
+  ),
 };
 
 interface GamePlayerProps {

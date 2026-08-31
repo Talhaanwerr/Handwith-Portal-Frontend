@@ -216,6 +216,8 @@
 .pl-lp-guide-seam,
 .pl-lp-guide-rim {
   fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 /** A placed (or previewed) piece, at its own box within the letter square, so
@@ -252,6 +254,7 @@
 .pl-lp-rim {
   fill: none;
   stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 /** Off-screen glyph used only to measure the letter's real bounds (see
@@ -263,4 +266,87 @@
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+/* ─── Case-select plates ────────────────────────────────────────────────────
+   Structure for the shared BIG/small picker (see
+   shared/components/game/CaseSelectScreen.tsx). Sizing and layout only —
+   each game paints these classes from its own stylesheet, scoped under its
+   root, exactly like the letter-puzzle classes above. */
+
+.pl-cs-title {
+  font-size: clamp(28px, 6vmin, 46px);
+}
+
+.pl-cs-subtitle {
+  margin-top: 4px;
+  border-radius: 9999px;
+  padding: 4px 16px;
+  font-size: clamp(11px, 1.8vmin, 14px);
+}
+
+.pl-cs-btn {
+  width: clamp(140px, 30vmin, 230px);
+  min-height: clamp(120px, 24vmin, 190px);
+  padding: clamp(12px, 2.5vmin, 22px);
+  border-radius: clamp(20px, 4vmin, 34px);
+}
+
+.pl-cs-preview {
+  font-size: clamp(28px, 6.5vmin, 50px);
+  line-height: 1.1;
+}
+
+.pl-cs-label {
+  font-size: clamp(13px, 2.2vmin, 18px);
+  letter-spacing: 0.04em;
+}
+
+/* ─── Confetti ──────────────────────────────────────────────────────────────
+   Pieces for shared/components/game/Confetti.tsx. The six colours are the
+   portal's celebration palette (the same family the sparkle canvas uses); a
+   game can repaint pl-cf-0..5 under its own root if its world needs to. The
+   element is positioned by pl-at (left from --pl-x) and animated by Framer
+   (top/x/rotate), so nothing here may rely on `transform`. */
+
+.pl-cf {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+.pl-cf--tall {
+  height: 20px;
+  border-radius: 6px / 3px;
+}
+
+.pl-cf-0 {
+  background: #ffd700;
+}
+.pl-cf-1 {
+  background: #ff9ebc;
+}
+.pl-cf-2 {
+  background: #a882e8;
+}
+.pl-cf-3 {
+  background: #66cc94;
+}
+.pl-cf-4 {
+  background: #54a0ff;
+}
+.pl-cf-5 {
+  background: #ffa94d;
+}
+
+/* ─── Theme art sizing ──────────────────────────────────────────────────────
+   Every shared-theme SVG fills its parent — size the WRAPPER, never the art.
+   (The pirate theme's pp-art predates this generic class and stays as is;
+   new themes use pl-art.) */
+
+.pl-art {
+  display: block;
+  width: 100%;
+  height: auto;
 }

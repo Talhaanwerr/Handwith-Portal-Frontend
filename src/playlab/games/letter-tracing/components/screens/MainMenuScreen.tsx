@@ -145,6 +145,9 @@ export function MainMenuScreen({ onSelectModule, onExitPortal }: MainMenuScreenP
           <h1 className="font-rounded text-plum text-2xl font-black tracking-tight">
             Letter Tracing
           </h1>
+          <p className="font-rounded text-plum/70 text-sm font-bold">
+            Trace letters and numbers with your finger
+          </p>
           <p className="font-rounded text-plum/50 text-sm font-semibold">
             Choose what to learn today
           </p>

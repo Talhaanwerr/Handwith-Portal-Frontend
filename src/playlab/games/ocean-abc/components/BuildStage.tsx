@@ -61,8 +61,8 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
    *  Derived from the glyph itself — "a" is its own lowercase, "A" is not —
    *  so the stage needs no extra prop to know which world it is in. */
   const layout: JigsawLayout = shown === shown.toLowerCase() ? "stack" : "split";
-  const { fit, glyphBox, measure } = useGlyphFit(shown);
-  const boxes = useMemo(() => pieceGeometry(glyphBox, layout), [glyphBox, layout]);
+  const { fit, glyphBox, cuts, measure } = useGlyphFit(shown);
+  const boxes = useMemo(() => pieceGeometry(glyphBox, layout, cuts), [glyphBox, layout, cuts]);
 
   const [placed, setPlaced] = useState<PieceKey[]>([]);
   const [drag, setDrag] = useState<DragState | null>(null);
@@ -286,11 +286,23 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
                 <span
                   className="oab-carrier-piece pl-center-self"
                   style={cssVars({
-                    "--pl-w": `calc(var(--oab-piece) * ${(box.w / 100).toFixed(3)})`,
-                    "--pl-h": `calc(var(--oab-piece) * ${(box.h / 100).toFixed(3)})`,
+                    /* the piece FITS ITS BUBBLE: scaled by its own longer
+                       side to 86% of the carrier, so a wide crossbar and a
+                       tall leg are both fully visible — sizing by the
+                       letter made big pieces overflow the bubble and thin
+                       pieces vanish into it ("empty bubbles"). */
+                    "--pl-w": `calc(var(--oab-carrier) * ${((0.86 * box.w) / Math.max(box.w, box.h)).toFixed(3)})`,
+                    "--pl-h": `calc(var(--oab-carrier) * ${((0.86 * box.h) / Math.max(box.w, box.h)).toFixed(3)})`,
                   })}
                 >
-                  <LetterPiece letter={shown} piece={p} fit={fit} box={box} layout={layout} />
+                  <LetterPiece
+                    letter={shown}
+                    piece={p}
+                    fit={fit}
+                    box={box}
+                    layout={layout}
+                    outline={boxes[p].outline}
+                  />
                 </span>
               </motion.div>
             );
@@ -325,6 +337,7 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
               fit={fit}
               box={boxes[flying.piece].box}
               layout={layout}
+              outline={boxes[flying.piece].outline}
             />
           </div>
         </motion.div>
@@ -348,6 +361,7 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
             fit={fit}
             box={boxes[drag.piece].box}
             layout={layout}
+            outline={boxes[drag.piece].outline}
           />
         </div>
       )}

@@ -46,6 +46,11 @@ export function AlphabetDinoDigGame() {
   const handlePop = useCallback(
     (bucket: string) => {
       if (bucket === "menu") setScreen("splash");
+      // A popped "play" can't safely rebuild a half-configured round (play
+      // needs a mode picked first), so it lands on the mode's own doorway —
+      // Back is never stuck, and the next press pops "menu" normally.
+      else if (bucket === "play")
+        setScreen(useDinoStore.getState().mode === "stones" ? "stones-start" : "splash");
     },
     [setScreen]
   );
