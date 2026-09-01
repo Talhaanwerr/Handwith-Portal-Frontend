@@ -1,11 +1,47 @@
 {
-  "$comment": "SINGLE SOURCE OF TRUTH for all narration. scripts/generate-audio.mjs generates every file from this; src/shared/audio/voice.ts plays them; UI components take displayed text from here so screen text and speech can never mismatch.",
+  "$comment": "SINGLE SOURCE OF TRUTH for all narration. scripts/generate-elevenlabs-audio.mjs generates every file from this; src/playlab/shared/audio/voice.ts plays them; UI components take displayed text from here so screen text and speech can never mismatch.",
+  "elevenLabs": {
+    "voiceName": "Zara",
+    "voiceId": "jqcCZkN6Knx8BJ5TBdYR",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_128",
+    "defaultTone": "warm",
+    "tones": {
+      "teaching": {
+        "stability": 0.62,
+        "similarity_boost": 0.8,
+        "style": 0.15,
+        "use_speaker_boost": true
+      },
+      "cheer": {
+        "stability": 0.38,
+        "similarity_boost": 0.8,
+        "style": 0.55,
+        "use_speaker_boost": true
+      },
+      "warm": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.4,
+        "use_speaker_boost": true
+      }
+    },
+    "toneRules": {
+      "phonics-": "teaching",
+      "letter-": "teaching",
+      "number-": "teaching",
+      "treat-sound-": "teaching",
+      "cheer-": "cheer",
+      "magnet-excellent": "cheer"
+    },
+    "$note": "Used by scripts/generate-elevenlabs-audio.mjs — the CURRENT generator. voiceName is resolved to an id at run time (a Voice Library voice must first be added to the account); voiceId, when set, wins. TONE IS PER FAMILY on purpose: 'teaching' clips (phonics/letter/number) stay stable so the same sound is taught identically every time, 'cheer' is the most expressive, everything else is 'warm'. ElevenLabs does NOT honour inline <phoneme> SSML, so the 26 phonics clips fall back to their 'speakFree' respelling; add an 'elevenSpeak' field to any clip to tune what is said without touching the on-screen 'text'."
+  },
   "voice": {
     "languageCode": "en-US",
     "name": "en-US-Neural2-H",
     "speakingRate": 0.92,
     "pitch": 0.0,
-    "$note": "Used by the GOOGLE generator (billing path) — supports exact IPA phonics."
+    "$note": "LEGACY — the Google generator (script no longer in repo). Kept for its IPA reference only."
   },
   "clips": {
     "letter-a": {
@@ -628,11 +664,6 @@
       "text": "Great job!",
       "speak": "Great job!"
     },
-    "cheer-fantastic": {
-      "file": "/audio/encouragement/fantastic.mp3",
-      "text": "Fantastic!",
-      "speak": "Fantastic!"
-    },
     "cheer-amazing": {
       "file": "/audio/encouragement/amazing.mp3",
       "text": "Amazing!",
@@ -647,167 +678,6 @@
       "file": "/audio/encouragement/wonderful.mp3",
       "text": "Wonderful!",
       "speak": "Wonderful!"
-    },
-    "cheer-youre-doing-great": {
-      "file": "/audio/encouragement/youre-doing-great.mp3",
-      "text": "You're doing great!",
-      "speak": "You're doing great!"
-    },
-    "jungle-a": {
-      "file": "/audio/jungle/a.mp3",
-      "text": "Find the A!",
-      "speak": "Find the A! A is for Ant!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-b": {
-      "file": "/audio/jungle/b.mp3",
-      "text": "Find the B!",
-      "speak": "Find the B! B is for Bear!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-c": {
-      "file": "/audio/jungle/c.mp3",
-      "text": "Find the C!",
-      "speak": "Find the C! C is for Cat!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-d": {
-      "file": "/audio/jungle/d.mp3",
-      "text": "Find the D!",
-      "speak": "Find the D! D is for Dog!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-e": {
-      "file": "/audio/jungle/e.mp3",
-      "text": "Find the E!",
-      "speak": "Find the E! E is for Elephant!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-f": {
-      "file": "/audio/jungle/f.mp3",
-      "text": "Find the F!",
-      "speak": "Find the F! F is for Frog!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-g": {
-      "file": "/audio/jungle/g.mp3",
-      "text": "Find the G!",
-      "speak": "Find the G! G is for Giraffe!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-h": {
-      "file": "/audio/jungle/h.mp3",
-      "text": "Find the H!",
-      "speak": "Find the H! H is for Horse!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-i": {
-      "file": "/audio/jungle/i.mp3",
-      "text": "Find the I!",
-      "speak": "Find the I! I is for Iguana!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-j": {
-      "file": "/audio/jungle/j.mp3",
-      "text": "Find the J!",
-      "speak": "Find the J! J is for Jellyfish!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-k": {
-      "file": "/audio/jungle/k.mp3",
-      "text": "Find the K!",
-      "speak": "Find the K! K is for Koala!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-l": {
-      "file": "/audio/jungle/l.mp3",
-      "text": "Find the L!",
-      "speak": "Find the L! L is for Lion!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-m": {
-      "file": "/audio/jungle/m.mp3",
-      "text": "Find the M!",
-      "speak": "Find the M! M is for Monkey!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-n": {
-      "file": "/audio/jungle/n.mp3",
-      "text": "Find the N!",
-      "speak": "Find the N! N is for Nest!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-o": {
-      "file": "/audio/jungle/o.mp3",
-      "text": "Find the O!",
-      "speak": "Find the O! O is for Octopus!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-p": {
-      "file": "/audio/jungle/p.mp3",
-      "text": "Find the P!",
-      "speak": "Find the P! P is for Penguin!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-q": {
-      "file": "/audio/jungle/q.mp3",
-      "text": "Find the Q!",
-      "speak": "Find the Q! Q is for Quail!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-r": {
-      "file": "/audio/jungle/r.mp3",
-      "text": "Find the R!",
-      "speak": "Find the R! R is for Rabbit!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-s": {
-      "file": "/audio/jungle/s.mp3",
-      "text": "Find the S!",
-      "speak": "Find the S! S is for Snake!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-t": {
-      "file": "/audio/jungle/t.mp3",
-      "text": "Find the T!",
-      "speak": "Find the T! T is for Turtle!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-u": {
-      "file": "/audio/jungle/u.mp3",
-      "text": "Find the U!",
-      "speak": "Find the U! U is for Umbrella Bird!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-v": {
-      "file": "/audio/jungle/v.mp3",
-      "text": "Find the V!",
-      "speak": "Find the V! V is for Vulture!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-w": {
-      "file": "/audio/jungle/w.mp3",
-      "text": "Find the W!",
-      "speak": "Find the W! W is for Whale!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-x": {
-      "file": "/audio/jungle/x.mp3",
-      "text": "Find the X!",
-      "speak": "Find the X! X is for X-ray Fish!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-y": {
-      "file": "/audio/jungle/y.mp3",
-      "text": "Find the Y!",
-      "speak": "Find the Y! Y is for Yak!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
-    },
-    "jungle-z": {
-      "file": "/audio/jungle/z.mp3",
-      "text": "Find the Z!",
-      "speak": "Find the Z! Z is for Zebra!",
-      "note": "Jungle ABC Spy level intro + hint (single natural recording)"
     },
     "jungle-find-a": {
       "file": "/audio/jungle/find-a.mp3",
@@ -979,16 +849,6 @@
       "file": "/audio/magnet/soup.mp3",
       "text": "Alphabet soup!",
       "speak": "Alphabet soup!"
-    },
-    "cheer-yoo-hoo": {
-      "file": "/audio/cheers/yoo-hoo.mp3",
-      "text": "Yoo hoo!",
-      "speak": "Yoo hoo!"
-    },
-    "cheer-excellent": {
-      "file": "/audio/cheers/excellent.mp3",
-      "text": "Excellent!",
-      "speak": "Excellent!"
     },
     "shark-intro": {
       "file": "/audio/shark/intro.mp3",
@@ -2182,16 +2042,16 @@
       "text": "puh - pen",
       "speak": "puh... pen!"
     },
-    "treat-word-pig": {
-      "file": "/audio/words/pig.mp3",
-      "text": "pig",
-      "speak": "pig!",
-      "note": "reuses the existing recorded word clip - not regenerated"
+    "treat-word-penguin": {
+      "file": "/audio/words/penguin.mp3",
+      "text": "penguin",
+      "speak": "penguin!",
+      "note": "same recording as word-p — one file, both ids"
     },
-    "treat-blend-pig": {
-      "file": "/audio/treats/blend-pig.mp3",
-      "text": "puh - pig",
-      "speak": "puh... pig!"
+    "treat-blend-penguin": {
+      "file": "/audio/treats/blend-penguin.mp3",
+      "text": "puh - penguin",
+      "speak": "puh... penguin!"
     },
     "treat-word-pineapple": {
       "file": "/audio/treats/word-pineapple.mp3",

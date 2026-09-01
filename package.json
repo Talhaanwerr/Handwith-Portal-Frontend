@@ -11,7 +11,18 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
-    "prepare": "node -e \"if (process.env.VERCEL || process.env.CI || process.env.HUSKY === '0') process.exit(0); require('child_process').execSync('husky', {stdio:'inherit'})\""
+    "prepare": "node -e \"if (process.env.VERCEL || process.env.CI || process.env.HUSKY === '0') process.exit(0); require('child_process').execSync('husky', {stdio:'inherit'})\"",
+    "audio:voices": "node scripts/generate-elevenlabs-audio.mjs --list-voices",
+    "audio:quota": "node scripts/generate-elevenlabs-audio.mjs --quota",
+    "audio:plan": "node scripts/generate-elevenlabs-audio.mjs --dry-run --force",
+    "audio:gen": "node scripts/generate-elevenlabs-audio.mjs",
+    "audio:regen": "node scripts/generate-elevenlabs-audio.mjs --force",
+    "audio:restore": "node scripts/generate-elevenlabs-audio.mjs --restore",
+    "audio:batches": "node scripts/make-browser-batches.mjs",
+    "audio:batches:report": "node scripts/make-browser-batches.mjs --report",
+    "audio:split:check": "node scripts/split-browser-audio.mjs --check",
+    "audio:split:dry": "node scripts/split-browser-audio.mjs --dry-run",
+    "audio:split": "node scripts/split-browser-audio.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.5.7",

@@ -218,7 +218,7 @@ export const TREAT_ALPHABET: readonly TreatLetter[] = [
     lower: "p",
     sound: "puh",
     vocabulary: [
-      { id: "pig", label: "Pig", initial: true },
+      { id: "penguin", label: "Penguin", initial: true },
       { id: "pen", label: "Pen", initial: true },
       { id: "pizza", label: "Pizza", initial: true },
       { id: "panda", label: "Panda", initial: true },

@@ -19,6 +19,7 @@ import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { cssVars } from "@shared/styles/cssVars";
 import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
+import { cheerFor } from "@shared/audio/cheers";
 import { HuntLetterField } from "@games/letter-hunt/components/HuntLetterField";
 
 /** Letters that look too similar to make fair decoys for a given target */
@@ -253,12 +254,11 @@ export function HuntLevel() {
   const [starFlight, setStarFlight] = useState<{ dx: number; dy: number } | null>(null);
   const starRowRef = useRef<HTMLDivElement>(null);
   const [shakeId, setShakeId] = useState<number | null>(null);
-  const [cheerId] = useState(
-    () =>
-      ["cheer-well-done", "cheer-great-job", "cheer-you-did-it", "cheer-fantastic"][
-        Math.floor(Math.random() * 4)
-      ]
-  );
+  /** Praise for this letter, from the ONE shared rotation. Deterministic per
+   *  letter like every other game — the old Math.random() pick meant the same
+   *  letter praised differently on every visit, and it drew from a private
+   *  four-item list that had drifted out of the shared pool. */
+  const cheerId = cheerFor(target);
   if (sessionKey !== roundKey) {
     setSessionKey(roundKey);
     setPhase("intro");
