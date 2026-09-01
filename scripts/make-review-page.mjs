@@ -37,12 +37,6 @@ for (const b of batches) {
   }
 }
 
-const esc = (s) =>
-  String(s).replace(
-    /[&<>"']/g,
-    (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]
-  );
-
 const html = `<!doctype html>
 <meta charset="utf-8">
 <title>Audio check</title>
