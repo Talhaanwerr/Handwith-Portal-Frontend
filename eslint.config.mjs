@@ -19,6 +19,12 @@ const eslintConfig = [
     },
   },
   {
+    // Build-time CLI tools in scripts/ are console programs — their output IS
+    // the interface. no-console guards the shipped app, not the tooling.
+    files: ["scripts/**/*.mjs", "scripts/**/*.js"],
+    rules: { "no-console": "off" },
+  },
+  {
     ignores: [".next/**", "out/**", "build/**", "node_modules/**", "next-env.d.ts", "coverage/**"],
   },
 ];

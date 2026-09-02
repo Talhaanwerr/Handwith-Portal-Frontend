@@ -80,7 +80,11 @@ export const useGameStore = create<GameState>()(
 
       setScreen: (screen) => set({ screen }),
 
-      setModule: (module) => set({ module }),
+      // Switching modules KILLS the session run: a run is a queue of one
+      // module's symbols, and advancing a numbers session along a leftover
+      // lowercase queue is how "1" repeated forever (every indexOf missed and
+      // was masked to 0). A fresh module always builds a fresh run.
+      setModule: (module) => set({ module, run: null }),
 
       setPracticeMode: (practiceMode) => set({ practiceMode }),
 
@@ -109,7 +113,13 @@ export const useGameStore = create<GameState>()(
         const stepped = advanceRun(run);
         set({ run: stepped.run });
         if (stepped.isDone) return false;
-        get().goToLetter(Math.max(0, all.indexOf(stepped.run.queue[stepped.run.index])));
+        // A symbol the module doesn't know means the run belongs to some other
+        // state (it cannot happen in a healthy session). End the run rather
+        // than mask the miss — Math.max(0, -1) here is what turned a stale
+        // queue into the same first symbol repeating forever.
+        const idx = all.indexOf(stepped.run.queue[stepped.run.index]);
+        if (idx < 0) return false;
+        get().goToLetter(idx);
         return true;
       },
 
@@ -189,6 +199,23 @@ export const useGameStore = create<GameState>()(
     }),
     {
       name: "letter-tracing-progress",
+      // v1: the lowercase module's canonical symbols became lowercase (they
+      // were wrongly uppercase, which broke every indexOf against its data).
+      // Saved lowercase completions from v0 are uppercase strings — lowercase
+      // them once here so a child's record survives the fix.
+      version: 1,
+      migrate: (persisted, version) => {
+        const state = persisted as Partial<GameState>;
+        if (version < 1 && state.lowercaseProgress) {
+          state.lowercaseProgress = {
+            ...state.lowercaseProgress,
+            completedLetters: (state.lowercaseProgress.completedLetters ?? []).map((l) =>
+              l.toLowerCase()
+            ),
+          };
+        }
+        return state as GameState;
+      },
       partialize: (state) => ({
         progress: state.progress,
         lowercaseProgress: state.lowercaseProgress,

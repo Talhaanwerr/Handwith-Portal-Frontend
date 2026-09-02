@@ -36,3 +36,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# originals saved by scripts/generate-elevenlabs-audio.mjs before it overwrites
+# them (restore with --restore). Local safety net, not a source artefact.
+audio-backup/
+
+# paste-ready batches + downloads for the browser TTS path (local workflow)
+audio-batches/

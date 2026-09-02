@@ -6,6 +6,7 @@ import { CelebrationSparkles } from "@shared/components/animations/Sparkles";
 import { Button } from "@shared/components/ui/Button";
 import { useAudio } from "@games/letter-tracing/hooks/useAudio";
 import { clipText } from "@shared/audio/voice";
+import { cheerFor } from "@shared/audio/cheers";
 import { cssVars } from "@shared/styles/cssVars";
 
 interface CelebrationScreenProps {
@@ -16,24 +17,15 @@ interface CelebrationScreenProps {
   onNext: () => void;
 }
 
-/** Deterministic per letter. The DISPLAYED text is read from the manifest via
- *  clipText(), and the SPOKEN clip is the same id — so screen and voice can
- *  never say different things (the audio spec's celebration-sync rule). */
-const CHEER_IDS = [
-  "cheer-well-done",
-  "cheer-you-did-it",
-  "cheer-wonderful",
-  "cheer-great-job",
-  "cheer-fantastic",
-  "cheer-amazing",
-  "cheer-youre-doing-great",
-];
-
 export function CelebrationScreen({ letter, onAgain, onNext }: CelebrationScreenProps) {
   const { sayCheer, sayAgainButton, sayNextButton, playCelebration } = useAudio();
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ w: 360, h: 640 });
-  const cheerId = CHEER_IDS[(letter.charCodeAt(0) - 65 + 26) % CHEER_IDS.length];
+  // Deterministic per letter, from the ONE shared rotation. The DISPLAYED text
+  // is read from the manifest via clipText(), and the SPOKEN clip is the same
+  // id — so screen and voice can never say different things (the audio spec's
+  // celebration-sync rule).
+  const cheerId = cheerFor(letter);
   const praise = clipText(cheerId);
 
   useEffect(() => {

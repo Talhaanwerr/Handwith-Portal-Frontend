@@ -18,6 +18,7 @@
  */
 
 import { F, Spec, Shade } from "@games/letter-treats/components/candy-world/CandyDefs";
+import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
 
 type Art = () => React.ReactElement;
 
@@ -2425,6 +2426,12 @@ export const VOCAB_ART: Record<string, Art> = {
   owl: Owl,
   pen: Pen,
   pizza: Pizza,
+  // P is a penguin, drawn once in the shared AnimalArt and reused here — the
+  // same call letter-tracing's AnchorArt makes, so the portal never grows a
+  // second, slightly-different penguin. Pig stays registered below: nothing in
+  // the vocabulary asks for it today, but the drawing is good and a data edit
+  // can bring it back without touching this file.
+  penguin: ANIMAL_ART.penguin,
   pig: Pig,
   panda: Panda,
   quilt: Quilt,

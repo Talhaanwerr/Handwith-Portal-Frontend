@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { cssVars } from "@shared/styles/cssVars";
 import { StartOptions } from "@shared/components/ui/StartOptions";
 import { HomeEnvironment } from "@shared/components/animations/HomeEnvironment";
-import { LETTER_SYMBOLS, NUMBER_SYMBOLS } from "@games/letter-tracing/constants/symbols";
+import { symbolsFor } from "@games/letter-tracing/constants/symbols";
 import { playClip, clipText } from "@shared/audio/voice";
 import { useEffect } from "react";
 import { useGameStore } from "@games/letter-tracing/store/gameStore";
@@ -223,7 +223,10 @@ export function HomeScreen({ onContinue, onStartFromA, onSelectLetter, onBack }:
   const currentProgress =
     module === "lowercase" ? lowercaseProgress : module === "numbers" ? numbersProgress : progress;
   const completedCount = currentProgress.completedLetters.length;
-  const allLetters = module === "numbers" ? NUMBER_SYMBOLS : LETTER_SYMBOLS;
+  // symbolsFor, not a hand-rolled ternary: the shelf must show the module's OWN
+  // glyphs. The old `numbers ? NUMBER : LETTER` branch gave the lowercase
+  // module an UPPERCASE shelf whose letters matched nothing in its data.
+  const allLetters = symbolsFor(module);
   const total = allLetters.length;
   const currentLetter = allLetters[currentProgress.currentLetterIndex] ?? allLetters[0];
   const [bg1, bg2] = getThemeColors(currentProgress.currentTheme);

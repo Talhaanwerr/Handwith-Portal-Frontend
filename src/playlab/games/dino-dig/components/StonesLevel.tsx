@@ -12,6 +12,7 @@ import { useScheduler } from "@shared/hooks/useScheduler";
 import { cssVars } from "@shared/styles/cssVars";
 import { playClickSound, playCorrectSound, playIncorrectSound, playChime } from "@shared/audio/sfx";
 import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
+import { cheerFor } from "@shared/audio/cheers";
 import { shuffle } from "@shared/utils/random";
 import { findDropTarget, registerTarget, toRootPoint } from "@shared/utils/pointer";
 import {
@@ -39,15 +40,11 @@ const HOP_MS = 1700;
 /** Cheer window after the hop — praise clips run up to ~2.3s (measured). */
 const CHEER_MS = 2600;
 
-/** Praise rotates per crossing so seven crossings never repeat back-to-back. */
-const CHEERS = [
-  "cheer-great-job",
-  "cheer-wonderful",
-  "cheer-fantastic",
-  "cheer-well-done",
-  "cheer-amazing",
-  "cheer-youre-doing-great",
-] as const;
+/** Praise for a crossing, from the ONE shared rotation — seeded by the
+ *  crossing index so the seven crossings never repeat back-to-back. This used
+ *  to be a private six-item list that had drifted out of the shared pool and
+ *  named clips the manifest no longer carries. */
+const cheerForCrossing = (crossing: number) => cheerFor(crossing);
 
 /**
  * RIVER CROSSING — sequencing mode.
@@ -122,7 +119,7 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
   // and mid-crossing the two clips simply never overlap. No fixed delay left.
   useEffect(() => {
     if (!next) return;
-    preloadClips([`letter-${next.toLowerCase()}`, CHEERS[crossing % CHEERS.length]]);
+    preloadClips([`letter-${next.toLowerCase()}`, cheerForCrossing(crossing)]);
     let cancelled = false;
     const first = crossing === 0 && placedCount === 0;
     void confirmRef.current.then(() => {
@@ -188,7 +185,7 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
         schedule(() => {
           setCelebrating(true);
           playChime();
-          void playClip(CHEERS[crossing % CHEERS.length]);
+          void playClip(cheerForCrossing(crossing));
         }, 500 + HOP_MS);
         schedule(onCrossingDone, 500 + HOP_MS + CHEER_MS);
       }
@@ -469,7 +466,7 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
               animate={{ scale: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 220, damping: 15 }}
             >
-              {clipText(CHEERS[crossing % CHEERS.length])}
+              {clipText(cheerForCrossing(crossing))}
             </motion.h2>
             <p className="font-rounded text-dino-lime text-xl font-black tracking-[0.2em] drop-shadow">
               {crosser.name} made it! {group.join(" ")}
