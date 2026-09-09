@@ -15,6 +15,15 @@ interface CelebrationOverlayProps {
   blur?: string;
   /** Measured size of the game root, so the confetti spans the real play area. */
   size: ElementSize;
+  /**
+   * The generic sparkle confetti. On by default, because most games want it.
+   *
+   * Turn it OFF where a world has something better of its own to throw —
+   * Jungle Spy rains leaves and animals, and the two layers together were just
+   * noise. A celebration should look like it belongs to one game, not like
+   * every game's particles at once.
+   */
+  sparkles?: boolean;
   children: ReactNode;
 }
 
@@ -33,19 +42,25 @@ export function CelebrationOverlay({
   gapClassName = "gap-3",
   blur = "2px",
   size,
+  sparkles = true,
   children,
 }: CelebrationOverlayProps) {
   return (
     <motion.div
-      className={`pl-overlay-blur absolute inset-0 z-30 flex flex-col items-center justify-center px-6 ${gapClassName} ${tintClassName}`}
+      className={`pl-overlay-blur pl-safe-center absolute inset-0 z-30 flex flex-col items-center overflow-y-auto px-6 py-4 ${gapClassName} ${tintClassName}`}
       style={cssVars({ "--pl-blur": blur })}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <CelebrationSparkles active width={size.w} height={size.h} />
-      </div>
+      {/* The confetti sits OUTSIDE the scrolling flow (position:absolute on the
+          overlay itself), so a tall celebration stack can scroll without
+          dragging the canvas up with it. */}
+      {sparkles && (
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <CelebrationSparkles active width={size.w} height={size.h} />
+        </div>
+      )}
       {children}
     </motion.div>
   );

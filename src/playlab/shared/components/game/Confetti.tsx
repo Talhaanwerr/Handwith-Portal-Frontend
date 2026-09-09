@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { cssVars } from "@shared/styles/cssVars";
+import { unit } from "@shared/utils/hash";
 
 /**
  * CONFETTI — the portal's celebration layer.
@@ -30,17 +31,12 @@ interface Piece {
   tall: boolean;
 }
 
-/** Small fast integer hash → [0,1). Stable across runs and runtimes.
- *  Math.imul keeps every step in true 32-bit space — the previous plain-\*
- *  version drifted through float land and never set the top bit, which put
- *  ALL the confetti on the left half of the screen. Verified uniform:
- *  quartile counts 13/11/14/18 across the 56 pieces. */
-function unit(n: number): number {
-  let t = (n + 1) * 0x9e3779b9;
-  t = Math.imul(t ^ (t >>> 15), t | 1);
-  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-}
+/** Positions come from the shared integer hash (`@shared/utils/hash`) —
+ *  stable across runs and runtimes. Math.imul keeps every step in true
+ *  32-bit space: the previous plain-\* version drifted through float land
+ *  and never set the top bit, which put ALL the confetti on the left half
+ *  of the screen. Verified uniform: quartile counts 13/11/14/18 across the
+ *  56 pieces. */
 
 const MAX_PIECES = 56;
 

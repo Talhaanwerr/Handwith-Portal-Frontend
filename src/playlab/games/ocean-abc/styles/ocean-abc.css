@@ -33,6 +33,30 @@
   }
 }
 
+/* ── Choice plates (Bubble Pop's 5 Times / Unlimited) ──
+   The same glass-in-the-water plates Ocean Hunt's picker uses, so the two
+   games' menus match — and so the plates have an EDGE: without it the two
+   choices were bare text floating on the water. */
+.oab-screen .pl-cs-btn {
+  border: 3px solid rgba(255, 255, 255, 0.78);
+  background: linear-gradient(160deg, rgba(111, 199, 239, 0.42), rgba(17, 74, 112, 0.55));
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 14px 38px rgba(4, 32, 52, 0.45),
+    inset 0 0 40px rgba(228, 244, 255, 0.16);
+}
+.oab-screen .pl-cs-btn--unlimited {
+  border-color: rgba(255, 217, 61, 0.85);
+  background: linear-gradient(160deg, rgba(255, 217, 61, 0.32), rgba(17, 74, 112, 0.58));
+}
+.oab-screen .pl-cs-preview {
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(191, 226, 247, 0.65);
+}
+.oab-screen .pl-cs-label {
+  color: rgba(255, 255, 255, 0.92);
+}
+
 /* ── Chrome ── */
 
 .oab-pill {
@@ -141,10 +165,21 @@
 
 /** The play column: everything between the chrome and the bottom of the
  *  screen. Each stage fills it absolutely, so switching stage never reflows
- *  the page. */
+ *  the page.
+ *
+ *  This is a FLEX CHILD, not an absolutely-positioned box with a hand-written
+ *  top offset. It used to be `inset: clamp(56px, 9vh, 78px) 0 0 0` — a guess
+ *  at the chrome's height that is wrong wherever the guess and the real bar
+ *  disagree. The bar is a 24px-padded row around a `text-2xl` pill, so it
+ *  stands about 72px; on a short screen 9vh collapses to the 56px floor and
+ *  the arena started 16px INSIDE the bar, which is why the target letter's
+ *  ghost was printed across the letter pill in the header.
+ *  `flex: 1` is the height that is actually left over, at every viewport, with
+ *  no number to keep in sync. */
 .oab-arena {
-  position: absolute;
-  inset: clamp(56px, 9vh, 78px) 0 0 0;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .oab-stage {
@@ -292,17 +327,169 @@
  *  on its own instead of relying on a second stylesheet for half of it. */
 .oab-pop {
   position: absolute;
-  left: var(--pl-x, 50%);
-  width: calc(var(--oab-carrier) * var(--pl-scale, 1));
-  height: calc(var(--oab-carrier) * var(--pl-scale, 1));
-  margin-left: calc(var(--oab-carrier) * var(--pl-scale, 1) / -2);
+  /* The rendered size, in ONE expression. --pl-shrink is 1 for a normal
+     bubble and less than 1 once it turns into a parachute, so every measure
+     derived from it — the box, the half-inset, the glyph — follows without
+     being written out again. Size cannot be a CSS `scale` here: Framer owns
+     this element's transform for the pop and the drift. */
+  --oab-pop-size: calc(var(--oab-carrier) * var(--pl-scale, 1) * var(--pl-shrink, 1));
+  /* Half the bubble — the inset its centre needs from either edge to stay
+     fully on screen. Named once so `left` and `margin-left` cannot drift. */
+  --oab-pop-half: calc(var(--oab-pop-size) / 2);
+  width: var(--oab-pop-size);
+  height: var(--oab-pop-size);
+  /* `left` is the bubble's CENTRE (margin-left pulls it back by half), so it
+     has to be clamped by half a bubble, not left raw. A bubble is up to a
+     third of a phone's width, so the outermost lanes — 8% and 88% — hung off
+     the screen edge and the letter on them was sliced in half. Clamping only
+     moves the two outer lanes, and their neighbours are half a rise away
+     vertically, so pinning them inward cannot stack anything.
+
+     The +10px is the drift wobble: Framer animates x through [0, 10, -8, 0]
+     on every bubble, so a box clamped flush to the edge still swings 10px
+     past it mid-animation. Measured at 279px wide, where the outer bubble sat
+     7px off the left edge with a layout box that was technically in bounds. */
+  left: clamp(
+    calc(var(--oab-pop-half) + 10px),
+    var(--pl-x, 50%),
+    calc(100% - var(--oab-pop-half) - 10px)
+  );
+  margin-left: calc(var(--oab-pop-half) * -1);
   touch-action: manipulation;
+
+  /* VERTICAL POSITION IS DRIVEN BY THE GAME LOOP, not by a CSS animation.
+     --pl-y is 0% at the sea bed and 100% at the surface, written onto this
+     element every frame by usePopGame; `bottom` turns it into a position
+     without React re-rendering for movement.
+
+     It used to be a keyframe rise with a negative animation-delay, which was
+     the right answer while all nine bubbles existed from the first frame and
+     simply looped forever. Bubbles are now spawned, can turn around at the top
+     and can be sent back down, and a keyframe cannot be steered — the loop
+     owns the motion instead. */
+  bottom: var(--pl-y, 0%);
+  margin-bottom: calc(var(--oab-pop-half) * -1);
 }
 
+/* ── The parachute ──
+   A missed bubble turns over and floats back down wearing a canopy. The shape
+   change is the signal: a tint or a slower speed would be far too subtle for
+   a four-year-old to read as "you can still catch this". */
+/* A parachute is SMALLER than the bubble it came from. It shares the water
+   with everything still rising, and it lingers there for the whole descent —
+   at full size a couple of them crowded out the bubbles underneath. Shrinking
+   the whole element (box, canopy and glyph all derive from --oab-pop-size)
+   also reads as the bubble having given up its air. */
+.oab-pop--chute {
+  --pl-shrink: 0.72;
+}
+
+.oab-pop--chute .oab-pop-skin {
+  border-color: rgba(255, 255, 255, 0.55);
+  background:
+    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 50% 55%, rgba(255, 235, 196, 0.42), rgba(242, 169, 59, 0.3));
+}
+
+.oab-chute {
+  position: absolute;
+  left: 50%;
+  bottom: 78%;
+  width: 132%;
+  height: 62%;
+  translate: -50% 0;
+  pointer-events: none;
+}
+.oab-chute-canopy {
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 50% 46% 46% / 72% 72% 28% 28%;
+  background: linear-gradient(180deg, #ff9ebc 0%, #f2a93b 55%, #ffd93d 100%);
+  box-shadow: 0 4px 10px rgba(4, 32, 52, 0.28);
+}
+.oab-chute-string {
+  position: absolute;
+  top: 92%;
+  width: 2px;
+  height: 34%;
+  background: rgba(255, 255, 255, 0.8);
+}
+.oab-chute-string--l {
+  left: 22%;
+  rotate: 12deg;
+}
+.oab-chute-string--r {
+  right: 22%;
+  rotate: -12deg;
+}
+
+/* Caught — one bright ring, then gone. Positive and brief: the rescue should
+   feel like a win, not like an event that needs its own celebration. */
+.oab-pop--rescued .oab-pop-skin {
+  box-shadow:
+    inset 0 0 18px rgba(255, 255, 255, 0.6),
+    0 0 0 6px rgba(255, 217, 61, 0.55),
+    0 6px 16px rgba(4, 32, 52, 0.32);
+}
+
+/** The build stage's piece tally. Same pill and same corner-free placement as
+ *  the pop counter, so the two stages report progress the same way. */
+.oab-build-stars {
+  position: absolute;
+  top: clamp(6px, 1.6vh, 14px);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 18px rgba(4, 32, 52, 0.28);
+}
+
+/* ── The round's tally ── */
+
+.oab-pop-hud {
+  position: absolute;
+  top: clamp(6px, 1.6vh, 14px);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-ocean, #114a70);
+  font-size: clamp(15px, 2.6vmin, 22px);
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(4, 32, 52, 0.28);
+}
+.oab-pop-hud-icon {
+  font-size: 0.85em;
+}
+
+/** Unlimited's way out. Bottom-right so it is reachable with a thumb on a
+ *  phone and never sits over the water the bubbles rise through. */
+.oab-pop-next {
+  position: absolute;
+  right: clamp(8px, 2vw, 22px);
+  bottom: clamp(8px, 2vh, 22px);
+  z-index: 20;
+}
+
+/** ONE colour for every bubble, target and decoy alike.
+ *
+ *  The target used to wear the letter's own material colour (--pl-to) while
+ *  the decoys were pale blue, which handed the answer away: a child could pop
+ *  the right bubble without reading anything, just by picking the odd colour
+ *  out. Shape has to be the only difference on a find-the-letter screen. */
 .oab-pop-glyph {
   position: relative;
-  font-size: calc(var(--oab-carrier) * var(--pl-scale, 1) * 0.5);
-  color: var(--pl-to, #f2a93b);
+  font-size: calc(var(--oab-pop-size) * 0.5);
+  color: rgba(240, 250, 255, 0.94);
   text-shadow: 0 2px 8px rgba(4, 32, 52, 0.4);
 }
 
@@ -377,6 +564,137 @@
   background: linear-gradient(135deg, #6fc7ef 0%, #2980b9 100%);
 }
 
+/** ACT ONE of the celebration — the letter and its cheer — as one block, so
+ *  it can leave the screen together when the clam takes over. */
+.oab-win-act {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vmin, 16px);
+  /* the splash rings are white water */
+  --pl-ring: rgba(255, 255, 255, 0.85);
+}
+
+/** ACT TWO — the clam leads. */
+.oab-win-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2.4vmin, 18px);
+}
+
+/* ── The giant clam ──
+   Act two of the letter celebration: a clam seen from the side, the way every
+   cartoon draws one — two ridged shells hinged at the left. The lid swings up
+   and a pearl rises out wearing the NEXT letter in that letter's own material,
+   so the child sees what is coming; tapping the clam is how they get there.
+   It is a BUTTON with its own label, sized like Jungle Spy's door: the biggest
+   thing on the screen, because act one has cleared and left it the centre.
+   ONE number drives every part of it. */
+.oab-clam {
+  --oab-clam: min(60vmin, 360px);
+  position: relative;
+  width: var(--oab-clam);
+  height: calc(var(--oab-clam) * 1.15);
+  padding: 0;
+  border: 0;
+  background: none;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+/** One shell: a half-ellipse, ridged from the hinge at its left end. Coral,
+ *  from this game's own materials. */
+.oab-clam-shell {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: calc(var(--oab-clam) * 0.34);
+  border: 5px solid #d1543a;
+  pointer-events: none;
+}
+.oab-clam-shell--bottom {
+  top: 70%;
+  border-top-width: 7px;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  background: repeating-conic-gradient(from 90deg at 0% 0%, #ffc1b0 0deg 6deg, #ff8b6a 6deg 12deg);
+  box-shadow:
+    0 12px 0 rgba(4, 32, 52, 0.35),
+    inset 0 -10px 16px rgba(209, 84, 58, 0.35);
+}
+/** The lid: the same shell upside down, hinged at its bottom-left corner so
+ *  it swings up and over the way a lid does. Framer turns it; the origin is
+ *  the hinge. */
+.oab-clam-shell--lid {
+  bottom: 30%;
+  border-bottom-width: 7px;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: repeating-conic-gradient(from 0deg at 0% 100%, #ffc1b0 0deg 6deg, #ff8b6a 6deg 12deg);
+  box-shadow: inset 0 10px 16px rgba(255, 255, 255, 0.35);
+  transform-origin: 0% 100%;
+}
+
+/** The pearl — behind both shells until the lid lifts, then it rises to sit
+ *  in the open shell. Centred on the seam by MARGIN (Framer owns its transform
+ *  for the rise), a touch right of centre so the open lid stands clear of it,
+ *  and painted in the NEXT letter's material. */
+.oab-pearl {
+  position: absolute;
+  left: 54%;
+  top: 70%;
+  z-index: 1;
+  width: calc(var(--oab-clam) * 0.42);
+  aspect-ratio: 1;
+  margin-left: calc(var(--oab-clam) * -0.21);
+  margin-top: calc(var(--oab-clam) * -0.21);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 4px solid var(--pl-rim, #8792b8);
+  background: radial-gradient(
+    circle at 34% 30%,
+    #ffffff 0%,
+    var(--pl-from, #ffffff) 40%,
+    var(--pl-to, #d9dff0) 100%
+  );
+  box-shadow:
+    0 0 36px var(--pl-glow, #e8eeff),
+    0 8px 18px rgba(4, 32, 52, 0.4);
+  /* its rings are its own light */
+  --pl-ring: var(--pl-glow, #e8eeff);
+}
+.oab-pearl-glyph {
+  position: relative;
+  font-size: calc(var(--oab-clam) * 0.24);
+  line-height: 1;
+  color: var(--pl-rim, #8792b8);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.75);
+}
+
+.oab-clam-label {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  z-index: 3;
+  translate: -50% 0;
+  padding: 2px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: clamp(13px, 2.6vmin, 18px);
+  color: #114a70;
+}
+
+/* Short landscape: the clam still has to fit under the chrome. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .oab-clam {
+    --oab-clam: clamp(120px, 40vh, 210px);
+  }
+}
+
 /* ── Finale ── */
 
 .oab-finale-heading {
@@ -431,10 +749,9 @@
 
 /* a bubble that is NOT the letter — same skin, dimmer glyph, so distractors
    read as "other letters passing by", not broken buttons */
-.oab-pop--decoy .oab-pop-glyph {
-  color: rgba(228, 244, 255, 0.82);
-  text-shadow: none;
-}
+/* Decoys are deliberately IDENTICAL to targets now — the colour and shadow
+   overrides that used to live here were the tell. The class is kept because
+   the markup still distinguishes the two for assistive tech. */
 
 /* the one-line game explainer under the first menu heading */
 .oab-tagline {

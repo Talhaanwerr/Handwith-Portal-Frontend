@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@shared/components/ui/Button";
 import { StickerDisplay } from "@games/letter-tracing/components/illustrations/StickerDisplay";
 import { CelebrationSparkles } from "@shared/components/animations/Sparkles";
+import { useElementSize } from "@shared/hooks/useElementSize";
 import { STICKERS } from "@games/letter-tracing/constants/rewards";
 import { useAudio } from "@games/letter-tracing/hooks/useAudio";
 import { useGameStore } from "@games/letter-tracing/store/gameStore";
@@ -25,13 +26,8 @@ export function CompletionScreen({ onPlayAgain }: CompletionScreenProps) {
     : module === "lowercase"
       ? "abcdefghijklmnopqrstuvwxyz".split("")
       : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ w: 360, h: 640 });
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (el) setDimensions({ w: el.offsetWidth, h: el.offsetHeight });
-  }, []);
+  // Observed, so an orientation change re-sizes the confetti buffer.
+  const [containerRef, dimensions] = useElementSize<HTMLDivElement>();
 
   useEffect(() => {
     const t = setTimeout(playCelebration, 300);
@@ -51,14 +47,12 @@ export function CompletionScreen({ onPlayAgain }: CompletionScreenProps) {
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="lt-bg-completion relative flex h-full w-full flex-col items-center overflow-x-hidden overflow-y-auto"
-    >
+    // The shell never scrolls, so the confetti canvas stays put and spans the
+    // whole screen; only the inner column scrolls on short viewports.
+    <div ref={containerRef} className="lt-bg-completion pl-screen-shell">
       <CelebrationSparkles active width={dimensions.w} height={dimensions.h} />
 
-      {/* overflow-y-auto handles short landscape viewports without clipping */}
-      <div className="relative z-10 flex h-full w-full flex-col items-center justify-between overflow-y-auto px-6 py-8">
+      <div className="pl-screen-scroll z-10 flex flex-col items-center justify-between px-6 py-8">
         {/* Header */}
         <motion.div
           className="text-center"

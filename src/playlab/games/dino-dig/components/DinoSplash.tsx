@@ -34,7 +34,7 @@ export function DinoSplash({ onPick, onExitPortal }: DinoSplashProps) {
   }, []);
 
   return (
-    <div className="dd-bg relative flex h-full w-full flex-col overflow-x-hidden overflow-y-auto px-6 py-6">
+    <div className="dd-bg pl-screen-shell">
       <DinoBackdrop />
 
       {onExitPortal && (
@@ -51,84 +51,86 @@ export function DinoSplash({ onPick, onExitPortal }: DinoSplashProps) {
         />
       )}
 
-      {/* m-auto (not justify-center): on a short viewport the content scrolls
-          from the TOP instead of clipping both ends — the same fix the other
-          splash screens carry. */}
-      <div className="relative z-10 m-auto flex flex-col items-center gap-5">
-        <motion.div
-          className="flex flex-col items-center gap-1 text-center"
-          initial={{ y: -16, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-        >
-          <h1 className="font-rounded text-3xl font-black text-white drop-shadow-md md:text-5xl">
-            Alphabet
-          </h1>
-          <h2 className="dd-subtitle font-rounded text-2xl font-black md:text-4xl">Dino Dig</h2>
-          <p className="font-rounded text-dino-ink mt-1 rounded-full bg-white/85 px-4 py-1 text-xs font-bold md:text-sm">
-            Two dino games — pick one!
-          </p>
-        </motion.div>
-
-        {/* the fossil ring, and the whole seven-dino cast bouncing in */}
-        <motion.div
-          className="flex flex-col items-center gap-3"
-          initial={{ scale: 0.7, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 180, damping: 16 }}
-        >
-          <div className="dd-ring-splash">
-            <FossilRing letter="A" />
-          </div>
-
-          <div className="flex max-w-lg flex-wrap items-end justify-center gap-1.5">
-            {CAST.map((member, i) => {
-              const Dino = member.Art;
-              return (
-                <motion.div
-                  key={member.id}
-                  className="dd-dino-cast"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1, y: [0, -6, 0] }}
-                  transition={{
-                    scale: { type: "spring", stiffness: 260, damping: 16, delay: 0.3 + i * 0.08 },
-                    y: { duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.35 },
-                  }}
-                >
-                  <Dino mood="happy" />
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
-
-        {/* the two modes */}
-        <motion.div
-          className="flex flex-col items-center gap-3"
-          initial={{ y: 16, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.35 }}
-        >
-          <Button
-            size="xl"
-            onClick={() => {
-              playClickSound();
-              onPick("feed");
-            }}
-            aria-label="Play Feed the Dinos — tap the letter each dino asks for"
+      {/* The backdrop above is OUTSIDE this scroller, so it paints the whole
+          screen instead of one screenful with white beneath it. `m-auto`
+          centred the overflow too and is replaced by overflow-safe centring. */}
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center px-6 py-6">
+        <div className="relative z-10 flex flex-col items-center gap-5">
+          <motion.div
+            className="flex flex-col items-center gap-1 text-center"
+            initial={{ y: -16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
           >
-            Feed the Dinos
-          </Button>
-          <Button
-            size="xl"
-            onClick={() => {
-              playClickSound();
-              onPick("stones");
-            }}
-            aria-label="Play River Crossing — build the letter bridge"
+            <h1 className="font-rounded text-3xl font-black text-white drop-shadow-md md:text-5xl">
+              Alphabet
+            </h1>
+            <h2 className="dd-subtitle font-rounded text-2xl font-black md:text-4xl">Dino Dig</h2>
+            <p className="font-rounded text-dino-ink mt-1 rounded-full bg-white/85 px-4 py-1 text-xs font-bold md:text-sm">
+              Two dino games — pick one!
+            </p>
+          </motion.div>
+
+          {/* the fossil ring, and the whole seven-dino cast bouncing in */}
+          <motion.div
+            className="flex flex-col items-center gap-3"
+            initial={{ scale: 0.7, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 180, damping: 16 }}
           >
-            River Crossing
-          </Button>
-        </motion.div>
+            <div className="dd-ring-splash">
+              <FossilRing letter="A" />
+            </div>
+
+            <div className="flex max-w-lg flex-wrap items-end justify-center gap-1.5">
+              {CAST.map((member, i) => {
+                const Dino = member.Art;
+                return (
+                  <motion.div
+                    key={member.id}
+                    className="dd-dino-cast"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1, y: [0, -6, 0] }}
+                    transition={{
+                      scale: { type: "spring", stiffness: 260, damping: 16, delay: 0.3 + i * 0.08 },
+                      y: { duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.35 },
+                    }}
+                  >
+                    <Dino mood="happy" />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* the two modes */}
+          <motion.div
+            className="flex flex-col items-center gap-3"
+            initial={{ y: 16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.35 }}
+          >
+            <Button
+              size="xl"
+              onClick={() => {
+                playClickSound();
+                onPick("feed");
+              }}
+              aria-label="Play Feed the Dinos — tap the letter each dino asks for"
+            >
+              Feed the Dinos
+            </Button>
+            <Button
+              size="xl"
+              onClick={() => {
+                playClickSound();
+                onPick("stones");
+              }}
+              aria-label="Play River Crossing — build the letter bridge"
+            >
+              River Crossing
+            </Button>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -3243,6 +3243,56 @@
       "file": "/audio/treats/bakery-intro.mp3",
       "text": "Let's make something yummy!",
       "speak": "Let's make something yummy!"
+    },
+    "paint-intro": {
+      "file": "/audio/paint/intro.mp3",
+      "text": "Let's paint!",
+      "speak": "Let's paint!"
+    },
+    "paint-pick-red": {
+      "file": "/audio/paint/pick-red.mp3",
+      "text": "Pick red.",
+      "speak": "Pick red!"
+    },
+    "paint-pick-yellow": {
+      "file": "/audio/paint/pick-yellow.mp3",
+      "text": "Pick yellow.",
+      "speak": "Pick yellow!"
+    },
+    "paint-pick-green": {
+      "file": "/audio/paint/pick-green.mp3",
+      "text": "Pick green.",
+      "speak": "Pick green!"
+    },
+    "paint-pick-blue": {
+      "file": "/audio/paint/pick-blue.mp3",
+      "text": "Pick blue.",
+      "speak": "Pick blue!"
+    },
+    "paint-pick-orange": {
+      "file": "/audio/paint/pick-orange.mp3",
+      "text": "Pick orange.",
+      "speak": "Pick orange!"
+    },
+    "paint-pick-pink": {
+      "file": "/audio/paint/pick-pink.mp3",
+      "text": "Pick pink.",
+      "speak": "Pick pink!"
+    },
+    "paint-pick-purple": {
+      "file": "/audio/paint/pick-purple.mp3",
+      "text": "Pick purple.",
+      "speak": "Pick purple!"
+    },
+    "paint-word-cloud": {
+      "file": "/audio/paint/word-cloud.mp3",
+      "text": "cloud",
+      "speak": "cloud!"
+    },
+    "paint-word-grape": {
+      "file": "/audio/paint/word-grape.mp3",
+      "text": "grape",
+      "speak": "grape!"
     }
   },
   "edgeVoice": {

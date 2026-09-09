@@ -58,6 +58,52 @@
   }
 }
 
+/* ─── Overflow-safe centring ────────────────────────────────────────────────
+   THE rule for any scrolling column that also wants its content centred.
+
+   Plain `justify-content: center` — and the `mt-auto` / `mb-auto` pair that
+   does the same job by hand — centre the OVERFLOW too: once the content is
+   taller than the box, its first child is pushed ABOVE scroll origin, and no
+   browser can scroll to a negative offset. That is how the letter-grid screens
+   lost their heading and their Back pill on short viewports, and how the
+   celebration overlays cropped their own buttons.
+
+   `safe` centres only while the content fits and falls back to flex-start the
+   moment it does not, which is exactly the wanted behaviour. A browser without
+   `safe` support drops the whole declaration and top-aligns — the same correct
+   fallback, never the broken centred state.
+
+   Children keep their natural height: a scrolling column must scroll, not
+   squash its contents. Absolutely-positioned children (backdrops, confetti,
+   pinned chrome) are out of flow and unaffected by the shrink rule. */
+.pl-safe-center {
+  justify-content: safe center;
+}
+.pl-safe-center > * {
+  flex-shrink: 0;
+}
+
+/* ─── Screen shell for scrolling menus ──────────────────────────────────────
+   Pairs with .pl-safe-center. The OUTER element holds the backdrop and any
+   pinned chrome and never scrolls; the INNER element scrolls the content past
+   them. Before this split both lived inside the scroller, so the backdrop
+   painted one screenful and left the shell's white showing beneath the rest,
+   and `pinned` (position:absolute, top:4) scrolled away with the content
+   instead of staying put. */
+.pl-screen-shell {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.pl-screen-scroll {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 /* ─── Shared background washes ──────────────────────────────────────────────
    The soft full-screen gradients that set each screen's mood. Only the ones
    used by MORE THAN ONE game (or more than one screen of the tracing suite)
@@ -300,6 +346,190 @@
 .pl-cs-label {
   font-size: clamp(13px, 2.2vmin, 18px);
   letter-spacing: 0.04em;
+}
+
+/* ─── Celebration motif ─────────────────────────────────────────────────────
+   Pieces for shared/components/game/CelebrationMotif.tsx — the themed layer a
+   world throws in the air when something goes right. Size and colour only;
+   the motion is Framer's, and the four motifs differ by paint rather than by
+   having four components. A game can repaint these under its own root the same
+   way it repaints the confetti and the letter-puzzle classes. */
+.pl-cm {
+  position: absolute;
+  width: calc(clamp(16px, 3.4vmin, 34px) * var(--pl-scale, 1));
+  aspect-ratio: 1;
+  will-change: transform, opacity;
+}
+.pl-cm-fill {
+  fill: currentColor;
+}
+.pl-cm-line {
+  stroke: rgba(255, 255, 255, 0.55);
+}
+.pl-cm-shine {
+  fill: rgba(255, 255, 255, 0.65);
+}
+
+.pl-cm--leaf {
+  color: var(--color-jungle-leaf);
+}
+.pl-cm--bubble {
+  color: rgba(214, 240, 255, 0.72);
+}
+.pl-cm--steam {
+  color: rgba(255, 255, 255, 0.62);
+}
+.pl-cm--sparkle {
+  color: var(--color-gold);
+}
+
+/** A game's own cast falling among the motif — bigger than a leaf, and drawn
+ *  by the game, so this only sizes and lifts it off the tint. */
+.pl-cm--extra {
+  filter: drop-shadow(0 4px 8px rgba(28, 64, 44, 0.28));
+}
+
+/** The celebrated letter falling among the motif — see useLetterFall. Sized
+ *  off the same piece width as everything else in the fall, in the colour
+ *  the hook hands it. */
+.pl-cm-letter {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(20px, 4.6vmin, 40px);
+  line-height: 1;
+  color: var(--pl-color, var(--color-gold));
+  text-shadow: 0 2px 6px rgba(4, 32, 52, 0.4);
+}
+
+/* ─── Bubble pops ───────────────────────────────────────────────────────────
+   Pieces for shared/components/game/BubblePops.tsx — the sea fizzing. Each is
+   a soft bubble skin with a highlight; the swell-and-burst is Framer's. */
+.pl-bp {
+  position: absolute;
+  width: calc(clamp(18px, 4vmin, 40px) * var(--pl-scale, 1));
+  aspect-ratio: 1;
+  margin-left: calc(clamp(18px, 4vmin, 40px) * var(--pl-scale, 1) / -2);
+  margin-top: calc(clamp(18px, 4vmin, 40px) * var(--pl-scale, 1) / -2);
+  will-change: transform, opacity;
+}
+.pl-bp-skin {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.78);
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 40%),
+    radial-gradient(circle at 50% 55%, rgba(228, 244, 255, 0.35), rgba(111, 199, 239, 0.22));
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.45);
+}
+.pl-bp-shine {
+  position: absolute;
+  top: 16%;
+  left: 20%;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* ─── Swim-in ───────────────────────────────────────────────────────────────
+   A creature from shared/components/game/SwimIn.tsx, centred on its point by
+   margin so Framer keeps the transform for the glide. */
+.pl-swim {
+  position: absolute;
+  z-index: 1;
+  width: var(--pl-size);
+  margin-left: calc(var(--pl-size) / -2);
+  margin-top: calc(var(--pl-size) / -2);
+  pointer-events: none;
+  filter: drop-shadow(0 6px 12px rgba(4, 32, 52, 0.35));
+}
+.pl-swim > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/** Arrivals from the right are mirrored so they face into the scene. The CSS
+ *  `scale` property is separate from `transform`, so it survives Framer. */
+.pl-swim.is-flipped {
+  scale: -1 1;
+}
+
+/* Short landscape: the shoal would crowd the centre, so only the fizz stays —
+   the same call Jungle Spy makes about its friends. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .pl-swim {
+    display: none;
+  }
+}
+
+/* ─── God rays ──────────────────────────────────────────────────────────────
+   Light slanting down through water — the ocean's version of a sunburst.
+   One conic gradient, masked so it fades before its edges, sitting behind
+   everything at z-0. Shared by the three water games. */
+.pl-godrays {
+  position: absolute;
+  top: -12%;
+  left: 50%;
+  width: min(170vw, 170vh);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 168deg,
+    rgba(255, 255, 255, 0.3) 0deg 7deg,
+    rgba(255, 255, 255, 0) 7deg 26deg
+  );
+  mask-image: radial-gradient(circle, #000 6%, rgba(0, 0, 0, 0.5) 38%, transparent 66%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-godrays {
+    display: none;
+  }
+}
+
+/* ─── Ripple ────────────────────────────────────────────────────────────────
+   One ring of shared/components/game/Ripple.tsx — a splash, a shockwave, or
+   (inward) a field drawing in. Centred on its positioned parent by margin;
+   Framer scales it. The colour is --pl-ring, set by whoever owns the moment. */
+.pl-ripple {
+  --pl-ripple-size: var(--pl-size, clamp(120px, 30vmin, 300px));
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--pl-ripple-size);
+  aspect-ratio: 1;
+  margin-left: calc(var(--pl-ripple-size) / -2);
+  margin-top: calc(var(--pl-ripple-size) / -2);
+  border-radius: 50%;
+  border: 4px solid var(--pl-ring, rgba(255, 255, 255, 0.85));
+  box-shadow: 0 0 24px var(--pl-ring, rgba(255, 255, 255, 0.5));
+  will-change: transform, opacity;
+}
+
+/* ─── Burst ─────────────────────────────────────────────────────────────────
+   One piece of shared/components/game/Burst.tsx, thrown out from the centre
+   of its positioned parent. The drawing is the caller's and fills the box. */
+.pl-burst-piece {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pl-size);
+  aspect-ratio: 1;
+  margin-left: calc(var(--pl-size) / -2);
+  margin-top: calc(var(--pl-size) / -2);
+  will-change: transform, opacity;
+}
+.pl-burst-piece > svg {
+  width: 100%;
+  height: 100%;
 }
 
 /* ─── Confetti ──────────────────────────────────────────────────────────────

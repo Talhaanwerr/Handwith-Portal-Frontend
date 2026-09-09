@@ -5,6 +5,11 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
+import { CelebrationMotif, useLetterFall } from "@shared/components/game/CelebrationMotif";
+import { BubblePops } from "@shared/components/game/BubblePops";
+import { GodRays } from "@shared/components/game/GodRays";
+import { SwimIn, type Swimmer } from "@shared/components/game/SwimIn";
+import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { cssVars } from "@shared/styles/cssVars";
@@ -26,8 +31,27 @@ interface SharkLevelProps {
 const DROP_SLOP_PX = 28;
 /** Pause after a correct feed before the next fish swims in */
 const NEXT_FISH_MS = 900;
-/** How long the round-complete celebration shows before auto-advancing */
-const ROUND_DONE_MS = 2000;
+/** How long the round-complete celebration shows before auto-advancing —
+ *  long enough for the sea to fizz, the shoal to arrive and the cheer to be
+ *  heard, without the child waiting on it. */
+const ROUND_DONE_MS = 3400;
+
+/**
+ * Who swims in when both sharks are fed — the reef's regulars, from both
+ * sides, placed down the edges clear of the shark in the centre. Built once
+ * at module load.
+ */
+const SHARK_FRIENDS: readonly Swimmer[] = (
+  [
+    { key: "x-ray fish", x: "13%", y: "28%", delay: 0.4, from: "left" },
+    { key: "octopus", x: "87%", y: "32%", delay: 0.65, from: "right" },
+    { key: "turtle", x: "14%", y: "72%", delay: 0.9, from: "left" },
+    { key: "jellyfish", x: "86%", y: "70%", delay: 1.1, from: "right" },
+  ] as const
+).flatMap(({ key, ...place }) => {
+  const Art = ANIMAL_ART[key];
+  return Art ? [{ ...place, node: <Art key={key} /> }] : [];
+});
 
 interface DragState {
   /** lowercase letter of the fish being dragged (identifies the fish in
@@ -60,6 +84,12 @@ export function SharkLevel({ roundIndex, onRoundComplete }: SharkLevelProps) {
   const [wrongShake, setWrongShake] = useState<string | null>(null);
   const [happyShark, setHappyShark] = useState<string | null>(null);
   const [celebrating, setCelebrating] = useState(false);
+
+  /** Both of this round's letters, ready to rain down among the bubbles —
+   *  the two things the child just matched, in the celebration's colours. */
+  const fallFirst = useLetterFall(pair[0].upper, 3);
+  const fallSecond = useLetterFall(pair[1].upper, 3);
+  const letterFall = useMemo(() => [...fallFirst, ...fallSecond], [fallFirst, fallSecond]);
 
   const [rootRef, dims] = useElementSize();
   const sharkRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -204,7 +234,7 @@ export function SharkLevel({ roundIndex, onRoundComplete }: SharkLevelProps) {
 
         <div className="shadow-soft flex min-h-[44px] items-center rounded-full bg-white/85 px-4">
           <span
-            className="font-rounded text-plum text-sm font-black"
+            className="font-rounded text-plum text-sm font-black whitespace-nowrap"
             aria-label={`Round ${roundIndex + 1} of ${TOTAL_ROUNDS}`}
           >
             {roundIndex + 1} / {TOTAL_ROUNDS}
@@ -308,16 +338,40 @@ export function SharkLevel({ roundIndex, onRoundComplete }: SharkLevelProps) {
       {/* ── Round complete — short, auto-advancing celebration ── */}
       <AnimatePresence>
         {celebrating && (
-          <CelebrationOverlay tintClassName="fs-celebrate-tint" size={dims}>
+          <CelebrationOverlay tintClassName="fs-celebrate-tint" size={dims} sparkles={false}>
+            {/* THE WATER'S OWN CELEBRATION: light through the surface, the
+                whole sea fizzing with bubbles that swell and POP, the round's
+                two letters rising on a column of bubbles, the reef's regulars
+                swimming in from both sides — and the shark himself, well fed.
+                The generic sparkles are off; bubbles are the sparkle here. */}
+            <GodRays />
+            <BubblePops count={56} />
+            <CelebrationMotif motif="bubble" count={30} extras={letterFall} extraEvery={4} />
+            <SwimIn swimmers={SHARK_FRIENDS} />
+
+            <motion.div
+              className="fs-cheer-shark relative z-10"
+              initial={{ scale: 0.5, x: -40, opacity: 0 }}
+              animate={{ scale: 1, x: 0, opacity: 1, y: [0, -12, 0] }}
+              transition={{
+                scale: { type: "spring", stiffness: 200, damping: 15 },
+                x: { type: "spring", stiffness: 200, damping: 15 },
+                opacity: { duration: 0.3 },
+                y: { duration: 1.1, repeat: 2, ease: "easeInOut", delay: 0.3 },
+              }}
+            >
+              <FriendlyShark />
+            </motion.div>
+
             <motion.h2
-              className="fs-cheer font-rounded text-plum shadow-card rounded-full bg-white/90 px-8 py-3 font-black"
+              className="fs-cheer font-rounded text-plum shadow-card relative z-10 rounded-full bg-white/90 px-8 py-3 font-black"
               initial={{ scale: 0.5, y: 12 }}
               animate={{ scale: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 220, damping: 15 }}
+              transition={{ type: "spring", stiffness: 220, damping: 15, delay: 0.15 }}
             >
               {clipText("cheer-great-job")}
             </motion.h2>
-            <p className="font-rounded text-base font-bold text-white drop-shadow">
+            <p className="font-rounded relative z-10 text-base font-bold text-white drop-shadow">
               Both sharks are fed!
             </p>
           </CelebrationOverlay>

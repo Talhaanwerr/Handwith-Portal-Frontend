@@ -11,6 +11,7 @@ import { useMatchStore, type MatchScreen } from "@games/pirate-match/store/match
 import {
   MatchSplash,
   MatchCaseSelect,
+  MatchDifficultySelect,
   MatchStart,
 } from "@games/pirate-match/components/MatchScreens";
 import { MatchLevel } from "@games/pirate-match/components/MatchLevel";
@@ -59,6 +60,11 @@ export function PirateMatchGame() {
         {screen === "case" && (
           <motion.div key="case" className="absolute inset-0" {...PAGE_TRANSITION}>
             <MatchCaseSelect onExitPortal={() => router.push(PORTAL_ROUTE)} />
+          </motion.div>
+        )}
+        {screen === "difficulty" && (
+          <motion.div key="difficulty" className="absolute inset-0" {...PAGE_TRANSITION}>
+            <MatchDifficultySelect />
           </motion.div>
         )}
         {screen === "start" && (

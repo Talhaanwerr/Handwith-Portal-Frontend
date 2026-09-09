@@ -103,6 +103,13 @@
   gap: clamp(10px, 4vw, 44px);
   padding-inline: clamp(8px, 3vw, 40px);
   margin-top: clamp(6px, 4vh, 40px);
+  /* Four bubbles in a centred row that could not wrap, inside an
+     overflow-hidden parent: on a narrow window the first and last were sliced
+     by the screen edges — and the last is often the empty bubble, i.e. the
+     drop target. Wrapping keeps every bubble reachable at any width; the row
+     only ever breaks when it genuinely cannot fit on one line. */
+  flex-wrap: wrap;
+  row-gap: clamp(6px, 1.5vh, 14px);
 }
 
 .oh-seq-item {
@@ -178,13 +185,34 @@
 .oh-options {
   position: absolute;
   inset-inline: 0;
-  /* clear of the seabed art: the letters stand ON the sand, not in it */
-  bottom: clamp(72px, 15vh, 170px);
+  /* clear of the seabed art: the letters stand ON the sand, not in it.
+     The 72px floor is what made the two rows collide: the strip flows from the
+     top while this row is anchored to the bottom, and nothing reserved the
+     space between them, so below ~300px of height the sand letters climbed
+     into the bubbles and the glyphs rendered on top of each other. `min()`
+     against 24vh keeps the row tracking the seabed as it shrinks instead of
+     stopping at a fixed floor. */
+  bottom: min(clamp(72px, 15vh, 170px), 24vh);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: clamp(22px, 9vw, 120px);
   padding-inline: clamp(8px, 3vw, 40px);
+}
+
+/* Short landscape: the strip and the sand row are the only two things on this
+   screen and they must not meet. Shrinking the bubble shortens the strip from
+   the top; capping the sand row's offset raises the floor it sits on. */
+@media (orientation: landscape) and (max-height: 420px) {
+  .oh-screen {
+    --oh-bubble: max(48px, min(11vw, 17vh, 78px));
+  }
+  .oh-sequence {
+    margin-top: clamp(4px, 2vh, 14px);
+  }
+  .oh-options {
+    bottom: clamp(6px, 4vh, 28px);
+  }
 }
 
 .oh-option {

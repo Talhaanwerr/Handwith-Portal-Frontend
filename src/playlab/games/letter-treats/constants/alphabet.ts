@@ -355,6 +355,21 @@ export function letterData(letter: string): TreatLetter {
   return TREAT_ALPHABET.find((l) => l.letter === letter.toUpperCase()) ?? TREAT_ALPHABET[0];
 }
 
+/**
+ * How this game writes a letter's two cases: "A / a".
+ *
+ * Defined once because three screens show the pair — the big candy letter, the
+ * challenge chip and the small pair under a sound prompt — and they must never
+ * drift apart. The big letter renders the two cases as separate elements so
+ * each keeps its candy treatment, so it composes the pair from SEPARATOR
+ * rather than calling letterPair(); the plain-text chips use the helper.
+ */
+export const CASE_SEPARATOR = "/";
+
+export function letterPair(l: Pick<TreatLetter, "letter" | "lower">): string {
+  return `${l.letter} ${CASE_SEPARATOR} ${l.lower}`;
+}
+
 /** Every distinct vocabulary word - used by the audio manifest generator so
  *  clip ids and content can never fall out of step. */
 export const ALL_TREAT_WORDS: readonly string[] = Array.from(

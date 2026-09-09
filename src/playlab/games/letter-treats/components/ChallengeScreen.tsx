@@ -7,7 +7,7 @@ import { playClickSound, playCorrectSound } from "@shared/audio/sfx";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { useElementSize } from "@shared/hooks/useElementSize";
-import { letterData, TREAT_LETTERS } from "@games/letter-treats/constants/alphabet";
+import { letterData, letterPair, TREAT_LETTERS } from "@games/letter-treats/constants/alphabet";
 import { buildChallenge, ROUNDS_PER_LETTER } from "@games/letter-treats/constants/challenge";
 import { CandyScene, Bee } from "@games/letter-treats/components/CandyScene";
 import { TreatArt } from "@games/letter-treats/components/TreatArt";
@@ -152,13 +152,10 @@ export function ChallengeScreen({ letter, onBack, onNextLetter, onLetters }: Cha
           {round?.kind === "sound" ? (
             <span className="ab-ch-letter-sound">
               <span>{data.sound}</span>
-              <small>
-                {data.letter}
-                {data.lower}
-              </small>
+              <small>{letterPair(data)}</small>
             </span>
           ) : (
-            `${data.letter}${data.lower}`
+            letterPair(data)
           )}
         </motion.button>
         <div

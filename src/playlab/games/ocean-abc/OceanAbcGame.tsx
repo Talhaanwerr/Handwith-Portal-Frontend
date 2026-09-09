@@ -12,6 +12,7 @@ import {
   OceanSplash,
   OceanModeSelect,
   OceanModules,
+  OceanPopModeSelect,
   OceanGrid,
 } from "@games/ocean-abc/components/OceanScreens";
 import { OceanLevel } from "@games/ocean-abc/components/OceanLevel";
@@ -77,6 +78,11 @@ export function OceanAbcGame() {
         {screen === "mode" && (
           <motion.div key="mode" className="absolute inset-0" {...PAGE_TRANSITION}>
             <OceanModeSelect />
+          </motion.div>
+        )}
+        {screen === "popMode" && (
+          <motion.div key="popMode" className="absolute inset-0" {...PAGE_TRANSITION}>
+            <OceanPopModeSelect />
           </motion.div>
         )}
         {screen === "modules" && (

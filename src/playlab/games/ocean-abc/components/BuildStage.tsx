@@ -6,14 +6,15 @@ import {
   LetterAssembly,
   LetterPiece,
   useGlyphFit,
-  PIECE_ORDER,
+  piecesFor,
   type PieceKey,
 } from "@shared/components/game/LetterPuzzle";
-import { pieceGeometry, type JigsawLayout } from "@shared/utils/letterJigsaw";
+import { pieceGeometry, layoutForGlyph, type JigsawLayout } from "@shared/utils/letterJigsaw";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { cssVars } from "@shared/styles/cssVars";
 import { registerTarget, toRootPoint } from "@shared/utils/pointer";
+import { StarRow } from "@shared/components/ui/StarRow";
 import { playCorrectSound, playIncorrectSound, playClickSound } from "@shared/audio/sfx";
 
 /** How close counts as "in place": a share of the letter, floored at a
@@ -57,11 +58,13 @@ interface BuildStageProps {
  * demonstration is the one TeachingHand every game uses.
  */
 export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
-  /** Small letters are cut as three stacked bands; big letters keep the T.
-   *  Derived from the glyph itself — "a" is its own lowercase, "A" is not —
-   *  so the stage needs no extra prop to know which world it is in. */
-  const layout: JigsawLayout = shown === shown.toLowerCase() ? "stack" : "split";
-  const { fit, glyphBox, cuts, measure } = useGlyphFit(shown);
+  /** Each glyph brings its own partition — capitals default to three vertical
+   *  pieces, small letters to two diagonal halves, and per-letter exceptions
+   *  (I, L, i, …) live in LETTER_LAYOUTS inside letterJigsaw. Bubbles, hints
+   *  and completion all follow `pieces`, whatever the count. */
+  const layout: JigsawLayout = layoutForGlyph(shown);
+  const pieces = piecesFor(layout);
+  const { fit, glyphBox, cuts, measure } = useGlyphFit(shown, layout);
   const boxes = useMemo(() => pieceGeometry(glyphBox, layout, cuts), [glyphBox, layout, cuts]);
 
   const [placed, setPlaced] = useState<PieceKey[]>([]);
@@ -98,7 +101,7 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
   // moment the child drags anything for real.
   useEffect(() => {
     if (hintDismissedRef.current) return;
-    const remaining = PIECE_ORDER.filter((p) => !placed.includes(p));
+    const remaining = pieces.filter((p) => !placed.includes(p));
     // Nothing to hint once every piece is placed. Deliberately NO setHint(null)
     // here: the hint's render is already gated on completion, and clearing
     // state synchronously in an effect body is what react-hooks/set-state-in-
@@ -121,7 +124,7 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
       hintCycleRef.current === 0 ? 1800 : 3200
     );
     return () => clearTimeout(t);
-  }, [placed, toRoot]);
+  }, [placed, pieces, toRoot]);
 
   const startDrag = useCallback(
     (e: React.PointerEvent<HTMLElement>, piece: PieceKey) => {
@@ -154,13 +157,13 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
       playCorrectSound();
       const now = [...placed, piece];
       setPlaced(now);
-      if (now.length >= PIECE_ORDER.length && !doneRef.current) {
+      if (now.length >= pieces.length && !doneRef.current) {
         doneRef.current = true;
         // a beat to see the whole letter before the stage changes
         schedule(onComplete, 1100);
       }
     },
-    [placed, onComplete, schedule]
+    [placed, pieces, onComplete, schedule]
   );
 
   const endDrag = useCallback(
@@ -204,7 +207,7 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
     [drag, land, rootRef, toRoot, isNearOwnPlace]
   );
 
-  const complete = placed.length >= PIECE_ORDER.length;
+  const complete = placed.length >= pieces.length;
 
   return (
     <div
@@ -214,6 +217,16 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
       onPointerCancel={endDrag}
     >
       {measure}
+
+      {/* A star per PIECE — the same running tally Bubble Pop shows, in this
+          stage's own terms. Three stars for a capital, two for the small
+          letters that are cut in half; it counts `pieces`, so a letter with
+          its own partition gets the right row without this screen knowing
+          which. It fills as pieces land, so progress is visible while the
+          letter is still coming together rather than only once it is done. */}
+      <div className="oab-build-stars" role="status" aria-live="polite">
+        <StarRow earned={placed.length} total={pieces.length} size={20} />
+      </div>
 
       {/* The letter, taking shape in open water.
           The ZONE centres it with flexbox and the motion element only scales.
@@ -234,24 +247,26 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
               layout={layout}
               preview={snapReady && drag ? drag.piece : null}
             />
-            {PIECE_ORDER.filter((p) => !placed.includes(p)).map((p) => {
-              const { hit } = boxes[p];
-              return (
-                <div
-                  key={p}
-                  ref={(el) => registerTarget(targetRefs.current, p, el)}
-                  className="oab-slot pl-at"
-                  style={cssVars({
-                    "--pl-x": `${hit.x.toFixed(2)}%`,
-                    "--pl-y": `${hit.y.toFixed(2)}%`,
-                    "--pl-w": `${hit.w.toFixed(2)}%`,
-                    "--pl-h": `${hit.h.toFixed(2)}%`,
-                  })}
-                  role="img"
-                  aria-label={`Empty space in the letter ${shown}`}
-                />
-              );
-            })}
+            {pieces
+              .filter((p) => !placed.includes(p))
+              .map((p) => {
+                const { hit } = boxes[p];
+                return (
+                  <div
+                    key={p}
+                    ref={(el) => registerTarget(targetRefs.current, p, el)}
+                    className="oab-slot pl-at"
+                    style={cssVars({
+                      "--pl-x": `${hit.x.toFixed(2)}%`,
+                      "--pl-y": `${hit.y.toFixed(2)}%`,
+                      "--pl-w": `${hit.w.toFixed(2)}%`,
+                      "--pl-h": `${hit.h.toFixed(2)}%`,
+                    })}
+                    role="img"
+                    aria-label={`Empty space in the letter ${shown}`}
+                  />
+                );
+              })}
           </div>
         </motion.div>
       </div>
@@ -259,54 +274,56 @@ export function BuildStage({ shown, rootRef, onComplete }: BuildStageProps) {
       {/* the carrier bubbles along the seabed */}
       <div className="oab-carriers">
         <AnimatePresence>
-          {PIECE_ORDER.filter((p) => !placed.includes(p)).map((p) => {
-            const { box } = boxes[p];
-            const beingDragged = drag?.piece === p;
-            return (
-              <motion.div
-                key={p}
-                ref={(el) => registerTarget(carrierRefs.current, p, el)}
-                className={`oab-carrier touch-none ${
-                  beingDragged ? "cursor-grabbing opacity-25" : "cursor-grab"
-                }`}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1, y: [0, -7, 0] }}
-                exit={{ scale: 1.4, opacity: 0 }}
-                transition={{
-                  scale: { type: "spring", stiffness: 260, damping: 18 },
-                  opacity: { duration: 0.25 },
-                  y: { duration: 3.4, repeat: Infinity, ease: "easeInOut" },
-                }}
-                onPointerDown={(e) => startDrag(e, p)}
-                role="button"
-                tabIndex={0}
-                aria-label={`Piece of the letter ${shown} — drag it into place`}
-              >
-                <span className="oab-carrier-skin" aria-hidden="true" />
-                <span
-                  className="oab-carrier-piece pl-center-self"
-                  style={cssVars({
-                    /* the piece FITS ITS BUBBLE: scaled by its own longer
+          {pieces
+            .filter((p) => !placed.includes(p))
+            .map((p) => {
+              const { box } = boxes[p];
+              const beingDragged = drag?.piece === p;
+              return (
+                <motion.div
+                  key={p}
+                  ref={(el) => registerTarget(carrierRefs.current, p, el)}
+                  className={`oab-carrier touch-none ${
+                    beingDragged ? "cursor-grabbing opacity-25" : "cursor-grab"
+                  }`}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1, y: [0, -7, 0] }}
+                  exit={{ scale: 1.4, opacity: 0 }}
+                  transition={{
+                    scale: { type: "spring", stiffness: 260, damping: 18 },
+                    opacity: { duration: 0.25 },
+                    y: { duration: 3.4, repeat: Infinity, ease: "easeInOut" },
+                  }}
+                  onPointerDown={(e) => startDrag(e, p)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Piece of the letter ${shown} — drag it into place`}
+                >
+                  <span className="oab-carrier-skin" aria-hidden="true" />
+                  <span
+                    className="oab-carrier-piece pl-center-self"
+                    style={cssVars({
+                      /* the piece FITS ITS BUBBLE: scaled by its own longer
                        side to 86% of the carrier, so a wide crossbar and a
                        tall leg are both fully visible — sizing by the
                        letter made big pieces overflow the bubble and thin
                        pieces vanish into it ("empty bubbles"). */
-                    "--pl-w": `calc(var(--oab-carrier) * ${((0.86 * box.w) / Math.max(box.w, box.h)).toFixed(3)})`,
-                    "--pl-h": `calc(var(--oab-carrier) * ${((0.86 * box.h) / Math.max(box.w, box.h)).toFixed(3)})`,
-                  })}
-                >
-                  <LetterPiece
-                    letter={shown}
-                    piece={p}
-                    fit={fit}
-                    box={box}
-                    layout={layout}
-                    outline={boxes[p].outline}
-                  />
-                </span>
-              </motion.div>
-            );
-          })}
+                      "--pl-w": `calc(var(--oab-carrier) * ${((0.86 * box.w) / Math.max(box.w, box.h)).toFixed(3)})`,
+                      "--pl-h": `calc(var(--oab-carrier) * ${((0.86 * box.h) / Math.max(box.w, box.h)).toFixed(3)})`,
+                    })}
+                  >
+                    <LetterPiece
+                      letter={shown}
+                      piece={p}
+                      fit={fit}
+                      box={box}
+                      layout={layout}
+                      outline={boxes[p].outline}
+                    />
+                  </span>
+                </motion.div>
+              );
+            })}
         </AnimatePresence>
       </div>
 

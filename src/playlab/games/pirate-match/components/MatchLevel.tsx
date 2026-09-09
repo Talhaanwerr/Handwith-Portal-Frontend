@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMatchStore, displayLetter } from "@games/pirate-match/store/matchStore";
-import { leftOrder, rightOrder } from "@games/pirate-match/constants/rounds";
+import { ALPHA, buildRound, pairsIn } from "@games/pirate-match/constants/rounds";
 import { ANCHOR_ART, getLetterWord, objectPhotoPath } from "@games/space-letters/constants/vocab";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { StarRow } from "@shared/components/ui/StarRow";
@@ -12,6 +12,7 @@ import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { PirateWorld } from "@games/pirate-match/components/MatchScreens";
+import { MatchWin } from "@games/pirate-match/components/MatchWin";
 import { GoldCoin } from "@shared/components/pirate/PirateTreasure";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { cssVars } from "@shared/styles/cssVars";
@@ -22,7 +23,7 @@ import {
   playClickSound,
   playStarPop,
 } from "@shared/audio/sfx";
-import { playSequence, preloadClips, stopVoice, clipText } from "@shared/audio/voice";
+import { playSequence, preloadClips, stopVoice } from "@shared/audio/voice";
 import { cheerFor } from "@shared/audio/cheers";
 
 /** The hand demonstration plays ONCE — the first round the child sees —
@@ -33,10 +34,10 @@ let handDemoDone = false;
 /** How close to a picture card counts as "on it". */
 const SNAP_MIN_PX = 44;
 const SNAP_RATIO = 0.55;
-/** The beat after the round's praise finishes before the next letter. */
 /** How long the celebration stays on screen after the praise finishes —
- *  a full beat with the confetti before the next round. */
-const ADVANCE_MS = 1500;
+ *  long enough for the chest to open and the treasure to fountain (see
+ *  MatchWin) before the next round. */
+const ADVANCE_MS = 2200;
 
 interface DragState {
   letter: string;
@@ -71,11 +72,15 @@ interface FlyState {
  */
 export function MatchLevel() {
   const router = useRouter();
-  const { currentLetter, letterCase, markDone, advance, setScreen } = useMatchStore();
+  const { currentLetter, letterCase, difficulty, markDone, advance, setScreen } = useMatchStore();
   const store = useMatchStore();
 
-  const letters = useMemo(() => leftOrder(currentLetter), [currentLetter]);
-  const cards = useMemo(() => rightOrder(currentLetter), [currentLetter]);
+  // One deal per round: both columns come back together, so they can never
+  // disagree and the board is built once instead of twice.
+  const { letters, cards } = useMemo(
+    () => buildRound(currentLetter, difficulty),
+    [currentLetter, difficulty]
+  );
   const cheerId = cheerFor(currentLetter);
   const doneCount = (letterCase === "lower" ? store.doneLower : store.done).length;
 
@@ -85,11 +90,14 @@ export function MatchLevel() {
    *  is full) — the all-time count froze on replayed letters. Lives below
    *  the matched state it reads. */
   const run = store.run;
-  /** The pill counts PAIRS: every right move is +1, every round is +3 —
-   *  rounds already finished contribute three each, and the current round
-   *  contributes its matched pairs live. */
-  const pairsDone = run ? run.index * 3 + matched.length : doneCount * 3;
-  const pairsTotal = run ? run.queue.length * 3 : 78;
+  /** The pill counts PAIRS: every right move is +1, and every finished round
+   *  contributes its own size. Summed rather than multiplied by a constant
+   *  three, because an Easy round near the start of the alphabet is shorter —
+   *  A has no letters before it to draw distractors from, B has one. */
+  const pairsDone = run
+    ? pairsIn(run.queue.slice(0, run.index), difficulty) + matched.length
+    : pairsIn(ALPHA.slice(0, doneCount), difficulty);
+  const pairsTotal = run ? pairsIn(run.queue, difficulty) : pairsIn(ALPHA, difficulty);
   const [drag, setDrag] = useState<DragState | null>(null);
   const [flying, setFlying] = useState<FlyState | null>(null);
   const [readyCard, setReadyCard] = useState<string | null>(null);
@@ -118,12 +126,17 @@ export function MatchLevel() {
     [rootRef] // <-- Add rootRef here
   );
 
-  // Arrival: preload this round's voice, then the one instruction, while the
-  // hand shows what matching looks like.
+  // Arrival: preload this round's voice, then the one instruction.
+  //
+  // "Now it's your turn", NOT "Watch carefully". Nothing is being demonstrated
+  // when this plays — the ghost hand only appears after an idle pause — so the
+  // child was told to watch and then shown nothing. This board is ready to be
+  // touched the moment it arrives, and the line now says so. "Watch carefully"
+  // is kept for letter tracing, where a stroke really is demonstrated first.
   useEffect(() => {
     const ids = letters.flatMap((l) => [`letter-${l.toLowerCase()}`, `word-${l.toLowerCase()}`]);
-    preloadClips([...ids, cheerId, "instr-watch-carefully"]);
-    const t = setTimeout(() => void playSequence(["instr-watch-carefully"], 0), 400);
+    preloadClips([...ids, cheerId, "instr-your-turn"]);
+    const t = setTimeout(() => void playSequence(["instr-your-turn"], 0), 400);
     return () => {
       clearTimeout(t);
       stopVoice();
@@ -253,7 +266,7 @@ export function MatchLevel() {
         land(letter);
       }
     },
-    [drag, cardAt, toRoot, land]
+    [drag, cardAt, toRoot, land, rootRef]
   );
 
   const complete = matched.length >= letters.length;
@@ -261,7 +274,7 @@ export function MatchLevel() {
   return (
     <div
       ref={rootRef}
-      className="pm-screen pp-world relative h-full w-full overflow-hidden"
+      className="pm-screen pp-world relative flex h-full w-full flex-col overflow-hidden"
       onPointerMove={moveDrag}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
@@ -269,7 +282,7 @@ export function MatchLevel() {
       <PirateWorld />
 
       {/* chrome: back · matched count */}
-      <div className="pm-topbar relative z-20 flex w-full items-center justify-between gap-2 px-4 py-3">
+      <div className="pm-topbar relative z-20 flex w-full shrink-0 items-center justify-between gap-2 px-4 py-3">
         <NavPillButton
           label="Back"
           ariaLabel="Back to the start screen"
@@ -287,7 +300,10 @@ export function MatchLevel() {
             <StarRow earned={matched.length} total={letters.length} size={16} />
           </div>
           <div
-            className="pp-pill font-rounded rounded-full px-4 py-2 text-sm font-black"
+            // shrink-0 + nowrap: "3 / 21 ⚓" was breaking onto three lines
+            // inside a pill sized for one, because nothing stopped the flex
+            // row from squeezing it.
+            className="pp-pill font-rounded shrink-0 rounded-full px-4 py-2 text-sm font-black whitespace-nowrap"
             role="status"
           >
             {pairsDone} / {pairsTotal} ⚓
@@ -364,29 +380,22 @@ export function MatchLevel() {
         </div>
       </div>
 
-      {/* the round's celebration — the portal's shared full-screen overlay:
-          tinted, confetti, the letter large, the cheer as the heading. Same
-          shape as Space ABC's; it auto-advances after ADVANCE_MS. */}
+      {/* the round's celebration — the treasure the child just found (see
+          MatchWin), on the portal's shared overlay; it auto-advances after
+          the praise plus ADVANCE_MS. */}
       <AnimatePresence>
         {complete && (
           <CelebrationOverlay
             tintClassName="pm-win-tint"
-            gapClassName="gap-4"
+            gapClassName="gap-0"
             blur="3px"
             size={dims}
           >
-            <motion.span
-              className="pm-win-letter font-rounded font-black"
-              initial={{ scale: 0.5, y: 20 }}
-              animate={{ scale: 1, y: [0, -12, 0] }}
-              transition={{
-                scale: { type: "spring", stiffness: 220, damping: 16 },
-                y: { duration: 0.9, repeat: 2, ease: "easeInOut", delay: 0.3 },
-              }}
-            >
-              {displayLetter(currentLetter, letterCase)}
-            </motion.span>
-            <h2 className="pm-win-heading font-rounded font-black">{clipText(cheerId)}</h2>
+            <MatchWin
+              shown={displayLetter(currentLetter, letterCase)}
+              letters={letters.map((l) => displayLetter(l, letterCase))}
+              cheerId={cheerId}
+            />
           </CelebrationOverlay>
         )}
       </AnimatePresence>
