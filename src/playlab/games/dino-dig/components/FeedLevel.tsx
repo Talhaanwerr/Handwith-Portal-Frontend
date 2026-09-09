@@ -180,7 +180,7 @@ export function FeedLevel({ letterCase, onComplete }: FeedLevelProps) {
         />
         <div className="shadow-soft flex min-h-[44px] items-center rounded-full bg-white/85 px-4">
           <span
-            className="font-rounded text-dino-ink text-sm font-black"
+            className="font-rounded text-dino-ink text-sm font-black whitespace-nowrap"
             aria-label={`${fed} of ${FEED_TOTAL} dinos fed`}
           >
             {fed} / {FEED_TOTAL}

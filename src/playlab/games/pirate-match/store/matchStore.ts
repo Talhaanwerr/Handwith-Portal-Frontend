@@ -3,10 +3,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { buildRun, advanceRun, type LetterRun, type RunIntent } from "@shared/utils/progression";
-import { ALPHA } from "@games/pirate-match/constants/rounds";
+import { ALPHA, type MatchDifficulty } from "@games/pirate-match/constants/rounds";
 
 export type LetterCase = "upper" | "lower";
-export type MatchScreen = "splash" | "case" | "start" | "level" | "complete";
+export type MatchScreen = "splash" | "case" | "difficulty" | "start" | "level" | "complete";
 
 /**
  * Pirate Match's session — the portal's standard alphabet-game shape:
@@ -19,12 +19,16 @@ export type MatchScreen = "splash" | "case" | "start" | "level" | "complete";
 interface MatchState {
   screen: MatchScreen;
   letterCase: LetterCase;
+  /** Which letters the distractors are drawn from — see constants/rounds.ts.
+   *  A preference, so it persists alongside the case the child plays in. */
+  difficulty: MatchDifficulty;
   currentLetter: string;
   run: LetterRun | null;
   done: string[];
   doneLower: string[];
   setScreen: (s: MatchScreen) => void;
   setCase: (c: LetterCase) => void;
+  setDifficulty: (d: MatchDifficulty) => void;
   markDone: (l: string) => void;
   beginRun: (startAt: string | number, intent: RunIntent) => void;
   /** Step to the next letter; false when the run is finished. */
@@ -37,12 +41,14 @@ export const useMatchStore = create<MatchState>()(
     (set, get) => ({
       screen: "splash",
       letterCase: "upper",
+      difficulty: "easy",
       currentLetter: "A",
       run: null,
       done: [],
       doneLower: [],
       setScreen: (screen) => set({ screen }),
       setCase: (letterCase) => set({ letterCase }),
+      setDifficulty: (difficulty) => set({ difficulty }),
 
       beginRun: (startAt, intent) =>
         set((s) => {
@@ -79,7 +85,12 @@ export const useMatchStore = create<MatchState>()(
     }),
     {
       name: "pirate-match-progress",
-      partialize: (s) => ({ done: s.done, doneLower: s.doneLower, letterCase: s.letterCase }),
+      partialize: (s) => ({
+        done: s.done,
+        doneLower: s.doneLower,
+        letterCase: s.letterCase,
+        difficulty: s.difficulty,
+      }),
     }
   )
 );

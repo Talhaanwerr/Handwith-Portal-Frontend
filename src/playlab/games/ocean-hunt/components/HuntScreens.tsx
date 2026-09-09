@@ -132,7 +132,8 @@ export function HuntStart() {
   const hasProgress = done.length > 0 && !runComplete;
 
   return (
-    <div className="oh-screen relative flex h-full w-full flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-8">
+    // World + pinned pill outside the scroller; content column inside it.
+    <div className="oh-screen pl-screen-shell">
       <HuntWorld />
 
       <NavPillButton
@@ -147,65 +148,71 @@ export function HuntStart() {
         }}
       />
 
-      <motion.div
-        className="relative z-10 flex flex-col items-center gap-1 text-center"
-        initial={{ y: -14, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-      >
-        <h1 className="oh-heading font-rounded font-black">Ocean Hunt</h1>
-        <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
-          {letterCase === "lower" ? "Which small letter is hiding?" : "Which big letter is hiding?"}
-        </p>
-      </motion.div>
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-6 px-6 py-8 pt-16">
+        <motion.div
+          className="relative z-10 flex flex-col items-center gap-1 text-center"
+          initial={{ y: -14, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          <h1 className="oh-heading font-rounded font-black">Ocean Hunt</h1>
+          <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
+            {letterCase === "lower"
+              ? "Which small letter is hiding?"
+              : "Which big letter is hiding?"}
+          </p>
+        </motion.div>
 
-      <div className="relative z-10 w-full max-w-md">
-        <div className="mb-1 flex justify-between">
-          <span className="font-rounded text-sm font-bold text-white/85 drop-shadow-md">
-            Letters found
-          </span>
-          <span className="font-rounded text-sm font-black text-white drop-shadow-md">
-            {done.length} / 26
-          </span>
+        <div className="relative z-10 w-full max-w-md">
+          <div className="mb-1 flex justify-between">
+            <span className="font-rounded text-sm font-bold text-white/85 drop-shadow-md">
+              Letters found
+            </span>
+            <span className="font-rounded text-sm font-black text-white drop-shadow-md">
+              {done.length} / 26
+            </span>
+          </div>
+          <ProgressBar
+            value={done.length / 26}
+            trackClassName="h-4 w-full rounded-full bg-white/25"
+            fillClassName="oh-progress-fill h-full rounded-full"
+            ariaLabel={`${done.length} of 26 letters found`}
+          />
         </div>
-        <ProgressBar
-          value={done.length / 26}
-          trackClassName="h-4 w-full rounded-full bg-white/25"
-          fillClassName="oh-progress-fill h-full rounded-full"
-          ariaLabel={`${done.length} of 26 letters found`}
-        />
-      </div>
 
-      <motion.div
-        className="relative z-10"
-        initial={{ y: 16, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <StartOptions
-          hasProgress={hasProgress || runComplete}
-          onContinue={
-            runComplete
-              ? () => {
-                  playClickSound();
-                  setScreen("complete");
-                }
-              : () => {
-                  playClickSound();
-                  beginRun(0, "continue");
-                  setScreen("level");
-                }
-          }
-          continueLabel={
-            runComplete ? "See my alphabet!" : `Continue · ${displayLetter(nextUndone, letterCase)}`
-          }
-          onStartFromA={() => {
-            playClickSound();
-            beginRun(0, "fresh");
-            setScreen("level");
-          }}
-          startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
-        />
-      </motion.div>
+        <motion.div
+          className="relative z-10"
+          initial={{ y: 16, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <StartOptions
+            hasProgress={hasProgress || runComplete}
+            onContinue={
+              runComplete
+                ? () => {
+                    playClickSound();
+                    setScreen("complete");
+                  }
+                : () => {
+                    playClickSound();
+                    beginRun(0, "continue");
+                    setScreen("level");
+                  }
+            }
+            continueLabel={
+              runComplete
+                ? "See my alphabet!"
+                : `Continue · ${displayLetter(nextUndone, letterCase)}`
+            }
+            onStartFromA={() => {
+              playClickSound();
+              beginRun(0, "fresh");
+              setScreen("level");
+            }}
+            startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
+          />
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -14,6 +14,8 @@ import {
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { ProgressBar } from "@shared/components/ui/ProgressBar";
 import { StartOptions } from "@shared/components/ui/StartOptions";
+import { ChoiceScreen, type Choice } from "@shared/components/game/ChoiceScreen";
+import type { PopMode } from "@games/ocean-abc/constants/pop";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { continueLetter } from "@shared/utils/progression";
 import { playClip } from "@shared/audio/voice";
@@ -101,15 +103,63 @@ export function OceanSplash({ onExitPortal }: { onExitPortal?: () => void }) {
   );
 }
 
+/**
+ * 5 Times / Unlimited — how a standalone Bubble Pop round ends.
+ *
+ * Only the Pop module asks. The full voyage keeps the five-pop round, because
+ * a letter there has a Trace stage waiting after it and an endless middle
+ * beat would strand the child before it.
+ */
+const POP_MODE_OPTIONS: readonly Choice<PopMode>[] = [
+  {
+    value: "five",
+    preview: "5",
+    label: "5 Times",
+    aria: "Pop five correct bubbles to finish",
+    variant: "five",
+  },
+  {
+    value: "unlimited",
+    preview: "∞",
+    label: "Unlimited",
+    aria: "Keep popping until you are ready to move on",
+    variant: "unlimited",
+  },
+];
+
+export function OceanPopModeSelect() {
+  const { setPopMode, setScreen } = useOceanStore();
+
+  return (
+    <div className="oab-screen relative h-full w-full">
+      <ChoiceScreen<PopMode>
+        title="Bubble Pop"
+        subtitle="5 Times pops five correct bubbles · Unlimited keeps going"
+        backdrop={<OceanWorld />}
+        tone="ocean"
+        backAriaLabel="Back to the letter size choice"
+        onBack={() => setScreen("mode")}
+        onPick={(m) => {
+          setPopMode(m);
+          setScreen("grid");
+        }}
+        options={POP_MODE_OPTIONS}
+      />
+    </div>
+  );
+}
+
 /** BIG LETTERS / small letters — the only choice in the game. */
 export function OceanModeSelect() {
   const router = useRouter();
-  const { setCase, setScreen } = useOceanStore();
+  const { module, setCase, setScreen } = useOceanStore();
 
   const pick = (c: LetterCase) => {
     playClickSound();
     setCase(c);
-    setScreen("grid");
+    // Bubble Pop on its own has a second question — how the round ends. Every
+    // other module goes straight to the letter map.
+    setScreen(module === "pop" ? "popMode" : "grid");
   };
 
   const options: { c: LetterCase; title: string; preview: string; aria: string }[] = [
@@ -118,7 +168,11 @@ export function OceanModeSelect() {
   ];
 
   return (
-    <div className="oab-screen relative flex h-full w-full flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-8">
+    // Shell / scroller split: the water and the Back pill sit OUTSIDE the
+    // scrolling element. Inside it they scrolled with the content — the water
+    // painting only one screenful (white below it) and `pinned`, which is
+    // position:absolute, drifting off the top instead of staying pinned.
+    <div className="oab-screen pl-screen-shell">
       <OceanWorld />
 
       <NavPillButton
@@ -133,31 +187,33 @@ export function OceanModeSelect() {
         }}
       />
 
-      <motion.h1
-        className="oab-heading font-rounded relative z-10 text-center font-black"
-        initial={{ y: -12, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-      >
-        Which letters?
-      </motion.h1>
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-7 px-6 py-8">
+        <motion.h1
+          className="oab-heading font-rounded relative z-10 text-center font-black"
+          initial={{ y: -12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          Which letters?
+        </motion.h1>
 
-      <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
-        {options.map((o, i) => (
-          <motion.button
-            key={o.c}
-            onClick={() => pick(o.c)}
-            className={`oab-mode-btn oab-mode-btn--${o.c} flex flex-col items-center justify-center gap-2`}
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.12 + i * 0.08, type: "spring", stiffness: 260, damping: 20 }}
-            whileTap={{ scale: 0.94 }}
-            whileHover={{ scale: 1.04 }}
-            aria-label={o.aria}
-          >
-            <span className="oab-mode-preview font-rounded font-black">{o.preview}</span>
-            <span className="oab-mode-title font-rounded font-black">{o.title}</span>
-          </motion.button>
-        ))}
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
+          {options.map((o, i) => (
+            <motion.button
+              key={o.c}
+              onClick={() => pick(o.c)}
+              className={`oab-mode-btn oab-mode-btn--${o.c} flex flex-col items-center justify-center gap-2`}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.12 + i * 0.08, type: "spring", stiffness: 260, damping: 20 }}
+              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.04 }}
+              aria-label={o.aria}
+            >
+              <span className="oab-mode-preview font-rounded font-black">{o.preview}</span>
+              <span className="oab-mode-title font-rounded font-black">{o.title}</span>
+            </motion.button>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -211,7 +267,7 @@ export function OceanModules({ onExitPortal = () => {} }: { onExitPortal?: () =>
   ];
 
   return (
-    <div className="oab-screen relative flex h-full w-full flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-8">
+    <div className="oab-screen pl-screen-shell">
       <OceanWorld />
 
       <NavPillButton
@@ -226,39 +282,41 @@ export function OceanModules({ onExitPortal = () => {} }: { onExitPortal?: () =>
         }}
       />
 
-      <motion.h1
-        className="oab-heading font-rounded relative z-10 text-center font-black"
-        initial={{ y: -12, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-      >
-        How do you want to play?
-      </motion.h1>
-      <p className="oab-tagline font-rounded relative z-10 text-center font-bold">
-        Build, pop and trace the alphabet under the sea
-      </p>
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-6 px-6 py-8">
+        <motion.h1
+          className="oab-heading font-rounded relative z-10 text-center font-black"
+          initial={{ y: -12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          How do you want to play?
+        </motion.h1>
+        <p className="oab-tagline font-rounded relative z-10 text-center font-bold">
+          Build, pop and trace the alphabet under the sea
+        </p>
 
-      <div className="relative z-10 flex flex-wrap items-center justify-center gap-5">
-        {options.map((o, i) => (
-          <motion.button
-            key={o.m}
-            onClick={() => pick(o.m)}
-            className={`oab-module-btn flex flex-col items-center justify-center gap-1 ${
-              o.m === "combined" ? "oab-module-btn--hero" : ""
-            } ${module === o.m ? "oab-module-btn--current" : ""}`}
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1 + i * 0.07, type: "spring", stiffness: 260, damping: 20 }}
-            whileTap={{ scale: 0.94 }}
-            whileHover={{ scale: 1.04 }}
-            aria-label={o.aria}
-          >
-            <span className="oab-module-icon" aria-hidden="true">
-              {o.icon}
-            </span>
-            <span className="oab-module-title font-rounded font-black">{o.title}</span>
-            <span className="oab-module-sub font-rounded font-bold">{o.sub}</span>
-          </motion.button>
-        ))}
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-5">
+          {options.map((o, i) => (
+            <motion.button
+              key={o.m}
+              onClick={() => pick(o.m)}
+              className={`oab-module-btn flex flex-col items-center justify-center gap-1 ${
+                o.m === "combined" ? "oab-module-btn--hero" : ""
+              } ${module === o.m ? "oab-module-btn--current" : ""}`}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1 + i * 0.07, type: "spring", stiffness: 260, damping: 20 }}
+              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.04 }}
+              aria-label={o.aria}
+            >
+              <span className="oab-module-icon" aria-hidden="true">
+                {o.icon}
+              </span>
+              <span className="oab-module-title font-rounded font-black">{o.title}</span>
+              <span className="oab-module-sub font-rounded font-bold">{o.sub}</span>
+            </motion.button>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -287,7 +345,7 @@ export function OceanGrid() {
   const hasProgress = done.length > 0 && !runComplete;
 
   return (
-    <div className="oab-screen relative flex h-full w-full flex-col items-center gap-4 overflow-x-hidden overflow-y-auto px-5 py-6">
+    <div className="oab-screen pl-screen-shell">
       <OceanWorld />
 
       <NavPillButton
@@ -302,87 +360,96 @@ export function OceanGrid() {
         }}
       />
 
-      <div className="relative z-10 mt-auto flex flex-col items-center">
-        <h1 className="oab-heading font-rounded text-center font-black">Ocean ABC</h1>
-        <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
-          {letterCase === "lower" ? "Pick a small letter" : "Pick a big letter"}
-        </p>
-      </div>
-
-      <div className="relative z-10 w-full max-w-md md:max-w-2xl">
-        <div className="mb-1 flex justify-between">
-          <span className="font-rounded text-sm font-bold text-white/85 drop-shadow-md">
-            Letters finished
-          </span>
-          <span className="font-rounded text-sm font-black text-white drop-shadow-md">
-            {done.length} / 26
-          </span>
+      {/* `mt-auto` on the heading and `mb-auto` on the start row used to centre
+          this column. Once 26 bubbles plus chrome outgrew the box, that pair
+          centred the OVERFLOW too and pushed the heading — and the pinned Back
+          pill above it — past the top of the scrollable area. `pl-safe-center`
+          centres only while it fits. */}
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-4 px-5 py-6 pt-16">
+        <div className="relative z-10 flex flex-col items-center">
+          <h1 className="oab-heading font-rounded text-center font-black">Ocean ABC</h1>
+          <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
+            {letterCase === "lower" ? "Pick a small letter" : "Pick a big letter"}
+          </p>
         </div>
-        <ProgressBar
-          value={done.length / 26}
-          trackClassName="h-4 w-full rounded-full bg-white/25"
-          fillClassName="oab-progress-fill h-full rounded-full"
-          ariaLabel={`${done.length} of 26 letters finished`}
-        />
-      </div>
 
-      {/* the alphabet, each letter inside its own bubble */}
-      <div className="oab-letter-grid relative z-10 w-full max-w-md gap-2.5 md:max-w-2xl">
-        {OCEAN_ALPHA.map((l, i) => {
-          const isDone = done.includes(l);
-          const shown = displayLetter(l, letterCase);
-          return (
-            <motion.button
-              key={l}
-              onClick={() => openLetter(l)}
-              className={`oab-bubble-tile relative flex aspect-square items-center justify-center ${
-                isDone ? "oab-bubble-tile--done" : ""
-              }`}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.015 * i, type: "spring", stiffness: 300, damping: 20 }}
-              whileTap={{ scale: 0.92 }}
-              aria-label={`Letter ${shown}${isDone ? " (finished)" : ""}`}
-            >
-              <span className="oab-tile-glyph font-rounded font-black">{shown}</span>
-              {isDone && (
-                <span
-                  className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] shadow-sm"
-                  aria-hidden="true"
-                >
-                  ⭐
-                </span>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
+        <div className="relative z-10 w-full max-w-md md:max-w-2xl">
+          <div className="mb-1 flex justify-between">
+            <span className="font-rounded text-sm font-bold text-white/85 drop-shadow-md">
+              Letters finished
+            </span>
+            <span className="font-rounded text-sm font-black text-white drop-shadow-md">
+              {done.length} / 26
+            </span>
+          </div>
+          <ProgressBar
+            value={done.length / 26}
+            trackClassName="h-4 w-full rounded-full bg-white/25"
+            fillClassName="oab-progress-fill h-full rounded-full"
+            ariaLabel={`${done.length} of 26 letters finished`}
+          />
+        </div>
 
-      <div className="relative z-10 mb-auto">
-        <StartOptions
-          hasProgress={hasProgress || runComplete}
-          onContinue={
-            runComplete
-              ? () => {
-                  playClickSound();
-                  setScreen("complete");
-                }
-              : () => {
-                  playClickSound();
-                  beginRun(0, "continue");
-                  setScreen("level");
-                }
-          }
-          continueLabel={
-            runComplete ? "See my alphabet!" : `Continue · ${displayLetter(nextUndone, letterCase)}`
-          }
-          onStartFromA={() => {
-            playClickSound();
-            beginRun(0, "fresh");
-            setScreen("level");
-          }}
-          startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
-        />
+        {/* the alphabet, each letter inside its own bubble */}
+        <div className="oab-letter-grid relative z-10 w-full max-w-md gap-2.5 md:max-w-2xl">
+          {OCEAN_ALPHA.map((l, i) => {
+            const isDone = done.includes(l);
+            const shown = displayLetter(l, letterCase);
+            return (
+              <motion.button
+                key={l}
+                onClick={() => openLetter(l)}
+                className={`oab-bubble-tile relative flex aspect-square items-center justify-center ${
+                  isDone ? "oab-bubble-tile--done" : ""
+                }`}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.015 * i, type: "spring", stiffness: 300, damping: 20 }}
+                whileTap={{ scale: 0.92 }}
+                aria-label={`Letter ${shown}${isDone ? " (finished)" : ""}`}
+              >
+                <span className="oab-tile-glyph font-rounded font-black">{shown}</span>
+                {isDone && (
+                  <span
+                    className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] shadow-sm"
+                    aria-hidden="true"
+                  >
+                    ⭐
+                  </span>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+
+        <div className="relative z-10">
+          <StartOptions
+            hasProgress={hasProgress || runComplete}
+            onContinue={
+              runComplete
+                ? () => {
+                    playClickSound();
+                    setScreen("complete");
+                  }
+                : () => {
+                    playClickSound();
+                    beginRun(0, "continue");
+                    setScreen("level");
+                  }
+            }
+            continueLabel={
+              runComplete
+                ? "See my alphabet!"
+                : `Continue · ${displayLetter(nextUndone, letterCase)}`
+            }
+            onStartFromA={() => {
+              playClickSound();
+              beginRun(0, "fresh");
+              setScreen("level");
+            }}
+            startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
+          />
+        </div>
       </div>
     </div>
   );

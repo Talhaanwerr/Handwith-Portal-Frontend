@@ -28,6 +28,20 @@
   height: 100%;
   display: block;
 }
+/* The scene is drawn twice — wide and tall (see SpaceScene) — and only the
+   one shaped like the screen is shown. Covering a portrait phone with the wide
+   drawing cropped both sides off, and the sides are where everything lives. */
+.spl-scene--tall {
+  display: none;
+}
+@media (orientation: portrait) {
+  .spl-scene--wide {
+    display: none;
+  }
+  .spl-scene--tall {
+    display: block;
+  }
+}
 
 /** The optional photo. Paints only when public/games/space-letters/space.jpg
  *  exists — otherwise the declaration simply fails and the illustration
@@ -172,10 +186,44 @@
    because a bigger letter here silently pushes the pieces off-screen. */
 .spl-screen {
   /* The container holds the placeholder AND the loose pieces, so it stands
-     about 2.2 letters tall — the letter is capped to keep the whole panel on
-     screen rather than to fill it. */
-  --sap-letter: max(150px, min(70vw, 35vh, 460px));
+     about 2.2 letters tall.
+
+     WIDE (side-by-side) BUDGET. The object is now a flow sibling rather than
+     an absolutely-positioned decoration, so its width counts: card (1.3L) +
+     object (~0.75L) + gap comes to roughly 2.1L, which is what caps the letter
+     at 44vw here. It used to be 70vw because the object hung out of flow and
+     cost the row nothing — that is also why the object had to stay small to
+     avoid running off the right edge. */
+  /* The vw term is the one with slack. On a wide screen the HEIGHT is what
+     binds — the panel stands ~2.25 letters tall, so 35vh already spends most
+     of the column — but the width was capped well below what the row can
+     hold, which is the empty white the panel showed either side of the
+     letter. Raising vw and the ceiling grows the letter (and with it every
+     piece, since --sap-piece follows) wherever width is the free axis, and
+     changes nothing where height still binds. */
+  --sap-letter: max(150px, min(52vw, 35vh, 520px));
   --sap-piece: var(--sap-letter);
+  /* The vocabulary picture. Was capped at 150px and half the letter, which on
+     a laptop rendered a thumbnail beside a 400px letter. At 0.68L it reads as
+     the second subject on the screen, which is what it is. */
+  --sap-object-img: clamp(96px, calc(var(--sap-letter) * 0.68), 260px);
+}
+
+/* STACKED (object above puzzle) BUDGET — see the layout rule further down.
+   Width is no longer shared, so the letter can use much more of it; height is,
+   so the vh term tightens: card (2.2L) + object (~0.9L) + gap ≈ 3.2L has to
+   fit the arena. */
+@media (max-width: 760px) {
+  /* Stacked, the two share the HEIGHT rather than the width, and the sum is
+     what has to fit: the card stands up to 2.4 letters tall once the pieces
+     wrap, and the object — smaller here, 0.42L — under half a letter: some
+     2.8 letters plus the gap. 28vh keeps that inside the arena on a 640px-tall
+     phone, and is half again the 19vh the puzzle used to get, when the letter
+     and its pieces were the smallest things on the screen. */
+  .spl-screen {
+    --sap-letter: max(130px, min(74vw, 28vh, 460px));
+    --sap-object-img: clamp(64px, calc(var(--sap-letter) * 0.42), 130px);
+  }
 }
 
 /* Short landscape: height is the scarce axis and the chrome is already
@@ -183,6 +231,7 @@
 @media (orientation: landscape) and (max-height: 560px) {
   .spl-screen {
     --sap-letter: max(96px, min(30vw, 28vh, 280px));
+    --sap-object-img: clamp(72px, calc(var(--sap-letter) * 0.62), 150px);
   }
 }
 
@@ -190,15 +239,44 @@
 
 .sap-arena {
   min-height: 0;
+  /* `safe` centring: vertically centred while the pair fits, flush to the top
+     the moment it does not. Plain centring pushed the overflow BOTH ways, so
+     on a phone the stacked object rode up over the top bar and hid the star
+     row behind it. */
+  align-items: safe center;
 }
 
-/** Container + object side by side, the way letter tracing pairs its board
- *  with the anchor picture. */
+/** Container + object, the way letter tracing pairs its board with the anchor
+ *  picture. ONE flex layout with two directions — a row where there is width
+ *  for both, a column where there is not — rather than a wide-screen layout
+ *  plus per-breakpoint corrections. The direction switch is the only thing the
+ *  media query changes; everything else is shared. */
 .sap-stage {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: clamp(6px, 1.6vmin, 22px);
+}
+
+/* Narrow screens stack the pair, OBJECT FIRST: on a phone the row would put a
+   prominent picture and a puzzle that needs the full width in competition for
+   it, and shrinking either to fit makes both worse. Stacked, each gets the
+   whole width. `order` does the reordering so the DOM keeps the puzzle first,
+   which is the reading order that makes sense to a screen reader. */
+@media (max-width: 760px) {
+  .sap-stage {
+    flex-direction: column;
+    gap: clamp(10px, 2.6vmin, 24px);
+  }
+  .sap-stage > .sap-object {
+    order: -1;
+    /* The negative inset and the 7° tilt belong to the side-docked look. Sat
+       squarely above the puzzle they read as a mistake rather than as
+       character, so the stacked card is straight and flush. */
+    margin-left: 0;
+    transform: none;
+  }
 }
 
 /* ── The central container ──
@@ -217,9 +295,13 @@
   /* Wider than the letter it holds: the loose pieces lie inside this panel
      too, and three of them need more width than the letter square to sit
      apart from one another. */
-  width: calc(var(--sap-letter) * 1.3);
+  width: calc(var(--sap-letter) * 1.24);
   max-width: 94vw;
-  padding: clamp(8px, 2vmin, 20px);
+  /* Trimmed from 2vmin/20px. The padding was a visible white margin on all
+     four sides of a panel whose whole job is to show the letter; less of it
+     is more letter for the same footprint. 1.24 rather than 1.3 for the same
+     reason — still wide enough for the loose pieces to sit apart. */
+  padding: clamp(6px, 1.4vmin, 14px);
   border-radius: clamp(26px, 5vmin, 46px);
   border: 1px solid rgba(255, 255, 255, 0.9);
   background: #ffffff;
@@ -228,18 +310,18 @@
     0 0 0 6px rgba(191, 216, 255, 0.16);
 }
 
-/* The object hangs off the container's right edge OUT OF FLOW.
-   While it was a flow sibling its width counted toward the row, so centring
-   the row left the white container itself sitting off-centre by half the
-   object's visible width. Absolute here means the container is the only
-   thing the arena centres, and the object hangs off it. Scoped to
-   `.sap-stage >` so the celebration's copy of the card is untouched. */
+/* The object is a FLOW sibling of the container, docked against its edge by a
+   negative margin (see .sap-object) and tilted.
+
+   It used to be `position: absolute; left: 100%`, hung out of the row so the
+   container alone was what the arena centred. That bought exact centring at
+   two costs which the bigger picture makes unaffordable: the object had to
+   stay small or it ran off the right edge, and being out of flow it could not
+   take part in a column — so it could not move above the puzzle on a phone.
+   In flow, the pair is centred as a composition, nothing can overflow, and the
+   same two elements simply re-stack when the direction changes. */
 .sap-stage > .sap-object {
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  margin-left: 0;
-  transform: translate(-18%, -50%) rotate(7deg);
+  align-self: center;
 }
 
 /* ── The letter placeholder ── */
@@ -354,32 +436,28 @@
   transform: rotate(7deg);
 }
 
+/* Square, and driven by the one --sap-object-img variable each layout sets, so
+   the picture scales with the letter it illustrates instead of against it. */
 .sap-object-img {
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 16px;
-  width: clamp(64px, min(15vmin, calc(var(--sap-letter) * 0.5)), 150px);
-  height: clamp(64px, min(15vmin, calc(var(--sap-letter) * 0.5)), 150px);
+  border-radius: clamp(16px, 3vmin, 26px);
+  width: var(--sap-object-img);
+  height: var(--sap-object-img);
 }
 
+/* The word scales with the picture rather than the viewport, so the card stays
+   in proportion at every size. */
 .sap-object-word {
-  font-size: clamp(13px, 2.2vmin, 22px);
+  font-size: clamp(15px, calc(var(--sap-object-img) * 0.16), 30px);
   text-transform: capitalize;
   color: var(--color-space-ink);
 }
 
 /* On a phone the object would eat the container's width, so it tucks under
    the container's corner instead of beside it. */
-@media (max-width: 520px) {
-  .sap-stage > .sap-object {
-    left: auto;
-    right: 0;
-    top: 100%;
-    transform: translate(22%, -52%) rotate(7deg);
-  }
-}
 
 /* ── Win overlay ── */
 
@@ -392,26 +470,148 @@
   color: #ffffff;
 }
 
-/** The finished letter on the celebration overlay — the same assembly, with
- *  the guide layer hidden since every piece is now filled in and the pale
- *  under-letter would only muddy it. The pieces keep their white bodies, so
- *  the completed letter reads clearly against the dark celebration wash. */
-.sap-win-assembly,
-.sap-win-assembly .pl-lp-assembly {
-  width: clamp(120px, 22vmin, 200px);
-  height: clamp(120px, 22vmin, 200px);
-}
-.sap-win-assembly .pl-lp-guide-ink,
-.sap-win-assembly .pl-lp-guide-seam,
-.sap-win-assembly .pl-lp-guide-rim {
-  display: none;
+/* ── THE LETTER IN SPACE (SpaceWin.tsx) ──
+   The finished letter glows, its pieces orbit it, a rocket loops it, it
+   becomes a constellation and bursts. Everything is clipped by the stage so
+   the burst and the rocket's loop can never widen the overlay's scroll area. */
+
+.sap-win-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2.4vmin, 20px);
+  padding: 16px;
 }
 
+/** The letter's box — the same square the puzzle is built in, so the pieces
+ *  land in exact register; every effect is centred on it. */
+.sap-win-letter {
+  --sap-win: clamp(140px, 30vmin, 260px);
+  position: relative;
+  z-index: 1;
+  width: var(--sap-win);
+  height: var(--sap-win);
+  /* the burst's rings are the sky's own blue-white */
+  --pl-ring: rgba(159, 182, 255, 0.9);
+}
+.sap-win-letter .pl-lp-assembly {
+  position: relative;
+  z-index: 2;
+}
+/** A placed piece, lifted off the dark wash with its own glow. */
+.sap-win-piece {
+  filter: drop-shadow(0 0 10px rgba(159, 182, 255, 0.55));
+  will-change: transform;
+}
+
+/** The glow behind the letter — a soft disc, breathing. Centred by margin;
+ *  Framer scales it. */
+.sap-win-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  width: 160%;
+  aspect-ratio: 1;
+  margin-left: -80%;
+  margin-top: -80%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(220, 232, 255, 0.55) 0%,
+    rgba(91, 127, 255, 0.35) 35%,
+    rgba(91, 127, 255, 0) 70%
+  );
+  pointer-events: none;
+}
+
+/** The rocket's loop: a circle of radius 16vmin (r=44.4 of a 36vmin box),
+ *  drawn by pathLength as the rocket flies it. */
+.sap-win-trail {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 36vmin;
+  height: 36vmin;
+  margin-left: -18vmin;
+  margin-top: -18vmin;
+  overflow: visible;
+  pointer-events: none;
+}
+.sap-win-trail-line {
+  fill: none;
+  stroke: rgba(220, 232, 255, 0.85);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-dasharray: 3 2.4;
+  filter: drop-shadow(0 0 3px rgba(159, 182, 255, 0.9));
+}
+
+/** The rocket, centred on the letter by margin; Framer flies it. */
+.sap-win-rocket {
+  --sap-rocket: clamp(34px, 7vmin, 60px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: var(--sap-rocket);
+  height: calc(var(--sap-rocket) * 72 / 40);
+  margin-left: calc(var(--sap-rocket) / -2);
+  margin-top: calc(var(--sap-rocket) * 72 / 40 / -2);
+  filter: drop-shadow(0 0 8px rgba(255, 179, 71, 0.7));
+  pointer-events: none;
+}
+
+/** The constellation: the letter's outline as a string of stars — a dotted
+ *  stroke with round caps, no fill. */
+.sap-win-constellation {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.sap-win-stars {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-dasharray: 0.01 6;
+  filter: drop-shadow(0 0 4px rgba(159, 182, 255, 1));
+}
+
+/** The picture, the cheer and the way on, under the letter. */
+.sap-win-praise {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vmin, 16px);
+}
 /** The object on the celebration overlay — same card, sitting straight
  *  rather than tilted, since there is no container edge to hang off. */
 .sap-win-object .sap-object {
   margin-left: 0;
   transform: none;
+}
+
+/* Short landscape: the letter gives up some height so the praise fits under
+   it; the rocket's loop scales with vmin on its own. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .sap-win-letter {
+    --sap-win: clamp(96px, 24vmin, 150px);
+  }
+  .sap-win-praise {
+    gap: 6px;
+  }
 }
 
 /* ── Finale ── */

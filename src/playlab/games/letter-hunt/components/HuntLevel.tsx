@@ -17,10 +17,12 @@ import { StarRow } from "@shared/components/ui/StarRow";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { useElementSize } from "@shared/hooks/useElementSize";
+import { scatter } from "@shared/utils/scatter";
 import { cssVars } from "@shared/styles/cssVars";
 import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
 import { cheerFor } from "@shared/audio/cheers";
 import { HuntLetterField } from "@games/letter-hunt/components/HuntLetterField";
+import { HuntWin } from "@games/letter-hunt/components/HuntWin";
 
 /** Letters that look too similar to make fair decoys for a given target */
 const CONFUSABLE: Record<string, string[]> = {
@@ -61,11 +63,21 @@ interface Card {
   isTarget: boolean;
   found: boolean;
   style: (typeof CARD_STYLES)[number];
-  /** percent position within the play area — a real spatial scatter, not a grid */
+  /** Centre of the card in PX, relative to the measured play area.
+   *
+   *  These used to be percentages, clamped per-card in the style prop with
+   *  `clamp(60px, x%, calc(100% - 60px))`. Each card was pushed inside the
+   *  safe area with no knowledge of any other card, so on a short screen every
+   *  slot past the clamp boundary landed on the identical coordinate and the
+   *  cards stacked. Placement is now solved against the measured area
+   *  (see shared/utils/scatter.ts) and arrives here already collision-free. */
   x: number;
   y: number;
+  /** The card's full box in px — what the placement solver reserved for it. */
+  size: number;
   rotate: number;
-  fontSize: string;
+  /** Glyph size in px, derived from `size` so text can never outgrow its card. */
+  fontSize: number;
 }
 
 /** Ten hand-placed slots spanning the FULL play area edge-to-edge — a busy,
@@ -96,21 +108,46 @@ const SLOTS: readonly [number, number][] = [
   [88, 89],
 ];
 
+/**
+ * The slot map walked in a stride co-prime with its length, so any PREFIX of
+ * it spans the whole board — top, middle and bottom — instead of filling the
+ * rows from the top down. Re-seating needs this: the canonical order is
+ * rows-first, and a re-seat of twelve cards through it put all twelve in the
+ * top rows (the first letter of a session, re-seated after the play area's
+ * first real measurement, came out bunched at the top of the screen).
+ */
+const SPREAD_SLOTS: readonly [number, number][] = SLOTS.map(
+  (_, i) => SLOTS[(i * 7) % SLOTS.length]
+);
+
 /** How many cards are on the board. Five of them are targets (see
  *  TARGET_TOTAL); every other one is a decoy. Raising this makes the screen
  *  busier to scan WITHOUT changing how many letters the child must find. */
 const CARD_TOTAL = SLOTS.length;
 
-/** Five font-size tiers — deliberately extreme (tiny → huge) so the board
- *  reads as genuinely varied, not just "slightly different". Applied to the
- *  glyph only; the tap target is kept comfortable via container padding. */
-const SIZE_TIERS = [
-  "clamp(18px, 3.6vmin, 26px)",
-  "clamp(26px, 5.2vmin, 38px)",
-  "clamp(36px, 7.2vmin, 54px)",
-  "clamp(50px, 10vmin, 76px)",
-  "clamp(66px, 13.5vmin, 104px)",
-] as const;
+/** Five glyph-size tiers — deliberately extreme (tiny → huge) so the board
+ *  reads as genuinely varied, not just "slightly different".
+ *
+ *  Expressed as a fraction of the PLAY AREA's short side rather than as a
+ *  vmin clamp. The placement solver has to know each card's real pixel box to
+ *  keep cards off one another, and a vmin clamp is measured against the
+ *  viewport — which is not the box the cards are scattered in. One number,
+ *  known to both the layout and the solver. */
+const FONT_TIERS = [0.085, 0.13, 0.19, 0.26, 0.34] as const;
+const FONT_MIN = 18;
+const FONT_MAX = 104;
+/** `p-2` on each side of the glyph, and never below a 52px finger target. */
+const CARD_PAD = 16;
+const CARD_MIN = 52;
+
+function cardPx(tier: number, area: { w: number; h: number }): number {
+  const base = Math.min(area.w, area.h);
+  const glyph = Math.min(FONT_MAX, Math.max(FONT_MIN, FONT_TIERS[tier] * base));
+  return Math.max(CARD_MIN, Math.round(glyph) + CARD_PAD);
+}
+
+/** Fixed tilt per position — index-based, so it never changes between visits. */
+const ROTATIONS = [-8, -5, -2, 0, 2, 4, 6, -4, 3, -6, -7, 5, -3, 1, 7, -1, 4, -5, 2, 6] as const;
 
 /** Slowly rotating concentric rings — a calm (non-flashing) hypnotic pattern
  *  behind each letter, purely to make the board busier/harder to scan. */
@@ -157,40 +194,94 @@ const STAR_TOTAL = 5;
  *  celebration that outstays its welcome just delays the next round. */
 const STAR_FLIGHT_MS = 850;
 
-function buildCards(target: string): Card[] {
+/** The board must always carry all five targets plus enough decoys to still be
+ *  a hunt. The round cannot be completed without five targets on screen, so
+ *  this is a hard floor, not a preference. */
+const MIN_CARDS = TARGET_TOTAL + 3;
+
+/**
+ * Build a board for `target`, seated in the measured play area.
+ *
+ * ORDER MATTERS: positions are solved FIRST, then letters are dealt onto the
+ * positions that actually fit. Dealing first and placing afterwards is what
+ * allowed a target to be assigned to a slot that could not be seated.
+ */
+function buildCards(target: string, area: { w: number; h: number }): Card[] {
   const avoid = new Set([target, ...(CONFUSABLE[target] ?? [])]);
   const decoyPool = shuffle(LETTERS.filter((l) => !avoid.has(l)));
-  const decoyCount = CARD_TOTAL - TARGET_TOTAL;
   // A handful of repeated decoy identities rather than one of everything —
   // repetition is what makes a board genuinely hard to scan. Every distractor
   // is still a letter that is NOT visually confusable with the target.
   const decoyIdentities = decoyPool.slice(0, 5);
-  const decoys = Array.from(
-    { length: decoyCount },
-    (_, i) => decoyIdentities[i % decoyIdentities.length]
-  );
   const styles = shuffle([...CARD_STYLES, ...CARD_STYLES, ...CARD_STYLES, ...CARD_STYLES]).slice(
     0,
     CARD_TOTAL
   );
-  const slots = shuffle(SLOTS);
-  const sizes = shuffle([...SIZE_TIERS, ...SIZE_TIERS, ...SIZE_TIERS, ...SIZE_TIERS]).slice(
-    0,
-    CARD_TOTAL
+  const slotOrder = shuffle(SLOTS);
+  const tiers = shuffle(Array.from({ length: CARD_TOTAL }, (_, i) => i % FONT_TIERS.length));
+
+  // Seat the board, stepping the whole size range down a tier at a time until
+  // enough cards fit. A short landscape phone simply cannot hold twenty cards
+  // at the largest tier; shrinking the board is right, overlapping it is not.
+  // The final attempt asks the solver for its guaranteed-fit fallback.
+  let placed = scatter(
+    slotOrder,
+    tiers.map((t) => cardPx(t, area)),
+    area,
+    {
+      max: CARD_TOTAL,
+    }
+  );
+  for (let squeeze = 1; squeeze < FONT_TIERS.length && placed.length < MIN_CARDS; squeeze++) {
+    const sizes = tiers.map((t) => cardPx(Math.max(0, t - squeeze), area));
+    const last = squeeze === FONT_TIERS.length - 1;
+    placed = scatter(slotOrder, sizes, area, { max: CARD_TOTAL, min: last ? MIN_CARDS : 0 });
+  }
+
+  const total = placed.length;
+  const targets = Math.min(TARGET_TOTAL, total);
+  const decoys = Array.from(
+    { length: Math.max(0, total - targets) },
+    (_, i) => decoyIdentities[i % decoyIdentities.length]
   );
   const letters = shuffle([
-    ...Array.from({ length: TARGET_TOTAL }, () => ({ letter: target, isTarget: true })),
+    ...Array.from({ length: targets }, () => ({ letter: target, isTarget: true })),
     ...decoys.map((l) => ({ letter: l, isTarget: false })),
   ]);
+
   return letters.map((l, i) => ({
     id: i,
     ...l,
     found: false,
-    style: styles[i],
-    x: slots[i][0],
-    y: slots[i][1],
-    rotate: [-8, -5, -2, 0, 2, 4, 6, -4, 3, -6, -7, 5, -3, 1, 7, -1, 4, -5, 2, 6][i],
-    fontSize: sizes[i],
+    style: styles[i % styles.length],
+    x: placed[i].x,
+    y: placed[i].y,
+    size: placed[i].size,
+    rotate: ROTATIONS[i % ROTATIONS.length],
+    fontSize: Math.max(FONT_MIN, placed[i].size - CARD_PAD),
+  }));
+}
+
+/**
+ * Re-seat the SAME cards after the play area changes shape (a rotation, a
+ * resized window). Identities, styles and found-state are untouched — only the
+ * geometry is recomputed — so nothing a child has already found is lost and
+ * the five targets stay five targets.
+ */
+function reseatCards(cards: Card[], area: { w: number; h: number }): Card[] {
+  if (!cards.length) return cards;
+  const sizes = cards.map((c) => c.size);
+  const placed = scatter(SPREAD_SLOTS, sizes, area, {
+    max: cards.length,
+    min: cards.length,
+  });
+  if (placed.length < cards.length) return cards;
+  return cards.map((c, i) => ({
+    ...c,
+    x: placed[i].x,
+    y: placed[i].y,
+    size: placed[i].size,
+    fontSize: Math.max(FONT_MIN, placed[i].size - CARD_PAD),
   }));
 }
 
@@ -246,7 +337,11 @@ export function HuntLevel() {
   const [introStep, setIntroStep] = useState(0); // 0 settle · 1 letter shown · 2 prompt
   const roundKey = `${target}-${letterCase}`;
   const [sessionKey, setSessionKey] = useState(roundKey);
-  const [cards, setCards] = useState<Card[]>(() => buildCards(target));
+  // The board is scattered against the MEASURED play area, so the solver knows
+  // the real box it is filling. Measured on the wrapper that survives the
+  // intro → find transition, so a board is never built against a stale size.
+  const [playRef, playSize] = useElementSize<HTMLDivElement>();
+  const [cards, setCards] = useState<Card[]>([]);
   /** Completed 5-find cycles for THIS letter — one star apiece in 5 Star. */
   const [cycles, setCycles] = useState(0);
   /** The celebration star in flight: where in the top row it is heading, in
@@ -263,9 +358,41 @@ export function HuntLevel() {
     setSessionKey(roundKey);
     setPhase("intro");
     setIntroStep(0);
-    setCards(buildCards(target));
+    setCards([]);
     setCycles(0);
   }
+
+  /** A coarse fingerprint of the play area — changes on a real resize or an
+   *  orientation flip, not on every sub-pixel reflow. Same guard Jungle Spy
+   *  uses, so a board is not rebuilt forty times during a rotation. */
+  const layoutKey =
+    playSize.w > 0 ? `${Math.round(playSize.w / 40)}x${Math.round(playSize.h / 40)}` : "";
+  const builtRef = useRef<{ round: string; layout: string } | null>(null);
+
+  // Build a board once the area is known, and re-seat (never rebuild) the
+  // existing one when the area changes shape — a rotation must not wipe the
+  // letters a child has already found.
+  //
+  // Until something HAS been found, a change of shape rebuilds instead. The
+  // first board of a session is built against useElementSize's 360×640 seed,
+  // before the observer has measured anything; when the real size arrives a
+  // moment later, only a fresh scatter fills it — a re-seat keeps the seed's
+  // card count, which on a desktop was a dozen cards for a whole screen.
+  useEffect(() => {
+    if (!layoutKey) return;
+    const prev = builtRef.current;
+    if (prev?.round === roundKey && prev.layout === layoutKey) return;
+    const sameRound = prev?.round === roundKey;
+    builtRef.current = { round: roundKey, layout: layoutKey };
+    setCards((current) =>
+      sameRound && current.some((c) => c.found)
+        ? reseatCards(current, playSize)
+        : buildCards(target, playSize)
+    );
+    // playSize is intentionally read fresh rather than tracked: layoutKey is
+    // the coarse trigger, playSize the exact geometry it stands for.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roundKey, layoutKey, target]);
   // Measured from the ACTUAL rendered root — not window.innerWidth/height —
   // so the confetti always spans the true play viewport, immune to any
   // transformed ancestor (which is what causes confetti to bunch to one
@@ -337,13 +464,13 @@ export function HuntLevel() {
           setStarFlight(null);
           setCycles(done);
           if (done >= cyclesTarget) {
+            // the cheer is spoken by the celebration itself, at its moment
             setPhase("done");
             markCompleted(target);
-            void playClip(cheerId);
           } else {
             // More cycles to go: the SAME five targets return on a freshly
             // scattered board — same practice, new arrangement.
-            setCards(buildCards(target));
+            setCards(buildCards(target, playSize));
           }
         }, STAR_FLIGHT_MS);
       } else {
@@ -352,17 +479,23 @@ export function HuntLevel() {
         setTimeout(() => setShakeId(null), 500);
       }
     },
-    [phase, target, cheerId, markCompleted, cycles, cyclesTarget, cards, rootRef]
+    [phase, target, markCompleted, cycles, cyclesTarget, cards, rootRef, playSize]
   );
 
-  const goNext = useCallback(() => {
-    playClickSound();
+  /** On to the next letter — by the celebration's own timer. */
+  const finishRound = useCallback(() => {
     stopVoice();
     // Walk the RUN the child started, not the completion list. A "fresh" run
     // (Start from A) deliberately contains letters they have already finished,
     // so consulting `completed` here is exactly what used to skip them.
     if (!advance()) setScreen("complete");
   }, [advance, setScreen]);
+
+  /** On to the next letter — by the child's tap. */
+  const goNext = useCallback(() => {
+    playClickSound();
+    finishRound();
+  }, [finishRound]);
 
   return (
     <div
@@ -429,150 +562,162 @@ export function HuntLevel() {
         )}
       </div>
 
-      {/* ── INTRODUCTION: Penny + the notebook ── */}
-      <AnimatePresence mode="wait">
-        {phase === "intro" && (
-          <motion.div
-            key="intro"
-            className="relative z-10 flex flex-1 items-center justify-center gap-2 sm:gap-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -12 }}
-          >
+      {/* The measured play area. It wraps BOTH phases so its size is known
+          before the first board is built — measuring the find layer alone
+          meant the solver had nothing to work with until after the intro. */}
+      <div ref={playRef} className="relative z-10 flex w-full flex-1 flex-col">
+        {/* ── INTRODUCTION: Penny + the notebook ── */}
+        <AnimatePresence mode="wait">
+          {phase === "intro" && (
             <motion.div
-              className="hunt-penny-intro"
-              initial={{ x: -60, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 160, damping: 18 }}
+              key="intro"
+              className="relative z-10 flex h-full w-full items-center justify-center gap-2 sm:gap-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, y: -12 }}
             >
-              <PencilPal pointing />
-            </motion.div>
-
-            <motion.div
-              initial={{ scale: 0.7, opacity: 0, y: 16 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, type: "spring", stiffness: 180, damping: 18 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <Notebook>
-                <AnimatePresence>
-                  {introStep >= 1 && (
-                    <motion.span
-                      className="hunt-notebook-letter font-rounded text-plum leading-none font-black"
-                      initial={{ scale: 0.3, opacity: 0 }}
-                      animate={{ scale: [0.3, 1.12, 1], opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {shown}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </Notebook>
-              {/* caption matches the spoken clip exactly */}
-              <div className="min-h-[32px]">
-                <AnimatePresence>
-                  {introStep >= 2 && (
-                    <motion.p
-                      className="font-rounded text-plum shadow-soft rounded-full bg-white/85 px-4 py-1.5 text-base font-black"
-                      initial={{ y: 8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                    >
-                      {clipText(`hunt-find-${target.toLowerCase()}`)}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-
-        {/* ── FIND: a real play-space — six cards scattered across the
-              whole area, varied tilt/scale, never a grid or list ── */}
-        {phase !== "intro" && (
-          <motion.div
-            key="find"
-            // FULL WIDTH on purpose — the same fix Jungle Spy already carries.
-            // The slot map below spans 6%–94%, but those percentages resolve
-            // against THIS box: capped at max-w-3xl (768px) the whole hunt was
-            // squeezed into a narrow centred column on any wide screen, which
-            // is why the letters looked clustered in the middle while the
-            // decorative letter field behind them filled the screen. Uncapped,
-            // the cards spread across the viewport like the animals do.
-            className="relative z-10 w-full flex-1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            {cards.map((c) => (
-              <motion.button
-                key={c.id}
-                onClick={() => tapCard(c)}
-                className="hunt-card shadow-card absolute flex min-h-[52px] min-w-[52px] items-center justify-center p-2"
-                style={cssVars({
-                  "--pl-x": `clamp(60px, ${c.x}%, calc(100% - 60px))`,
-                  "--pl-y": `clamp(52px, ${c.y}%, calc(100% - 52px))`,
-                  "--pl-bg": c.style.bg,
-                  "--pl-border": c.found ? "#66CC94" : c.style.border,
-                  "--pl-radius": c.style.radius,
-                })}
-                initial={{ x: "-50%", y: "-50%", scale: 0, opacity: 0, rotate: c.rotate }}
-                animate={
-                  shakeId === c.id
-                    ? {
-                        x: ["-56%", "-44%", "-53%", "-47%", "-51%", "-50%"],
-                        y: "-50%",
-                        scale: 1,
-                        opacity: 1,
-                        rotate: c.rotate,
-                      }
-                    : {
-                        x: "-50%",
-                        y: "-50%",
-                        scale: c.found ? [1, 1.12, 1] : 1,
-                        opacity: 1,
-                        rotate: c.rotate,
-                      }
-                }
-                transition={
-                  shakeId === c.id || c.found
-                    ? { duration: shakeId === c.id ? 0.4 : 0.35, ease: "easeOut" }
-                    : { type: "spring", stiffness: 260, damping: 20 }
-                }
-                aria-label={`Letter ${letterCase === "lower" ? c.letter.toLowerCase() : c.letter}${c.found ? " — found!" : ""}`}
-                disabled={c.found}
+              <motion.div
+                className="hunt-penny-intro"
+                initial={{ x: -60, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 160, damping: 18 }}
               >
-                {/* slow, calm hypnotic ring pattern — clipped to the card shape only,
-                    so the sparkle burst below can still fly freely outside it */}
-                <div className="hunt-card-clip absolute inset-0 overflow-hidden">
-                  <HypnoRings hue={c.style.border} />
+                <PencilPal pointing />
+              </motion.div>
+
+              <motion.div
+                initial={{ scale: 0.7, opacity: 0, y: 16 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, type: "spring", stiffness: 180, damping: 18 }}
+                className="flex flex-col items-center gap-3"
+              >
+                <Notebook>
+                  <AnimatePresence>
+                    {introStep >= 1 && (
+                      <motion.span
+                        className="hunt-notebook-letter font-rounded text-plum leading-none font-black"
+                        initial={{ scale: 0.3, opacity: 0 }}
+                        animate={{ scale: [0.3, 1.12, 1], opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {shown}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Notebook>
+                {/* caption matches the spoken clip exactly */}
+                <div className="min-h-[32px]">
+                  <AnimatePresence>
+                    {introStep >= 2 && (
+                      <motion.p
+                        className="font-rounded text-plum shadow-soft rounded-full bg-white/85 px-4 py-1.5 text-base font-black"
+                        initial={{ y: 8, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                      >
+                        {clipText(`hunt-find-${target.toLowerCase()}`)}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
-                {/* soft halo keeps the letter legible over the busy rings */}
-                <span
-                  className="hunt-card-halo absolute rounded-full bg-white/70"
-                  aria-hidden="true"
-                />
-                <span
-                  className={`pl-glyph font-rounded relative leading-none font-black ${
-                    c.style.outline ? "hunt-glyph--outline" : "pl-tint"
-                  }`}
-                  style={cssVars({ "--pl-font-size": c.fontSize, "--pl-color": c.style.color })}
+              </motion.div>
+            </motion.div>
+          )}
+
+          {/* ── FIND: a real play-space — six cards scattered across the
+              whole area, varied tilt/scale, never a grid or list ── */}
+          {phase !== "intro" && (
+            <motion.div
+              key="find"
+              // FULL WIDTH on purpose — the same fix Jungle Spy already carries.
+              // The slot map below spans 6%–94%, but those percentages resolve
+              // against THIS box: capped at max-w-3xl (768px) the whole hunt was
+              // squeezed into a narrow centred column on any wide screen, which
+              // is why the letters looked clustered in the middle while the
+              // decorative letter field behind them filled the screen. Uncapped,
+              // the cards spread across the viewport like the animals do.
+              className="relative z-10 h-full w-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              {cards.map((c) => (
+                <motion.button
+                  key={c.id}
+                  onClick={() => tapCard(c)}
+                  className="hunt-card shadow-card absolute flex items-center justify-center p-2"
+                  style={cssVars({
+                    // Already-solved px centres. The old per-card
+                    // `clamp(60px, x%, 100% - 60px)` pair is gone: it pushed
+                    // cards onto shared boundary coordinates and stacked them.
+                    "--pl-x": `${c.x}px`,
+                    "--pl-y": `${c.y}px`,
+                    "--pl-size": `${c.size}px`,
+                    "--pl-bg": c.style.bg,
+                    "--pl-border": c.found ? "#66CC94" : c.style.border,
+                    "--pl-radius": c.style.radius,
+                  })}
+                  initial={{ x: "-50%", y: "-50%", scale: 0, opacity: 0, rotate: c.rotate }}
+                  animate={
+                    shakeId === c.id
+                      ? {
+                          x: ["-56%", "-44%", "-53%", "-47%", "-51%", "-50%"],
+                          y: "-50%",
+                          scale: 1,
+                          opacity: 1,
+                          rotate: c.rotate,
+                        }
+                      : {
+                          x: "-50%",
+                          y: "-50%",
+                          scale: c.found ? [1, 1.12, 1] : 1,
+                          opacity: 1,
+                          rotate: c.rotate,
+                        }
+                  }
+                  transition={
+                    shakeId === c.id || c.found
+                      ? { duration: shakeId === c.id ? 0.4 : 0.35, ease: "easeOut" }
+                      : { type: "spring", stiffness: 260, damping: 20 }
+                  }
+                  aria-label={`Letter ${letterCase === "lower" ? c.letter.toLowerCase() : c.letter}${c.found ? " — found!" : ""}`}
+                  disabled={c.found}
                 >
-                  {letterCase === "lower" ? c.letter.toLowerCase() : c.letter}
-                </span>
-                {/* small local sparkle on found — never screen-covering */}
-                {c.found && <MiniBurst />}
-                {c.found && (
+                  {/* slow, calm hypnotic ring pattern — clipped to the card shape only,
+                    so the sparkle burst below can still fly freely outside it */}
+                  <div className="hunt-card-clip absolute inset-0 overflow-hidden">
+                    <HypnoRings hue={c.style.border} />
+                  </div>
+                  {/* soft halo keeps the letter legible over the busy rings */}
                   <span
-                    className="absolute -top-1.5 -right-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white text-sm shadow-sm"
+                    className="hunt-card-halo absolute rounded-full bg-white/70"
                     aria-hidden="true"
+                  />
+                  <span
+                    className={`pl-glyph font-rounded relative leading-none font-black ${
+                      c.style.outline ? "hunt-glyph--outline" : "pl-tint"
+                    }`}
+                    style={cssVars({
+                      "--pl-font-size": `${c.fontSize}px`,
+                      "--pl-color": c.style.color,
+                    })}
                   >
-                    ⭐
+                    {letterCase === "lower" ? c.letter.toLowerCase() : c.letter}
                   </span>
-                )}
-              </motion.button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  {/* small local sparkle on found — never screen-covering */}
+                  {c.found && <MiniBurst />}
+                  {c.found && (
+                    <span
+                      className="absolute -top-1.5 -right-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white text-sm shadow-sm"
+                      aria-hidden="true"
+                    >
+                      ⭐
+                    </span>
+                  )}
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* ── The earned star: pops centre-board, then flies into the row ──
           Three nested elements, each with exactly one job, because that is what
@@ -618,58 +763,30 @@ export function HuntLevel() {
         )}
       </AnimatePresence>
 
-      {/* ── Completion: Penny with a star + MATCHING spoken/displayed cheer ── */}
+      {/* ── Completion: THE BOOM — the magnifying glass finds the letter, the
+          letter fills the screen, a bomb goes off, and Penny with the cheer.
+          It moves on by itself when the show has played (see HuntWin). ── */}
       <AnimatePresence>
         {phase === "done" && (
           <CelebrationOverlay
             tintClassName="hunt-done-tint"
-            gapClassName="gap-4"
+            gapClassName="gap-0"
             blur="3px"
             size={dims}
           >
-            <motion.div
-              className="hunt-penny-done relative"
-              initial={{ scale: 0.5, y: 20 }}
-              animate={{ scale: 1, y: [0, -10, 0] }}
-              transition={{
-                scale: { type: "spring", stiffness: 220, damping: 16 },
-                y: { duration: 0.9, repeat: 2, ease: "easeInOut", delay: 0.3 },
-              }}
-            >
-              <motion.span
-                className="absolute -top-3 -right-3 text-4xl"
-                animate={{ rotate: [0, 18, -12, 0], scale: [1, 1.25, 1] }}
-                transition={{ duration: 1.4, repeat: Infinity }}
-                aria-hidden="true"
-              >
-                ⭐
-              </motion.span>
-              <PencilPal />
-            </motion.div>
-            <h2 className="hunt-done-heading font-rounded text-plum font-black">
-              {clipText(cheerId)}
-            </h2>
-            <p className="font-rounded text-plum/60 text-base font-semibold">
-              {mode === "free"
-                ? `You found every ${shown}!`
-                : `You found every ${shown}, five times!`}
-            </p>
-            <button
-              onClick={goNext}
-              className="bg-plum font-rounded inline-flex min-h-[52px] items-center gap-2 rounded-full px-7 text-base font-black text-white shadow-lg"
-              aria-label={runComplete ? "See your finished alphabet" : "Next letter"}
-            >
-              <span>{runComplete ? "Finish!" : "Next"}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M9 6l6 6-6 6"
-                  stroke="white"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
+            <HuntWin
+              shown={shown}
+              cheerId={cheerId}
+              subtitle={
+                mode === "free"
+                  ? `You found every ${shown}!`
+                  : `You found every ${shown}, five times!`
+              }
+              nextLabel={runComplete ? "Finish!" : "Next"}
+              nextAriaLabel={runComplete ? "See your finished alphabet" : "Next letter"}
+              onNext={goNext}
+              onDone={finishRound}
+            />
           </CelebrationOverlay>
         )}
       </AnimatePresence>

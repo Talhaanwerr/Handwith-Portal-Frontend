@@ -38,6 +38,9 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "pirate-match": lazy(() =>
     import("@games/pirate-match/PirateMatchGame").then((m) => ({ default: m.PirateMatchGame }))
   ),
+  "color-paint": lazy(() =>
+    import("@games/color-paint/ColorPaintGame").then((m) => ({ default: m.ColorPaintGame }))
+  ),
 };
 
 interface GamePlayerProps {

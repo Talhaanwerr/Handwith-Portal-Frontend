@@ -10,6 +10,11 @@ import { StarBurst } from "@games/ocean-hunt/components/StarBurst";
 import { HuntWorld } from "@games/ocean-hunt/components/HuntScreens";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
+import { CelebrationMotif, useLetterFall } from "@shared/components/game/CelebrationMotif";
+import { BubblePops } from "@shared/components/game/BubblePops";
+import { GodRays } from "@shared/components/game/GodRays";
+import { SwimIn, type Swimmer } from "@shared/components/game/SwimIn";
+import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { useScheduler } from "@shared/hooks/useScheduler";
@@ -39,6 +44,31 @@ const ADVANCE_MS = 1500;
  *  and never again for the rest of the session. Module-scoped on purpose:
  *  it must survive the per-round remounts. */
 let handDemoDone = false;
+
+/**
+ * Who swims in when the run is complete — the reef's regulars, from both
+ * sides, placed down the edges clear of the letter in the centre. The whale
+ * is the big one, so it gets a bigger box. Built once at module load.
+ */
+const HUNT_FRIENDS: readonly Swimmer[] = (
+  [
+    {
+      key: "whale",
+      x: "14%",
+      y: "28%",
+      delay: 0.4,
+      from: "left",
+      faces: "left",
+      size: "clamp(64px, 15vmin, 130px)",
+    },
+    { key: "jellyfish", x: "87%", y: "32%", delay: 0.65, from: "right" },
+    { key: "turtle", x: "13%", y: "72%", delay: 0.9, from: "left" },
+    { key: "x-ray fish", x: "86%", y: "70%", delay: 1.1, from: "right" },
+  ] as const
+).flatMap(({ key, ...place }) => {
+  const Art = ANIMAL_ART[key];
+  return Art ? [{ ...place, node: <Art key={key} /> }] : [];
+});
 
 interface DragState {
   letter: string;
@@ -77,6 +107,8 @@ export function HuntLevel() {
    *  own text, so voice and banner can never disagree. */
   const cheerId = cheerFor(currentLetter);
   const material = materialFor(currentLetter);
+  /** The found letter, ready to rain down among the celebration's bubbles. */
+  const letterFall = useLetterFall(displayLetter(currentLetter, letterCase), 6);
   const doneCount = (letterCase === "lower" ? store.doneLower : store.done).length;
   /** THIS RUN's progress, ticking on the right move itself: rounds already
    *  advanced past, plus the one just solved (`placed`). The all-time done
@@ -242,7 +274,7 @@ export function HuntLevel() {
         land();
       }
     },
-    [drag, currentLetter, nearSlot, toRoot, land]
+    [drag, currentLetter, nearSlot, toRoot, land, rootRef]
   );
 
   const shownTarget = displayLetter(currentLetter, letterCase);
@@ -276,8 +308,8 @@ export function HuntLevel() {
             router.back();
           }}
         />
-        <div className="oh-pill flex items-center rounded-full px-4 py-2" role="status">
-          <span className="font-rounded text-ocean text-sm font-black">
+        <div className="oh-pill flex shrink-0 items-center rounded-full px-4 py-2" role="status">
+          <span className="font-rounded text-ocean text-sm font-black whitespace-nowrap">
             {run ? runDone : doneCount} / {runTotal} ⭐
           </span>
         </div>
@@ -364,8 +396,8 @@ export function HuntLevel() {
       </div>
 
       {/* the celebration — the portal's shared full-screen overlay: tinted
-          water, confetti, the letter large, the cheer as the heading. Same
-          shape as Space ABC's; it auto-advances after ADVANCE_MS. */}
+          water, the letter large, the cheer as the heading. It holds while
+          the run is read back, then auto-advances after ADVANCE_MS. */}
       <AnimatePresence>
         {placed && (
           <CelebrationOverlay
@@ -373,9 +405,19 @@ export function HuntLevel() {
             gapClassName="gap-4"
             blur="3px"
             size={dims}
+            sparkles={false}
           >
+            {/* THE WATER'S OWN CELEBRATION: light through the surface, the
+                whole sea fizzing with bubbles that swell and POP, the found
+                letter rising to the surface on a column of bubbles, and the
+                reef's regulars swimming in from both sides. The generic
+                sparkles are off — bubbles are the sparkle here. */}
+            <GodRays />
+            <BubblePops count={56} />
+            <CelebrationMotif motif="bubble" count={30} extras={letterFall} extraEvery={4} />
+            <SwimIn swimmers={HUNT_FRIENDS} />
             <motion.span
-              className="oh-win-letter font-rounded font-black"
+              className="oh-win-letter font-rounded relative z-10 font-black"
               initial={{ scale: 0.5, y: 20 }}
               animate={{ scale: 1, y: [0, -12, 0] }}
               transition={{
@@ -385,7 +427,9 @@ export function HuntLevel() {
             >
               {displayLetter(currentLetter, letterCase)}
             </motion.span>
-            <h2 className="oh-win-heading font-rounded font-black">{clipText(cheerId)}</h2>
+            <h2 className="oh-win-heading font-rounded relative z-10 font-black">
+              {clipText(cheerId)}
+            </h2>
           </CelebrationOverlay>
         )}
       </AnimatePresence>

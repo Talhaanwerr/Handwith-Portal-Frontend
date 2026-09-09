@@ -40,7 +40,9 @@ export function SpaceBackdrop() {
       className="spl-bg-wash pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
+      {/* one drawing, two shapes — CSS shows the one that fits the screen */}
       <SpaceScene />
+      <SpaceScene tall />
       <div className="spl-bg absolute inset-0" />
       <div className="spl-vignette absolute inset-0" />
     </div>
@@ -131,7 +133,11 @@ export function SpaceModeSelect({ onExitPortal = () => {} }: { onExitPortal?: ()
   ];
 
   return (
-    <div className="spl-screen relative flex h-full w-full flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-8">
+    // Backdrop and pinned pill live on the non-scrolling shell; only the
+    // content column scrolls. Previously all three shared one scroller, so the
+    // starfield covered a single screenful (white beneath it) and Back scrolled
+    // out of sight.
+    <div className="spl-screen pl-screen-shell">
       <SpaceBackdrop />
 
       <NavPillButton
@@ -146,34 +152,36 @@ export function SpaceModeSelect({ onExitPortal = () => {} }: { onExitPortal?: ()
         }}
       />
 
-      <motion.h1
-        className="spl-heading font-rounded relative z-10 text-center font-black text-white drop-shadow-lg"
-        initial={{ y: -12, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-      >
-        Which letters?
-      </motion.h1>
-      <p className="font-rounded relative z-10 text-center text-sm font-bold text-white/85 md:text-base">
-        Build each letter from its puzzle pieces
-      </p>
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-7 px-6 py-8">
+        <motion.h1
+          className="spl-heading font-rounded relative z-10 text-center font-black text-white drop-shadow-lg"
+          initial={{ y: -12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          Which letters?
+        </motion.h1>
+        <p className="font-rounded relative z-10 text-center text-sm font-bold text-white/85 md:text-base">
+          Build each letter from its puzzle pieces
+        </p>
 
-      <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
-        {options.map((o, i) => (
-          <motion.button
-            key={o.c}
-            onClick={() => pick(o.c)}
-            className={`sap-mode-btn sap-mode-btn--${o.c} flex flex-col items-center justify-center gap-2`}
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.12 + i * 0.08, type: "spring", stiffness: 260, damping: 20 }}
-            whileTap={{ scale: 0.94 }}
-            whileHover={{ scale: 1.04 }}
-            aria-label={o.aria}
-          >
-            <span className="sap-mode-preview font-rounded font-black">{o.preview}</span>
-            <span className="sap-mode-title font-rounded font-black">{o.title}</span>
-          </motion.button>
-        ))}
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
+          {options.map((o, i) => (
+            <motion.button
+              key={o.c}
+              onClick={() => pick(o.c)}
+              className={`sap-mode-btn sap-mode-btn--${o.c} flex flex-col items-center justify-center gap-2`}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.12 + i * 0.08, type: "spring", stiffness: 260, damping: 20 }}
+              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.04 }}
+              aria-label={o.aria}
+            >
+              <span className="sap-mode-preview font-rounded font-black">{o.preview}</span>
+              <span className="sap-mode-title font-rounded font-black">{o.title}</span>
+            </motion.button>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -201,7 +209,7 @@ export function SpaceGrid() {
   const hasProgress = built.length > 0 && !runComplete;
 
   return (
-    <div className="spl-screen relative flex h-full w-full flex-col items-center gap-4 overflow-x-hidden overflow-y-auto px-5 py-6">
+    <div className="spl-screen pl-screen-shell">
       <SpaceBackdrop />
 
       <NavPillButton
@@ -216,90 +224,94 @@ export function SpaceGrid() {
         }}
       />
 
-      <div className="relative z-10 mt-auto flex flex-col items-center">
-        <h1 className="spl-heading font-rounded text-center font-black text-white drop-shadow-lg">
-          Space ABC
-        </h1>
-        <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
-          {letterCase === "lower" ? "Pick a small letter to build" : "Pick a big letter to build"}
-        </p>
-      </div>
-
-      <div className="relative z-10 w-full max-w-md md:max-w-2xl">
-        <div className="mb-1 flex justify-between">
-          <span className="font-rounded text-sm font-bold text-white/85 drop-shadow-md">
-            Letters built
-          </span>
-          <span className="font-rounded text-sm font-black text-white drop-shadow-md">
-            {built.length} / 26
-          </span>
+      {/* pt-16 keeps the heading clear of the pinned Back pill now that the
+          pill is a sibling of the scroller rather than a child of it. */}
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-4 px-5 py-6 pt-16">
+        <div className="relative z-10 flex flex-col items-center">
+          <h1 className="spl-heading font-rounded text-center font-black text-white drop-shadow-lg">
+            Space ABC
+          </h1>
+          <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
+            {letterCase === "lower" ? "Pick a small letter to build" : "Pick a big letter to build"}
+          </p>
         </div>
-        <ProgressBar
-          value={built.length / 26}
-          trackClassName="h-4 w-full rounded-full bg-white/25"
-          fillClassName="spl-progress-fill h-full rounded-full"
-          ariaLabel={`${built.length} of 26 letters built`}
-        />
-      </div>
 
-      <div className="spl-letter-grid relative z-10 w-full max-w-md gap-2.5 md:max-w-2xl">
-        {SPACE_ALPHA.map((l, i) => {
-          const isBuilt = built.includes(l);
-          const shown = displayLetter(l, letterCase);
-          return (
-            <motion.button
-              key={l}
-              onClick={() => openLetter(l)}
-              className={`spl-letter-tile relative flex aspect-square items-center justify-center rounded-2xl ${
-                isBuilt ? "spl-letter-tile--found" : ""
-              }`}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.015 * i, type: "spring", stiffness: 300, damping: 20 }}
-              whileTap={{ scale: 0.92 }}
-              aria-label={`Letter ${shown}${isBuilt ? " (built)" : ""}`}
-            >
-              <span className="spl-tile-glyph font-rounded font-black">{shown}</span>
-              {isBuilt && (
-                <span
-                  className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] shadow-sm"
-                  aria-hidden="true"
-                >
-                  ⭐
-                </span>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
+        <div className="relative z-10 w-full max-w-md md:max-w-2xl">
+          <div className="mb-1 flex justify-between">
+            <span className="font-rounded text-sm font-bold text-white/85 drop-shadow-md">
+              Letters built
+            </span>
+            <span className="font-rounded text-sm font-black text-white drop-shadow-md">
+              {built.length} / 26
+            </span>
+          </div>
+          <ProgressBar
+            value={built.length / 26}
+            trackClassName="h-4 w-full rounded-full bg-white/25"
+            fillClassName="spl-progress-fill h-full rounded-full"
+            ariaLabel={`${built.length} of 26 letters built`}
+          />
+        </div>
 
-      <div className="relative z-10 mb-auto">
-        <StartOptions
-          hasProgress={hasProgress || runComplete}
-          onContinue={
-            runComplete
-              ? () => {
-                  playClickSound();
-                  setScreen("complete");
-                }
-              : () => {
-                  playClickSound();
-                  beginRun(0, "continue");
-                  setScreen("level");
-                }
-          }
-          continueLabel={
-            runComplete
-              ? "See my alphabet!"
-              : `Continue · ${displayLetter(nextUnbuilt, letterCase)}`
-          }
-          onStartFromA={() => {
-            playClickSound();
-            beginRun(0, "fresh");
-            setScreen("level");
-          }}
-          startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
-        />
+        <div className="spl-letter-grid relative z-10 w-full max-w-md gap-2.5 md:max-w-2xl">
+          {SPACE_ALPHA.map((l, i) => {
+            const isBuilt = built.includes(l);
+            const shown = displayLetter(l, letterCase);
+            return (
+              <motion.button
+                key={l}
+                onClick={() => openLetter(l)}
+                className={`spl-letter-tile relative flex aspect-square items-center justify-center rounded-2xl ${
+                  isBuilt ? "spl-letter-tile--found" : ""
+                }`}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.015 * i, type: "spring", stiffness: 300, damping: 20 }}
+                whileTap={{ scale: 0.92 }}
+                aria-label={`Letter ${shown}${isBuilt ? " (built)" : ""}`}
+              >
+                <span className="spl-tile-glyph font-rounded font-black">{shown}</span>
+                {isBuilt && (
+                  <span
+                    className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] shadow-sm"
+                    aria-hidden="true"
+                  >
+                    ⭐
+                  </span>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+
+        <div className="relative z-10">
+          <StartOptions
+            hasProgress={hasProgress || runComplete}
+            onContinue={
+              runComplete
+                ? () => {
+                    playClickSound();
+                    setScreen("complete");
+                  }
+                : () => {
+                    playClickSound();
+                    beginRun(0, "continue");
+                    setScreen("level");
+                  }
+            }
+            continueLabel={
+              runComplete
+                ? "See my alphabet!"
+                : `Continue · ${displayLetter(nextUnbuilt, letterCase)}`
+            }
+            onStartFromA={() => {
+              playClickSound();
+              beginRun(0, "fresh");
+              setScreen("level");
+            }}
+            startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
+          />
+        </div>
       </div>
     </div>
   );

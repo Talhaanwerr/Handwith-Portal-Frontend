@@ -647,29 +647,53 @@
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 78%);
 }
-/* The letter as a glossy candy: a thick cream rim + drop shadow (::before),
+/* The letter pair, rendered "A / a".
+   The row is the layout; each CASE is its own candy glyph, so the treatment
+   below applies per letter rather than to the whole string. That split is what
+   lets the separator stay a quiet divider instead of a third giant letter.
+   Sized so the widest pair (W / w) still fits a narrow phone: five glyph slots
+   where "Aa" needed two, hence the smaller per-letter size and the em-based
+   gap, which scales with the letters rather than against them. */
+.ab-glyph {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.12em;
+  font-size: min(26vh, 15vw);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+/* The separator: same family and weight, deliberately smaller and softer so
+   the eye reads two letters with a divider, not three characters. */
+.ab-glyph-sep {
+  font-size: 0.52em;
+  color: rgba(214, 41, 111, 0.42);
+  translate: 0 -0.12em;
+}
+
+/* One case as a glossy candy: a thick cream rim + drop shadow (::before),
    a lit strawberry gradient body, and a gloss band across the top (::after).
    All three layers are the same text, so the shape - and legibility - is
    exactly the font's. */
-.ab-glyph {
+.ab-glyph-part {
   position: relative;
-  font-size: min(36vh, 22vw);
-  line-height: 1;
-  letter-spacing: -0.03em;
   color: #f2478b;
   background: linear-gradient(180deg, #ffa6cd 0%, #f7558f 48%, #d6296f 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.ab-glyph::before,
-.ab-glyph::after {
+.ab-glyph-part::before,
+.ab-glyph-part::after {
   content: attr(data-letter);
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
-.ab-glyph::before {
+.ab-glyph-part::before {
   z-index: -1;
   color: #fff;
   -webkit-text-fill-color: #fff;
@@ -678,7 +702,7 @@
     0 0.04em 0 #ffd3e4,
     0 0.09em 0.14em rgba(194, 65, 122, 0.38);
 }
-.ab-glyph::after {
+.ab-glyph-part::after {
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.85) 0%,
@@ -847,6 +871,11 @@
   border-radius: 36%;
   font-size: clamp(28px, 6.5vmin, 60px);
   line-height: 1;
+  /* "A / a" is more than twice as wide as "Aa" was. The chip has a FIXED
+     height and overflow:hidden, so a wrap would slice the pair in half —
+     min-width lets the chip grow sideways instead, and nowrap makes sure it
+     has to. */
+  white-space: nowrap;
   color: #fff;
   background: linear-gradient(180deg, #ff8fc2, #f2478b);
   border: 4px solid rgba(255, 255, 255, 0.9);

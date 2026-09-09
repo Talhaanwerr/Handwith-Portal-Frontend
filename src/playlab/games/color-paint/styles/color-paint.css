@@ -1,0 +1,182 @@
+/**
+ * Color & Paint — game-specific structure only.
+ *
+ * The world around the easel is Candy Land, borrowed wholesale: `lt-screen`,
+ * `lt-wash`, `lt-title`, `lt-go`, `lt-question`, `lt-hint`, `lt-primary`,
+ * `lt-secondary` and `lt-celebrate-tint` all come from letter-treats.css and
+ * are used here unchanged. What this file adds is the EASEL — the painting
+ * card, the crayons and the finale's rainbow — which is deliberately chunkier
+ * than the rest of the portal: thick borders, big flat shapes, no gloss.
+ *
+ * Every colour is a portal token (`--color-*` from the PlayLab theme) or is
+ * painted inline from Candy Land's PALETTE. Nothing new is defined.
+ */
+
+/* ── Layout ── */
+
+/** The play column: prompt, easel, crayons. Always stacked; the easel takes
+ *  the most room and the crayon row wraps under it on a narrow screen. */
+.cp-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.8vmin, 18px);
+  width: 100%;
+}
+
+/** The painting card — square, white, thick-edged like a page from a
+ *  colouring book. Bounded on both axes so the crayons always fit beneath. */
+.cp-frame {
+  position: relative;
+  width: min(80vw, 46vh, 460px);
+  aspect-ratio: 1;
+  border-radius: clamp(18px, 3.5vmin, 30px);
+  background: #ffffff;
+  border: clamp(5px, 1.2vmin, 8px) solid var(--color-blush-pale);
+  box-shadow:
+    0 12px 0 var(--color-blush-soft),
+    0 20px 34px rgba(194, 65, 122, 0.22);
+  overflow: hidden;
+}
+.cp-frame.is-ready {
+  border-color: var(--color-gold);
+  box-shadow:
+    0 12px 0 var(--color-gold-deep),
+    0 0 0 8px rgba(255, 217, 61, 0.35),
+    0 20px 34px rgba(194, 65, 122, 0.22);
+}
+
+.cp-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+.cp-canvas.is-idle {
+  cursor: default;
+}
+
+/** The colouring-book line, laid over the paint so it stays crisp. */
+.cp-outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── Crayons ── */
+
+.cp-crayons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(12px, 3vmin, 28px);
+}
+
+/** One crayon. A tall, fat, upright stick with its name underneath — the tap
+ *  target is the whole thing and never below 72px wide. */
+.cp-crayon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: clamp(72px, 15vmin, 116px);
+  padding: 6px 4px 8px;
+  border-radius: clamp(14px, 2.6vmin, 22px);
+  border: 4px solid transparent;
+  background: rgba(255, 255, 255, 0.55);
+  touch-action: manipulation;
+}
+.cp-crayon-art {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.cp-crayon-label {
+  font-size: clamp(14px, 2.6vmin, 22px);
+  text-transform: capitalize;
+  color: var(--color-blush-deep);
+}
+.cp-crayon.is-active {
+  border-color: var(--color-gold);
+  background: #ffffff;
+  box-shadow: 0 0 0 6px rgba(255, 217, 61, 0.35);
+}
+.cp-crayon.is-dim {
+  opacity: 0.45;
+}
+
+/** Free play's two ways out — "Start over" and "Next", side by side under the
+ *  crayons. Both are Candy Land's own button styles. */
+.cp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2.4vmin, 20px);
+}
+
+/* ── Chrome ── */
+
+.cp-topbar {
+  max-width: 46rem;
+  margin-inline: auto;
+}
+.cp-pill {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 6px 16px rgba(194, 65, 122, 0.18);
+}
+.cp-object-name {
+  font-size: clamp(18px, 3.2vmin, 26px);
+  color: var(--color-blush-deep);
+}
+
+/* ── Intro ── */
+
+.cp-intro-bee {
+  width: clamp(120px, 26vmin, 220px);
+}
+
+/* ── Finale ── */
+
+.cp-rainbow {
+  width: min(88vw, 60vh, 560px);
+  height: auto;
+  display: block;
+}
+.cp-finale-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(6px, 1.4vmin, 14px);
+}
+.cp-finale-crayon {
+  width: clamp(34px, 7vmin, 56px);
+}
+.cp-finale-object {
+  position: relative;
+  width: clamp(44px, 9vmin, 72px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 3px solid var(--color-blush-pale);
+  overflow: hidden;
+}
+
+/* Short landscape: the easel leans on height and the crayons go single-row */
+@media (orientation: landscape) and (max-height: 560px) {
+  .cp-frame {
+    width: min(80vw, 54vh, 460px);
+  }
+  .cp-crayon {
+    width: clamp(64px, 12vmin, 96px);
+    padding: 4px 3px 6px;
+  }
+  .cp-rainbow {
+    width: min(70vw, 48vh, 460px);
+  }
+}

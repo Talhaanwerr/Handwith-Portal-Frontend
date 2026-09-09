@@ -22,24 +22,46 @@ export interface ElementSize {
  * The 360×640 seed matches the previous per-screen defaults exactly, so the
  * very first frame (before layout is measurable) is unchanged.
  *
- * @param trackResize re-measure on window resize — only the tracing board
- *        needs this; celebration overlays are short-lived and measured once.
+ * MEASUREMENT IS CONTINUOUS, via ResizeObserver. It used to be a single
+ * measure-on-mount, with an opt-in `trackResize` that nothing ever opted into,
+ * and that produced two live bugs: a device rotated mid-round left the
+ * celebration canvas at the previous orientation's size (confetti covering
+ * only part of a landscape screen), and any stage whose first measurement
+ * landed before layout settled kept the 360×640 seed for its whole life. An
+ * observer costs nothing on a screen that never resizes and removes the entire
+ * class of staleness.
  */
-export function useElementSize<T extends HTMLElement = HTMLDivElement>(
-  trackResize = false
-): [RefObject<T | null>, ElementSize] {
+export function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
+  RefObject<T | null>,
+  ElementSize,
+] {
   const ref = useRef<T>(null);
   const [size, setSize] = useState<ElementSize>({ w: 360, h: 640 });
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const measure = () => setSize({ w: el.offsetWidth, h: el.offsetHeight });
+
+    const measure = () => {
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      // Ignore a zero measurement (element detached or display:none mid-exit
+      // animation) — keeping the last good size beats collapsing the canvas.
+      if (w === 0 || h === 0) return;
+      setSize((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
+    };
+
     measure();
-    if (!trackResize) return;
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [trackResize]);
+
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", measure);
+      return () => window.removeEventListener("resize", measure);
+    }
+
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   return [ref, size];
 }

@@ -8,11 +8,12 @@ import {
   displayLetter,
   type LetterCase,
 } from "@games/pirate-match/store/matchStore";
-import { ALPHA } from "@games/pirate-match/constants/rounds";
+import { ALPHA, type MatchDifficulty } from "@games/pirate-match/constants/rounds";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { ProgressBar } from "@shared/components/ui/ProgressBar";
 import { StartOptions } from "@shared/components/ui/StartOptions";
 import { CaseSelectScreen } from "@shared/components/game/CaseSelectScreen";
+import { ChoiceScreen, type Choice } from "@shared/components/game/ChoiceScreen";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { continueLetter } from "@shared/utils/progression";
 import { playClickSound } from "@shared/audio/sfx";
@@ -136,8 +137,55 @@ export function MatchCaseSelect({ onExitPortal = () => {} }: { onExitPortal?: ()
         onBack={onExitPortal}
         onPick={(c: LetterCase) => {
           setCase(c);
+          setScreen("difficulty");
+        }}
+      />
+    </div>
+  );
+}
+
+/**
+ * Easy / Hard — where the two distractor letters come from.
+ *
+ * The previews are the honest sample of each mode rather than decoration: Easy
+ * shows letters running up TO the target, Hard shows the scattered spread the
+ * fixed offsets actually deal. A child cannot read the explanation, so the
+ * plate has to show the difference.
+ */
+const DIFFICULTY_OPTIONS: readonly Choice<MatchDifficulty>[] = [
+  {
+    value: "easy",
+    preview: "A B C",
+    label: "Easy",
+    aria: "Easy — the other letters come from earlier in the alphabet",
+    variant: "easy",
+  },
+  {
+    value: "hard",
+    preview: "C J R",
+    label: "Hard",
+    aria: "Hard — the other letters come from anywhere in the alphabet",
+    variant: "hard",
+  },
+];
+
+export function MatchDifficultySelect() {
+  const { setDifficulty, setScreen } = useMatchStore();
+
+  return (
+    <div className="pm-screen pp-world relative h-full w-full">
+      <ChoiceScreen<MatchDifficulty>
+        title="How tricky?"
+        subtitle="Easy keeps the other letters from earlier in the alphabet"
+        backdrop={<PirateWorld />}
+        tone="pirate"
+        backAriaLabel="Back to the letter size choice"
+        onBack={() => setScreen("case")}
+        onPick={(d) => {
+          setDifficulty(d);
           setScreen("start");
         }}
+        options={DIFFICULTY_OPTIONS}
       />
     </div>
   );
@@ -155,7 +203,8 @@ export function MatchStart() {
   const hasProgress = done.length > 0 && !runComplete;
 
   return (
-    <div className="pm-screen pp-world relative flex h-full w-full flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-8">
+    // World + pinned pill outside the scroller; content column inside it.
+    <div className="pm-screen pp-world pl-screen-shell">
       <PirateWorld />
 
       <NavPillButton
@@ -170,58 +219,62 @@ export function MatchStart() {
         }}
       />
 
-      <motion.div
-        className="pp-panel-parchment relative z-10 flex w-full max-w-md flex-col items-center gap-5 px-6 py-7"
-        initial={{ y: 14, opacity: 0, scale: 0.96 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-      >
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="pm-heading font-rounded font-black">Pirate Match</h1>
-          <p className="font-rounded text-sm font-bold opacity-80">
-            {letterCase === "lower"
-              ? "Match each small letter to its picture"
-              : "Match each big letter to its picture"}
-          </p>
-        </div>
-
-        <div className="w-full">
-          <div className="mb-1 flex justify-between">
-            <span className="font-rounded text-sm font-bold opacity-80">Letters matched</span>
-            <span className="font-rounded text-sm font-black">{done.length} / 26</span>
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-6 px-6 py-8 pt-16">
+        <motion.div
+          className="pp-panel-parchment relative z-10 flex w-full max-w-md flex-col items-center gap-5 px-6 py-7"
+          initial={{ y: 14, opacity: 0, scale: 0.96 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+        >
+          <div className="flex flex-col items-center gap-1 text-center">
+            <h1 className="pm-heading font-rounded font-black">Pirate Match</h1>
+            <p className="font-rounded text-sm font-bold opacity-80">
+              {letterCase === "lower"
+                ? "Match each small letter to its picture"
+                : "Match each big letter to its picture"}
+            </p>
           </div>
-          <ProgressBar
-            value={done.length / 26}
-            trackClassName="h-4 w-full rounded-full bg-black/10"
-            fillClassName="pp-progress-fill h-full rounded-full"
-            ariaLabel={`${done.length} of 26 letters matched`}
-          />
-        </div>
 
-        <StartOptions
-          hasProgress={hasProgress || runComplete}
-          onContinue={
-            runComplete
-              ? () => {
-                  playClickSound();
-                  setScreen("complete");
-                }
-              : () => {
-                  playClickSound();
-                  beginRun(0, "continue");
-                  setScreen("level");
-                }
-          }
-          continueLabel={
-            runComplete ? "See my alphabet!" : `Continue · ${displayLetter(nextUndone, letterCase)}`
-          }
-          onStartFromA={() => {
-            playClickSound();
-            beginRun(0, "fresh");
-            setScreen("level");
-          }}
-          startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
-        />
-      </motion.div>
+          <div className="w-full">
+            <div className="mb-1 flex justify-between">
+              <span className="font-rounded text-sm font-bold opacity-80">Letters matched</span>
+              <span className="font-rounded text-sm font-black">{done.length} / 26</span>
+            </div>
+            <ProgressBar
+              value={done.length / 26}
+              trackClassName="h-4 w-full rounded-full bg-black/10"
+              fillClassName="pp-progress-fill h-full rounded-full"
+              ariaLabel={`${done.length} of 26 letters matched`}
+            />
+          </div>
+
+          <StartOptions
+            hasProgress={hasProgress || runComplete}
+            onContinue={
+              runComplete
+                ? () => {
+                    playClickSound();
+                    setScreen("complete");
+                  }
+                : () => {
+                    playClickSound();
+                    beginRun(0, "continue");
+                    setScreen("level");
+                  }
+            }
+            continueLabel={
+              runComplete
+                ? "See my alphabet!"
+                : `Continue · ${displayLetter(nextUndone, letterCase)}`
+            }
+            onStartFromA={() => {
+              playClickSound();
+              beginRun(0, "fresh");
+              setScreen("level");
+            }}
+            startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
+          />
+        </motion.div>
+      </div>
     </div>
   );
 }

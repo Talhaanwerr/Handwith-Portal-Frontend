@@ -97,4 +97,13 @@ export const GAMES: readonly GameMeta[] = [
     route: "/play/pirate-match",
     colors: { bg: "#5C3A1C", border: "#E9B44C", text: "#FFFFFF" },
   },
+  {
+    id: "color-paint",
+    title: "Color & Paint",
+    description: "Pick the colour, paint the picture",
+    glyph: "🖍️",
+    route: "/play/color-paint",
+    // Candy Land's card colours — this game lives in that world.
+    colors: { bg: "#FFD3E4", border: "#FF9EC4", text: "#C2417A" },
+  },
 ];

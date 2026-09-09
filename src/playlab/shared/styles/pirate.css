@@ -101,8 +101,20 @@
     inset 0 3px 0 rgba(255, 255, 255, 0.22),
     0 14px 34px rgba(21, 60, 84, 0.45);
 }
-.pp-world .pl-cs-btn--lower {
+/* The SECOND plate on any pirate picker wears the lighter gold, so the pair
+   reads as two choices rather than two of the same thing. `--lower` is the
+   case picker's second plate; `--hard` is the difficulty picker's. */
+.pp-world .pl-cs-btn--lower,
+.pp-world .pl-cs-btn--hard {
   background: linear-gradient(165deg, #e9b44c, #9a6534);
+}
+
+/* The difficulty previews are letter RUNS ("A B C"), not a single word, so
+   they need room to breathe without shrinking the plate's own type scale. */
+.pp-world .pl-cs-btn--easy .pl-cs-preview,
+.pp-world .pl-cs-btn--hard .pl-cs-preview {
+  letter-spacing: 0.06em;
+  font-size: clamp(22px, 5vmin, 40px);
 }
 .pp-world .pl-cs-preview {
   color: #ffffff;

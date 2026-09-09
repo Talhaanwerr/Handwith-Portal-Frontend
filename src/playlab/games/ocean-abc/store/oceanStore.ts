@@ -9,9 +9,10 @@ import {
   type LetterRun,
   type RunIntent,
 } from "@shared/utils/progression";
+import type { PopMode } from "@games/ocean-abc/constants/pop";
 
 export type LetterCase = "upper" | "lower";
-export type OceanScreen = "splash" | "mode" | "modules" | "grid" | "level" | "complete";
+export type OceanScreen = "splash" | "mode" | "modules" | "popMode" | "grid" | "level" | "complete";
 
 /**
  * The three things a child does with each letter, in order:
@@ -44,6 +45,10 @@ interface OceanState {
   currentLetter: string;
   stage: Stage;
   module: OceanModule;
+  /** How a standalone Bubble Pop round ends — five correct pops, or when the
+   *  child presses Next. Only the "pop" module asks; the combined voyage
+   *  always plays the five-pop round so the letter still finishes. */
+  popMode: PopMode;
   run: LetterRun | null;
   /** Progress per case — building "A" is different learning from "a", so
    *  each case earns its own finale (the pattern jungle-spy established). */
@@ -53,6 +58,7 @@ interface OceanState {
   setCase: (c: LetterCase) => void;
   setStage: (s: Stage) => void;
   setModule: (m: OceanModule) => void;
+  setPopMode: (m: PopMode) => void;
   /** Move to the next stage; false when the letter's three stages are done. */
   nextStage: () => boolean;
   markDone: (l: string) => void;
@@ -71,6 +77,7 @@ export const useOceanStore = create<OceanState>()(
       currentLetter: "A",
       stage: "build",
       module: "combined",
+      popMode: "five",
       run: null,
       done: [],
       doneLower: [],
@@ -78,6 +85,7 @@ export const useOceanStore = create<OceanState>()(
       setCase: (letterCase) => set({ letterCase }),
       setStage: (stage) => set({ stage }),
       setModule: (module) => set({ module, stage: stagesFor(module)[0] }),
+      setPopMode: (popMode) => set({ popMode }),
 
       nextStage: () => {
         const active = stagesFor(get().module);
@@ -135,6 +143,7 @@ export const useOceanStore = create<OceanState>()(
         doneLower: s.doneLower,
         letterCase: s.letterCase,
         module: s.module,
+        popMode: s.popMode,
       }),
     }
   )

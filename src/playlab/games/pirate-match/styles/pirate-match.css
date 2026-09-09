@@ -90,9 +90,15 @@
    is a flow item, and Framer's entrance transforms move visuals without
    touching layout. */
 
+/* A FLEX CHILD, not an absolute box with a guessed top offset. The old
+   `inset: clamp(56px, 9vh, 78px) 0 0 0` assumed the chrome was 56–78px tall;
+   the bar is a 24px-padded row of pills and stands taller than the 56px floor
+   a short screen collapses to, so the board's first column was drawn over the
+   star and anchor pills. `flex: 1` is the leftover height by construction. */
 .pm-board {
-  position: absolute;
-  inset: clamp(56px, 9vh, 78px) 0 0 0;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -279,11 +285,38 @@
   width: clamp(120px, 26vmin, 220px);
 }
 
-/* ── the shared celebration overlay (same shape as every other game) ── */
+/* ── THE TREASURE (MatchWin.tsx) ──
+   The chest lands, rocks and bursts open; coins, gems and the matched letters
+   fountain out; the giant letter rises out of it. Clipped by the stage so the
+   fountain can never widen the overlay's scroll area. */
 .pm-win-tint {
   background: rgba(38, 24, 10, 0.86);
 }
+.pm-win-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1.2vmin, 12px);
+  padding: 12px 16px;
+}
+/** Where the letter hangs, over the chest. It rises from BEHIND the chest,
+ *  so this sits under it in the stack and the chest's lid hides its start. */
+.pm-win-letter-zone {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: clamp(90px, 24vmin, 200px);
+  /* the rings around the letter are gold */
+  --pl-ring: rgba(255, 217, 61, 0.9);
+}
 .pm-win-letter {
+  position: relative;
   font-size: clamp(90px, 24vmin, 200px);
   line-height: 1;
   color: #ffd93d;
@@ -291,7 +324,79 @@
     0 0 28px rgba(233, 180, 76, 0.8),
     0 8px 20px rgba(20, 12, 4, 0.55);
 }
+.pm-win-chest {
+  position: relative;
+  z-index: 2;
+  width: clamp(150px, 36vmin, 300px);
+  filter: drop-shadow(0 14px 22px rgba(20, 12, 4, 0.5));
+}
+/** The light pouring up out of the open chest. Grows from its base. */
+.pm-win-beam {
+  position: absolute;
+  left: 30%;
+  bottom: 55%;
+  z-index: 0;
+  width: 40%;
+  height: 60vmin;
+  transform-origin: 50% 100%;
+  background: linear-gradient(0deg, rgba(255, 217, 61, 0.75), rgba(255, 217, 61, 0));
+  clip-path: polygon(30% 100%, 70% 100%, 100% 0, 0 0);
+  pointer-events: none;
+}
+/** The mouth of the chest — a zero-height line the fountain rises from. */
+.pm-win-mouth {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 42%;
+  height: 0;
+  z-index: 3;
+}
+/** A letter card in the fountain — one of the matched letters, on parchment. */
+.pm-win-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 22%;
+  background: linear-gradient(180deg, #f4e6c4 0%, #e4ce9e 100%);
+  border: 2px solid #c9a96c;
+  box-shadow: inset 0 0 0 2px #e9b44c;
+  /* the piece's box (--pl-size) is set by the burst; the glyph fills it */
+  font-size: calc(var(--pl-size, 40px) * 0.55);
+  line-height: 1;
+  color: #4a2e14;
+}
+/** The parrot, swooping in beside the letter. */
+.pm-win-parrot {
+  position: absolute;
+  right: 6%;
+  top: 14%;
+  z-index: 4;
+  width: clamp(80px, 20vmin, 170px);
+  pointer-events: none;
+}
 .pm-win-heading {
+  position: relative;
+  z-index: 4;
   font-size: clamp(26px, 6vmin, 42px);
   color: #ffffff;
+}
+
+/* Short landscape: the chest and the letter share a ~300px column, and the
+   parrot would sit on the letter. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .pm-win-chest {
+    width: clamp(100px, 26vmin, 170px);
+  }
+  .pm-win-letter-zone {
+    min-height: clamp(60px, 18vmin, 110px);
+  }
+  .pm-win-letter {
+    font-size: clamp(56px, 18vmin, 110px);
+  }
+  .pm-win-parrot {
+    display: none;
+  }
 }

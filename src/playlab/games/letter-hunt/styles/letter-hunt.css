@@ -101,10 +101,16 @@
 
 /* ── Find board ── */
 
-/** A scattered card: position, palette and radius arrive per-round via cssVars. */
+/** A scattered card: position, size, palette and radius arrive per-round via
+ *  cssVars. The card takes the EXACT box the placement solver reserved for it
+ *  (--pl-size), so what is drawn and what was tested for collisions are the
+ *  same rectangle. Letting the glyph size the card is what let a big tier grow
+ *  past its reserved space and touch its neighbour. */
 .hunt-card {
   left: var(--pl-x);
   top: var(--pl-y);
+  width: var(--pl-size, 52px);
+  height: var(--pl-size, 52px);
   background: var(--pl-bg);
   border: 3.5px solid var(--pl-border);
   border-radius: var(--pl-radius);
@@ -125,16 +131,108 @@
   -webkit-text-stroke: 3px var(--pl-color);
 }
 
-/* ── Completion overlay ── */
+/* ── Completion overlay — THE GLASS ──
+   A huge magnifying glass sweeps in and locks onto the found letter, the
+   letter fills the whole screen and pops into little letters. Then Penny and
+   the way on. Deep plum for it all to happen in: the gold needs dark. */
 
 .hunt-done-tint {
-  background: rgba(240, 232, 255, 0.93);
+  background: rgba(52, 32, 98, 0.9);
+}
+/** Everything the pop throws is clipped here, so the giant letter and the
+ *  flying shards can never widen the overlay's scroll area. */
+.hunt-win-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+/** The found letter. Centred by the CSS `translate` property — separate from
+ *  `transform`, so it survives Framer scaling the letter up to the screen. */
+.hunt-win-letter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -52%;
+  z-index: 1;
+  font-size: clamp(80px, 22vmin, 180px);
+  line-height: 1;
+  color: var(--color-gold);
+  text-shadow:
+    0 0 30px rgba(255, 217, 61, 0.55),
+    0 8px 20px rgba(30, 14, 70, 0.6);
+  will-change: transform, opacity;
+}
+/** The magnifying glass — centred on its LENS (43% into its box), so what it
+ *  lands on is what it is looking at. Big: the largest thing on the screen
+ *  until the letter is. */
+.hunt-glass {
+  --hunt-glass: min(74vmin, 440px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: var(--hunt-glass);
+  aspect-ratio: 1;
+  margin-left: calc(var(--hunt-glass) * -0.43);
+  margin-top: calc(var(--hunt-glass) * -0.43);
+  filter: drop-shadow(0 10px 22px rgba(20, 8, 50, 0.5));
+  will-change: transform;
+}
+/** The lens catching the light as the glass locks on. */
+.hunt-glass-flash {
+  position: absolute;
+  left: 12%;
+  top: 12%;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffffff;
+  pointer-events: none;
+}
+/** A zero-size point at the centre — the rings and the shards fly from it.
+ *  The rings are gold, like the letter. */
+.hunt-win-centre {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 0;
+  height: 0;
+  --pl-ring: rgba(255, 217, 61, 0.9);
+}
+/** One little letter flying out of the big one. */
+.hunt-win-shard {
+  font-size: clamp(22px, 5vmin, 48px);
+  line-height: 1;
+  color: var(--pl-color, var(--color-gold));
+  text-shadow: 0 2px 6px rgba(20, 8, 50, 0.5);
+}
+/** ACT THREE — Penny, the cheer and the way on, over the settled pop. */
+.hunt-win-praise {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vmin, 16px);
+  padding: 16px;
 }
 .hunt-penny-done {
   width: clamp(100px, 24vmin, 170px);
 }
 .hunt-done-heading {
   font-size: clamp(28px, 7vmin, 44px);
+  color: #ffffff;
+  text-shadow: 0 4px 14px rgba(20, 8, 50, 0.6);
+}
+.hunt-win-sub {
+  color: rgba(255, 255, 255, 0.8);
+}
+.hunt-win-next {
+  background: var(--color-gold);
+  color: var(--color-plum);
 }
 
 /* ── Finale ── */
@@ -144,4 +242,42 @@
 }
 .hunt-finale-mascot {
   width: clamp(80px, 18vmin, 140px);
+}
+
+/* ── Short landscape (a phone on its side) ────────────────────────────────
+   The notebook's 200px height floor is taller than half of a ~300px viewport,
+   so Penny's introduction was cropped before the hunt even started. The board
+   itself needs no rule here: card sizes are solved against the MEASURED play
+   area (see HuntLevel's FONT_TIERS and shared/utils/scatter.ts), so it already
+   adapts to whatever room is left. These are the fixed-size illustrations
+   around it. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .hunt-notebook {
+    width: clamp(110px, 30vmin, 190px);
+    height: clamp(112px, 34vmin, 210px);
+  }
+  .hunt-notebook-letter {
+    font-size: clamp(52px, 19vmin, 110px);
+  }
+  .hunt-penny-intro {
+    width: clamp(52px, 14vmin, 92px);
+  }
+  .hunt-penny-done {
+    width: clamp(64px, 18vmin, 110px);
+  }
+  .hunt-done-heading {
+    font-size: clamp(20px, 5.5vmin, 32px);
+  }
+  .hunt-win-praise {
+    gap: clamp(4px, 1.2vmin, 8px);
+  }
+  .hunt-finale-heading {
+    font-size: clamp(22px, 6vmin, 36px);
+  }
+  .hunt-finale-mascot {
+    width: clamp(56px, 14vmin, 96px);
+  }
+  .hunt-flying-star {
+    font-size: clamp(48px, 13vmin, 96px);
+  }
 }

@@ -140,11 +140,12 @@ export function HuntHome({ onExitPortal }: { onExitPortal?: () => void }) {
       <div className="relative z-10 m-auto flex w-full flex-col items-center gap-4">
         <div className="relative z-10 flex flex-col items-center gap-1">
           <h1 className="font-rounded text-plum text-3xl font-black md:text-4xl">Letter Hunt</h1>
+          {/* One instruction, not two. The second line ("Find the matching
+              letters!") said the same thing as the first in weaker words —
+              the registry's one-line description had been pasted in under a
+              subtitle that already carried it. */}
           <p className="font-rounded text-plum/70 text-sm font-bold md:text-base">
             Find and tap the letters that match
-          </p>
-          <p className="font-rounded text-plum/50 text-sm font-semibold">
-            Find the matching letters!
           </p>
         </div>
 

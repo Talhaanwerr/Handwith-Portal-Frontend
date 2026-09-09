@@ -269,7 +269,7 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
         />
         <div className="shadow-soft flex min-h-[44px] items-center rounded-full bg-white/85 px-4">
           <span
-            className="font-rounded text-dino-ink text-sm font-black"
+            className="font-rounded text-dino-ink text-sm font-black whitespace-nowrap"
             aria-label={`Crossing ${crossing + 1} of ${TOTAL_CROSSINGS}`}
           >
             {crossing + 1} / {TOTAL_CROSSINGS}
@@ -277,8 +277,14 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
         </div>
       </div>
 
-      {/* ── The alphabet so far ── */}
-      <div className="hide-on-short relative z-10 mt-2 w-full max-w-5xl">
+      {/* ── The alphabet so far ──
+          Stays on screen at every size. It used to carry `hide-on-short`, so
+          on a landscape phone the one thing that shows the child where they
+          are in the alphabet — the whole point of a bridge built A to Z —
+          simply vanished. It SHRINKS on a short screen instead (see
+          .dd-tile in dino-dig.css): 26 tiles still fit one row and cost about
+          24px of height, which the crossing can afford. */}
+      <div className="dd-strip-wrap relative z-10 mt-2 w-full max-w-5xl shrink-0">
         <AlphabetStrip
           letterCase={letterCase}
           revealedIndex={revealedIndex}
@@ -328,8 +334,9 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
             </div>
           </div>
 
-          {/* the bridge: placed stones · the glowing gap · stones still to come */}
-          <div className="relative mx-2 flex flex-1 items-center justify-center gap-2 sm:mx-4 sm:gap-3">
+          {/* the bridge: placed stones · the glowing gap · stones still to come.
+              Wraps two-by-two where one line cannot hold four (see .dd-bridge). */}
+          <div className="dd-bridge relative mx-2 flex flex-1 items-center justify-center gap-2 sm:mx-4 sm:gap-3">
             {group.map((letter, i) => {
               if (i < placedCount) {
                 return (
@@ -380,7 +387,7 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
 
           {/* right bank: everyone who has already made it */}
           <div
-            className="dd-bank flex min-h-[44px] items-end gap-1 px-2 py-3 sm:px-4"
+            className="dd-bank dd-bank--far flex min-h-[44px] items-end gap-1 px-2 py-3 sm:px-4"
             aria-hidden="true"
           >
             {crossed.map((m) => {

@@ -21,6 +21,7 @@ import {
   PuzzleMagnet as Magnet,
 } from "@games/magnet-match/components/MagnetArt";
 import { KitchenBackdrop } from "@games/magnet-match/components/KitchenBackdrop";
+import { MagnetWin } from "@games/magnet-match/components/MagnetWin";
 
 interface MagnetLevelProps {
   groupIndex: number;
@@ -29,8 +30,10 @@ interface MagnetLevelProps {
 
 /** Generous drop tolerance around each gray target (px) */
 const DROP_SLOP_PX = 30;
-/** Celebration length before auto-advancing to the next group */
-const GROUP_DONE_MS = 2400;
+/** Celebration length before auto-advancing to the next group — long enough
+ *  for the soup to fountain, the big magnet to swing in and the letters to
+ *  snap on (see MagnetWin), without the child waiting on it. */
+const GROUP_DONE_MS = 3800;
 
 interface DragState {
   letter: string;
@@ -332,7 +335,7 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
         {/* the chef, on the counter beside the station — gentle idle
             breathing, bigger bounce on a correct match */}
         <motion.div
-          className="mm-chef-level hidden shrink-0 sm:block"
+          className="mm-chef-level shrink-0"
           animate={chefHappy ? { y: [0, -10, 0] } : { y: [0, -3, 0] }}
           transition={
             chefHappy ? { duration: 0.5 } : { duration: 4, repeat: Infinity, ease: "easeInOut" }
@@ -523,17 +526,9 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
       <AnimatePresence>
         {celebrating && (
           <CelebrationOverlay tintClassName="mm-celebrate-tint" size={dims}>
-            <motion.h2
-              className="mm-cheer font-rounded shadow-card rounded-full bg-white/95 px-8 py-3 font-black"
-              initial={{ scale: 0.5, y: 12 }}
-              animate={{ scale: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 220, damping: 15 }}
-            >
-              {clipText("magnet-excellent")}
-            </motion.h2>
-            <p className="font-rounded text-kitchen-ink text-base font-bold">
-              {groupIndex + 1} / {TOTAL_GROUPS}
-            </p>
+            {/* The kitchen's own celebration — the soup boils over and the
+                big magnet collects the letters. See MagnetWin. */}
+            <MagnetWin letters={GROUPS[groupIndex]} groupIndex={groupIndex} total={TOTAL_GROUPS} />
           </CelebrationOverlay>
         )}
       </AnimatePresence>

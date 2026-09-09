@@ -29,7 +29,7 @@ export function DinoCaseSelect() {
   ];
 
   return (
-    <div className="dd-bg relative flex h-full w-full flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-8">
+    <div className="dd-bg pl-screen-shell">
       <DinoBackdrop />
 
       <NavPillButton
@@ -44,39 +44,41 @@ export function DinoCaseSelect() {
         }}
       />
 
-      <motion.div
-        className="relative z-10 flex flex-col items-center gap-1 text-center"
-        initial={{ y: -12, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-      >
-        <h1 className="font-rounded text-3xl font-black text-white drop-shadow-md md:text-5xl">
-          Which letters?
-        </h1>
-        <p className="font-rounded text-sm font-bold text-white/90 drop-shadow-md md:text-base">
-          Feed the dinos and cross the river with letters
-        </p>
-        <p className="font-rounded text-dino-ink mt-1 rounded-full bg-white/85 px-4 py-1 text-xs font-bold md:text-sm">
-          {mode === "stones" ? "For your river crossing" : "For your hungry dinos"}
-        </p>
-      </motion.div>
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-7 px-6 py-8 pt-16">
+        <motion.div
+          className="relative z-10 flex flex-col items-center gap-1 text-center"
+          initial={{ y: -12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          <h1 className="font-rounded text-3xl font-black text-white drop-shadow-md md:text-5xl">
+            Which letters?
+          </h1>
+          <p className="font-rounded text-sm font-bold text-white/90 drop-shadow-md md:text-base">
+            Feed the dinos and cross the river with letters
+          </p>
+          <p className="font-rounded text-dino-ink mt-1 rounded-full bg-white/85 px-4 py-1 text-xs font-bold md:text-sm">
+            {mode === "stones" ? "For your river crossing" : "For your hungry dinos"}
+          </p>
+        </motion.div>
 
-      <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
-        {options.map((o, i) => (
-          <motion.button
-            key={o.c}
-            onClick={() => pick(o.c)}
-            className={`dd-case-btn dd-case-btn--${o.c} flex flex-col items-center justify-center gap-2`}
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.12 + i * 0.08, type: "spring", stiffness: 260, damping: 20 }}
-            whileTap={{ scale: 0.94 }}
-            whileHover={{ scale: 1.04 }}
-            aria-label={o.aria}
-          >
-            <span className="dd-case-preview font-rounded font-black">{o.preview}</span>
-            <span className="dd-case-title font-rounded font-black">{o.title}</span>
-          </motion.button>
-        ))}
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
+          {options.map((o, i) => (
+            <motion.button
+              key={o.c}
+              onClick={() => pick(o.c)}
+              className={`dd-case-btn dd-case-btn--${o.c} flex flex-col items-center justify-center gap-2`}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.12 + i * 0.08, type: "spring", stiffness: 260, damping: 20 }}
+              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.04 }}
+              aria-label={o.aria}
+            >
+              <span className="dd-case-preview font-rounded font-black">{o.preview}</span>
+              <span className="dd-case-title font-rounded font-black">{o.title}</span>
+            </motion.button>
+          ))}
+        </div>
       </div>
     </div>
   );

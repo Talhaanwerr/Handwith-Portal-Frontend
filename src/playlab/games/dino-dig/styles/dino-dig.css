@@ -21,7 +21,11 @@
    minimum on the narrowest phone. */
 .dd-stage {
   --dd-unit: clamp(58px, min(10.5vh, 13vw), 96px);
-  --dd-bstone: max(var(--dd-unit), min(calc(var(--dd-unit) * 3), 13vw, 26vh));
+  /* A bridge stone. Up to 22vw — big enough that two fill a phone's width —
+     because the bridge WRAPS now (see .dd-bridge): four stones that cannot
+     share one line sit two-by-two instead of squeezing into it with the last
+     one hidden under the far bank. */
+  --dd-bstone: max(var(--dd-unit), min(calc(var(--dd-unit) * 3), 22vw, 26vh));
   --dd-stone: var(--dd-unit);
   --dd-ring: calc(var(--dd-unit) * 1.55);
 }
@@ -184,7 +188,12 @@
  *  it and gently shines. The pulse is slow and small (never a flash), so it
  *  draws the eye without becoming a distraction. */
 .dd-bubble-letter {
-  font-size: calc(var(--dd-unit) * 1.15);
+  /* Capped against the VIEWPORT as well as --dd-unit. The dino and this card
+     sit in an `items-center` flex row; when the card grows taller than the row
+     it does not push anything, it simply paints outside it — over the "Can you
+     find X?" pill above. --dd-unit alone does not know how much height the row
+     actually got, so the vh term is what keeps the card inside it. */
+  font-size: min(calc(var(--dd-unit) * 1.15), 11vh);
   line-height: 1;
   color: var(--color-dino-night);
   animation: dd-ask-shine 2s ease-in-out infinite;
@@ -231,6 +240,28 @@
   border-radius: 14px;
 }
 
+/** The bridge itself. Stones are fixed-size and never shrink; when the line
+ *  is narrower than four of them they wrap into two rows of two, centred. */
+.dd-bridge {
+  flex-wrap: wrap;
+  row-gap: clamp(6px, 1.5vh, 12px);
+}
+.dd-bridge > .dd-bstone {
+  flex: 0 0 auto;
+}
+
+/* Portrait phones: the far bank's resting dino is decoration the row cannot
+   afford, and the crosser gives back a little width — that is what lets two
+   big stones sit side by side between the banks. */
+@media (orientation: portrait) and (max-width: 640px) {
+  .dd-bank--far {
+    display: none;
+  }
+  .dd-crosser {
+    width: calc(var(--dd-unit) * 1.4);
+  }
+}
+
 /** A dino waiting in the queue or resting on the far bank. */
 .dd-mini {
   width: calc(var(--dd-unit) * 0.85);
@@ -262,6 +293,59 @@
   }
   .dd-river {
     min-height: calc(var(--dd-unit) * 2.5);
+  }
+}
+
+/* VERY short landscape — a phone on its side WITH browser chrome, which is
+   about 300px of usable height rather than the ~360px the rules above were
+   tuned for. At 560px-and-under sizing the column still came to more than the
+   screen, and the floating-stone tray is the last child of an overflow-hidden
+   flex column, so the tray is what got cut in half: the child could see the
+   letters they were meant to drag but only reach the top of them.
+   One variable moves the whole composition, and 42px keeps every stone above
+   the finger-target floor. */
+@media (orientation: landscape) and (max-height: 420px) {
+  .dd-stage {
+    --dd-unit: clamp(42px, 13vh, 58px);
+    --dd-bstone: max(var(--dd-unit), min(calc(var(--dd-unit) * 2), 11vw, 19vh));
+  }
+  .dd-crosser {
+    width: calc(var(--dd-unit) * 1.05);
+  }
+  .dd-river {
+    min-height: calc(var(--dd-unit) * 1.9);
+  }
+  /* Measured on an 820x300 viewport: the river band came to 150px inside the
+     102px the flex column had left for it, and `items-center` let it spill
+     24px above and below — over the "Put the letters in order!" pill and over
+     the stone tray. Two thirds of that 150px was padding (py-5 on the river,
+     py-3 on each bank) and an oversized dino queue, none of which a 300px
+     screen can pay for. Descendant selectors (0,2,0) so these beat the Tailwind
+     padding utilities in the markup regardless of stylesheet order. */
+  .dd-stage .dd-river {
+    padding-block: 6px;
+  }
+  .dd-stage .dd-bank {
+    padding-block: 4px;
+  }
+  .dd-mini {
+    width: calc(var(--dd-unit) * 0.55);
+  }
+  .dd-question {
+    font-size: clamp(12px, 3vw, 16px);
+  }
+  /* The alphabet strip stays VISIBLE on a short screen and pays for itself by
+     shrinking. 26 tiles at 18px still fit one row on any landscape phone, so
+     the whole strip costs about 24px of height — far less than the value of
+     showing a child how far along the alphabet their bridge has got. */
+  .dd-strip {
+    padding: 2px 4px;
+  }
+  .dd-tile {
+    width: clamp(16px, 3.1vw, 24px);
+    height: clamp(16px, 3.1vw, 24px);
+    border-radius: 5px;
+    font-size: clamp(10px, 1.9vw, 15px);
   }
 }
 

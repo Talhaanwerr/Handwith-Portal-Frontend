@@ -17,19 +17,20 @@ import {
   LetterAssembly,
   LetterPiece,
   useGlyphFit,
-  PIECE_ORDER,
+  piecesFor,
   type PieceKey,
 } from "@shared/components/game/LetterPuzzle";
-import { pieceGeometry, type JigsawLayout } from "@shared/utils/letterJigsaw";
+import { pieceGeometry, layoutForGlyph, type JigsawLayout } from "@shared/utils/letterJigsaw";
 import { vocabClipId } from "@games/space-letters/constants/vocab";
 import { VocabObject } from "@games/space-letters/components/VocabObject";
+import { SpaceWin } from "@games/space-letters/components/SpaceWin";
 import {
   playCorrectSound,
   playIncorrectSound,
   playClickSound,
   playFanfare,
 } from "@shared/audio/sfx";
-import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
+import { playClip, playSequence, preloadClips, stopVoice } from "@shared/audio/voice";
 
 /**
  * HOW CLOSE COUNTS AS "IN PLACE".
@@ -113,8 +114,9 @@ export function SpaceLevel() {
   const shown = displayLetter(currentLetter, letterCase);
   /** Small letters are cut as three stacked bands; big letters keep the T —
    *  see JigsawLayout in shared/utils/letterJigsaw. */
-  const layout: JigsawLayout = letterCase === "lower" ? "stack" : "split";
-  const { fit, glyphBox, cuts, measure } = useGlyphFit(shown);
+  const layout: JigsawLayout = layoutForGlyph(shown);
+  const pieces = piecesFor(layout);
+  const { fit, glyphBox, cuts, measure } = useGlyphFit(shown, layout);
   /** Where each piece is drawn and dropped, given where the glyph landed.
    *  Recomputed only when the measured glyph changes. */
   const boxes = useMemo(() => pieceGeometry(glyphBox, layout, cuts), [glyphBox, layout, cuts]);
@@ -124,12 +126,12 @@ export function SpaceLevel() {
    *  whichever way keeps its pieces chunkiest, so "lowercase" no longer
    *  implies bands. All three are equal thirds, so the first one speaks for
    *  the set. */
-  const stacked = boxes[PIECE_ORDER[0]].box.w > boxes[PIECE_ORDER[0]].box.h;
+  const stacked = boxes[pieces[0]].box.w > boxes[pieces[0]].box.h;
 
   /**
    * Where each loose piece lies in the tray.
    *
-   * Laid out in a row in PIECE_ORDER, the three pieces sat left-middle-right
+   * Laid out in a row in piece order, the pieces sat left-to-right
    * and re-formed the letter before the child had touched anything — the
    * puzzle answered itself. So each piece takes a LANE, the lanes are dealt
    * in an order derived from the letter, and each piece is nudged and tilted
@@ -138,13 +140,14 @@ export function SpaceLevel() {
    * three lanes from reading as a row.
    */
   const scatter = useMemo(() => {
-    const n = PIECE_ORDER.length;
-    const lanes = PIECE_ORDER.map((p, i) => ({ i, k: hash01(`${shown}|lane|${p}`) }))
+    const n = pieces.length;
+    const lanes = pieces
+      .map((p, i) => ({ i, k: hash01(`${shown}|lane|${p}`) }))
       .sort((a, b) => a.k - b.k)
       .map((entry) => entry.i);
-    // One deal in six comes back in the original order, which would put the
-    // pieces right back into a readable letter for that letter every time.
-    // Rotating by one is deterministic and cannot itself be the identity.
+    // A deal that comes back in the original order would put the pieces right
+    // back into a readable letter for that letter every time. Rotating by one
+    // is deterministic and cannot itself be the identity.
     if (lanes.every((lane, i) => lane === i)) lanes.push(lanes.shift() as number);
     // Lanes run along the piece's SHORT axis: tall narrow pieces side by
     // side, wide flat ones one above another. Laying wide bands out side by
@@ -152,7 +155,7 @@ export function SpaceLevel() {
     // of each other.
     const alongX = !stacked;
     const out = {} as Record<PieceKey, { x: number; y: number; tilt: number }>;
-    PIECE_ORDER.forEach((p, i) => {
+    pieces.forEach((p, i) => {
       const main =
         ((lanes[i] + 0.5) / n) * 100 + (hash01(`${shown}|m|${p}`) - 0.5) * 2 * SCATTER_MAIN;
       const cross = 50 + (hash01(`${shown}|c|${p}`) - 0.5) * 2 * SCATTER_CROSS;
@@ -163,7 +166,7 @@ export function SpaceLevel() {
       };
     });
     return out;
-  }, [shown, stacked]);
+  }, [shown, stacked, pieces]);
 
   const [placed, setPlaced] = useState<PieceKey[]>([]);
   const [drag, setDrag] = useState<DragState | null>(null);
@@ -225,7 +228,7 @@ export function SpaceLevel() {
   // magnet-match's hint).
   useEffect(() => {
     if (hintDismissedRef.current || celebrating) return;
-    const remaining = PIECE_ORDER.filter((p) => !placed.includes(p));
+    const remaining = pieces.filter((p) => !placed.includes(p));
     // Nothing to hint once every piece is placed. Deliberately NO setHint(null)
     // here: the hint's render is already gated on completion, and clearing
     // state synchronously in an effect body is what react-hooks/set-state-in-
@@ -246,7 +249,7 @@ export function SpaceLevel() {
       hintCycleRef.current += 1;
     }, delay);
     return () => clearTimeout(t);
-  }, [placed, celebrating, toRoot]);
+  }, [placed, pieces, celebrating, toRoot]);
 
   const startDrag = useCallback(
     (e: React.PointerEvent<HTMLElement>, piece: PieceKey) => {
@@ -279,7 +282,7 @@ export function SpaceLevel() {
       playCorrectSound();
       const now = [...placed, piece];
       setPlaced(now);
-      if (now.length >= PIECE_ORDER.length) {
+      if (now.length >= pieces.length) {
         schedule(() => {
           setCelebrating(true);
           markBuilt(currentLetter);
@@ -287,7 +290,7 @@ export function SpaceLevel() {
         }, 450);
       }
     },
-    [placed, currentLetter, markBuilt, schedule]
+    [placed, pieces, currentLetter, markBuilt, schedule]
   );
 
   const endDrag = useCallback(
@@ -373,7 +376,7 @@ export function SpaceLevel() {
           }}
         />
         <div className="spl-pill flex items-center gap-2 rounded-full px-4 py-2" role="status">
-          <StarRow earned={placed.length} total={PIECE_ORDER.length} size={18} />
+          <StarRow earned={placed.length} total={pieces.length} size={18} />
         </div>
         <div className="min-h-[44px] w-[84px]" aria-hidden="true" />
       </div>
@@ -392,69 +395,73 @@ export function SpaceLevel() {
                 layout={layout}
                 preview={snapReady && drag ? drag.piece : null}
               />
-              {PIECE_ORDER.filter((p) => !placed.includes(p)).map((p) => {
-                const { hit } = boxes[p];
-                return (
-                  <div
-                    key={p}
-                    ref={(el) => registerTarget(targetRefs.current, p, el)}
-                    className="sap-slot pl-at"
-                    style={cssVars({
-                      "--pl-x": `${hit.x.toFixed(2)}%`,
-                      "--pl-y": `${hit.y.toFixed(2)}%`,
-                      "--pl-w": `${hit.w.toFixed(2)}%`,
-                      "--pl-h": `${hit.h.toFixed(2)}%`,
-                    })}
-                    role="img"
-                    aria-label={`Empty space in the letter ${shown}`}
-                  />
-                );
-              })}
+              {pieces
+                .filter((p) => !placed.includes(p))
+                .map((p) => {
+                  const { hit } = boxes[p];
+                  return (
+                    <div
+                      key={p}
+                      ref={(el) => registerTarget(targetRefs.current, p, el)}
+                      className="sap-slot pl-at"
+                      style={cssVars({
+                        "--pl-x": `${hit.x.toFixed(2)}%`,
+                        "--pl-y": `${hit.y.toFixed(2)}%`,
+                        "--pl-w": `${hit.w.toFixed(2)}%`,
+                        "--pl-h": `${hit.h.toFixed(2)}%`,
+                      })}
+                      role="img"
+                      aria-label={`Empty space in the letter ${shown}`}
+                    />
+                  );
+                })}
             </div>
 
             {/* ── The pieces, lying loose INSIDE the container ── */}
             <div className={`sap-pieces ${stacked ? "sap-pieces--stack" : ""}`}>
               <AnimatePresence>
-                {PIECE_ORDER.filter((p) => !placed.includes(p)).map((p) => {
-                  const { box } = boxes[p];
-                  const beingDragged = drag?.piece === p;
-                  const spot = scatter[p];
-                  return (
-                    <motion.div
-                      key={p}
-                      ref={(el) => registerTarget(looseRefs.current, p, el)}
-                      className={`pl-lp-loose sap-loose touch-none ${
-                        beingDragged ? "cursor-grabbing opacity-25" : "cursor-grab"
-                      }`}
-                      style={cssVars({
-                        "--pl-w": `calc(var(--sap-piece) * ${(box.w / 100).toFixed(3)})`,
-                        "--pl-h": `calc(var(--sap-piece) * ${(box.h / 100).toFixed(3)})`,
-                        "--sap-lx": `${spot.x.toFixed(2)}%`,
-                        "--sap-ly": `${spot.y.toFixed(2)}%`,
-                      })}
-                      /* The tilt rides in the ANIMATION, not in a CSS transform:
+                {pieces
+                  .filter((p) => !placed.includes(p))
+                  .map((p) => {
+                    const { box } = boxes[p];
+                    const beingDragged = drag?.piece === p;
+                    const spot = scatter[p];
+                    return (
+                      <motion.div
+                        key={p}
+                        ref={(el) => registerTarget(looseRefs.current, p, el)}
+                        className={`pl-lp-loose sap-loose touch-none ${
+                          beingDragged ? "cursor-grabbing opacity-25" : "cursor-grab"
+                        }`}
+                        style={cssVars({
+                          "--pl-w": `calc(var(--sap-piece) * ${(box.w / 100).toFixed(3)})`,
+                          "--pl-h": `calc(var(--sap-piece) * ${(box.h / 100).toFixed(3)})`,
+                          "--sap-lx": `${spot.x.toFixed(2)}%`,
+                          "--sap-ly": `${spot.y.toFixed(2)}%`,
+                        })}
+                        /* The tilt rides in the ANIMATION, not in a CSS transform:
                          Framer owns this element's transform for the scale, and a
                          rotate in the stylesheet would simply be overwritten. */
-                      initial={{ scale: 0, opacity: 0, rotate: 0 }}
-                      animate={{ scale: 1, opacity: 1, rotate: spot.tilt }}
-                      exit={{ scale: 0, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                      onPointerDown={(e) => startDrag(e, p)}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`Puzzle piece of the letter ${shown} — drag it into place`}
-                    >
-                      <LetterPiece
-                        letter={shown}
-                        piece={p}
-                        fit={fit}
-                        box={box}
-                        layout={layout}
-                        outline={boxes[p].outline}
-                      />
-                    </motion.div>
-                  );
-                })}
+                        initial={{ scale: 0, opacity: 0, rotate: 0 }}
+                        animate={{ scale: 1, opacity: 1, rotate: spot.tilt }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                        onPointerDown={(e) => startDrag(e, p)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Puzzle piece of the letter ${shown} — drag it into place`}
+                      >
+                        <LetterPiece
+                          letter={shown}
+                          piece={p}
+                          fit={fit}
+                          box={box}
+                          layout={layout}
+                          outline={boxes[p].outline}
+                        />
+                      </motion.div>
+                    );
+                  })}
               </AnimatePresence>
             </div>
           </div>
@@ -527,46 +534,28 @@ export function SpaceLevel() {
         </div>
       )}
 
-      {/* ── Letter complete: vocabulary reinforcement + celebration ── */}
+      {/* ── Letter complete: the letter in space (see SpaceWin), then the
+          vocabulary picture, the cheer and the way on ── */}
       <AnimatePresence>
         {celebrating && (
           <CelebrationOverlay
             tintClassName="spl-win-tint"
-            gapClassName="gap-4"
+            gapClassName="gap-0"
             blur="3px"
             size={dims}
+            sparkles={false}
           >
-            <div className="sap-win-assembly">
-              <LetterAssembly
-                letter={shown}
-                fit={fit}
-                placed={PIECE_ORDER}
-                boxes={boxes}
-                layout={layout}
-              />
-            </div>
-            <div className="sap-win-object">
-              <VocabObject letter={currentLetter} />
-            </div>
-            <h2 className="spl-win-heading font-rounded font-black">
-              {clipText("cheer-great-job")}
-            </h2>
-            <div className="flex gap-4">
-              <button
-                onClick={playAgain}
-                className="font-rounded text-space-ink min-h-[52px] rounded-full bg-white px-6 text-base font-black shadow-lg"
-                aria-label="Build this letter again"
-              >
-                Again
-              </button>
-              <button
-                onClick={goNext}
-                className="bg-space font-rounded min-h-[52px] rounded-full px-6 text-base font-black text-white shadow-lg"
-                aria-label="Go to the next letter"
-              >
-                <span>{runComplete ? "Finish!" : "Next"}</span>
-              </button>
-            </div>
+            <SpaceWin
+              shown={shown}
+              letter={currentLetter}
+              fit={fit}
+              pieces={pieces}
+              boxes={boxes}
+              layout={layout}
+              nextLabel={runComplete ? "Finish!" : "Next"}
+              onAgain={playAgain}
+              onNext={goNext}
+            />
           </CelebrationOverlay>
         )}
       </AnimatePresence>

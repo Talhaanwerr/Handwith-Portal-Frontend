@@ -7,6 +7,7 @@ import {
   type TracingPhase,
 } from "@games/letter-tracing/components/tracing/TracingCanvas";
 import { CelebrationSparkles } from "@shared/components/animations/Sparkles";
+import { useElementSize } from "@shared/hooks/useElementSize";
 import { StarRow } from "@shared/components/ui/StarRow";
 import { ProgressBar } from "@shared/components/ui/ProgressBar";
 import { RotateDevicePrompt } from "@shared/components/ui/RotateDevicePrompt";
@@ -37,10 +38,12 @@ export function TracingScreen({ letter, mode, onComplete, onHome }: TracingScree
   const [phase, setPhase] = useState<TracingPhase>("demo-draw");
   const [replayToken, setReplayToken] = useState(0);
   const [burstActive, setBurstActive] = useState(false);
-  const [dims, setDims] = useState({ w: 800, h: 600 });
 
   const [canvasScope, canvasAnimate] = useAnimate();
-  const containerRef = useRef<HTMLDivElement>(null);
+  // The shared observer rather than a fourth hand-rolled measure — same
+  // behaviour, one implementation, and ResizeObserver catches a container that
+  // changes size without the window doing so.
+  const [containerRef, dims] = useElementSize<HTMLDivElement>();
   const {
     playSuccess,
     playStrokeComplete,
@@ -74,15 +77,6 @@ export function TracingScreen({ letter, mode, onComplete, onHome }: TracingScree
   const [anchorMode, setAnchorMode] = useState<AnchorMode>("hero");
 
   const isDemoing = phase.startsWith("demo");
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const measure = () => setDims({ w: el.offsetWidth, h: el.offsetHeight });
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
 
   // Preload every clip this letter's flow needs the moment the screen mounts
   useEffect(() => {

@@ -19,6 +19,14 @@ import { useId } from "react";
  *    the mood at the margins and hands the middle of the screen to the
  *    gameplay.
  *
+ * TWO SHAPES OF SCREEN. The drawing is designed on a 400×300 sky and covers
+ * the screen (`slice`), which on a portrait phone cropped the sides off — and
+ * every planet and the astronaut live at the sides, so a phone saw nothing
+ * but stars. The `tall` scene is the same drawing TRANSPOSED onto 300×400:
+ * every placement mirrored across the diagonal, so the ring around the empty
+ * centre is kept and every prop still hugs an edge. The backdrop renders both
+ * and CSS shows whichever fits the screen's orientation.
+ *
  * Entirely decorative — aria-hidden and pointer-events-none throughout, per
  * the project's rule for background layers.
  *
@@ -74,7 +82,14 @@ const STARS: readonly [number, number, number, number][] = [
   [368, 250, 1.2, 0.55],
 ];
 
-export function SpaceScene() {
+/** Four-point sparkles, a little brighter than the round stars. [x, y, size] */
+const SPARKLES: readonly [number, number, number][] = [
+  [78, 60, 3.4],
+  [344, 72, 2.8],
+  [40, 250, 3],
+];
+
+export function SpaceScene({ tall = false }: { tall?: boolean }) {
   // Gradient ids are document-global, so they are namespaced per instance —
   // the same guard the puzzle pieces use for their clip paths.
   const uid = useId();
@@ -83,10 +98,22 @@ export function SpaceScene() {
   const nebulaBId = `${uid}-nebula-b`;
   const sphereId = `${uid}-sphere`;
 
+  /** A placement in the wide drawing, or its transpose in the tall one. */
+  const at = (x: number, y: number): readonly [number, number] => (tall ? [y, x] : [x, y]);
+  const [w, h] = at(400, 300);
+  const [nebulaAx, nebulaAy] = at(66, 52);
+  const [nebulaArx, nebulaAry] = at(150, 96);
+  const [nebulaBx, nebulaBy] = at(348, 248);
+  const [nebulaBrx, nebulaBry] = at(140, 104);
+  const [planetX, planetY] = at(46, 268);
+  const [moonX, moonY] = at(356, 44);
+  const [rustX, rustY] = at(384, 186);
+  const [astronautX, astronautY] = at(62, 96);
+
   return (
     <svg
-      className="spl-scene"
-      viewBox="0 0 400 300"
+      className={`spl-scene ${tall ? "spl-scene--tall" : "spl-scene--wide"}`}
+      viewBox={`0 0 ${w} ${h}`}
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
       focusable="false"
@@ -117,38 +144,50 @@ export function SpaceScene() {
       </defs>
 
       {/* sky */}
-      <rect x="0" y="0" width="400" height="300" fill={`url(#${skyId})`} />
+      <rect x="0" y="0" width={w} height={h} fill={`url(#${skyId})`} />
 
       {/* nebula clouds, pushed into opposite corners */}
-      <ellipse cx="66" cy="52" rx="150" ry="96" fill={`url(#${nebulaAId})`} />
-      <ellipse cx="348" cy="248" rx="140" ry="104" fill={`url(#${nebulaBId})`} />
+      <ellipse
+        cx={nebulaAx}
+        cy={nebulaAy}
+        rx={nebulaArx}
+        ry={nebulaAry}
+        fill={`url(#${nebulaAId})`}
+      />
+      <ellipse
+        cx={nebulaBx}
+        cy={nebulaBy}
+        rx={nebulaBrx}
+        ry={nebulaBry}
+        fill={`url(#${nebulaBId})`}
+      />
 
       {/* stars */}
       <g fill={SKY.star}>
-        {STARS.map(([x, y, r, o], i) => (
-          <circle key={i} cx={x} cy={y} r={r} opacity={o} />
-        ))}
+        {STARS.map(([x, y, r, o], i) => {
+          const [cx, cy] = at(x, y);
+          return <circle key={i} cx={cx} cy={cy} r={r} opacity={o} />;
+        })}
       </g>
 
-      {/* four-point sparkles, a little brighter than the round stars */}
+      {/* four-point sparkles */}
       <g fill={SKY.star} opacity="0.75">
-        {[
-          [78, 60, 3.4],
-          [344, 72, 2.8],
-          [40, 250, 3],
-        ].map(([x, y, s], i) => (
-          <path
-            key={i}
-            d={`M${x} ${y - s} Q${x + s * 0.28} ${y - s * 0.28} ${x + s} ${y}
+        {SPARKLES.map(([sx, sy, s], i) => {
+          const [x, y] = at(sx, sy);
+          return (
+            <path
+              key={i}
+              d={`M${x} ${y - s} Q${x + s * 0.28} ${y - s * 0.28} ${x + s} ${y}
                 Q${x + s * 0.28} ${y + s * 0.28} ${x} ${y + s}
                 Q${x - s * 0.28} ${y + s * 0.28} ${x - s} ${y}
                 Q${x - s * 0.28} ${y - s * 0.28} ${x} ${y - s} Z`}
-          />
-        ))}
+            />
+          );
+        })}
       </g>
 
-      {/* ── the ringed planet, bottom-left and partly off-canvas ── */}
-      <g transform="translate(46 268)" opacity="0.92">
+      {/* ── the ringed planet, on an edge and partly off-canvas ── */}
+      <g transform={`translate(${planetX} ${planetY})`} opacity="0.92">
         {/* back half of the ring, drawn before the body so it passes behind */}
         <ellipse
           cx="0"
@@ -177,8 +216,8 @@ export function SpaceScene() {
         />
       </g>
 
-      {/* ── the moon, top-right ── */}
-      <g transform="translate(356 44)" opacity="0.9">
+      {/* ── the moon ── */}
+      <g transform={`translate(${moonX} ${moonY})`} opacity="0.9">
         <circle cx="0" cy="0" r="27" fill={SKY.moonBody} />
         <circle cx="-9" cy="-7" r="6" fill={SKY.moonCrater} opacity="0.75" />
         <circle cx="7" cy="6" r="4.4" fill={SKY.moonCrater} opacity="0.7" />
@@ -187,15 +226,18 @@ export function SpaceScene() {
         <circle cx="0" cy="0" r="27" fill={`url(#${sphereId})`} />
       </g>
 
-      {/* ── a small rusty planet on the right edge ── */}
-      <g transform="translate(384 186)" opacity="0.82">
+      {/* ── a small rusty planet on an edge ── */}
+      <g transform={`translate(${rustX} ${rustY})`} opacity="0.82">
         <circle cx="0" cy="0" r="16" fill={SKY.rustBody} />
         <path d="M-14 -5 Q0 -12 14 -5 Q0 1 -14 -5 Z" fill={SKY.rustDark} opacity="0.6" />
         <circle cx="0" cy="0" r="16" fill={`url(#${sphereId})`} />
       </g>
 
-      {/* ── the astronaut, drifting in the top-left ── */}
-      <g transform="translate(62 96) rotate(-12) scale(1.05)" opacity="0.95">
+      {/* ── the astronaut, drifting near a corner ── */}
+      <g
+        transform={`translate(${astronautX} ${astronautY}) rotate(-12) scale(1.05)`}
+        opacity="0.95"
+      >
         {/* tether, trailing off toward the corner */}
         <path
           d="M-16 16 Q-40 30 -58 26"

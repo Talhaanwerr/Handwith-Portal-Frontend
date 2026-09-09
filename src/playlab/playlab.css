@@ -23,6 +23,7 @@
 @import "./shared/styles/arctic.css";
 @import "./shared/styles/construction.css";
 @import "./games/pirate-match/styles/pirate-match.css";
+@import "./games/color-paint/styles/color-paint.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

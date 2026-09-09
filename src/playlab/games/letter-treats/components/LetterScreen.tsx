@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { playSequence, preloadClips, stopVoice } from "@shared/audio/voice";
 import { playClickSound } from "@shared/audio/sfx";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
-import { letterData } from "@games/letter-treats/constants/alphabet";
+import { CASE_SEPARATOR, letterData } from "@games/letter-treats/constants/alphabet";
 import { CandyScene, Bee } from "@games/letter-treats/components/CandyScene";
 import { TreatArt } from "@games/letter-treats/components/TreatArt";
 import { HandDemo, HAND_DEMO_MS, HAND_TAP_AT_MS } from "@games/letter-treats/components/HandDemo";
@@ -175,9 +175,24 @@ export function LetterScreen({ letter, onBack, onPlay }: LetterScreenProps) {
           aria-label={`The letter ${data.letter}. Tap to hear its name and sound.`}
         >
           <span className="ab-letter-glow" aria-hidden="true" />
-          <span className="ab-glyph font-rounded font-black" data-letter={`${data.letter}${lower}`}>
-            {data.letter}
-            {lower}
+          {/* "A / a", not "Aa". The pair is split into three elements rather
+              than one text node because the candy treatment is built from two
+              pseudo-element copies of `attr(data-letter)` — a rim behind and a
+              gloss in front. One text node would force the separator through
+              that same treatment at full letter size, which both dominates the
+              pair and makes the string wide enough to overflow a phone. Each
+              case carries its own data-letter, so both keep the full effect,
+              and the slash is styled independently as the quiet divider it is. */}
+          <span className="ab-glyph font-rounded font-black">
+            <span className="ab-glyph-part" data-letter={data.letter}>
+              {data.letter}
+            </span>
+            <span className="ab-glyph-sep" aria-hidden="true">
+              {CASE_SEPARATOR}
+            </span>
+            <span className="ab-glyph-part" data-letter={lower}>
+              {lower}
+            </span>
           </span>
           <AnimatePresence>
             {celebrate && (
