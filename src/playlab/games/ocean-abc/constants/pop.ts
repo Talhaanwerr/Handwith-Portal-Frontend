@@ -5,23 +5,42 @@
  * state. The component owns the animation frame and the audio; this module
  * owns what a bubble IS and what may happen to it, which is what makes the
  * lifecycle testable and keeps the two concerns from growing into each other.
+ *
+ * THE WHOLE GAME, in six lines:
+ *
+ *   1. Bubbles rise from the sea bed. Each carries the letter the child is
+ *      hunting (a TARGET) or another letter (a DECOY).
+ *   2. Tap a target → it POPS. That is a point.
+ *   3. Tap a decoy → it wobbles, says its own name, and leaves. Not a point,
+ *      not a penalty, and it never comes back.
+ *   4. A target that reaches the surface unpopped opens a PARACHUTE and floats
+ *      back down — the second chance. Tapping the parachute pops it: a point,
+ *      same as any pop.
+ *   5. A decoy that reaches the surface just drifts away. Decoys NEVER
+ *      parachute — a parachute is only ever the letter the child wants.
+ *   6. A parachute that reaches the sea bed uncaught is gone. Nothing lost;
+ *      the spawner keeps another target coming.
+ *
+ * "5 Times" ends at five pops; "Unlimited" runs until the child says Next.
  */
 
 /**
  * Where a bubble is in its life.
  *
  *   rising       — released at the sea bed, drifting up
- *   parachuting  — reached the top unpopped, now floating back down
- *   popped       — tapped correctly; kept for one beat so the burst can play
- *   dismissed    — tapped, but it was the wrong letter; says its name and goes
- *   missed       — parachuted all the way down without being caught
+ *   parachuting  — a TARGET that reached the surface unpopped, floating back
+ *                  down for its second chance
+ *   popped       — tapped correctly, rising or parachuting; kept for one beat
+ *                  so the burst can play
+ *   dismissed    — a decoy the child tapped; says its name and goes
+ *   escaped      — a decoy that reached the surface untouched; drifts off
+ *   missed       — a parachute that reached the sea bed uncaught; goes
  *
- * The last three are terminal. They are states rather than an immediate
+ * The last four are terminal. They are states rather than an immediate
  * removal so the exit animation has something to animate FROM, and so the
- * endings can be told apart without a second flag — `popped` scores, `missed`
- * may still earn another rise, and `dismissed` always leaves.
+ * endings can be told apart without a second flag — only `popped` scores.
  */
-export type BubblePhase = "rising" | "parachuting" | "popped" | "dismissed" | "missed";
+export type BubblePhase = "rising" | "parachuting" | "popped" | "dismissed" | "escaped" | "missed";
 
 export interface Bubble {
   id: number;
@@ -36,8 +55,6 @@ export interface Bubble {
   y: number;
   /** Size multiplier applied to the carrier bubble. */
   scale: number;
-  /** How many times this bubble has been rescued from a parachute. */
-  rescues: number;
 }
 
 /** The two ways a standalone Bubble Pop round can end. */
@@ -53,15 +70,11 @@ export const TARGET_GOAL = 5;
 
 /** Screen heights per second while rising — a ~10s trip bottom to top. */
 export const RISE_SPEED = 0.1;
-/**
- * Parachutes drift down more slowly than bubbles rise — a falling target is
- * the harder thing to hit, and the rescue is meant to be catchable.
- *
- * Not MUCH slower, though. A bubble that is never popped occupies one of the
- * few live slots for its whole rise plus its whole fall; at the first value
- * tried here that came to 29 seconds, long enough for parachutes to fill the
- * screen and choke off new bubbles.
- */
+/** Parachutes drift down more slowly than bubbles rise — a falling letter is
+ *  the harder thing to hit, and the second chance is meant to be catchable.
+ *  Not MUCH slower: a parachute holds one of the few live slots for its whole
+ *  fall, and at half speed the water filled with parachutes and choked off
+ *  new bubbles. */
 export const FALL_SPEED = 0.075;
 /** Never more than this many on screen at once, whatever the spawn roll.
  *  Five is what a four-year-old can actually scan; the cap is also what paces
@@ -69,10 +82,7 @@ export const FALL_SPEED = 0.075;
 export const MAX_ALIVE = 5;
 /** Milliseconds between spawn attempts — the low and high end of the range. */
 export const SPAWN_GAP_MS: readonly [number, number] = [1500, 2900];
-/** A bubble may be rescued this many times before the next miss retires it,
- *  so a child who cannot catch one is not stuck with it forever. */
-export const MAX_RESCUES = 2;
-/** How long a popped or missed bubble stays in the list for its exit beat. */
+/** How long a finished bubble stays in the list for its exit beat. */
 export const EXIT_MS = 420;
 
 /**
@@ -133,12 +143,17 @@ export function seedFor(letter: string, mode: PopMode): number {
 /** Pick a group size from the weight table. */
 export function rollGroupSize(random: () => number): number {
   const total = SPAWN_GROUP_WEIGHTS.reduce((n, g) => n + g.weight, 0);
-  let roll = random() * total;
-  for (const g of SPAWN_GROUP_WEIGHTS) {
-    roll -= g.weight;
-    if (roll < 0) return g.size;
-  }
-  return 1;
+  const roll = random() * total;
+  const picked = SPAWN_GROUP_WEIGHTS.reduce<{ left: number; size: number | null }>(
+    (acc, g) =>
+      acc.size !== null
+        ? acc
+        : acc.left - g.weight < 0
+          ? { left: 0, size: g.size }
+          : { left: acc.left - g.weight, size: null },
+    { left: roll, size: null }
+  );
+  return picked.size ?? 1;
 }
 
 /** Milliseconds until the next release. */
@@ -159,15 +174,16 @@ export function stepBubbles(bubbles: readonly Bubble[], dt: number): Bubble[] {
     if (isFinished(b.phase)) return b;
     if (b.phase === "rising") {
       const y = b.y + RISE_SPEED * dt;
-      // Reached the surface unpopped — turn over and float back down. This is
-      // the second chance, not a failure: nothing is lost yet.
-      return y >= 1 ? { ...b, y: 1, phase: "parachuting" as const } : { ...b, y };
+      if (y < 1) return { ...b, y };
+      // At the surface unpopped. The letter the child is hunting opens a
+      // parachute and comes back down — the second chance, nothing lost. A
+      // decoy simply escapes: it was never the point, and a decoy parachute
+      // would only be one more wrong thing to tap.
+      return { ...b, y: 1, phase: b.isTarget ? ("parachuting" as const) : ("escaped" as const) };
     }
-    if (b.phase === "parachuting") {
-      const y = b.y - FALL_SPEED * dt;
-      return y <= 0 ? { ...b, y: 0, phase: "missed" as const } : { ...b, y };
-    }
-    return b;
+    // parachuting — down to the sea bed, and gone if it gets there
+    const y = b.y - FALL_SPEED * dt;
+    return y <= 0 ? { ...b, y: 0, phase: "missed" as const } : { ...b, y };
   });
 }
 
@@ -176,21 +192,19 @@ export function stepBubbles(bubbles: readonly Bubble[], dt: number): Bubble[] {
  *
  * Returns the outcome rather than performing it, so the caller owns the sound
  * and the score and this stays testable. A tap on a bubble that is already
- * finishing is "ignored", which is what makes rapid tapping safe.
+ * finishing is "ignored", which is what makes rapid tapping safe. Only
+ * targets ever parachute, so a parachute tapped is simply a pop — the second
+ * chance, taken.
  */
-export type TapOutcome = "popped" | "rescued" | "wrong" | "ignored";
+export type TapOutcome = "popped" | "wrong" | "ignored";
 
 export function tapOutcome(bubble: Bubble | undefined): TapOutcome {
   if (!bubble || isFinished(bubble.phase)) return "ignored";
-  // A parachute is caught first and popped later: catching it is the whole
-  // point of the mechanic, so even the target letter rises again rather than
-  // popping straight from the parachute.
-  if (bubble.phase === "parachuting") return "rescued";
   return bubble.isTarget ? "popped" : "wrong";
 }
 
 /** Has this bubble's life ended? One predicate, so the loop, the tap handler
  *  and the retirement pass can never disagree about what counts as over. */
 export function isFinished(phase: BubblePhase): boolean {
-  return phase === "popped" || phase === "dismissed" || phase === "missed";
+  return phase === "popped" || phase === "dismissed" || phase === "escaped" || phase === "missed";
 }

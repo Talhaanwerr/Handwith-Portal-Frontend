@@ -54,7 +54,7 @@ interface BubblePopsProps {
  * transition, and unmounting is the only cleanup. Mount inside a positioned
  * parent when the moment arrives.
  */
-export function BubblePops({ count = 48, delay = 0 }: BubblePopsProps) {
+export function BubblePops({ count = 40, delay = 0 }: BubblePopsProps) {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       {POPS.slice(0, Math.min(count, MAX)).map((p, i) => (

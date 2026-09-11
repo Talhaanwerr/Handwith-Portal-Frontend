@@ -103,5 +103,31 @@ export const GAMES: readonly GameMeta[] = [
     route: "/play/color-paint",
     // Candy Land's card colours — this game lives in that world.
     colors: { bg: "#FFD3E4", border: "#FF9EC4", text: "#C2417A" },
+    hidden: true,
+  },
+  {
+    id: "counting-numbers",
+    title: "Numbers 1 - 5",
+    description: "Count and find the missing numbers",
+    glyph: "🔢",
+    route: "/play/counting-numbers",
+    colors: { bg: "#E6F0A8", border: "#C5DD3A", text: "#4F6A0C" },
+    hidden: true,
+  },
+  {
+    id: "door-count",
+    title: "Count the Doors",
+    description: "Count doors, compare, collect keys",
+    glyph: "🚪",
+    route: "/play/door-count",
+    colors: { bg: "#F0E6D2", border: "#C98A3F", text: "#6B4A1E" },
+  },
+  {
+    id: "number-match",
+    title: "Number Match",
+    description: "Count the cards, fill the sticker book",
+    glyph: "🔟",
+    route: "/play/number-match",
+    colors: { bg: "#E7DEFA", border: "#9A6CE0", text: "#5F3A9C" },
   },
 ] as const;

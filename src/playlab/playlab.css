@@ -24,6 +24,12 @@
 @import "./shared/styles/construction.css";
 @import "./games/pirate-match/styles/pirate-match.css";
 @import "./games/color-paint/styles/color-paint.css";
+/* Numbers 1 – 5 */
+@import "./games/counting-numbers/styles/counting-numbers.css";
+/* Count the Doors */
+@import "./games/door-count/styles/door-count.css";
+/* Number Match */
+@import "./games/number-match/styles/number-match.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

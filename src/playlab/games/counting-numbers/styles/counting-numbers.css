@@ -1,0 +1,1031 @@
+/**
+ * Numbers 1 – 5 — the look of a children's TV counting game.
+ *
+ * ONE WIDESCREEN CANVAS in the middle of the stage, soft colour either side
+ * of it, tiny controls in the corners. Everything inside the canvas is sized
+ * in container units — and in HEIGHT units (cqh) wherever a stack has to fit
+ * the screen, because the canvas is 16:9: a thing sized off the width is
+ * nearly twice as big against the height, which is how the first cut of the
+ * board ran off the bottom. 1cqh is 1% of the canvas height; the bubble, the
+ * cards, the doors and the friends are all multiples of it, and every stack
+ * below was added up against the 100cqh it has to fit in.
+ *
+ * The rules of the look, kept here so they are kept: huge targets, almost no
+ * text, numbers in big circles, flat illustrated backdrops, chunky rounded
+ * type, saturated colours, no cards-with-shadows anywhere near the play.
+ */
+
+/* ── The stage: canvas in the middle, the scene's colour either side ── */
+
+.cn-root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  container-type: size;
+  background: var(--cn-side-a, #b9cf2e);
+}
+/* the side fill: the current scene's colours, blurred, as if the picture
+   spilled past its edges */
+.cn-side {
+  position: absolute;
+  top: -12%;
+  bottom: -12%;
+  width: 34%;
+  pointer-events: none;
+  filter: blur(22px);
+  background:
+    radial-gradient(60% 50% at 50% 30%, var(--cn-side-b, #d7e85a), transparent 72%),
+    radial-gradient(70% 60% at 50% 82%, var(--cn-side-c, #8fae22), transparent 72%);
+}
+.cn-side--l {
+  left: -6%;
+}
+.cn-side--r {
+  right: -6%;
+}
+.cn-root[data-scene="field"] {
+  --cn-side-a: #b9cf2e;
+  --cn-side-b: #d7e85a;
+  --cn-side-c: #8fae22;
+}
+.cn-root[data-scene="park"] {
+  --cn-side-a: #6fb043;
+  --cn-side-b: #9ad06a;
+  --cn-side-c: #3c6e9c;
+}
+.cn-root[data-scene="hall"] {
+  --cn-side-a: #e8dcc6;
+  --cn-side-b: #f6efe0;
+  --cn-side-c: #a97fd8;
+}
+.cn-root[data-scene="classroom"] {
+  --cn-side-a: #7fa4d8;
+  --cn-side-b: #b9cdee;
+  --cn-side-c: #4f6fae;
+}
+.cn-root[data-scene="board"] {
+  --cn-side-a: #f2dfa8;
+  --cn-side-b: #fff1c9;
+  --cn-side-c: #c9a26a;
+}
+.cn-root[data-scene="panel"] {
+  --cn-side-a: #f3e6c9;
+  --cn-side-b: #fff8e6;
+  --cn-side-c: #e9c53a;
+}
+.cn-root[data-scene="final"] {
+  --cn-side-a: #e8a83a;
+  --cn-side-b: #f6c95a;
+  --cn-side-c: #d98c2a;
+}
+
+/**
+ * The canvas keeps its own 16:9 whatever the screen: as wide as the stage
+ * on a phone, with the scene's colour above and below; as tall as the stage
+ * on a desktop, with the colour either side. (`cqw`/`cqh` here are the
+ * stage's — an element's own container units never refer to itself.)
+ */
+.cn-canvas {
+  position: relative;
+  z-index: 1;
+  width: min(100cqw, calc(100cqh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  container-type: size;
+  background: #ffffff;
+  user-select: none;
+  -webkit-user-select: none;
+  /* the number circle — every layout below is built around it. Resolved by
+     whichever descendant uses it, so it is the canvas's height. */
+  --cn-bubble: 14cqh;
+}
+.cn-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+/* the incoming scene carries a dark edge, the way the reference's wipe does */
+.cn-screen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  width: 3px;
+  background: rgba(20, 20, 30, 0.28);
+  pointer-events: none;
+}
+
+/* ── Scenes: the backdrop a level is set in, painted in gradients ── */
+
+.cn-level {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.cn-level--paused {
+  pointer-events: none;
+}
+/* lime field: a sun, a darker green blob up in the corner where the choices
+   sit, two hills along the bottom, and grass strokes */
+.cn-scene--field {
+  background:
+    radial-gradient(circle at 88% 14%, #ffe36a 0 7cqh, transparent calc(7cqh + 1px)),
+    radial-gradient(48% 46% at 26% 20%, #9fbf2e 0 60%, transparent 61%),
+    radial-gradient(60% 26% at 20% 104%, #a9c92c 0 60%, transparent 61%),
+    radial-gradient(70% 30% at 78% 108%, #b4d232 0 60%, transparent 61%),
+    repeating-linear-gradient(112deg, transparent 0 9cqw, rgba(120, 150, 30, 0.12) 9cqw 9.4cqw),
+    #c8de3a;
+}
+/* the park: sky with a sun and clouds, green below, a tan path running
+   down, and the blue curve in the corner the choices sit on */
+.cn-scene--park {
+  background:
+    radial-gradient(circle at 12% 14%, #ffe36a 0 6cqh, transparent calc(6cqh + 1px)),
+    radial-gradient(ellipse 9cqh 5cqh at 40% 16%, #ffffff 0 99%, transparent 100%),
+    radial-gradient(ellipse 7cqh 4cqh at 46% 12%, #ffffff 0 99%, transparent 100%),
+    radial-gradient(ellipse 8cqh 4.5cqh at 66% 22%, #ffffff 0 99%, transparent 100%),
+    radial-gradient(56% 62% at 92% 104%, #3c6e9c 0 62%, transparent 63%),
+    linear-gradient(112deg, transparent 0 44%, #e7d3a6 44% 60%, transparent 60%),
+    linear-gradient(#a9d8f5 0 34%, #7fc24f 34% 100%);
+}
+/* the hall: cream walls with a dado, a darker floor, and the navy shape the
+   friend stands in front of */
+.cn-scene--hall {
+  background:
+    radial-gradient(58% 44% at 62% 112%, #1f3a63 0 62%, transparent 63%),
+    linear-gradient(#f1e7d6 0 74%, #c9b48f 74% 76%, #d8ccb2 76% 100%);
+}
+/* the classroom: blue and lavender bands, a window on the right, the dark
+   shape top-left for the choices */
+.cn-scene--classroom {
+  background:
+    radial-gradient(64% 58% at 12% 8%, #2f4f8f 0 58%, transparent 59%),
+    linear-gradient(#bfe0fb, #bfe0fb) right 6% top 6cqh / 18% 26cqh no-repeat,
+    linear-gradient(#ffffff, #ffffff) right calc(6% - 1cqh) top 5cqh / calc(18% + 2cqh) 28cqh
+      no-repeat,
+    radial-gradient(70% 50% at 50% 118%, #dfe6f5 0 60%, transparent 61%),
+    linear-gradient(160deg, #a9c4ea, #8fb0e0 55%, #c3cfe8);
+}
+/* the board sits on warm cream */
+.cn-scene--board {
+  background: radial-gradient(70% 60% at 50% 40%, #fff6dc 0 50%, #fff1c9 100%);
+}
+/* the picture-and-panel screens */
+.cn-scene--panel {
+  background: radial-gradient(60% 60% at 40% 40%, #fffbf2 0 50%, #fff6e8 100%);
+}
+
+/* ── The numbers ── */
+
+/** A black circle waiting for its number. Declared BEFORE the bubble so a
+ *  filled slot, which wears the bubble's classes too, takes its colour. */
+.cn-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cn-bubble);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #2b2b2b;
+  box-shadow: inset 0 0.6cqh 1.2cqh rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.cn-slot--filled {
+  box-shadow:
+    inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.18),
+    0 0.8cqh 1.6cqh rgba(0, 0, 0, 0.18);
+}
+
+.cn-bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cn-bubble);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: none;
+  /* a little lift and a rim of light, so the circles read as buttons */
+  box-shadow:
+    inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.18),
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.28),
+    0 0.8cqh 1.6cqh rgba(0, 0, 0, 0.18);
+}
+.cn-bubble-glyph {
+  font-size: calc(var(--cn-bubble) * 0.62);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.3cqh 0 rgba(0, 0, 0, 0.18);
+}
+.cn-bubble--purple {
+  background: #8e44c4;
+}
+.cn-bubble--blue {
+  background: #2e7fd6;
+}
+.cn-bubble--blue .cn-bubble-glyph {
+  color: #0d3470;
+  text-shadow: none;
+}
+.cn-bubble--cyan {
+  background: #35b4d8;
+}
+.cn-bubble--cyan .cn-bubble-glyph {
+  color: #11304f;
+  text-shadow: none;
+}
+.cn-bubble--white {
+  background: #ffffff;
+}
+.cn-bubble--white .cn-bubble-glyph {
+  color: #e8912e;
+  text-shadow: none;
+}
+/** Picked up by a tap — raised and bright, waiting for its circle. */
+.cn-bubble--selected {
+  box-shadow:
+    0 0 0 0.7cqh rgba(255, 255, 255, 0.95),
+    0 1.6cqh 3cqh rgba(0, 0, 0, 0.28);
+}
+/** The right answer on a count screen — ringed in green. */
+.cn-bubble--lit {
+  box-shadow:
+    0 0 0 0.9cqh #2fc48f,
+    0 0 0 1.8cqh rgba(47, 196, 143, 0.35),
+    0 0.8cqh 1.6cqh rgba(0, 0, 0, 0.18);
+}
+/** Placed somewhere else — the space stays, the number is gone. */
+.cn-bubble--used {
+  opacity: 0;
+  pointer-events: none;
+}
+/** Under the finger — the ghost is the one that moves. */
+.cn-bubble--dragging {
+  opacity: 0.25;
+}
+/** The flying copy, centred on its point by margin. */
+.cn-flight {
+  width: 0;
+  height: 0;
+}
+.cn-bubble--flying {
+  margin-left: calc(var(--cn-bubble) / -2);
+  margin-top: calc(var(--cn-bubble) / -2);
+  box-shadow: 0 2cqh 4cqh rgba(0, 0, 0, 0.3);
+}
+
+/* ── The things, in clusters ──
+   One arrangement per count, used by the cards and by the count screens:
+   k of n, as percentages of the parent. The 2 and 3 run diagonally the way
+   the reference's star cards do; 4 is a diamond; 5 is an X. */
+.cn-cluster-1-of-1 {
+  left: 50%;
+  top: 50%;
+}
+.cn-cluster-1-of-2 {
+  left: 30%;
+  top: 64%;
+}
+.cn-cluster-2-of-2 {
+  left: 70%;
+  top: 34%;
+}
+.cn-cluster-1-of-3 {
+  left: 26%;
+  top: 72%;
+}
+.cn-cluster-2-of-3 {
+  left: 50%;
+  top: 48%;
+}
+.cn-cluster-3-of-3 {
+  left: 76%;
+  top: 26%;
+}
+.cn-cluster-1-of-4 {
+  left: 50%;
+  top: 24%;
+}
+.cn-cluster-2-of-4 {
+  left: 24%;
+  top: 52%;
+}
+.cn-cluster-3-of-4 {
+  left: 76%;
+  top: 52%;
+}
+.cn-cluster-4-of-4 {
+  left: 50%;
+  top: 78%;
+}
+.cn-cluster-1-of-5 {
+  left: 26%;
+  top: 24%;
+}
+.cn-cluster-2-of-5 {
+  left: 74%;
+  top: 24%;
+}
+.cn-cluster-3-of-5 {
+  left: 50%;
+  top: 50%;
+}
+.cn-cluster-4-of-5 {
+  left: 26%;
+  top: 76%;
+}
+.cn-cluster-5-of-5 {
+  left: 74%;
+  top: 76%;
+}
+.cn-thing-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cn-character-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cn-confetti {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--pl-color, #f6c544);
+}
+/** The invisible button over a whole tap-anywhere screen. */
+.cn-tap {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+/** A zero-size point at the centre of the screen — where the stars burst
+ *  from when a level is done. */
+.cn-centre {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 20;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ── The friends ── */
+
+.cn-friend {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ── MATCH: the white board ──
+   Height budget inside the frame (88cqh less 4.4cqh of border): the slot row
+   is 17cqh, the strip 19cqh, and the cards take the rest with room to spare
+   above and below. Width: three 30cqh cards and two 7cqh gaps are 104cqh, in
+   a board 110cqh wide inside its padding. */
+.cn-board {
+  --cn-card: 30cqh;
+  --cn-card-gap: 7cqh;
+  position: absolute;
+  left: 25%;
+  top: 5cqh;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  width: 68%;
+  height: 88cqh;
+  overflow: hidden;
+  border: 2.2cqh solid #c58a4a;
+  border-radius: 3cqh;
+  background: #ffffff;
+  box-shadow:
+    inset 0 0 0 0.6cqh #e0b07a,
+    0 2cqh 5cqh rgba(90, 60, 20, 0.18);
+}
+.cn-board-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cn-card-gap);
+  padding: 2cqh 3cqh 1cqh;
+}
+.cn-card {
+  position: relative;
+  width: var(--cn-card);
+  aspect-ratio: 1;
+  border-radius: 2.4cqh;
+  background: linear-gradient(#c9e0f6, #b3d2f0);
+  box-shadow: inset 0 -1cqh 0 rgba(60, 100, 150, 0.14);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+/** Its number has arrived: the card lifts and lights up green. */
+.cn-card--done {
+  background: linear-gradient(#d8f3e6, #b7e9d0);
+  box-shadow:
+    inset 0 -1cqh 0 rgba(30, 120, 80, 0.14),
+    0 0 0 0.8cqh #2fc48f;
+  transform: translateY(-0.8cqh);
+}
+.cn-card-thing {
+  position: absolute;
+  width: 34%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+/* the circles sit under the cards: same centres, so the gap between them
+   is a card and a gap less a circle */
+.cn-board-slots {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--cn-card) + var(--cn-card-gap) - var(--cn-bubble));
+  padding: 1cqh 0 2cqh;
+}
+/* the answers, in a lavender strip along the bottom of the board */
+.cn-board-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8cqh;
+  padding: 2.5cqh 2cqh;
+  background: linear-gradient(#e2d3f2, #d9c8ee);
+  box-shadow: inset 0 0.5cqh 0 rgba(255, 255, 255, 0.6);
+}
+/* the friend stands in the free quarter left of the board */
+.cn-friend--board {
+  left: 2%;
+  bottom: -3cqh;
+  z-index: 2;
+  width: 19%;
+}
+
+/* ── SEQUENCE: things in a row, one number missing ── */
+
+.cn-sequence {
+  position: absolute;
+  inset: 0;
+}
+.cn-station {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  translate: -50% -50%;
+}
+.cn-station-thing {
+  width: 20cqh;
+  aspect-ratio: 1;
+}
+/** A number in its circle, in the colour of its place in the line. */
+.cn-station-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cn-bubble);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--pl-color, #8e44c4);
+  box-shadow:
+    inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.18),
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.28);
+  font-size: calc(var(--cn-bubble) * 0.62);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.3cqh 0 rgba(0, 0, 0, 0.18);
+}
+
+/* balloons climb a diagonal into the sky, each number printed on its
+   balloon, the strings trailing down to where the friend holds them */
+.cn-station--balloon .cn-station-thing {
+  width: 24cqh;
+}
+.cn-station--balloon .cn-station-number {
+  position: absolute;
+  top: 12%;
+  width: auto;
+  height: auto;
+  background: transparent;
+  box-shadow: none;
+  font-size: 10cqh;
+}
+.cn-station--balloon::after {
+  content: "";
+  width: 2px;
+  height: 22cqh;
+  background: rgba(255, 255, 255, 0.85);
+}
+.cn-sequence--balloon .cn-station-1-of-5 {
+  left: 12%;
+  top: 58%;
+}
+.cn-sequence--balloon .cn-station-2-of-5 {
+  left: 30%;
+  top: 49.5%;
+}
+.cn-sequence--balloon .cn-station-3-of-5 {
+  left: 48%;
+  top: 41%;
+}
+.cn-sequence--balloon .cn-station-4-of-5 {
+  left: 66%;
+  top: 32.5%;
+}
+.cn-sequence--balloon .cn-station-5-of-5 {
+  left: 84%;
+  top: 24%;
+}
+
+/* ants walk along the ground with their numbers behind them, the last two
+   climbing the slope */
+.cn-station--ant .cn-station-number,
+.cn-station--ant .cn-slot {
+  order: -1;
+  margin-bottom: -7cqh;
+}
+.cn-station--ant .cn-station-thing {
+  position: relative;
+  z-index: 1;
+  width: 22cqh;
+}
+.cn-sequence--ant .cn-station-1-of-5 {
+  left: 12%;
+  top: 72%;
+}
+.cn-sequence--ant .cn-station-2-of-5 {
+  left: 30%;
+  top: 72%;
+}
+.cn-sequence--ant .cn-station-3-of-5 {
+  left: 48%;
+  top: 70%;
+}
+.cn-sequence--ant .cn-station-4-of-5 {
+  left: 66%;
+  top: 60%;
+}
+.cn-sequence--ant .cn-station-5-of-5 {
+  left: 84%;
+  top: 48%;
+}
+
+/* three doors in the hall, the numbers on the wall above them. A door is
+   44cqh tall; with its number the station is 53cqh, centred at 44cqh so
+   the choices in the bottom-right corner stay clear of the last door. */
+.cn-door-svg {
+  display: block;
+  width: 20cqh;
+  height: auto;
+}
+.cn-station--door .cn-station-number,
+.cn-station--door .cn-slot {
+  order: -1;
+  z-index: 2;
+  margin-bottom: -5cqh;
+}
+.cn-station--door .cn-station-number {
+  background: #2e7fd6;
+  color: #0d3470;
+  text-shadow: none;
+}
+.cn-sequence--door .cn-station-1-of-3 {
+  left: 22%;
+  top: 44%;
+}
+.cn-sequence--door .cn-station-2-of-3 {
+  left: 50%;
+  top: 44%;
+}
+.cn-sequence--door .cn-station-3-of-3 {
+  left: 78%;
+  top: 44%;
+}
+
+/* where the choices sit */
+.cn-choices {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  gap: 6cqh;
+}
+.cn-choices--top-left {
+  left: 10%;
+  top: 6cqh;
+}
+.cn-choices--bottom-right {
+  right: 6%;
+  bottom: 7cqh;
+}
+
+/* the friends on the sequence screens */
+.cn-friend--balloon {
+  left: 4%;
+  bottom: -2cqh;
+  width: 15%;
+}
+.cn-friend--door {
+  left: 33%;
+  bottom: -4cqh;
+  z-index: 2;
+  width: 18%;
+}
+.cn-friend--ant {
+  display: none;
+}
+
+/* ── COUNT: a picture and a panel of numbers ──
+   The friend on one side of the picture, the things on the other, the panel
+   of choices curving in from the edge. With the panel on the left the two
+   swap sides. */
+.cn-count {
+  position: absolute;
+  inset: 0;
+}
+.cn-count-things {
+  position: absolute;
+  left: 34%;
+  top: 12cqh;
+  width: 38%;
+  height: 76cqh;
+}
+.cn-count-thing {
+  position: absolute;
+  width: 24%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+.cn-friend--count {
+  left: 6%;
+  top: 10cqh;
+  width: 26%;
+}
+.cn-scene--panel .cn-panel--left ~ .cn-count .cn-count-things {
+  left: 30%;
+}
+.cn-scene--panel .cn-panel--left ~ .cn-count .cn-friend--count {
+  left: 68%;
+}
+
+/* the birds perch ON the friend — head, hands, tummy, foot — so the two
+   share one spot (the bird levels keep their panel on the right) */
+.cn-count--bird .cn-friend--count {
+  left: 20%;
+  top: 6cqh;
+  width: 32%;
+}
+.cn-count--bird .cn-count-things {
+  left: 14%;
+  top: 2cqh;
+  width: 44%;
+  height: 92cqh;
+}
+.cn-count--bird .cn-count-thing {
+  width: 24%;
+}
+.cn-count--bird .cn-cluster-1-of-4,
+.cn-count--bird .cn-cluster-1-of-5 {
+  left: 54%;
+  top: 6%;
+}
+.cn-count--bird .cn-cluster-2-of-4,
+.cn-count--bird .cn-cluster-2-of-5 {
+  left: 14%;
+  top: 42%;
+}
+.cn-count--bird .cn-cluster-3-of-4,
+.cn-count--bird .cn-cluster-3-of-5 {
+  left: 92%;
+  top: 38%;
+}
+.cn-count--bird .cn-cluster-4-of-4,
+.cn-count--bird .cn-cluster-4-of-5 {
+  left: 62%;
+  top: 58%;
+}
+.cn-count--bird .cn-cluster-5-of-5 {
+  left: 34%;
+  top: 84%;
+}
+
+/* the classroom: the friend BEHIND the table, the things on the plate ON
+   it, the choices in the dark shape top-left. Painted back to front by
+   z-index: friend, then table and plate, then the things, then the panel. */
+.cn-classroom {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.cn-table-svg {
+  position: absolute;
+  left: 8%;
+  bottom: 0;
+  width: 94%;
+  height: auto;
+}
+.cn-plate {
+  position: absolute;
+  left: 40%;
+  top: 44cqh;
+  width: 34%;
+}
+.cn-plate-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cn-count--classroom .cn-friend--count {
+  left: 52%;
+  top: 8cqh;
+  z-index: 0;
+  width: 22%;
+}
+.cn-count--classroom .cn-count-things {
+  left: 42%;
+  top: 30cqh;
+  z-index: 2;
+  width: 30%;
+  height: 26cqh;
+}
+.cn-count--classroom .cn-count-thing {
+  width: 30%;
+}
+
+/* the panel of choices */
+.cn-panel {
+  position: absolute;
+  z-index: 3;
+}
+.cn-panel-choices {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqh;
+}
+.cn-panel-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* the yellow curve on one side: 36% wide with 8% of it off the edge, so
+   the padding on the hidden side (22% of the panel) centres the numbers in
+   the part that shows */
+.cn-scene--panel .cn-panel {
+  top: -10cqh;
+  bottom: -10cqh;
+  width: 36%;
+  background: linear-gradient(90deg, #e9c53a, #f2d24a);
+  box-shadow: inset 0 0 0 1.2cqh rgba(255, 255, 255, 0.25);
+}
+.cn-scene--panel .cn-panel--right {
+  right: -8%;
+  border-radius: 50% 0 0 50% / 42% 0 0 42%;
+}
+.cn-scene--panel .cn-panel--right .cn-panel-choices {
+  padding-right: 22%;
+}
+.cn-scene--panel .cn-panel--left {
+  left: -8%;
+  border-radius: 0 50% 50% 0 / 0 42% 42% 0;
+}
+.cn-scene--panel .cn-panel--left .cn-panel-choices {
+  padding-left: 22%;
+}
+.cn-scene--panel .cn-panel .cn-bubble {
+  --cn-bubble: 18cqh;
+}
+/* the dark shape top-left of the classroom holds them in a row */
+.cn-scene--classroom .cn-panel--left {
+  left: 0;
+  top: 0;
+  width: 44%;
+  height: 46cqh;
+}
+.cn-scene--classroom .cn-panel--left .cn-panel-choices {
+  flex-direction: row;
+  gap: 8cqh;
+  padding: 2% 8% 8% 4%;
+}
+
+/* ── The progress strip ── */
+
+.cn-progress {
+  position: absolute;
+  left: 50%;
+  top: 5cqh;
+  z-index: 25;
+  width: 62%;
+  height: 9cqh;
+  translate: -50% 0;
+}
+.cn-progress-bar {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow:
+    inset 0 0.4cqh 0.8cqh rgba(0, 0, 0, 0.12),
+    0 1cqh 2cqh rgba(0, 0, 0, 0.18);
+}
+.cn-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(#6ad46f, #3fae4a);
+}
+/** Pip rides the front of the fill. */
+.cn-progress-mascot {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 13cqh;
+  aspect-ratio: 1;
+  margin-top: -6.5cqh;
+  margin-left: -6.5cqh;
+  filter: drop-shadow(0 0.6cqh 0.8cqh rgba(0, 0, 0, 0.22));
+}
+
+/* ── Title, break, pause, the end ── */
+
+.cn-title,
+.cn-final {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3cqh 4% 0;
+  overflow: hidden;
+}
+.cn-title-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqh;
+  line-height: 1;
+}
+.cn-title-badge-top {
+  padding: 0.6cqh 2.4cqh;
+  border-radius: 1.6cqh 1.6cqh 0 0;
+  background: #4f8a1f;
+  border: 0.6cqh solid #f6c544;
+  font-size: 3.6cqh;
+  color: #ffffff;
+}
+.cn-title-badge-sign {
+  padding: 1.2cqh 4cqh;
+  border-radius: 1.6cqh;
+  background: #3fa33a;
+  border: 0.8cqh solid #f6c544;
+  font-size: 4.2cqh;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+}
+.cn-title-heading {
+  margin-top: 2cqh;
+  font-size: 17cqh;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0.8cqh 1.2cqh 0 rgba(60, 70, 20, 0.35),
+    0 0 3cqh rgba(60, 70, 20, 0.2);
+}
+/* the five ants parade along the bottom, Pip waving from the corner */
+.cn-title-ants {
+  position: absolute;
+  left: 4%;
+  right: 22%;
+  bottom: 17cqh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+.cn-title-ant {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cn-title-ant-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15cqh;
+  aspect-ratio: 1;
+  margin-bottom: -7cqh;
+  border-radius: 50%;
+  background: var(--pl-color);
+  box-shadow: inset 0 -1cqh 0 rgba(0, 0, 0, 0.18);
+  font-size: 9.5cqh;
+  color: #ffffff;
+}
+.cn-title-ant-thing {
+  position: relative;
+  z-index: 1;
+  width: 20cqh;
+  aspect-ratio: 1;
+}
+.cn-title-friend {
+  right: 3%;
+  bottom: 12cqh;
+  width: 14%;
+}
+.cn-title-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 14cqh;
+  background: linear-gradient(#5a9a24, #4f8a1f);
+  font-size: 9cqh;
+  color: #ffffff;
+  text-shadow: 0 0.4cqh 0 rgba(0, 0, 0, 0.2);
+}
+
+/* a friend rises to cheer, the level dimmed under it, stars and confetti */
+.cn-break {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  background: rgba(20, 24, 40, 0.45);
+  pointer-events: none;
+}
+.cn-break-friend {
+  position: absolute;
+  left: 40%;
+  bottom: 0;
+  width: 20%;
+}
+
+.cn-pause {
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 24, 40, 0.5);
+}
+.cn-pause-play {
+  width: 26cqh;
+  aspect-ratio: 1;
+  padding: 5cqh;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(62, 66, 44, 0.85);
+  cursor: pointer;
+}
+
+.cn-final {
+  background: radial-gradient(50% 40% at 50% 40%, #f8cc6a 0 60%, transparent 61%), #f4b84b;
+}
+.cn-final-heading {
+  margin-top: 2cqh;
+  font-size: 11cqh;
+  line-height: 1.1;
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0.6cqh 1cqh 0 rgba(90, 60, 10, 0.3);
+}
+.cn-final-cast {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -4cqh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+.cn-final-friend {
+  display: block;
+  width: 16%;
+}
+.cn-final-friend--momo {
+  width: 20%;
+}
+.cn-final-friend--dot {
+  width: 14%;
+}

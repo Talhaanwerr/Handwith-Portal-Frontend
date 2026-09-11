@@ -5,7 +5,6 @@ import {
   EXIT_MS,
   LANES,
   MAX_ALIVE,
-  MAX_RESCUES,
   SCALES,
   TARGET_EVERY,
   TARGET_GOAL,
@@ -30,37 +29,31 @@ interface PopGameOptions {
   mode: PopMode;
   /** Fires once, when "5 Times" reaches its goal. */
   onGoalReached: () => void;
-  /** Correct pop — the view plays the sound and says the letter. */
-  onPop: () => void;
-  /** Wrong bubble tapped; receives the glyph so it can say that letter. */
+  /** A pop — the view plays the sound and says the letter. `caught` is true
+   *  when it was a parachute, taken on its way down. */
+  onPop: (caught: boolean) => void;
+  /** A decoy tapped; receives the glyph so the view can say that letter. */
   onWrong: (glyph: string) => void;
-  /** A parachute was caught. */
-  onRescue: () => void;
 }
 
 export interface PopGame {
   /** The bubbles to render. Positions are NOT here — see `register`. */
   bubbles: readonly Bubble[];
-  /** Correct pops so far — the numerator of "Correct: 2 / 5". */
+  /** Pops so far — the numerator of "2 / 5". */
   correct: number;
   /** The bubble wobbling from a wrong tap, if any. */
   wrongId: number | null;
-  /** The bubble that just flashed a rescue, if any. */
-  rescuedId: number | null;
+  /** The parachute just caught, flashing its catch, if any. */
+  caughtId: number | null;
   tap: (id: number) => void;
   /** Bind a bubble's element so the frame loop can move it. */
   register: (id: number, el: HTMLElement | null) => void;
 }
 
 /**
- * The Bubble Pop round: spawning, motion, and what a tap means.
- *
- * WHY A HOOK. The stage used to be one component holding nine hard-coded
- * bubbles, their CSS phase offsets and their tap handling together. Adding
- * progressive spawning and the parachute rescue to that would have meant
- * timers and lifecycle flags threaded through the render body. Splitting the
- * rules (constants/pop.ts), the loop (here) and the view (PopStage) keeps each
- * small enough to reason about, and makes the lifecycle testable without a DOM.
+ * The Bubble Pop round: spawning, motion, and what a tap means. The rules
+ * themselves — what parachutes, what escapes, what a tap does — live in
+ * constants/pop.ts; this is the clock and the bookkeeping around them.
  *
  * ONE SOURCE OF TRUTH. `simRef` is the simulation; React state is a derived
  * snapshot published only when the RENDER LIST changes — a bubble spawns,
@@ -78,12 +71,11 @@ export function usePopGame({
   onGoalReached,
   onPop,
   onWrong,
-  onRescue,
 }: PopGameOptions): PopGame {
   const [bubbles, setBubbles] = useState<readonly Bubble[]>([]);
   const [correct, setCorrect] = useState(0);
   const [wrongId, setWrongId] = useState<number | null>(null);
-  const [rescuedId, setRescuedId] = useState<number | null>(null);
+  const [caughtId, setCaughtId] = useState<number | null>(null);
 
   const simRef = useRef<Bubble[]>([]);
   const nodesRef = useRef<Map<number, HTMLElement>>(new Map());
@@ -98,9 +90,9 @@ export function usePopGame({
   // because the component re-rendered with fresh closures. Written in an
   // effect rather than during render — a ref is not readable or writable
   // while rendering.
-  const handlersRef = useRef({ onGoalReached, onPop, onWrong, onRescue });
+  const handlersRef = useRef({ onGoalReached, onPop, onWrong });
   useEffect(() => {
-    handlersRef.current = { onGoalReached, onPop, onWrong, onRescue };
+    handlersRef.current = { onGoalReached, onPop, onWrong };
   });
 
   /** Publish the simulation to React. The only thing that re-renders. */
@@ -133,11 +125,9 @@ export function usePopGame({
 
   // NO RESET LOGIC, deliberately. OceanLevel keys the Pop stage by letter and
   // case, so every round mounts a brand-new component and therefore a
-  // brand-new game — the portal's remount-per-round pattern. Clearing state in
-  // an effect instead would mean one render of the previous letter's board
-  // before the reset landed, and a whole class of "did I remember to reset
-  // that ref?" bugs. All that is left to do is cancel timers on the way out,
-  // so nothing from a finished round can fire into the next one.
+  // brand-new game — the portal's remount-per-round pattern. All that is left
+  // to do is cancel timers on the way out, so nothing from a finished round
+  // can fire into the next one.
   useEffect(() => {
     const timers = timersRef.current;
     return () => {
@@ -160,14 +150,14 @@ export function usePopGame({
       // water still finish their rise while the celebration plays.
       if (goalReachedRef.current) return;
 
-      const alive = simRef.current.filter((b) => b.phase === "rising" || b.phase === "parachuting");
+      const alive = simRef.current.filter((b) => !isFinished(b.phase));
       const room = MAX_ALIVE - alive.length;
 
       if (room > 0) {
         const group = Math.min(rollGroupSize(random), room);
         const lanesInUse = new Set(alive.map((b) => b.x));
 
-        for (let n = 0; n < group; n++) {
+        Array.from({ length: group }).forEach(() => {
           // Guarantee a target at least every TARGET_EVERY bubbles, so a child
           // hunting one letter always has something to hunt.
           const due = spawnedRef.current % TARGET_EVERY === TARGET_EVERY - 1;
@@ -193,9 +183,8 @@ export function usePopGame({
             x,
             y: 0,
             scale: SCALES[id % SCALES.length],
-            rescues: 0,
           });
-        }
+        });
         publish();
       }
 
@@ -216,9 +205,8 @@ export function usePopGame({
   /** Is anything actually moving? The frame loop exists to move bubbles, so
    *  with none in flight there is nothing for it to do — during the opening
    *  beat before the first spawn, and again once the goal is reached and the
-   *  board has drained. Without this the loop span at 60fps over an empty
-   *  array for the whole celebration. */
-  const inMotion = bubbles.some((b) => b.phase === "rising" || b.phase === "parachuting");
+   *  board has drained. */
+  const inMotion = bubbles.some((b) => !isFinished(b.phase));
 
   useEffect(() => {
     if (!inMotion) return;
@@ -234,16 +222,11 @@ export function usePopGame({
       const before = simRef.current;
       const moved = stepBubbles(before, dt);
       simRef.current = moved;
-
-      let phaseChanged = false;
-      for (let i = 0; i < moved.length; i++) {
-        paint(moved[i]);
-        if (before[i] && before[i].phase !== moved[i].phase) phaseChanged = true;
-      }
+      moved.forEach(paint);
 
       // Re-render only when a bubble actually changed phase; plain movement
       // reached the DOM above without React's involvement.
-      if (phaseChanged) publish();
+      if (moved.some((b, i) => before[i]?.phase !== b.phase)) publish();
 
       frame = requestAnimationFrame(tick);
     };
@@ -260,34 +243,22 @@ export function usePopGame({
 
   /* ── Retirement ───────────────────────────────────────────────────────── */
 
-  // A finished bubble leaves after its exit beat. A missed one with rescues
-  // left is sent back to the sea bed instead of retiring: the mechanic is a
-  // second chance, not a punishment.
+  // Every ending is final: a finished bubble leaves after its exit beat, and
+  // nothing comes back. (Bubbles used to be revived after a miss, which is how
+  // the water filled with letters the child had already dealt with.)
   const retiringRef = useRef<Set<number>>(new Set());
   useEffect(() => {
-    for (const b of bubbles) {
-      if (!isFinished(b.phase)) continue;
-      if (retiringRef.current.has(b.id)) continue;
-      retiringRef.current.add(b.id);
-
-      // Only a MISSED bubble earns another rise. A dismissed one was ruled out
-      // by the child on purpose, and a popped one is done.
-      const revive = b.phase === "missed" && b.rescues < MAX_RESCUES;
-      later(() => {
-        retiringRef.current.delete(b.id);
-        const found = simRef.current.find((p) => p.id === b.id);
-        if (!found) return;
-        if (revive) {
-          found.phase = "rising";
-          found.y = 0;
-          found.rescues += 1;
-        } else {
+    bubbles
+      .filter((b) => isFinished(b.phase) && !retiringRef.current.has(b.id))
+      .forEach((b) => {
+        retiringRef.current.add(b.id);
+        later(() => {
+          retiringRef.current.delete(b.id);
           simRef.current = simRef.current.filter((p) => p.id !== b.id);
           nodesRef.current.delete(b.id);
-        }
-        publish();
-      }, EXIT_MS);
-    }
+          publish();
+        }, EXIT_MS);
+      });
   }, [bubbles, later, publish]);
 
   /* ── Tapping ──────────────────────────────────────────────────────────── */
@@ -302,25 +273,10 @@ export function usePopGame({
 
       const handlers = handlersRef.current;
 
-      if (outcome === "rescued") {
-        // Caught on the way down: it turns back into a bubble and rises again,
-        // so the child gets the pop they missed.
-        bubble.phase = "rising";
-        bubble.rescues += 1;
-        setRescuedId(id);
-        later(() => setRescuedId(null), 500);
-        handlers.onRescue();
-        publish();
-        return;
-      }
-
       if (outcome === "wrong") {
-        // The letter says its own name and LEAVES. It used to wobble and carry
-        // on rising, which meant a letter the child had already ruled out came
-        // back round as a parachute, and again after that — the water filled
-        // up with rejected letters and crowded out the ones still to find.
-        // Still not a punishment: nothing is lost, the wobble and the name
-        // play exactly as before, the letter just does not come back.
+        // A decoy says its own name and LEAVES. Not a punishment: nothing is
+        // lost, it just does not come back to crowd out the letters still to
+        // find.
         bubble.phase = "dismissed";
         setWrongId(id);
         later(() => setWrongId(null), 400);
@@ -329,9 +285,16 @@ export function usePopGame({
         return;
       }
 
+      // A pop — from a rising bubble, or from a parachute caught on its way
+      // down: the second chance, taken. Either way the letter is found.
+      const caught = bubble.phase === "parachuting";
       bubble.phase = "popped";
+      if (caught) {
+        setCaughtId(id);
+        later(() => setCaughtId(null), 500);
+      }
       publish();
-      handlers.onPop();
+      handlers.onPop(caught);
 
       setCorrect((n) => {
         const next = n + 1;
@@ -345,5 +308,5 @@ export function usePopGame({
     [mode, later, publish]
   );
 
-  return { bubbles, correct, wrongId, rescuedId, tap, register };
+  return { bubbles, correct, wrongId, caughtId, tap, register };
 }

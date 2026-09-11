@@ -345,8 +345,8 @@ export function SharkLevel({ roundIndex, onRoundComplete }: SharkLevelProps) {
                 swimming in from both sides — and the shark himself, well fed.
                 The generic sparkles are off; bubbles are the sparkle here. */}
             <GodRays />
-            <BubblePops count={56} />
-            <CelebrationMotif motif="bubble" count={30} extras={letterFall} extraEvery={4} />
+            <BubblePops count={40} />
+            <CelebrationMotif motif="bubble" count={22} extras={letterFall} extraEvery={4} />
             <SwimIn swimmers={SHARK_FRIENDS} />
 
             <motion.div

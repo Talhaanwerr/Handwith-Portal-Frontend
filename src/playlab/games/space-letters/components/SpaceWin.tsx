@@ -232,7 +232,7 @@ export function SpaceWin({
         <Ripple delay={BURST_S} count={3} gap={0.14} size="clamp(200px, 50vmin, 520px)" />
         <Burst
           pieces={STARS}
-          count={44}
+          count={36}
           delay={BURST_S}
           reach={BURST_REACH}
           size="clamp(14px, 3.2vmin, 28px)"

@@ -502,10 +502,11 @@
   position: relative;
   z-index: 2;
 }
-/** A placed piece, lifted off the dark wash with its own glow. */
+/** A placed piece. No filter and no will-change: it orbits, and a filter on a
+ *  moving element is re-rasterised every frame; the glow behind the letter
+ *  does the lifting instead. */
 .sap-win-piece {
-  filter: drop-shadow(0 0 10px rgba(159, 182, 255, 0.55));
-  will-change: transform;
+  position: absolute;
 }
 
 /** The glow behind the letter — a soft disc, breathing. Centred by margin;

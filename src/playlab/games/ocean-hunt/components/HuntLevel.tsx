@@ -413,8 +413,8 @@ export function HuntLevel() {
                 reef's regulars swimming in from both sides. The generic
                 sparkles are off — bubbles are the sparkle here. */}
             <GodRays />
-            <BubblePops count={56} />
-            <CelebrationMotif motif="bubble" count={30} extras={letterFall} extraEvery={4} />
+            <BubblePops count={40} />
+            <CelebrationMotif motif="bubble" count={22} extras={letterFall} extraEvery={4} />
             <SwimIn swimmers={HUNT_FRIENDS} />
             <motion.span
               className="oh-win-letter font-rounded relative z-10 font-black"

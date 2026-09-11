@@ -233,8 +233,13 @@
 }
 
 /** Frosted celebration overlay backdrop (blur strength via --pl-blur). */
+/** The celebration sheet. It used to carry a backdrop blur of the board
+ *  beneath; behind a tint that is 86–93% opaque in every game the blur was
+ *  invisible, and a full-screen backdrop-filter under a screen full of moving
+ *  particles is one of the most expensive things a phone can be asked to
+ *  composite. The variable is kept so the API is unchanged. */
 .pl-overlay-blur {
-  backdrop-filter: blur(var(--pl-blur, 2px));
+  --pl-blur: 0px;
 }
 
 /* ─── Letter puzzle ─────────────────────────────────────────────────────────
@@ -354,11 +359,14 @@
    the motion is Framer's, and the four motifs differ by paint rather than by
    having four components. A game can repaint these under its own root the same
    way it repaints the confetti and the letter-puzzle classes. */
+/* No `will-change` on any particle, here or below: Framer promotes an element
+   to the compositor for the length of its own animation, and a standing
+   promise on sixty of them at once meant sixty layers held for the whole
+   celebration — the jank on phones. */
 .pl-cm {
   position: absolute;
   width: calc(clamp(16px, 3.4vmin, 34px) * var(--pl-scale, 1));
   aspect-ratio: 1;
-  will-change: transform, opacity;
 }
 .pl-cm-fill {
   fill: currentColor;
@@ -411,7 +419,6 @@
   aspect-ratio: 1;
   margin-left: calc(clamp(18px, 4vmin, 40px) * var(--pl-scale, 1) / -2);
   margin-top: calc(clamp(18px, 4vmin, 40px) * var(--pl-scale, 1) / -2);
-  will-change: transform, opacity;
 }
 .pl-bp-skin {
   position: absolute;
@@ -443,7 +450,8 @@
   margin-left: calc(var(--pl-size) / -2);
   margin-top: calc(var(--pl-size) / -2);
   pointer-events: none;
-  filter: drop-shadow(0 6px 12px rgba(4, 32, 52, 0.35));
+  /* no drop-shadow: a filter on an element in continuous motion is
+     re-rasterised every frame */
 }
 .pl-swim > svg {
   display: block;
@@ -472,7 +480,7 @@
   position: absolute;
   top: -12%;
   left: 50%;
-  width: min(170vw, 170vh);
+  width: min(140vw, 140vh);
   aspect-ratio: 1;
   translate: -50% -50%;
   z-index: 0;
@@ -508,7 +516,6 @@
   border-radius: 50%;
   border: 4px solid var(--pl-ring, rgba(255, 255, 255, 0.85));
   box-shadow: 0 0 24px var(--pl-ring, rgba(255, 255, 255, 0.5));
-  will-change: transform, opacity;
 }
 
 /* ─── Burst ─────────────────────────────────────────────────────────────────
@@ -525,7 +532,6 @@
   aspect-ratio: 1;
   margin-left: calc(var(--pl-size) / -2);
   margin-top: calc(var(--pl-size) / -2);
-  will-change: transform, opacity;
 }
 .pl-burst-piece > svg {
   width: 100%;
@@ -579,4 +585,70 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* ─── Corner controls ───────────────────────────────────────────────────────
+   The five small buttons of shared/components/game/CornerControls.tsx, in the
+   four corners of a full-bleed game: leave, replay, pause, and a step either
+   way. Two games show this exact chrome (Numbers 1–5, Count the Doors), so it
+   is stated once here; a game that wants a different palette repaints these
+   classes under its own root. Sizes stay in px — a touch target does not
+   shrink with the artwork. */
+
+.pl-ctl {
+  position: absolute;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(62, 66, 44, 0.62);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.pl-ctl svg {
+  width: 100%;
+  height: 100%;
+}
+.pl-ctl--exit {
+  top: 14px;
+  left: 14px;
+}
+.pl-ctl--back {
+  bottom: 14px;
+  left: 14px;
+}
+.pl-ctl--forward {
+  bottom: 14px;
+  right: 14px;
+}
+/** Replay and pause share one capsule in the top-right. */
+.pl-ctl--capsule {
+  top: 14px;
+  right: 14px;
+  flex-direction: column;
+  gap: 2px;
+  width: 28px;
+  height: 58px;
+  padding: 3px;
+}
+.pl-ctl-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+.pl-ctl-inner svg {
+  width: 100%;
+  height: 100%;
 }
