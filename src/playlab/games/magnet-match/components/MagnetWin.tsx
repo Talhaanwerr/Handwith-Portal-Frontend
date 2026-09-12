@@ -176,7 +176,7 @@ export function MagnetWin({ letters, groupIndex, total }: MagnetWinProps) {
         <div className="mm-win-soup">
           <Burst
             pieces={soup}
-            count={32}
+            count={26}
             delay={FOUNTAIN_S}
             arc={FOUNTAIN_ARC}
             reach={FOUNTAIN_REACH}

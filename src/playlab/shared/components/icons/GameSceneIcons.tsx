@@ -28,6 +28,9 @@ import { PencilPal } from "@games/letter-hunt/components/PennyArt";
 import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
 import { PirateShip } from "@shared/components/pirate/PirateShip";
 import { TreasureChest, GoldCoin } from "@shared/components/pirate/PirateTreasure";
+import { DoorLeaf, Item, Key } from "@games/door-count/components/DoorArt";
+import { ThingArt } from "@games/number-match/components/MatchArt";
+import { cssVars } from "@shared/styles/cssVars";
 
 /* ── shared scaffolding ── */
 
@@ -590,6 +593,108 @@ export function PirateMatchIcon() {
   );
 }
 
+/* ── 12 · Count the Doors: the corridor itself — one door standing open on
+        the apples it hides, the brass knob that answers, and the key won ── */
+
+/** One door of the corridor at card size, built from the game's own leaf so
+ *  the card shows the exact door the child will meet. */
+function CorridorDoor({
+  leaf,
+  panel,
+  open = false,
+  count = 0,
+}: {
+  leaf: string;
+  panel: string;
+  open?: boolean;
+  count?: number;
+}) {
+  return (
+    <div className="dcicon-door" style={cssVars({ "--dc-leaf": leaf, "--dc-panel": panel })}>
+      <div className="dcicon-room">
+        {count > 0 && (
+          <div className="dcicon-things">
+            {Array.from({ length: count }, (_, i) => (
+              <span key={i} className="dcicon-thing">
+                <Item theme="apple" />
+              </span>
+            ))}
+          </div>
+        )}
+        {/* shut: the whole leaf. open: the leaf swung back against the jamb */}
+        <div className={open ? "dcicon-leaf dcicon-leaf--open" : "dcicon-leaf"}>
+          {open ? null : <DoorLeaf />}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function DoorCountIcon() {
+  return (
+    <Diorama className="dcicon-corridor">
+      <At x={7} y={8} w={30} z={2}>
+        <CorridorDoor leaf="#3FA33A" panel="#2E8A2A" open count={3} />
+      </At>
+      {/* and the one still shut beside it, because there are always doors */}
+      <At x={40} y={8} w={30} z={2}>
+        <CorridorDoor leaf="#E05A6E" panel="#C8455B" />
+      </At>
+      {/* the key the right answer wins, tipped out of the doorway */}
+      <At x={73} y={6} w={18} z={3} r={18}>
+        <Key />
+      </At>
+      {/* the knob that answers, with the hand about to turn it */}
+      <At x={70} y={56} w={26} z={3}>
+        <span className="dcicon-knob font-rounded font-black">3</span>
+      </At>
+      <At x={80} y={70} w={18} z={4}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * NUMBER MATCH — two cards of things with their numbers under them, the
+ * third number still waiting in the tray and a hand reaching for it. The
+ * whole game in one picture: count the card, put the number below it.
+ */
+export function NumberMatchIcon() {
+  return (
+    <Diorama className="nmicon-room">
+      <At x={6} y={10} w={40} z={2}>
+        <span className="nmicon-card" style={cssVars({ "--pl-color": "#BFE3F7" })}>
+          <span className="nmicon-thing nmicon-thing--a">
+            <ThingArt thing="cupcake" />
+          </span>
+          <span className="nmicon-thing nmicon-thing--b">
+            <ThingArt thing="cupcake" />
+          </span>
+        </span>
+      </At>
+      <At x={54} y={10} w={40} z={2}>
+        <span className="nmicon-card" style={cssVars({ "--pl-color": "#FFD9E4" })}>
+          <span className="nmicon-thing nmicon-thing--c">
+            <ThingArt thing="cupcake" />
+          </span>
+        </span>
+      </At>
+
+      {/* the numbers, one placed and one still being reached for */}
+      <At x={14} y={58} w={24} z={3}>
+        <span className="nmicon-chip font-rounded font-black">2</span>
+      </At>
+      <At x={62} y={58} w={24} z={3}>
+        <span className="nmicon-chip font-rounded font-black">1</span>
+      </At>
+      <At x={72} y={68} w={22} z={4}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
 /** id → scene, for the portal card. */
 export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "letter-tracing": LetterTracingIcon,
@@ -603,4 +708,6 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "ocean-abc": OceanAbcIcon,
   "ocean-hunt": OceanHuntIcon,
   "pirate-match": PirateMatchIcon,
+  "door-count": DoorCountIcon,
+  "number-match": NumberMatchIcon,
 };

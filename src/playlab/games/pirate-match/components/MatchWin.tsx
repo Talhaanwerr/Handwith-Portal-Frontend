@@ -120,7 +120,7 @@ export function MatchWin({ shown, letters, cheerId }: MatchWinProps) {
         <div className="pm-win-mouth">
           <Burst
             pieces={treasure}
-            count={36}
+            count={28}
             delay={FOUNTAIN_S}
             arc={FOUNTAIN_ARC}
             reach={FOUNTAIN_REACH}

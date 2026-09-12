@@ -41,6 +41,17 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "color-paint": lazy(() =>
     import("@games/color-paint/ColorPaintGame").then((m) => ({ default: m.ColorPaintGame }))
   ),
+  "counting-numbers": lazy(() =>
+    import("@games/counting-numbers/CountingNumbersGame").then((m) => ({
+      default: m.CountingNumbersGame,
+    }))
+  ),
+  "door-count": lazy(() =>
+    import("@games/door-count/DoorCountGame").then((m) => ({ default: m.DoorCountGame }))
+  ),
+  "number-match": lazy(() =>
+    import("@games/number-match/NumberMatchGame").then((m) => ({ default: m.NumberMatchGame }))
+  ),
 };
 
 interface GamePlayerProps {

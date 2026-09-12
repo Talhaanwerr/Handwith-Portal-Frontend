@@ -390,6 +390,7 @@ export function MatchLevel() {
             gapClassName="gap-0"
             blur="3px"
             size={dims}
+            sparkles={false}
           >
             <MatchWin
               shown={displayLetter(currentLetter, letterCase)}

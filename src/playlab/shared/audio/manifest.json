@@ -28,6 +28,12 @@
     },
     "toneRules": {
       "phonics-": "teaching",
+      "door-find-": "teaching",
+      "door-which-": "teaching",
+      "door-demo-": "teaching",
+      "door-key": "cheer",
+      "door-corridor-clear": "cheer",
+      "door-hooray": "cheer",
       "letter-": "teaching",
       "number-": "teaching",
       "treat-sound-": "teaching",
@@ -3293,6 +3299,180 @@
       "file": "/audio/paint/word-grape.mp3",
       "text": "grape",
       "speak": "grape!"
+    },
+    "door-home": {
+      "file": "/audio/doors/home.mp3",
+      "text": "Count the Doors",
+      "speak": "Count the Doors! Open a door to play.",
+      "note": "home screen title — matches the <h1> in DoorHome"
+    },
+    "door-start-count": {
+      "file": "/audio/doors/start-count.mp3",
+      "text": "Find that many",
+      "speak": "Let's count! Find that many.",
+      "note": "opens the Count module — text MUST match MODULES.count.blurb"
+    },
+    "door-start-compare": {
+      "file": "/audio/doors/start-compare.mp3",
+      "text": "Which has more?",
+      "speak": "More, and fewer! Which door has more?",
+      "note": "opens the More & Less module — text MUST match MODULES.compare.blurb"
+    },
+    "door-demo-door": {
+      "file": "/audio/doors/demo-door.mp3",
+      "text": "Tap this door!",
+      "speak": "Tap this door!",
+      "note": "said while the ghost hand points at the answer in Count"
+    },
+    "door-demo-knob": {
+      "file": "/audio/doors/demo-knob.mp3",
+      "text": "Turn this knob!",
+      "speak": "Turn this knob!",
+      "note": "said while the ghost hand points at the answer in More & Less"
+    },
+    "door-find-3-apple": {
+      "file": "/audio/doors/find-3-apple.mp3",
+      "text": "Find 3 apples",
+      "speak": "Find three apples!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-4-ball": {
+      "file": "/audio/doors/find-4-ball.mp3",
+      "text": "Find 4 balls",
+      "speak": "Find four balls!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-2-star": {
+      "file": "/audio/doors/find-2-star.mp3",
+      "text": "Find 2 stars",
+      "speak": "Find two stars!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-1-book": {
+      "file": "/audio/doors/find-1-book.mp3",
+      "text": "Find 1 book",
+      "speak": "Find one book!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-3-flower": {
+      "file": "/audio/doors/find-3-flower.mp3",
+      "text": "Find 3 flowers",
+      "speak": "Find three flowers!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-5-pencil": {
+      "file": "/audio/doors/find-5-pencil.mp3",
+      "text": "Find 5 pencils",
+      "speak": "Find five pencils!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-2-apple": {
+      "file": "/audio/doors/find-2-apple.mp3",
+      "text": "Find 2 apples",
+      "speak": "Find two apples!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-4-star": {
+      "file": "/audio/doors/find-4-star.mp3",
+      "text": "Find 4 stars",
+      "speak": "Find four stars!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-3-book": {
+      "file": "/audio/doors/find-3-book.mp3",
+      "text": "Find 3 books",
+      "speak": "Find three books!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-5-flower": {
+      "file": "/audio/doors/find-5-flower.mp3",
+      "text": "Find 5 flowers",
+      "speak": "Find five flowers!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-find-2-pencil": {
+      "file": "/audio/doors/find-2-pencil.mp3",
+      "text": "Find 2 pencils",
+      "speak": "Find two pencils!",
+      "note": "Count question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-more-apple": {
+      "file": "/audio/doors/which-more-apple.mp3",
+      "text": "Which door has MORE apples?",
+      "speak": "Which door has more apples?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-more-ball": {
+      "file": "/audio/doors/which-more-ball.mp3",
+      "text": "Which door has MORE balls?",
+      "speak": "Which door has more balls?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-more-flower": {
+      "file": "/audio/doors/which-more-flower.mp3",
+      "text": "Which door has MORE flowers?",
+      "speak": "Which door has more flowers?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-more-star": {
+      "file": "/audio/doors/which-more-star.mp3",
+      "text": "Which door has MORE stars?",
+      "speak": "Which door has more stars?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-fewer-apple": {
+      "file": "/audio/doors/which-fewer-apple.mp3",
+      "text": "Which door has FEWER apples?",
+      "speak": "Which door has fewer apples?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-fewer-book": {
+      "file": "/audio/doors/which-fewer-book.mp3",
+      "text": "Which door has FEWER books?",
+      "speak": "Which door has fewer books?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-fewer-pencil": {
+      "file": "/audio/doors/which-fewer-pencil.mp3",
+      "text": "Which door has FEWER pencils?",
+      "speak": "Which door has fewer pencils?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-fewer-flower": {
+      "file": "/audio/doors/which-fewer-flower.mp3",
+      "text": "Which door has FEWER flowers?",
+      "speak": "Which door has fewer flowers?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-fewer-ball": {
+      "file": "/audio/doors/which-fewer-ball.mp3",
+      "text": "Which door has FEWER balls?",
+      "speak": "Which door has fewer balls?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-which-more-book": {
+      "file": "/audio/doors/which-more-book.mp3",
+      "text": "Which door has MORE books?",
+      "speak": "Which door has more books?",
+      "note": "More & Less question — text MUST match the sign in DoorLevel"
+    },
+    "door-key": {
+      "file": "/audio/doors/key.mp3",
+      "text": "A key!",
+      "speak": "A key! Put it in the vault.",
+      "note": "the won key lands in the vault"
+    },
+    "door-corridor-clear": {
+      "file": "/audio/doors/corridor-clear.mp3",
+      "text": "All the keys! The big door is opening.",
+      "speak": "All four keys! The big door is opening!",
+      "note": "a full vault opens the corridor's double door — text MUST match CorridorClear's aria-label"
+    },
+    "door-hooray": {
+      "file": "/audio/doors/hooray.mp3",
+      "text": "Hooray!",
+      "speak": "Hooray! You opened every door!",
+      "note": "the end of a module — shown in the teacher's speech bubble"
     }
   },
   "edgeVoice": {

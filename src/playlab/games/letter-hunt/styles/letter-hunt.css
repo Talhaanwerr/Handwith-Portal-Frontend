@@ -160,7 +160,6 @@
   text-shadow:
     0 0 30px rgba(255, 217, 61, 0.55),
     0 8px 20px rgba(30, 14, 70, 0.6);
-  will-change: transform, opacity;
 }
 /** The magnifying glass — centred on its LENS (43% into its box), so what it
  *  lands on is what it is looking at. Big: the largest thing on the screen
@@ -175,8 +174,6 @@
   aspect-ratio: 1;
   margin-left: calc(var(--hunt-glass) * -0.43);
   margin-top: calc(var(--hunt-glass) * -0.43);
-  filter: drop-shadow(0 10px 22px rgba(20, 8, 50, 0.5));
-  will-change: transform;
 }
 /** The lens catching the light as the glass locks on. */
 .hunt-glass-flash {

@@ -13,4 +13,10 @@ export interface GameMeta {
     border: string;
     text: string;
   };
+  /**
+   * Kept out of the Library grid while the game is being worked on. The game
+   * itself is untouched and `/play/<id>` still opens it, so it can be tested
+   * without being offered to children yet.
+   */
+  hidden?: boolean;
 }

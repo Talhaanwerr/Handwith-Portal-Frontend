@@ -137,6 +137,13 @@ export function playChime(): void {
   setTimeout(() => getHowl("stroke-b5", [988], 0.18)?.play(), 85);
 }
 
+/** A piece landing in its place — a soft low plop, then a bright ding.
+ *  Numbers 1–5 plays it whenever a number settles into its circle. */
+export function playPlaceSound(): void {
+  getHowl("place-plop", [196, 262], 0.09, 0.6)?.play();
+  setTimeout(() => getHowl("place-ding", [1047, 1319], 0.22, 0.5)?.play(), 70);
+}
+
 /** Bright little "pop" (earning a star / small reward) */
 export function playStarPop(): void {
   getHowl("star-1", [784], 0.1, 0.55)?.play();

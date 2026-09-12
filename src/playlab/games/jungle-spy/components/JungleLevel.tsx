@@ -122,6 +122,73 @@ function AnimalIcon({ art }: { art: string }) {
   return Art ? <Art /> : null;
 }
 
+/** An element's offset from an ancestor, summed up the offsetParent chain —
+ *  layout positions, which ignore transforms. */
+function offsetWithin(el: HTMLElement | null, root: HTMLElement): { x: number; y: number } {
+  if (!el || el === root) return { x: 0, y: 0 };
+  const above = offsetWithin(el.offsetParent as HTMLElement | null, root);
+  return { x: above.x + el.offsetLeft, y: above.y + el.offsetTop };
+}
+
+/**
+ * The animal's FOOTPRINT on the board: the part of its photo that is actually
+ * painted, plus the name under it, padded a little.
+ *
+ * The photo sits object-contain in a square, so a wide animal paints only a
+ * band across the middle of its box and a tall one only a column; keeping
+ * letters off the whole square held them a long way from the picture. This
+ * works out the painted band from the image's own proportions, so the letters
+ * come right up to the animal and its name without ever touching either.
+ *
+ * All from LAYOUT offsets — never client rects, which this runs before the
+ * picture's entrance spring has moved and would report the picture at 60%.
+ * The column is pinned at (50%, 55%) and centred by translate, so its box
+ * straddles its offset point.
+ */
+function animalFootprint(column: HTMLElement): PlayArea["keep"] {
+  const left = column.offsetLeft - column.offsetWidth / 2;
+  const top = column.offsetTop - column.offsetHeight / 2;
+  const photo = column.querySelector<HTMLElement>(".jsp-animal");
+  const name = column.querySelector<HTMLElement>(".jsp-animal-name");
+  const img = photo?.querySelector("img");
+
+  const painted = (() => {
+    if (!photo) {
+      return { l: left, t: top, r: left + column.offsetWidth, b: top + column.offsetHeight };
+    }
+    const at = offsetWithin(photo, column);
+    const w = photo.offsetWidth;
+    const h = photo.offsetHeight;
+    // the loaded photo's proportions decide the painted band; until it has
+    // loaded (or when the drawing stands in) the whole square counts
+    const ratio =
+      img && img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : w / h;
+    const visW = ratio > w / h ? w : h * ratio;
+    const visH = ratio > w / h ? w / ratio : h;
+    const l = left + at.x + (w - visW) / 2;
+    const t = top + at.y + (h - visH) / 2;
+    return { l, t, r: l + visW, b: t + visH };
+  })();
+
+  const labelled = (() => {
+    if (!name) return painted;
+    const at = offsetWithin(name, column);
+    return {
+      l: Math.min(painted.l, left + at.x),
+      t: painted.t,
+      r: Math.max(painted.r, left + at.x + name.offsetWidth),
+      b: Math.max(painted.b, top + at.y + name.offsetHeight),
+    };
+  })();
+
+  return {
+    left: labelled.l - ANIMAL_PAD,
+    top: labelled.t - ANIMAL_PAD,
+    right: labelled.r + ANIMAL_PAD,
+    bottom: labelled.b + ANIMAL_PAD,
+  };
+}
+
 /** ── Board layout ─────────────────────────────────────────────────────────
  *
  *  The board is laid out in PIXELS against the measured play area, then
@@ -197,8 +264,9 @@ const CELL_JITTER = 0.5;
 const CELL_ZIGZAG = 0.22;
 /** Clear space kept between two letters. */
 const CELL_GAP = 8;
-/** Clear space kept around the animal and its name. */
-const ANIMAL_PAD = 12;
+/** Clear space kept around the animal and its name — a little, so the letters
+ *  crowd right up to the picture without ever touching it. */
+const ANIMAL_PAD = 6;
 /** Each letter owns about twice its own box of free area — the density at
  *  which a board is busy enough to hunt through and still tappable. */
 const LETTER_ROOM = 2;
@@ -542,21 +610,9 @@ export function JungleLevel() {
     const measure = () => {
       const w = el.offsetWidth;
       const h = el.offsetHeight;
-      // The animal's LAYOUT box, from offsets — never getBoundingClientRect.
-      // The picture springs in from scale 0.6, and this runs before that
-      // spring has moved, so a client rect here is the picture at 60% and the
-      // letters land on the 40% it grows into (they sat on the tentacles and
-      // the name). Offsets ignore transforms. The element is pinned at
-      // (50%, 55%) and centred by translate, so its box straddles its offset
-      // point; a little padding keeps the letters off its edges.
       const a = animalRef.current;
       const keep = a
-        ? {
-            left: a.offsetLeft - a.offsetWidth / 2 - ANIMAL_PAD,
-            top: a.offsetTop - a.offsetHeight / 2 - ANIMAL_PAD,
-            right: a.offsetLeft + a.offsetWidth / 2 + ANIMAL_PAD,
-            bottom: a.offsetTop + a.offsetHeight / 2 + ANIMAL_PAD,
-          }
+        ? animalFootprint(a)
         : {
             left: w * 0.36,
             top: h * 0.3,
@@ -566,13 +622,33 @@ export function JungleLevel() {
       setPlay({ w, h, keep });
     };
     measure();
+    // The photo's painted band is only known once it has loaded; measure again
+    // then. (Cached photos are complete on the first pass.)
+    const img = animalRef.current?.querySelector("img");
+    if (img && !img.complete) img.addEventListener("load", measure);
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
+    return () => {
+      img?.removeEventListener("load", measure);
+      window.removeEventListener("resize", measure);
+    };
+    // Re-measured per animal: each has its own proportions, and its own photo
+    // to wait for.
+  }, [currentLetter, letterCase]);
 
-  /** A coarse fingerprint of the play area: changes on a real resize or an
-   *  orientation flip, not on every sub-pixel reflow. */
-  const layoutKey = play ? `${Math.round(play.w / 40)}x${Math.round(play.h / 40)}` : null;
+  /** A coarse fingerprint of the play area AND the animal's footprint:
+   *  changes on a real resize, an orientation flip, or the photo loading and
+   *  turning out wider or taller than its square — not on every sub-pixel
+   *  reflow. */
+  const layoutKey = play
+    ? [
+        Math.round(play.w / 40),
+        Math.round(play.h / 40),
+        Math.round(play.keep.left / 20),
+        Math.round(play.keep.top / 20),
+        Math.round(play.keep.right / 20),
+        Math.round(play.keep.bottom / 20),
+      ].join("|")
+    : null;
   const boardKey = `${currentLetter}|${letterCase}|${round}`;
   const builtRef = useRef<{ board: string; layout: string } | null>(null);
   // Measured from the actual rendered root — NOT window.innerWidth/height via
@@ -834,7 +910,7 @@ export function JungleLevel() {
                 The generic sparkle confetti is switched off above — a jungle
                 that rains its own cast has no use for it, and both layers at
                 once was just noise. */}
-            <CelebrationMotif motif="leaf" count={38} extras={fallingCast} extraEvery={4} />
+            <CelebrationMotif motif="leaf" count={30} extras={fallingCast} extraEvery={4} />
 
             {/* NEW — a sunburst behind the animal, turning slowly. It makes
                 the animal the hero of the screen rather than one more thing

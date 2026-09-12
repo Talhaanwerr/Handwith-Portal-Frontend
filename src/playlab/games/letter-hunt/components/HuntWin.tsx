@@ -173,7 +173,7 @@ export function HuntWin({
         <Ripple delay={POP_S} count={3} gap={0.12} size="clamp(160px, 44vmin, 420px)" />
         <Burst
           pieces={shards}
-          count={40}
+          count={32}
           delay={POP_S}
           reach={SHARD_REACH}
           size="clamp(26px, 6vmin, 56px)"

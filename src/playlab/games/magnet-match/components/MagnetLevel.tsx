@@ -525,7 +525,7 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
       {/* ── group complete — auto-advancing celebration ── */}
       <AnimatePresence>
         {celebrating && (
-          <CelebrationOverlay tintClassName="mm-celebrate-tint" size={dims}>
+          <CelebrationOverlay tintClassName="mm-celebrate-tint" size={dims} sparkles={false}>
             {/* The kitchen's own celebration — the soup boils over and the
                 big magnet collects the letters. See MagnetWin. */}
             <MagnetWin letters={GROUPS[groupIndex]} groupIndex={groupIndex} total={TOTAL_GROUPS} />

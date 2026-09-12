@@ -1,0 +1,798 @@
+/**
+ * Number Match — a candy sky, a row of cards, and a sticker book.
+ *
+ * THE DESIGN UNIT. `--u` is 1% of the height of the largest 16:9 box that
+ * fits the canvas, so every size below is a fraction of the same thing and
+ * the whole composition holds its shape from a phone held sideways to a
+ * 21:9 monitor. Nothing here is sized in px except hairlines.
+ *
+ * THE BOARD IS A FLEX COLUMN, not a stack of absolute offsets. Its height is
+ * whatever its parts need and it is centred in what is left, so a short wide
+ * screen and a tall narrow one both get the same composition with the slack
+ * shared top and bottom — and nothing can be pushed off an edge.
+ *
+ * Two rules this file must keep:
+ *   · Anything Framer animates is centred with MARGIN, never `transform` —
+ *     a transform here would be overwritten mid-flight.
+ *   · Nothing may create a stacking context around the friend's photo, or
+ *     the `mix-blend-mode: multiply` that drops its white background would
+ *     have nothing left to blend with.
+ */
+
+.nm-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fff1dc;
+}
+
+.nm-canvas {
+  --u: min(1cqh, 0.5625cqw);
+  --nm-ink: #2e2a3d;
+  --nm-grape: #7c4fc4;
+  --nm-paper: #fffdf7;
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* Candy World's sky, the same wash Letter Treats opens on: cool blue high
+     up, a warm sun upper-left, pastel horizon, cream at the ground. */
+  background:
+    radial-gradient(60% 42% at 50% 100%, rgba(255, 242, 226, 0.9), transparent 70%),
+    radial-gradient(30% 26% at 14% 10%, rgba(255, 246, 200, 0.85), transparent 70%),
+    radial-gradient(45% 35% at 18% 30%, rgba(175, 236, 255, 0.55), transparent 70%),
+    radial-gradient(40% 30% at 82% 22%, rgba(222, 206, 255, 0.6), transparent 70%),
+    radial-gradient(55% 40% at 50% 0%, rgba(255, 255, 255, 0.35), transparent 70%),
+    linear-gradient(
+      178deg,
+      #9fd9ff 0%,
+      #a9e8fb 16%,
+      #cdd6ff 34%,
+      #f4c6ee 52%,
+      #ffb5d6 66%,
+      #ffc9b8 82%,
+      #fff1dc 100%
+    );
+}
+
+.nm-screen-wrap,
+.nm-screen,
+.nm-slide,
+.nm-board {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── The sky ──────────────────────────────────────────────────────────────── */
+
+.nm-sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nm-drift {
+  position: absolute;
+  aspect-ratio: 1;
+  opacity: 0.42;
+}
+
+/* ── The board ────────────────────────────────────────────────────────────── */
+
+.nm-board,
+.nm-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nm-board {
+  gap: calc(4 * var(--u));
+  padding: calc(4 * var(--u)) calc(34 * var(--u));
+}
+
+/* ── The question ─────────────────────────────────────────────────────────── */
+
+.nm-ask {
+  max-width: calc(112 * var(--u));
+  padding: calc(2 * var(--u)) calc(4.5 * var(--u));
+  border-radius: calc(4 * var(--u));
+  background: var(--nm-paper);
+  border: calc(0.6 * var(--u)) solid rgba(124, 79, 196, 0.25);
+  box-shadow: 0 calc(1 * var(--u)) 0 rgba(120, 96, 60, 0.18);
+  color: var(--nm-ink);
+  font-size: calc(5.2 * var(--u));
+  line-height: 1.15;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* ── The row of cards ─────────────────────────────────────────────────────── */
+
+.nm-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: calc(5 * var(--u));
+}
+
+.nm-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(3 * var(--u));
+}
+
+.nm-card {
+  position: relative;
+  width: calc(28 * var(--u));
+  height: calc(28 * var(--u));
+  border-radius: calc(3.4 * var(--u));
+  border: calc(0.8 * var(--u)) solid;
+  box-shadow: 0 calc(1.2 * var(--u)) 0 rgba(90, 74, 48, 0.22);
+}
+
+.nm-board[data-n="4"] .nm-card {
+  width: calc(23 * var(--u));
+  height: calc(25 * var(--u));
+}
+
+.nm-card[data-solved="yes"] {
+  border-color: #5faf3a;
+  box-shadow:
+    0 0 0 calc(0.6 * var(--u)) rgba(95, 175, 58, 0.3),
+    0 calc(2 * var(--u)) 0 rgba(90, 74, 48, 0.22);
+}
+
+/** The green tick that lands on a solved card, over its top-right corner. */
+.nm-tick {
+  position: absolute;
+  top: calc(-2.4 * var(--u));
+  right: calc(-2.4 * var(--u));
+  width: calc(9 * var(--u));
+  height: calc(9 * var(--u));
+  z-index: 2;
+}
+
+/* ── The things on a card ─────────────────────────────────────────────────── */
+
+.nm-thing {
+  --nm-thing: 32%;
+  position: absolute;
+  width: var(--nm-thing);
+  aspect-ratio: 1;
+  /* centred on its point with margin: Framer owns this element's transform */
+  margin-left: calc(var(--nm-thing) * -0.5);
+  margin-top: calc(var(--nm-thing) * -0.5);
+}
+
+.nm-thing[data-at$="-of-4"],
+.nm-thing[data-at$="-of-5"] {
+  --nm-thing: 27%;
+}
+
+.nm-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* one of one */
+.nm-thing[data-at="1-of-1"] {
+  left: 50%;
+  top: 50%;
+}
+
+/* two, on a gentle diagonal */
+.nm-thing[data-at="1-of-2"] {
+  left: 32%;
+  top: 64%;
+}
+.nm-thing[data-at="2-of-2"] {
+  left: 68%;
+  top: 36%;
+}
+
+/* three, climbing — the shape a child reads as "more" */
+.nm-thing[data-at="1-of-3"] {
+  left: 27%;
+  top: 70%;
+}
+.nm-thing[data-at="2-of-3"] {
+  left: 50%;
+  top: 48%;
+}
+.nm-thing[data-at="3-of-3"] {
+  left: 73%;
+  top: 26%;
+}
+
+/* four, in a square */
+.nm-thing[data-at="1-of-4"] {
+  left: 31%;
+  top: 31%;
+}
+.nm-thing[data-at="2-of-4"] {
+  left: 69%;
+  top: 31%;
+}
+.nm-thing[data-at="3-of-4"] {
+  left: 31%;
+  top: 69%;
+}
+.nm-thing[data-at="4-of-4"] {
+  left: 69%;
+  top: 69%;
+}
+
+/* five, the face of a die */
+.nm-thing[data-at="1-of-5"] {
+  left: 28%;
+  top: 27%;
+}
+.nm-thing[data-at="2-of-5"] {
+  left: 72%;
+  top: 27%;
+}
+.nm-thing[data-at="3-of-5"] {
+  left: 50%;
+  top: 50%;
+}
+.nm-thing[data-at="4-of-5"] {
+  left: 28%;
+  top: 73%;
+}
+.nm-thing[data-at="5-of-5"] {
+  left: 72%;
+  top: 73%;
+}
+
+/* ── The socket under a card ──────────────────────────────────────────────── */
+
+.nm-socket {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(13 * var(--u));
+  height: calc(13 * var(--u));
+  border-radius: 50%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.nm-socket:disabled {
+  cursor: default;
+}
+
+.nm-socket-hole {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #2e2a3d;
+  box-shadow: inset 0 calc(0.8 * var(--u)) calc(1.6 * var(--u)) rgba(0, 0, 0, 0.45);
+}
+
+/* a socket that just refused a number leans away from it */
+.nm-socket[data-bump="yes"] .nm-socket-hole {
+  background: #7a2f3a;
+  animation: nm-bump 0.4s ease;
+}
+
+@keyframes nm-bump {
+  0%,
+  100% {
+    margin-left: 0;
+  }
+  25% {
+    margin-left: calc(-1.6 * var(--u));
+  }
+  75% {
+    margin-left: calc(1.6 * var(--u));
+  }
+}
+
+.nm-socket-filled {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.nm-socket:focus-visible {
+  outline: calc(0.8 * var(--u)) solid var(--nm-grape);
+  outline-offset: calc(0.8 * var(--u));
+}
+
+/* ── The numbers ──────────────────────────────────────────────────────────── */
+
+.nm-chip-face {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #9a6ce0 0%, #7c4fc4 100%);
+  border: calc(0.7 * var(--u)) solid #5f3a9c;
+  box-shadow:
+    inset 0 calc(0.8 * var(--u)) 0 rgba(255, 255, 255, 0.35),
+    0 calc(0.9 * var(--u)) 0 rgba(60, 36, 100, 0.45);
+  color: #fff;
+}
+
+.nm-chip-glyph {
+  font-size: calc(7.4 * var(--u));
+  line-height: 1;
+}
+
+.nm-chip-face[data-big="yes"] .nm-chip-glyph {
+  font-size: calc(8 * var(--u));
+}
+
+.nm-tray {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(4 * var(--u));
+  padding: calc(2.4 * var(--u)) calc(5 * var(--u));
+  border-radius: calc(6 * var(--u));
+  background: rgba(255, 255, 255, 0.75);
+  border: calc(0.6 * var(--u)) solid rgba(124, 92, 191, 0.35);
+  box-shadow: 0 calc(1 * var(--u)) 0 rgba(120, 96, 60, 0.14);
+}
+
+.nm-chip {
+  width: calc(14 * var(--u));
+  height: calc(14 * var(--u));
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.nm-chip[data-picked="yes"] .nm-chip-face {
+  border-color: #f6c544;
+  box-shadow:
+    0 0 0 calc(0.8 * var(--u)) rgba(246, 197, 68, 0.6),
+    0 calc(0.9 * var(--u)) 0 rgba(60, 36, 100, 0.45);
+}
+
+.nm-chip[data-used="yes"] {
+  cursor: default;
+  pointer-events: none;
+}
+
+.nm-chip[data-used="yes"] .nm-chip-face {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(124, 92, 191, 0.3);
+  box-shadow: none;
+}
+
+.nm-chip[data-used="yes"] .nm-chip-glyph {
+  visibility: hidden;
+}
+
+.nm-chip[data-dragging="yes"] .nm-chip-face {
+  opacity: 0.3;
+}
+
+.nm-chip:focus-visible {
+  outline: calc(0.8 * var(--u)) solid var(--nm-grape);
+  outline-offset: calc(0.6 * var(--u));
+  border-radius: 50%;
+}
+
+/* the number under the finger, and the one flying into its socket */
+.nm-ghost,
+.nm-flight {
+  position: absolute;
+  width: calc(15 * var(--u));
+  height: calc(15 * var(--u));
+  /* centred on its point with margin: `left`/`top` are animated */
+  margin-left: calc(-7.5 * var(--u));
+  margin-top: calc(-7.5 * var(--u));
+  pointer-events: none;
+}
+
+.nm-ghost {
+  z-index: 40;
+}
+
+.nm-flight {
+  z-index: 41;
+}
+
+/* ── The friend ───────────────────────────────────────────────────────────── *
+ * No z-index, no filter, no transform on this wrapper: every one of those
+ * would make a stacking context and kill the multiply blend on the photo. */
+
+.nm-pal {
+  position: absolute;
+  bottom: calc(1 * var(--u));
+  right: calc(1.5 * var(--u));
+  width: calc(30 * var(--u));
+  height: calc(54 * var(--u));
+  pointer-events: none;
+}
+
+.nm-pal[data-big="yes"] {
+  width: calc(26 * var(--u));
+  height: calc(46 * var(--u));
+}
+
+.nm-pal-photo {
+  position: absolute;
+  bottom: calc(2.4 * var(--u));
+  left: 0;
+  width: 100%;
+  height: calc(100% - 2.4 * var(--u));
+  object-fit: contain;
+  object-position: bottom center;
+  mix-blend-mode: multiply;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.nm-pal-shadow {
+  position: absolute;
+  bottom: calc(0.6 * var(--u));
+  left: 18%;
+  width: 64%;
+  height: calc(2.4 * var(--u));
+  border-radius: 50%;
+  background: rgba(120, 86, 40, 0.22);
+}
+
+/* The bubble hangs off the INNER side of the friend, never centred on them:
+   they stand in the corner, so a centred bubble would hang off the screen. */
+.nm-pal-says {
+  position: absolute;
+  top: calc(-1 * var(--u));
+  right: 0;
+  width: calc(28 * var(--u));
+  padding: calc(1.6 * var(--u)) calc(2.6 * var(--u));
+  border-radius: calc(3.4 * var(--u));
+  background: #fff;
+  border: calc(0.6 * var(--u)) solid #e0d3f2;
+  box-shadow: 0 calc(0.8 * var(--u)) 0 rgba(90, 74, 48, 0.18);
+  color: var(--nm-ink);
+  font-size: calc(4.2 * var(--u));
+  text-align: center;
+}
+
+/* ── The sticker ──────────────────────────────────────────────────────────── */
+
+.nm-sticker {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 28%;
+  background: #fff;
+  box-shadow: 0 calc(0.6 * var(--u)) calc(1.2 * var(--u)) rgba(90, 74, 48, 0.28);
+}
+
+.nm-sticker-art {
+  display: block;
+  width: 76%;
+  height: 76%;
+}
+
+/* ── The reward: a sticker into the book ──────────────────────────────────── */
+
+.nm-reward,
+.nm-turn {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(4 * var(--u));
+  overflow: hidden;
+  /* solid, so the friend's multiply blend has something to blend with */
+  background: radial-gradient(120% 90% at 50% 18%, #fff8e6 0%, #ffe7c9 55%, #ffd2bd 100%);
+}
+
+.nm-reward-title,
+.nm-turn-title {
+  color: var(--nm-grape);
+  font-size: calc(9 * var(--u));
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 calc(0.8 * var(--u)) 0 rgba(124, 79, 196, 0.22);
+}
+
+.nm-reward-fly {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  width: calc(16 * var(--u));
+  height: calc(16 * var(--u));
+  margin-left: calc(-8 * var(--u));
+  margin-top: calc(-8 * var(--u));
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── The book and its pages ───────────────────────────────────────────────── */
+
+.nm-book {
+  position: relative;
+  perspective: calc(180 * var(--u));
+}
+
+.nm-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(2 * var(--u));
+  padding: calc(3 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u));
+  border-radius: calc(2.4 * var(--u));
+  background: var(--nm-paper);
+  border: calc(0.6 * var(--u)) solid #e3d3b4;
+  box-shadow: 0 calc(1.2 * var(--u)) 0 rgba(120, 96, 60, 0.2);
+}
+
+.nm-page-no {
+  color: #a8926a;
+  font-size: calc(3.6 * var(--u));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nm-page-slots {
+  display: flex;
+  gap: calc(3 * var(--u));
+}
+
+.nm-page-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(17 * var(--u));
+  height: calc(17 * var(--u));
+  border-radius: 28%;
+  border: calc(0.5 * var(--u)) dashed #d8c39a;
+  background: #f6eedc;
+}
+
+.nm-page-slot[data-has="yes"] {
+  border-style: solid;
+  border-color: transparent;
+  background: none;
+}
+
+.nm-page-sticker {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* the finished page, mid-turn */
+.nm-book--turning {
+  transform-style: preserve-3d;
+}
+
+.nm-turn-leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+/* ── The start screen ─────────────────────────────────────────────────────── */
+
+.nm-title {
+  color: var(--nm-grape);
+  font-size: calc(11 * var(--u));
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 calc(1 * var(--u)) 0 rgba(255, 255, 255, 0.9);
+}
+
+.nm-home,
+.nm-final {
+  gap: calc(3.4 * var(--u));
+  padding: calc(4 * var(--u)) calc(34 * var(--u));
+}
+
+/** The album cover: the whole game in one object, and the start button. */
+.nm-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(2 * var(--u));
+  width: min(100%, calc(104 * var(--u)));
+  padding: calc(3.4 * var(--u)) calc(4 * var(--u)) calc(3.4 * var(--u)) calc(9 * var(--u));
+  border-radius: calc(3 * var(--u));
+  border: calc(0.8 * var(--u)) solid #e3c98f;
+  background: linear-gradient(180deg, #fffdf7 0%, #fdf2df 100%);
+  box-shadow:
+    0 calc(2 * var(--u)) 0 rgba(120, 96, 60, 0.28),
+    inset 0 0 0 calc(0.6 * var(--u)) rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.nm-cover:focus-visible {
+  outline: calc(0.8 * var(--u)) solid var(--nm-grape);
+  outline-offset: calc(1 * var(--u));
+}
+
+.nm-cover-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: calc(4.4 * var(--u));
+  background: linear-gradient(90deg, #b8762c 0%, #e0a95c 70%, #c98a3f 100%);
+  border-right: calc(0.5 * var(--u)) solid rgba(0, 0, 0, 0.14);
+}
+
+.nm-cover-title {
+  color: var(--nm-grape);
+  font-size: calc(5.4 * var(--u));
+  line-height: 1;
+}
+
+.nm-cover-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: calc(1.8 * var(--u));
+  width: 100%;
+}
+
+.nm-cover-slot {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 26%;
+  border: calc(0.5 * var(--u)) dashed #d8c39a;
+  background: #f8f1e2;
+}
+
+.nm-cover-slot[data-has="yes"] {
+  border-color: transparent;
+  background: none;
+}
+
+/** An unearned sticker shows what it will be, very faintly. */
+.nm-cover-ghost {
+  display: block;
+  width: 62%;
+  height: 62%;
+  opacity: 0.16;
+}
+
+.nm-cover-count {
+  color: #a8926a;
+  font-size: calc(3.4 * var(--u));
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nm-cover-shine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 26%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  pointer-events: none;
+}
+
+.nm-home-buttons {
+  display: flex;
+  align-items: center;
+  gap: calc(3 * var(--u));
+}
+
+/* ── The end ──────────────────────────────────────────────────────────────── */
+
+.nm-final-book {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(3 * var(--u));
+}
+
+/* three pages side by side are thumbnails, not reading-size pages */
+.nm-final-page .nm-page {
+  gap: calc(1.4 * var(--u));
+  padding: calc(2 * var(--u)) calc(2.4 * var(--u)) calc(2.6 * var(--u));
+}
+
+.nm-final-page .nm-page-no {
+  font-size: calc(2.6 * var(--u));
+}
+
+.nm-final-page .nm-page-slots {
+  gap: calc(1.6 * var(--u));
+}
+
+.nm-final-page .nm-page-slot {
+  width: calc(9 * var(--u));
+  height: calc(9 * var(--u));
+}
+
+.nm-final-count {
+  color: #6b5a3e;
+  font-size: calc(4.4 * var(--u));
+}
+
+/* ── Quieter when the device asks for it ──────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .nm-socket[data-bump="yes"] .nm-socket-hole {
+    animation: none;
+  }
+  .nm-drift,
+  .nm-cover-shine {
+    display: none;
+  }
+}
+
+/* ── The Library card ─────────────────────────────────────────────────────────
+   A miniature of the real thing: two cards of cupcakes on the candy sky with
+   their numbers under them, and a hand reaching for one. Sized in % of the
+   diorama, so it is sharp at every card size the grid uses. */
+
+.nmicon-room {
+  background: linear-gradient(178deg, #a9e8fb 0%, #cdd6ff 34%, #ffb5d6 70%, #fff1dc 100%);
+}
+
+.nmicon-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 10;
+  border-radius: 14%;
+  border: 4% solid rgba(90, 74, 48, 0.25);
+  background: var(--pl-color);
+}
+
+.nmicon-thing {
+  position: absolute;
+  width: 44%;
+  aspect-ratio: 1;
+  margin-left: -22%;
+  margin-top: -22%;
+}
+
+.nmicon-thing--a {
+  left: 34%;
+  top: 64%;
+}
+.nmicon-thing--b {
+  left: 66%;
+  top: 36%;
+}
+.nmicon-thing--c {
+  left: 50%;
+  top: 50%;
+}
+
+.nmicon-chip {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #9a6ce0 0%, #7c4fc4 100%);
+  border: 7% solid #5f3a9c;
+  color: #fff;
+  font-size: 190%;
+  line-height: 1;
+}

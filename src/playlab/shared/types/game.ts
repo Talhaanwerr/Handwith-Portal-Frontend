@@ -8,6 +8,12 @@ export interface GameMeta {
   route: string;
   /** Pastel card colors, matching the game's own identity */
   colors: { bg: string; border: string; text: string };
+  /**
+   * Kept off the shelf while the game is being worked on. The game itself is
+   * untouched and its route still opens it, so it can be tested without
+   * being offered to children yet.
+   */
+  hidden?: boolean;
 }
 
 /**

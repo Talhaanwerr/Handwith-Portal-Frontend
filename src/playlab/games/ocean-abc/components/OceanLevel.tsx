@@ -83,10 +83,9 @@ const OCEAN_CROSSERS: readonly Crosser[] = (
       size: "clamp(96px, 24vmin, 230px)",
     },
     { key: "x-ray fish", y: "50%", delay: 1.0, dur: 3.6, from: "right", size: SHOAL_SIZE },
-    { key: "x-ray fish", y: "55%", delay: 1.15, dur: 3.5, from: "right", size: SHOAL_SIZE },
+    { key: "x-ray fish", y: "56%", delay: 1.15, dur: 3.5, from: "right", size: SHOAL_SIZE },
     { key: "x-ray fish", y: "47%", delay: 1.3, dur: 3.7, from: "right", size: SHOAL_SIZE },
-    { key: "x-ray fish", y: "58%", delay: 1.45, dur: 3.4, from: "right", size: SHOAL_SIZE },
-    { key: "x-ray fish", y: "52%", delay: 1.6, dur: 3.8, from: "right", size: SHOAL_SIZE },
+    { key: "x-ray fish", y: "53%", delay: 1.5, dur: 3.4, from: "right", size: SHOAL_SIZE },
   ] as const
 ).flatMap(({ key, ...path }) => {
   const Art = ANIMAL_ART[key];
@@ -311,10 +310,10 @@ export function OceanLevel() {
                 confetti this used to throw are gone — confetti does not fall
                 underwater, and bubbles are the sparkle here. */}
             <GodRays />
-            <BubblePops count={56} />
+            <BubblePops count={40} />
             {/* a second fizz, timed to the pearl */}
-            {clamOpen && <BubblePops count={36} delay={1.1} />}
-            <CelebrationMotif motif="bubble" count={30} extras={letterFall} extraEvery={4} />
+            {clamOpen && <BubblePops count={24} delay={1.1} />}
+            <CelebrationMotif motif="bubble" count={22} extras={letterFall} extraEvery={4} />
             <SwimIn swimmers={OCEAN_FRIENDS} />
             <SwimAcross crossers={OCEAN_CROSSERS} />
 
