@@ -1,5 +1,5 @@
 /**
- * Number Match — a candy sky, a row of cards, and a sticker book.
+ * Number Pals — a candy sky, a row of cards, and a sticker book.
  *
  * THE DESIGN UNIT. `--u` is 1% of the height of the largest 16:9 box that
  * fits the canvas, so every size below is a fraction of the same thing and
@@ -27,11 +27,6 @@
 }
 
 .nm-canvas {
-  --u: min(1cqh, 0.5625cqw);
-  --nm-ink: #2e2a3d;
-  --nm-grape: #7c4fc4;
-  --nm-paper: #fffdf7;
-
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -69,6 +64,20 @@
 }
 
 /* ── The sky ──────────────────────────────────────────────────────────────── */
+
+/* Everything lives inside the stage, because a container query cannot style
+   the container it is asking about — so the shape of the screen is asked of
+   `.nm-canvas` and answered here, on the box inside it. */
+.nm-stage {
+  --u: min(1cqh, 0.5625cqw);
+  --nm-ink: #2e2a3d;
+  --nm-grape: #7c4fc4;
+  --nm-paper: #fffdf7;
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
 
 .nm-sky {
   position: absolute;
@@ -733,6 +742,166 @@
 }
 
 /* ── Quieter when the device asks for it ──────────────────────────────────── */
+
+/* ── A TALL SCREEN ─────────────────────────────────────────────────────────
+ * A phone held upright is not a small landscape screen; it is a different
+ * shape, and `min(1cqh, 0.5625cqw)` answers it by shrinking the whole game
+ * into a 16:9 strip in the middle — on a 375 x 812 phone that left the board
+ * using a FIFTH of the screen with 27px number chips, which is smaller than
+ * a four-year-old's fingertip.
+ *
+ * So a tall screen gets its own composition: a unit tied to the width it
+ * actually has, the cards in one row across it, and the friend standing in
+ * the space underneath rather than beside.
+ *
+ * TWO SHAPES HIDE IN HERE. With `min(1cqh, 1.5cqw)` a 3:4 tablet is 100u
+ * tall and a 9:16 phone is 144u, so every size below has to fit the SHORTER
+ * of the two; the phone then gets the same board with more sky around it.
+ * The friend is sized as a share of the screen rather than in units for the
+ * same reason — 46u of friend is most of a tablet and a third of a phone —
+ * and that share is `cqh`, never `%`: a percentage padding is a share of the
+ * WIDTH, which is not what "leave the bottom of the screen free" means.
+ */
+
+@container (max-aspect-ratio: 1 / 1) {
+  .nm-stage {
+    --u: min(1cqh, 1.5cqw);
+  }
+
+  /* the bottom of the screen is the friend's; the board centres in the rest */
+  .nm-board,
+  .nm-screen {
+    gap: calc(2.5 * var(--u));
+    padding: max(calc(3 * var(--u)), 76px) calc(2 * var(--u))
+      calc(min(calc(46 * var(--u)), 30cqh) + 2 * var(--u));
+  }
+
+  /* one line, not two: `text-wrap: balance` splits a question that only just
+     fits into two balanced lines, and the second line is 4u the board does
+     not have on the shorter of the two portrait shapes */
+  .nm-ask {
+    max-width: 100%;
+    padding: calc(1.2 * var(--u)) calc(2.6 * var(--u));
+    font-size: calc(3.6 * var(--u));
+  }
+
+  /* THE CARDS STAY IN ONE ROW. Wrapping them two-up doubles the height the
+     row costs and leaves nowhere for the friend to stand; one row means each
+     card is as wide as the screen divided by however many there are, which is
+     still far bigger than the strip gave them. */
+  .nm-row {
+    gap: calc(2 * var(--u));
+  }
+
+  .nm-slot {
+    gap: calc(2 * var(--u));
+  }
+
+  .nm-card {
+    width: calc(17 * var(--u));
+    height: calc(17 * var(--u));
+  }
+
+  .nm-board[data-n="4"] .nm-row {
+    gap: calc(1.6 * var(--u));
+  }
+
+  .nm-board[data-n="4"] .nm-card {
+    width: calc(14 * var(--u));
+    height: calc(15 * var(--u));
+  }
+
+  .nm-tick {
+    top: calc(-1.6 * var(--u));
+    right: calc(-1.6 * var(--u));
+    width: calc(6 * var(--u));
+    height: calc(6 * var(--u));
+  }
+
+  /* a socket is never wider than the card it belongs under, or four slots
+     stop fitting across a phone */
+  .nm-socket {
+    width: calc(13 * var(--u));
+    height: calc(13 * var(--u));
+  }
+
+  .nm-tray {
+    gap: calc(1.4 * var(--u));
+    padding: calc(1.6 * var(--u)) calc(2 * var(--u));
+  }
+
+  .nm-chip {
+    width: calc(10 * var(--u));
+    height: calc(10 * var(--u));
+  }
+
+  .nm-chip-glyph,
+  .nm-chip-face[data-big="yes"] .nm-chip-glyph {
+    font-size: calc(5.4 * var(--u));
+  }
+
+  /* the friend stands in the space under the board, not beside it */
+  .nm-pal,
+  .nm-pal[data-big="yes"] {
+    width: min(calc(26 * var(--u)), 26cqw);
+    height: min(calc(46 * var(--u)), 30cqh);
+  }
+
+  /* A tall screen has nowhere for a speech bubble to go: it lands on the
+     tray or on the cards whichever way it is hung. The friend still cheers
+     and waves — and every line they say is spoken aloud anyway. */
+  .nm-pal-says {
+    display: none;
+  }
+
+  /* ── the start screen, the book and the end ── */
+
+  .nm-title {
+    font-size: calc(7 * var(--u));
+  }
+
+  .nm-home,
+  .nm-final {
+    gap: calc(2.4 * var(--u));
+    padding: max(calc(3 * var(--u)), 76px) calc(2 * var(--u))
+      calc(min(calc(46 * var(--u)), 30cqh) + 2 * var(--u));
+  }
+
+  .nm-cover {
+    padding: calc(2.6 * var(--u)) calc(3 * var(--u)) calc(2.6 * var(--u)) calc(6 * var(--u));
+  }
+
+  .nm-cover-title {
+    font-size: calc(4 * var(--u));
+  }
+
+  .nm-cover-count {
+    font-size: calc(2.8 * var(--u));
+  }
+
+  .nm-page {
+    gap: calc(1.4 * var(--u));
+    padding: calc(2 * var(--u)) calc(2.4 * var(--u)) calc(2.6 * var(--u));
+  }
+
+  .nm-page-slots {
+    gap: calc(1.6 * var(--u));
+  }
+
+  .nm-page-slot {
+    width: calc(12 * var(--u));
+    height: calc(12 * var(--u));
+  }
+
+  .nm-page-no {
+    font-size: calc(2.8 * var(--u));
+  }
+
+  .nm-reward-title,
+  .nm-turn-title {
+    font-size: calc(6.4 * var(--u));
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .nm-socket[data-bump="yes"] .nm-socket-hole {

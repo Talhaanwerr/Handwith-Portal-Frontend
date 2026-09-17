@@ -1,5 +1,5 @@
 /**
- * Count the Doors — every level, as data, plus the rules that read it.
+ * Key Quest — every level, as data, plus the rules that read it.
  *
  * ONE SUBJECT: doors. A level is a row of open doors in a school corridor and
  * one question about them. The game is TWO MODULES, chosen from the home
@@ -7,7 +7,7 @@
  *
  *   count    — "Find 3 apples": the child taps the door holding that many.
  *   compare  — "Which door has MORE apples?" and "Which door has FEWER
- *              apples?": the child turns the knob naming that door.
+ *              apples?": the child touches that door.
  *
  * Either way THE ANSWER IS A DOOR, named by its number. It is never stored:
  * `answerFor` derives it from the doors, so a level cannot disagree with
@@ -19,9 +19,6 @@
  */
 
 import { unit } from "@shared/utils/hash";
-
-/** Nothing is ever counted past five — this is a 1–5 game. */
-export const MAX_ITEMS = 5;
 
 /** Doors solved per corridor = keys in the vault = the progress unit. */
 export const LEVELS_PER_CORRIDOR = 4;
@@ -67,7 +64,7 @@ export interface DoorSpec {
 export type Ask =
   /** Count module: tap the door holding this many things. */
   | { kind: "find"; count: number }
-  /** More & Less: turn the knob naming the door with the most, or the fewest. */
+  /** More & Less: touch the door with the most of them, or the fewest. */
   | { kind: "which"; want: "more" | "fewer" };
 
 export interface DoorLevel {
@@ -237,19 +234,6 @@ export function isCorrect(level: DoorLevel, doorLabel: number): boolean {
   return doorLabel === answerFor(level);
 }
 
-/**
- * HOW THIS LEVEL IS ANSWERED.
- *
- * Counting is a question about one door, so the door itself is the button —
- * a child who can see three apples should be able to reach straight for
- * them. Comparing is a question about the whole row, so the answer moves
- * down to the knobs, one per door, where choosing is a deliberate act rather
- * than a reach for the thing already under the finger.
- */
-export function answerBy(level: DoorLevel): "door" | "knob" {
-  return level.ask.kind === "find" ? "door" : "knob";
-}
-
 /* ── The paint ───────────────────────────────────────────────────────────────
    The doors are a different colour EVERY ROUND, and every door in a row is a
    different colour from its neighbours — including the four-door rows, which
@@ -373,11 +357,6 @@ export function modulePaint(id: ModuleId): DoorPaint {
 }
 
 /* ── Corridors ───────────────────────────────────────────────────────────── */
-
-/** 1-based corridor number for a level. */
-export function corridorOf(levelIndex: number): number {
-  return Math.floor(levelIndex / LEVELS_PER_CORRIDOR) + 1;
-}
 
 /** Keys already in the vault when this level starts. */
 export function keysBefore(levelIndex: number): number {

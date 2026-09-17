@@ -26,10 +26,12 @@
 @import "./games/color-paint/styles/color-paint.css";
 /* Numbers 1 – 5 */
 @import "./games/counting-numbers/styles/counting-numbers.css";
-/* Count the Doors */
+/* Key Quest */
 @import "./games/door-count/styles/door-count.css";
-/* Number Match */
+/* Number Pals */
 @import "./games/number-match/styles/number-match.css";
+/* Leo's Puzzles */
+@import "./games/shape-match/styles/shape-match.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ROUNDS_PER_PAGE,
@@ -15,6 +16,7 @@ import { CelebrationMotif } from "@shared/components/game/CelebrationMotif";
 import { Confetti } from "@shared/components/game/Confetti";
 import { GodRays } from "@shared/components/game/GodRays";
 import { playClickSound } from "@shared/audio/sfx";
+import { playClip, sayAfter } from "@shared/audio/voice";
 
 /**
  * The screens either side of the game: the one it opens on, and the one it
@@ -49,6 +51,12 @@ const COVER_TILT = [-7, 5, -4, 6, 4, -5, 7, -3, -6, 4, -4, 6];
  */
 export function MatchHome({ done, onStart, onRestart }: HomeProps) {
   const started = done > 0 && done < TOTAL_ROUNDS;
+
+  /** The friends say hello as the book arrives. */
+  useEffect(() => {
+    void playClip("pals-home");
+  }, []);
+
   const start = () => {
     playClickSound();
     onStart();
@@ -62,7 +70,7 @@ export function MatchHome({ done, onStart, onRestart }: HomeProps) {
         animate={{ y: "0%", opacity: 1, rotate: 0 }}
         transition={{ type: "spring", stiffness: 180, damping: 13 }}
       >
-        Number Match
+        Number Pals
       </motion.h1>
 
       <motion.button
@@ -155,6 +163,11 @@ export function MatchHome({ done, onStart, onRestart }: HomeProps) {
 
 export function MatchFinal({ onAgain }: { onAgain: () => void }) {
   const pages = Math.ceil(TOTAL_ROUNDS / ROUNDS_PER_PAGE);
+
+  /** "The book is full! Every one!" — the friend's bubble, said aloud. */
+  useEffect(() => {
+    void sayAfter("pals-book-full");
+  }, []);
 
   return (
     <div className="nm-screen nm-final">

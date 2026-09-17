@@ -9,9 +9,10 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
-import { toRootPoint } from "@shared/utils/pointer";
-import { playClickSound, playFanfare, playPlaceSound, playStarPop } from "@shared/audio/sfx";
-import { clipText } from "@shared/audio/voice";
+import { toRootPoint, type RootPoint } from "@shared/utils/pointer";
+import { playClickSound, playFanfare, playClinkSound, playStarPop } from "@shared/audio/sfx";
+import { clipText, playClip, sayAfter, stopVoice } from "@shared/audio/voice";
+import { cheerFor } from "@shared/audio/cheers";
 import { useDoorStore, type DoorScreen } from "@games/door-count/store/doorStore";
 import {
   MODULES,
@@ -20,7 +21,7 @@ import {
   levelCount,
   type ModuleId,
 } from "@games/door-count/constants/levels";
-import { DoorLevel, type Point } from "@games/door-count/components/DoorLevel";
+import { DoorLevel } from "@games/door-count/components/DoorLevel";
 import { CorridorClear, DoorFinal, DoorHome } from "@games/door-count/components/DoorScreens";
 import { Teacher } from "@games/door-count/components/Teacher";
 import { FlyingKey, Vault, type KeyFlight } from "@games/door-count/components/Vault";
@@ -52,23 +53,9 @@ const CLEAR_MS = 3000;
 const VAULT_OPEN_MS = 780;
 /** How long the vault keeps the light after a key goes in. */
 const FLASH_MS = 700;
-/** What the teacher says, in turn. */
-/**
- * What the teacher says, in turn.
- *
- * These are the portal's EXISTING cheer clips, and the words come out of the
- * manifest rather than being typed here — that is the rule the audio layer is
- * built on, so what is on screen and what is spoken can never drift apart.
- * It also means this game needs no praise audio generated: it already exists.
- */
-const PRAISE_CLIPS = [
-  "cheer-well-done",
-  "cheer-great-job",
-  "cheer-amazing",
-  "cheer-you-did-it",
-  "cheer-wonderful",
-] as const;
-
+/** How long after a right answer the narrator says what the key is for — the
+ *  praise line first, then this as the key is filling the screen. */
+const KEY_LINE_MS = 1100;
 /**
  * COUNT THE DOORS.
  *
@@ -76,7 +63,7 @@ const PRAISE_CLIPS = [
  * the child picks between by opening one of two doors on the home screen:
  *
  *   Count       — "Find 3 apples": tap the door that holds three.
- *   More & Less — "Which door has MORE?": turn the knob that answers.
+ *   More & Less — "Which door has MORE?": touch the door that has it.
  *
  * The teacher is a real person standing in the corridor watching. Progress is
  * a vault in the wall rather than a bar across the top: every door solved
@@ -115,6 +102,8 @@ export function DoorCountGame() {
   const genRef = useRef(0);
   const interrupt = useCallback(() => {
     genRef.current += 1;
+    // and nothing queued to be said can follow the child to the next screen
+    stopVoice();
     setCheer(false);
     setFlight(null);
     setLanded(false);
@@ -161,10 +150,16 @@ export function DoorCountGame() {
    * the vault — the corridor's double door opens before the next one.
    */
   const handleCorrect = useCallback(
-    (from: Point) => {
+    (from: RootPoint) => {
       const gen = genRef.current;
       const alive = () => genRef.current === gen;
       setCheer(true);
+      // the teacher says it as well as showing it — then, as the key fills
+      // the screen, what the key is for
+      void playClip(cheerFor(levelIndex));
+      schedule(() => {
+        if (alive()) void sayAfter("door-key");
+      }, KEY_LINE_MS);
 
       const mouth = mouthRef.current?.getBoundingClientRect();
       const canvas = canvasRef.current?.getBoundingClientRect();
@@ -201,6 +196,7 @@ export function DoorCountGame() {
           if (!alive()) return;
           setClearing(true);
           playFanfare();
+          void sayAfter("door-corridor-clear");
         }, SOLVED_MS);
         schedule(() => {
           if (!alive()) return;
@@ -229,7 +225,8 @@ export function DoorCountGame() {
     setLanded(true);
     setVaultOpen(false);
     setFlash(true);
-    playPlaceSound();
+    // brass on steel: the key is in the vault
+    playClinkSound();
     schedule(() => {
       if (genRef.current === gen) setFlash(false);
     }, FLASH_MS);
@@ -241,61 +238,64 @@ export function DoorCountGame() {
     <GameStage>
       <div className="dc-root">
         <div className="dc-canvas" ref={canvasRef}>
-          <AnimatePresence mode="wait" initial={false}>
-            {screen === "home" && (
-              <motion.div key="home" className="dc-screen-wrap" {...PAGE_TRANSITION}>
-                <DoorHome progress={progress} onOpen={open} />
-              </motion.div>
-            )}
+          {/* Everything lives inside the stage, because a container query
+              cannot style the container it is asking about — and the stage is
+              where the design unit is declared, so the question about the
+              shape of the screen and the answer are about the same box. */}
+          <div className="dc-stage">
+            <AnimatePresence mode="wait" initial={false}>
+              {screen === "home" && (
+                <motion.div key="home" className="dc-screen-wrap" {...PAGE_TRANSITION}>
+                  <DoorHome progress={progress} onOpen={open} />
+                </motion.div>
+              )}
+
+              {playing && (
+                <motion.div key="play" className="dc-screen-wrap" {...PAGE_TRANSITION}>
+                  {/* the doors slide door-to-door inside the screen; the teacher
+                      and the vault below stay put while they do */}
+                  <AnimatePresence mode="sync" initial={false}>
+                    <motion.div key={`${moduleId}-${levelIndex}`} className="dc-slide" {...SLIDE}>
+                      <DoorLevel
+                        level={level}
+                        moduleId={moduleId}
+                        index={levelIndex}
+                        locked={clearing}
+                        onCorrect={handleCorrect}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </motion.div>
+              )}
+
+              {screen === "final" && (
+                <motion.div key="final" className="dc-screen-wrap" {...PAGE_TRANSITION}>
+                  <DoorFinal
+                    moduleId={moduleId}
+                    onAgain={() => {
+                      interrupt();
+                      restartModule(moduleId);
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {playing && (
-              <motion.div key="play" className="dc-screen-wrap" {...PAGE_TRANSITION}>
-                {/* the doors slide door-to-door inside the screen; the teacher
-                    and the vault below stay put while they do */}
-                <AnimatePresence mode="sync" initial={false}>
-                  <motion.div key={`${moduleId}-${levelIndex}`} className="dc-slide" {...SLIDE}>
-                    <DoorLevel
-                      level={level}
-                      moduleId={moduleId}
-                      index={levelIndex}
-                      locked={clearing}
-                      onCorrect={handleCorrect}
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              </motion.div>
-            )}
-
-            {screen === "final" && (
-              <motion.div key="final" className="dc-screen-wrap" {...PAGE_TRANSITION}>
-                <DoorFinal
-                  moduleId={moduleId}
-                  onAgain={() => {
-                    interrupt();
-                    restartModule(moduleId);
-                  }}
+              <>
+                <Teacher cheer={cheer} say={cheer ? clipText(cheerFor(levelIndex)) : undefined} />
+                <Vault
+                  keys={keys}
+                  open={vaultOpen}
+                  flash={flash}
+                  mouthRef={(el) => (mouthRef.current = el)}
                 />
-              </motion.div>
+                {flight && <FlyingKey flight={flight} onArrive={handleKeyArrive} />}
+              </>
             )}
-          </AnimatePresence>
 
-          {playing && (
-            <>
-              <Teacher
-                cheer={cheer}
-                say={cheer ? clipText(PRAISE_CLIPS[levelIndex % PRAISE_CLIPS.length]) : undefined}
-              />
-              <Vault
-                keys={keys}
-                open={vaultOpen}
-                flash={flash}
-                mouthRef={(el) => (mouthRef.current = el)}
-              />
-              {flight && <FlyingKey flight={flight} onArrive={handleKeyArrive} />}
-            </>
-          )}
-
-          <AnimatePresence>{clearing && <CorridorClear key="clear" />}</AnimatePresence>
+            <AnimatePresence>{clearing && <CorridorClear key="clear" />}</AnimatePresence>
+          </div>
         </div>
 
         {/* The portal's own control, where every game puts it, and it goes

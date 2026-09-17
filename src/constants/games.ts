@@ -130,4 +130,12 @@ export const GAMES: readonly GameMeta[] = [
     route: "/play/number-match",
     colors: { bg: "#E7DEFA", border: "#9A6CE0", text: "#5F3A9C" },
   },
+  {
+    id: "shape-match",
+    title: "Shapes & Pictures",
+    description: "Fit the shapes, finish the picture",
+    glyph: "🔺",
+    route: "/play/shape-match",
+    colors: { bg: "#D6ECFB", border: "#6FC5F2", text: "#2B6C9C" },
+  },
 ] as const;

@@ -46,7 +46,7 @@
     "languageCode": "en-US",
     "name": "en-US-Neural2-H",
     "speakingRate": 0.92,
-    "pitch": 0.0,
+    "pitch": 0,
     "$note": "LEGACY — the Google generator (script no longer in repo). Kept for its IPA reference only."
   },
   "clips": {
@@ -3302,8 +3302,8 @@
     },
     "door-home": {
       "file": "/audio/doors/home.mp3",
-      "text": "Count the Doors",
-      "speak": "Count the Doors! Open a door to play.",
+      "text": "Key Quest",
+      "speak": "Key Quest! Open a door to play.",
       "note": "home screen title — matches the <h1> in DoorHome"
     },
     "door-start-count": {
@@ -3323,12 +3323,6 @@
       "text": "Tap this door!",
       "speak": "Tap this door!",
       "note": "said while the ghost hand points at the answer in Count"
-    },
-    "door-demo-knob": {
-      "file": "/audio/doors/demo-knob.mp3",
-      "text": "Turn this knob!",
-      "speak": "Turn this knob!",
-      "note": "said while the ghost hand points at the answer in More & Less"
     },
     "door-find-3-apple": {
       "file": "/audio/doors/find-3-apple.mp3",
@@ -3473,6 +3467,346 @@
       "text": "Hooray!",
       "speak": "Hooray! You opened every door!",
       "note": "the end of a module — shown in the teacher's speech bubble"
+    },
+    "pals-home": {
+      "file": "/audio/pals/home.mp3",
+      "text": "Number Pals",
+      "speak": "Number Pals! Count with me!"
+    },
+    "pals-ask-cupcakes": {
+      "file": "/audio/pals/ask-cupcakes.mp3",
+      "text": "How many cupcakes on each card?",
+      "speak": "How many cupcakes on each card?"
+    },
+    "pals-ask-apples": {
+      "file": "/audio/pals/ask-apples.mp3",
+      "text": "How many apples on each card?",
+      "speak": "How many apples on each card?"
+    },
+    "pals-ask-balloons": {
+      "file": "/audio/pals/ask-balloons.mp3",
+      "text": "How many balloons on each card?",
+      "speak": "How many balloons on each card?"
+    },
+    "pals-ask-fish": {
+      "file": "/audio/pals/ask-fish.mp3",
+      "text": "How many fish on each card?",
+      "speak": "How many fish on each card?"
+    },
+    "pals-ask-ducks": {
+      "file": "/audio/pals/ask-ducks.mp3",
+      "text": "How many ducks on each card?",
+      "speak": "How many ducks on each card?"
+    },
+    "pals-ask-stars": {
+      "file": "/audio/pals/ask-stars.mp3",
+      "text": "How many stars on each card?",
+      "speak": "How many stars on each card?"
+    },
+    "pals-ask-bugs": {
+      "file": "/audio/pals/ask-bugs.mp3",
+      "text": "How many bugs on each card?",
+      "speak": "How many bugs on each card?"
+    },
+    "pals-ask-flowers": {
+      "file": "/audio/pals/ask-flowers.mp3",
+      "text": "How many flowers on each card?",
+      "speak": "How many flowers on each card?"
+    },
+    "pals-ask-kites": {
+      "file": "/audio/pals/ask-kites.mp3",
+      "text": "How many kites on each card?",
+      "speak": "How many kites on each card?"
+    },
+    "pals-ask-leaves": {
+      "file": "/audio/pals/ask-leaves.mp3",
+      "text": "How many leaves on each card?",
+      "speak": "How many leaves on each card?"
+    },
+    "pals-ask-boats": {
+      "file": "/audio/pals/ask-boats.mp3",
+      "text": "How many boats on each card?",
+      "speak": "How many boats on each card?"
+    },
+    "pals-ask-bells": {
+      "file": "/audio/pals/ask-bells.mp3",
+      "text": "How many bells on each card?",
+      "speak": "How many bells on each card?"
+    },
+    "pals-sticker": {
+      "file": "/audio/pals/sticker.mp3",
+      "text": "A sticker!",
+      "speak": "A sticker! One more for your book!"
+    },
+    "pals-page-1": {
+      "file": "/audio/pals/page-1.mp3",
+      "text": "Page 1 is full!",
+      "speak": "Page one is full! Nice work!"
+    },
+    "pals-page-2": {
+      "file": "/audio/pals/page-2.mp3",
+      "text": "Page 2 is full!",
+      "speak": "Page two is full! Nice work!"
+    },
+    "pals-page-3": {
+      "file": "/audio/pals/page-3.mp3",
+      "text": "Page 3 is full!",
+      "speak": "Page three is full! Nice work!"
+    },
+    "pals-book-full": {
+      "file": "/audio/pals/book-full.mp3",
+      "text": "The book is full!",
+      "speak": "The book is full! Every one!"
+    },
+    "leo-home": {
+      "file": "/audio/leo/home.mp3",
+      "text": "Pick a picture!",
+      "speak": "Pick a picture! Play with me!"
+    },
+    "leo-home-again": {
+      "file": "/audio/leo/home-again.mp3",
+      "text": "Which one now?",
+      "speak": "Which one now?"
+    },
+    "leo-match": {
+      "file": "/audio/leo/match.mp3",
+      "text": "Put each shape on the same shape!",
+      "speak": "Put each shape on the same shape!"
+    },
+    "leo-combine": {
+      "file": "/audio/leo/combine.mp3",
+      "text": "Which one has all three?",
+      "speak": "Which one has all three?"
+    },
+    "leo-jigsaw": {
+      "file": "/audio/leo/jigsaw.mp3",
+      "text": "Which piece is missing?",
+      "speak": "Which piece is missing?"
+    },
+    "leo-scene-park": {
+      "file": "/audio/leo/scene-park.mp3",
+      "text": "Put everything back in the park!",
+      "speak": "Put everything back in the park!"
+    },
+    "leo-scene-farm": {
+      "file": "/audio/leo/scene-farm.mp3",
+      "text": "Put everything back in the farm!",
+      "speak": "Put everything back in the farm!"
+    },
+    "leo-scene-beach": {
+      "file": "/audio/leo/scene-beach.mp3",
+      "text": "Put everything back in the beach!",
+      "speak": "Put everything back in the beach!"
+    },
+    "leo-scene-garden": {
+      "file": "/audio/leo/scene-garden.mp3",
+      "text": "Put everything back in the garden!",
+      "speak": "Put everything back in the garden!"
+    },
+    "leo-scene-pond": {
+      "file": "/audio/leo/scene-pond.mp3",
+      "text": "Put everything back in the pond!",
+      "speak": "Put everything back in the pond!"
+    },
+    "leo-scene-forest": {
+      "file": "/audio/leo/scene-forest.mp3",
+      "text": "Put everything back in the forest!",
+      "speak": "Put everything back in the forest!"
+    },
+    "leo-scene-snow": {
+      "file": "/audio/leo/scene-snow.mp3",
+      "text": "Put everything back in the snow!",
+      "speak": "Put everything back in the snow!"
+    },
+    "leo-scene-night": {
+      "file": "/audio/leo/scene-night.mp3",
+      "text": "Put everything back in the night!",
+      "speak": "Put everything back in the night!"
+    },
+    "leo-visitors": {
+      "file": "/audio/leo/visitors.mp3",
+      "text": "Who is here? Say hello!",
+      "speak": "Who is here? Say hello!"
+    },
+    "leo-next-puzzle": {
+      "file": "/audio/leo/next-puzzle.mp3",
+      "text": "Now a puzzle!",
+      "speak": "Now a puzzle!"
+    },
+    "leo-next-jigsaw": {
+      "file": "/audio/leo/next-jigsaw.mp3",
+      "text": "Which piece is gone?",
+      "speak": "Which piece is gone?"
+    },
+    "leo-next-picture": {
+      "file": "/audio/leo/next-picture.mp3",
+      "text": "Now a picture!",
+      "speak": "Now a picture!"
+    },
+    "leo-next-visitors": {
+      "file": "/audio/leo/next-visitors.mp3",
+      "text": "Look who is coming!",
+      "speak": "Look who is coming!"
+    },
+    "leo-next-more": {
+      "file": "/audio/leo/next-more.mp3",
+      "text": "One more!",
+      "speak": "One more!"
+    },
+    "leo-made-park": {
+      "file": "/audio/leo/made-park.mp3",
+      "text": "You made the park!",
+      "speak": "You made the park!"
+    },
+    "leo-made-farm": {
+      "file": "/audio/leo/made-farm.mp3",
+      "text": "You made the farm!",
+      "speak": "You made the farm!"
+    },
+    "leo-made-beach": {
+      "file": "/audio/leo/made-beach.mp3",
+      "text": "You made the beach!",
+      "speak": "You made the beach!"
+    },
+    "leo-made-garden": {
+      "file": "/audio/leo/made-garden.mp3",
+      "text": "You made the garden!",
+      "speak": "You made the garden!"
+    },
+    "leo-made-pond": {
+      "file": "/audio/leo/made-pond.mp3",
+      "text": "You made the pond!",
+      "speak": "You made the pond!"
+    },
+    "leo-made-forest": {
+      "file": "/audio/leo/made-forest.mp3",
+      "text": "You made the forest!",
+      "speak": "You made the forest!"
+    },
+    "leo-made-snow": {
+      "file": "/audio/leo/made-snow.mp3",
+      "text": "You made the snow!",
+      "speak": "You made the snow!"
+    },
+    "leo-made-night": {
+      "file": "/audio/leo/made-night.mp3",
+      "text": "You made the night!",
+      "speak": "You made the night!"
+    },
+    "leo-hooray": {
+      "file": "/audio/leo/hooray.mp3",
+      "text": "Hooray!",
+      "speak": "Hooray!"
+    },
+    "leo-hint": {
+      "file": "/audio/leo/hint.mp3",
+      "text": "Have a look — which one goes here?",
+      "speak": "Have a look — which one goes here?"
+    },
+    "leo-oops": {
+      "file": "/audio/leo/oops.mp3",
+      "text": "Not that one. Try another!",
+      "speak": "Not that one. Try another!"
+    },
+    "leo-hello-rabbit": {
+      "file": "/audio/leo/hello-rabbit.mp3",
+      "text": "Hello, rabbit!",
+      "speak": "Hello, rabbit!"
+    },
+    "leo-hello-bird": {
+      "file": "/audio/leo/hello-bird.mp3",
+      "text": "Hello, bird!",
+      "speak": "Hello, bird!"
+    },
+    "leo-hello-cat": {
+      "file": "/audio/leo/hello-cat.mp3",
+      "text": "Hello, cat!",
+      "speak": "Hello, cat!"
+    },
+    "leo-hello-butterfly": {
+      "file": "/audio/leo/hello-butterfly.mp3",
+      "text": "Hello, butterfly!",
+      "speak": "Hello, butterfly!"
+    },
+    "leo-hello-horse": {
+      "file": "/audio/leo/hello-horse.mp3",
+      "text": "Hello, horse!",
+      "speak": "Hello, horse!"
+    },
+    "leo-hello-dog": {
+      "file": "/audio/leo/hello-dog.mp3",
+      "text": "Hello, dog!",
+      "speak": "Hello, dog!"
+    },
+    "leo-hello-turtle": {
+      "file": "/audio/leo/hello-turtle.mp3",
+      "text": "Hello, turtle!",
+      "speak": "Hello, turtle!"
+    },
+    "leo-hello-fish": {
+      "file": "/audio/leo/hello-fish.mp3",
+      "text": "Hello, fish!",
+      "speak": "Hello, fish!"
+    },
+    "leo-hello-whale": {
+      "file": "/audio/leo/hello-whale.mp3",
+      "text": "Hello, whale!",
+      "speak": "Hello, whale!"
+    },
+    "leo-hello-frog": {
+      "file": "/audio/leo/hello-frog.mp3",
+      "text": "Hello, frog!",
+      "speak": "Hello, frog!"
+    },
+    "leo-hello-bear": {
+      "file": "/audio/leo/hello-bear.mp3",
+      "text": "Hello, bear!",
+      "speak": "Hello, bear!"
+    },
+    "leo-hello-monkey": {
+      "file": "/audio/leo/hello-monkey.mp3",
+      "text": "Hello, monkey!",
+      "speak": "Hello, monkey!"
+    },
+    "leo-hello-penguin": {
+      "file": "/audio/leo/hello-penguin.mp3",
+      "text": "Hello, penguin!",
+      "speak": "Hello, penguin!"
+    },
+    "leo-shape-rectangle": {
+      "file": "/audio/leo/shape-rectangle.mp3",
+      "text": "Rectangle",
+      "speak": "Rectangle."
+    },
+    "leo-shape-circle": {
+      "file": "/audio/leo/shape-circle.mp3",
+      "text": "Circle",
+      "speak": "Circle."
+    },
+    "leo-shape-triangle": {
+      "file": "/audio/leo/shape-triangle.mp3",
+      "text": "Triangle",
+      "speak": "Triangle."
+    },
+    "leo-shape-square": {
+      "file": "/audio/leo/shape-square.mp3",
+      "text": "Square",
+      "speak": "Square."
+    },
+    "leo-shape-star": {
+      "file": "/audio/leo/shape-star.mp3",
+      "text": "Star",
+      "speak": "Star."
+    },
+    "leo-shape-oval": {
+      "file": "/audio/leo/shape-oval.mp3",
+      "text": "Oval",
+      "speak": "Oval."
+    },
+    "leo-shape-heart": {
+      "file": "/audio/leo/shape-heart.mp3",
+      "text": "Heart",
+      "speak": "Heart."
     }
   },
   "edgeVoice": {

@@ -161,9 +161,15 @@ export function Item({ theme }: { theme: ItemTheme }) {
 /* ── The door ─────────────────────────────────────────────────────────────── */
 
 interface DoorProps {
-  /** What the plate above the door says: its number in the corridor, or —
-   *  on the home screen — the name of the module it opens. */
-  label: ReactNode;
+  /**
+   * What the plate above the door says — and a door in the CORRIDOR says
+   * nothing at all. A three-year-old is being asked to look at the apples,
+   * and a number hanging over them is another number in a game about
+   * numbers: the one thing in the room that could be mistaken for the
+   * answer. Only the home screen's doors are labelled, with the name of the
+   * module they open.
+   */
+  label?: ReactNode;
   /** How many things are inside. */
   count: number;
   paint: DoorPaint;
@@ -204,7 +210,7 @@ const REVEAL_AFTER = 0.45;
 const REVEAL_STAGGER = 0.1;
 
 /**
- * One door in the corridor: numbered above, and standing open on whatever is
+ * One door in the corridor, standing open on whatever is
  * inside, laid out in a grid a child can count — a single column up to three,
  * two columns above that, so nothing ever turns into a crowd.
  *
@@ -227,15 +233,17 @@ export function Door({ label, count, paint, theme, inside, won, rattle, delay = 
       animate={rattle ? RATTLE : STILL}
       transition={rattle ? { duration: 0.45 } : { duration: 0.2 }}
     >
-      {/* the number plate drops onto its hook as the door arrives */}
-      <motion.span
-        className="dc-door-plate font-rounded font-black"
-        initial={{ rotateX: -95, opacity: 0 }}
-        animate={{ rotateX: 0, opacity: 1 }}
-        transition={{ delay: delay + 0.18, type: "spring", stiffness: 260, damping: 14 }}
-      >
-        {label}
-      </motion.span>
+      {/* a named door's plate drops onto its hook as the door arrives */}
+      {label !== undefined && (
+        <motion.span
+          className="dc-door-plate font-rounded font-black"
+          initial={{ rotateX: -95, opacity: 0 }}
+          animate={{ rotateX: 0, opacity: 1 }}
+          transition={{ delay: delay + 0.18, type: "spring", stiffness: 260, damping: 14 }}
+        >
+          {label}
+        </motion.span>
+      )}
 
       <div className="dc-door-frame">
         <div className="dc-door-room">

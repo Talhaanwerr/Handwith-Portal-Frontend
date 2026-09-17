@@ -36,6 +36,14 @@ export function setSpeechFallback(enabled: boolean): void {
 }
 const failedIds = new Set<ClipId>();
 let current: Howl | null = null;
+/** Settles the promise of the clip now playing — so a stop from anywhere
+ *  ends that line properly instead of leaving its promise hanging until a
+ *  fail-safe fires, or worse, re-speaking the cancelled line as browser
+ *  speech two seconds later. */
+let settleCurrent: (() => void) | null = null;
+/** The line being said right now, or the last one said: what `sayAfter`
+ *  waits for. */
+let speaking: Promise<void> = Promise.resolve();
 
 function missing(id: ClipId, reason: string): void {
   console.warn(`[voice] clip "${id}" ${reason} — using browser speech so the game can continue.`);
@@ -112,29 +120,66 @@ let generation = 0;
 
 export function stopVoice(): void {
   generation++;
-  current?.stop();
+  const playing = current;
+  settleCurrent?.();
+  settleCurrent = null;
+  playing?.stop();
   current = null;
   if (speechFallback && typeof window !== "undefined") window.speechSynthesis?.cancel();
   duckMusic(false);
 }
 
 /**
- * Play one clip. Resolves when the clip actually ENDS.
- * Missing MP3s fall back to Web Speech using the manifest line.
+ * Play one clip NOW, over whatever is being said. Resolves when the clip
+ * actually ENDS. Missing MP3s fall back to Web Speech using the manifest line.
+ *
+ * This is for REACTIONS — a wrong piece, an animal tapped, a number landing —
+ * where the child just did something and the answer has to be immediate.
+ * A line that belongs after another line goes through `sayAfter` instead.
  */
 export function playClip(id: ClipId): Promise<void> {
+  const line = startClip(id);
+  speaking = line;
+  return line;
+}
+
+/**
+ * Say this AFTER whatever is being said, instead of over it.
+ *
+ * For lines that belong in a sequence — a question after an announcement,
+ * "Hooray!" after "You made the park!", the next board's banner after "Now a
+ * puzzle!" — where cutting the first one off mid-word is worse than half a
+ * second's wait. Nothing is playing: it plays at once. A stop from anywhere
+ * (Back, another screen, a reaction cutting in) empties the queue, so a
+ * queued line can never turn up on the wrong screen.
+ */
+export function sayAfter(id: ClipId): Promise<void> {
+  const token = generation;
+  const line = speaking.then(() => {
+    if (generation !== token) return;
+    return playClip(id);
+  });
+  speaking = line;
+  return line;
+}
+
+function startClip(id: ClipId): Promise<void> {
   const def = CLIPS[id];
   if (!def) {
     missing(id, "is not in manifest.json");
     return new Promise((r) => setTimeout(r, 250));
   }
   if (failedIds.has(id)) {
+    // one voice at a time holds for browser speech too: it must not talk over
+    // an MP3 that happens to be playing
+    stopVoice();
     return playSpoken(def);
   }
 
   return new Promise((resolve) => {
     const h = getClip(id);
     if (!h) {
+      stopVoice();
       void playSpoken(def).then(resolve);
       return;
     }
@@ -151,6 +196,7 @@ export function playClip(id: ClipId): Promise<void> {
     const finish = (useSpeech = false, blacklist = useSpeech) => {
       if (settled) return;
       settled = true;
+      settleCurrent = null;
       if (current === h) current = null;
       duckMusic(false);
       h.off("end", onEnd);
@@ -165,6 +211,8 @@ export function playClip(id: ClipId): Promise<void> {
       resolve();
     };
     const onEnd = () => finish(false);
+    // a stop from anywhere ends this line quietly: settled, no speech fallback
+    settleCurrent = () => finish(false);
 
     h.once("end", onEnd);
     h.once("loaderror", () => finish(true));

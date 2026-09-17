@@ -15,6 +15,7 @@ import { CelebrationMotif } from "@shared/components/game/CelebrationMotif";
 import { Confetti } from "@shared/components/game/Confetti";
 import { GodRays } from "@shared/components/game/GodRays";
 import { Ripple } from "@shared/components/game/Ripple";
+import { sayAfter } from "@shared/audio/voice";
 
 /**
  * THE REWARD IS A STICKER BOOK.
@@ -87,6 +88,11 @@ const SLAP_MS = 1100;
  * room, turns over once, and slaps down into the next empty slot.
  */
 export function StickerReward({ index }: { index: number }) {
+  /** "A sticker! One more for your book!" — as it arrives. */
+  useEffect(() => {
+    void sayAfter("pals-sticker");
+  }, []);
+
   /** The sticker has landed in the book. */
   const [stuck, setStuck] = useState(false);
   const page = pageOf(index);
@@ -179,9 +185,11 @@ export function PageTurn({ page }: { page: number }) {
   const last = page * ROUNDS_PER_PAGE >= TOTAL_ROUNDS;
 
   useEffect(() => {
+    // "Page one is full! Nice work!" — as the page lifts
+    void sayAfter("pals-page-" + page);
     const t = setTimeout(() => setTurning(true), TURN_AT_MS);
     return () => clearTimeout(t);
-  }, []);
+  }, [page]);
 
   return (
     <motion.div
