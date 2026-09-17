@@ -6,7 +6,7 @@
  * white icons and no text, the way a children's TV activity does it — the
  * child ignores them, a grown-up finds them instantly.
  *
- * Numbers 1–5 drew these first and Count the Doors needed the same five
+ * Numbers 1–5 drew these first and Key Quest needed the same five
  * buttons in the same places, so they live here once. Geometry and colour are
  * in utilities.css under `.pl-ctl*`; a game that wants its own palette can
  * repaint those classes under its own root.

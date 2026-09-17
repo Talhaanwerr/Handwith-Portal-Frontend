@@ -52,6 +52,9 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "number-match": lazy(() =>
     import("@games/number-match/NumberMatchGame").then((m) => ({ default: m.NumberMatchGame }))
   ),
+  "shape-match": lazy(() =>
+    import("@games/shape-match/ShapeMatchGame").then((m) => ({ default: m.ShapeMatchGame }))
+  ),
 };
 
 interface GamePlayerProps {

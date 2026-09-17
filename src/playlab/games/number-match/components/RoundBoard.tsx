@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
+  THING_NAMES,
   answerFor,
   paintFor,
   thingName,
@@ -15,14 +16,10 @@ import { Confetti } from "@shared/components/game/Confetti";
 import { Ripple } from "@shared/components/game/Ripple";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { useScheduler } from "@shared/hooks/useScheduler";
-import { findDropTarget, registerTarget, toRootPoint } from "@shared/utils/pointer";
-import {
-  playClickSound,
-  playCorrectSound,
-  playIncorrectSound,
-  playPlaceSound,
-} from "@shared/audio/sfx";
-import { playClip } from "@shared/audio/voice";
+import { findDropTarget, registerTarget, toRootPoint, type RootPoint } from "@shared/utils/pointer";
+import { cssVars } from "@shared/styles/cssVars";
+import { playCorrectSound, playPickUpSound, playSnapSound, playThudSound } from "@shared/audio/sfx";
+import { playClip, sayAfter } from "@shared/audio/voice";
 
 /** Two lines the portal already has recorded, so this game needs no new
  *  audio made for it: one when the hand starts showing, one when a number
@@ -32,16 +29,21 @@ const RETRY_CLIP = "instr-try-again";
 
 /** How long a wrong number shakes its head before it can be tried again. */
 const SHAKE_MS = 440;
+/** How long a number takes to fly into its socket. The landing happens on a
+ *  TIMER of this length — never on the animation's own completion callback,
+ *  which Motion does not reliably fire and which used to leave the board
+ *  frozen with a number stuck in the air. */
+const FLIGHT_MS = 420;
+/** How far a carried number is allowed to lean, in degrees. */
+const MAX_TILT = 14;
 /** How near a socket a dropped number counts as being over it. */
 const DROP_SLOP_PX = 44;
-/** The cards arrive, the things pop in, and THEN the hand shows how it is
- *  played — it must never talk over the reveal it is explaining. */
-const HAND_AFTER_MS = 1900;
-
-interface Point {
-  x: number;
-  y: number;
-}
+/** The cards arrive, the things pop in, the question is asked, and THEN the
+ *  hand shows how it is played — it must never talk over the reveal it is
+ *  explaining, nor over the question. */
+const HAND_AFTER_MS = 2800;
+/** How long the question waits for the cards to slide in. */
+const ASK_AFTER_MS = 350;
 
 interface BoardProps {
   round: Round;
@@ -57,6 +59,10 @@ interface DragState {
   value: number;
   x: number;
   y: number;
+  /** Degrees. A carried thing leans the way it is moving and rights itself
+   *  when it stops, which is most of what makes it feel held rather than
+   *  dragged across glass. */
+  tilt: number;
 }
 
 interface Flight {
@@ -93,6 +99,9 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
   const [touched, setTouched] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
+  /** The same drag, readable from a window listener, where state would be
+   *  whatever it was when the listener was attached. */
+  const dragRef = useRef<DragState | null>(null);
   const chipRefs = useRef<Map<number, HTMLElement>>(new Map());
   const socketRefs = useRef<Map<number, HTMLElement>>(new Map());
   const solvedRef = useRef(false);
@@ -114,6 +123,12 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
     [toRoot]
   );
 
+  /** THE QUESTION IS ASKED ALOUD, once the cards have slid in. */
+  useEffect(() => {
+    const t = setTimeout(() => void sayAfter("pals-ask-" + THING_NAMES[round.thing]), ASK_AFTER_MS);
+    return () => clearTimeout(t);
+  }, [round]);
+
   /**
    * THE FIRST ROUND TEACHES ITSELF.
    *
@@ -131,7 +146,7 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
       const a = centreOf(from);
       const b = centreOf(to);
       setHand({ fx: a.x, fy: a.y, tx: b.x, ty: b.y });
-      void playClip(WATCH_CLIP);
+      void sayAfter(WATCH_CLIP);
     }, HAND_AFTER_MS);
     return () => clearTimeout(t);
   }, [index, touched, round, centreOf]);
@@ -149,17 +164,29 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
     if (!flight) return;
     const { card, value } = flight;
     setFlight(null);
-    playPlaceSound();
-    setPlaced((p) => {
-      const next = { ...p, [card]: value };
-      if (Object.keys(next).length >= cards.length) finish();
-      return next;
-    });
-  }, [flight, cards.length, finish]);
+    playSnapSound();
+    // and the number is said as it lands — the count, confirmed out loud
+    void playClip("number-" + value);
+    // worked out HERE, never inside the state updater: React may run an
+    // updater during the next render, and reporting "solved" from there is a
+    // setState on the game component in the middle of rendering this one
+    const next = { ...placed, [card]: value };
+    setPlaced(next);
+    if (Object.keys(next).length >= cards.length) finish();
+  }, [flight, placed, cards.length, finish]);
+
+  /** IT HAS ARRIVED. On the clock, so nothing the browser decides to do with
+   *  an animation can strand a number in mid-air and freeze the board. */
+  useEffect(() => {
+    if (!flight) return;
+    const timer = setTimeout(land, FLIGHT_MS);
+    return () => clearTimeout(timer);
+  }, [flight, land]);
 
   const shakeHead = useCallback(
     (value: number, card: number | null) => {
-      playIncorrectSound();
+      // a dull thud, not a buzzer: the number bumped the wrong place
+      playThudSound();
       void playClip(RETRY_CLIP);
       setWrong(value);
       setBump(card);
@@ -176,7 +203,7 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
    * shakes its head where it stands.
    */
   const offer = useCallback(
-    (value: number, card: number, from: Point) => {
+    (value: number, card: number, from: RootPoint) => {
       if (flight || locked || solvedRef.current) return;
       setTouched(true);
       setHand(null);
@@ -187,7 +214,6 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
       }
       const to = centreOf(socketRefs.current.get(card));
       setPicked(null);
-      playClickSound();
       setFlight({ value, card, fx: from.x, fy: from.y, tx: to.x, ty: to.y });
     },
     [flight, locked, placed, round, shakeHead, centreOf]
@@ -200,7 +226,8 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
       if (drag || locked || flight) return;
       setTouched(true);
       setHand(null);
-      playClickSound();
+      // no sound here: every tap begins with a pointerdown, and `startDrag`
+      // has already played the lift for it
       setPicked((p) => (p === value ? null : value));
     },
     [drag, locked, flight]
@@ -219,42 +246,73 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
   const startDrag = useCallback(
     (e: React.PointerEvent<HTMLElement>, value: number) => {
       if (locked || flight || drag) return;
-      e.currentTarget.setPointerCapture(e.pointerId);
+      // a browser that refuses the capture must not take the drag with it
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {
+        /* the window listeners below are the real safety net */
+      }
       const p = toRoot(e.clientX, e.clientY);
-      setDrag({ value, x: p.x, y: p.y });
+      dragRef.current = { value, x: p.x, y: p.y, tilt: 0 };
+      setDrag(dragRef.current);
       setPicked(null);
+      playPickUpSound();
     },
     [locked, flight, drag, toRoot]
   );
 
-  const moveDrag = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!drag) return;
-      const p = toRoot(e.clientX, e.clientY);
-      setDrag((d) => (d ? { ...d, x: p.x, y: p.y } : d));
-    },
-    [drag, toRoot]
-  );
-
-  const endDrag = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!drag) return;
-      const { value } = drag;
+  const letGo = useCallback(
+    (clientX: number, clientY: number) => {
+      const current = dragRef.current;
+      if (!current) return;
+      dragRef.current = null;
       setDrag(null);
       const over = findDropTarget(
         socketRefs.current,
-        e.clientX,
-        e.clientY,
+        clientX,
+        clientY,
         DROP_SLOP_PX,
         (card) => placed[card] === undefined
       );
       // let go over open ground: the number is simply home again
       if (over !== null && over !== undefined) {
-        offer(value, over, toRoot(e.clientX, e.clientY));
+        offer(current.value, over, toRoot(clientX, clientY));
       }
     },
-    [drag, placed, offer, toRoot]
+    [placed, offer, toRoot]
   );
+
+  /**
+   * THE FINGER IS ON THE WINDOW, not on the board.
+   *
+   * A pointer that wanders off the board — or a browser that refused the
+   * capture — must still be able to put the number down; listening here is
+   * what stops a drag being left hanging with the board unable to accept
+   * anything else.
+   */
+  const dragging = drag !== null;
+
+  useEffect(() => {
+    if (!dragging) return;
+    const move = (event: PointerEvent) => {
+      const held = dragRef.current;
+      if (!held) return;
+      const p = toRoot(event.clientX, event.clientY);
+      const travelled = p.x - held.x;
+      const tilt = Math.max(-MAX_TILT, Math.min(MAX_TILT, held.tilt * 0.6 + travelled * 0.7));
+      dragRef.current = { ...held, x: p.x, y: p.y, tilt };
+      setDrag(dragRef.current);
+    };
+    const up = (event: PointerEvent) => letGo(event.clientX, event.clientY);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+    };
+  }, [dragging, toRoot, letGo]);
 
   /* ── Render ───────────────────────────────────────────────────────────── */
 
@@ -264,14 +322,7 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
   const burstPieces = useMemo(() => [<ThingArt key="t" thing={round.thing} />], [round.thing]);
 
   return (
-    <div
-      ref={rootRef}
-      className="nm-board"
-      data-n={cards.length}
-      onPointerMove={moveDrag}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
-    >
+    <div ref={rootRef} className="nm-board" data-n={cards.length}>
       {/* The question, and only the question — how it is answered is shown
           by the hand on the first round, not re-read on every one. */}
       <p className="nm-ask font-rounded font-black">
@@ -359,19 +410,25 @@ export function RoundBoard({ round, index, locked, onSolved }: BoardProps) {
 
       {/* the number under the finger */}
       {drag && (
-        <span className="nm-ghost" style={{ left: drag.x, top: drag.y }} aria-hidden="true">
+        <motion.span
+          className="nm-ghost pl-at"
+          style={cssVars({ "--pl-x": drag.x + "px", "--pl-y": drag.y + "px" })}
+          animate={{ rotate: drag.tilt }}
+          transition={{ type: "spring", stiffness: 260, damping: 18 }}
+          aria-hidden="true"
+        >
           <Chip value={drag.value} big />
-        </span>
+        </motion.span>
       )}
 
       {/* the number on its way into a socket */}
       {flight && (
         <motion.span
-          className="nm-flight"
-          initial={{ left: flight.fx, top: flight.fy, scale: 1 }}
-          animate={{ left: flight.tx, top: flight.ty, scale: 1.1 }}
-          transition={{ duration: 0.42, ease: [0.3, 0.7, 0.2, 1] }}
-          onAnimationComplete={land}
+          className="nm-flight pl-at"
+          style={cssVars({ "--pl-x": flight.fx + "px", "--pl-y": flight.fy + "px" })}
+          initial={{ x: 0, y: 0, scale: 1 }}
+          animate={{ x: flight.tx - flight.fx, y: flight.ty - flight.fy, scale: [1, 1.16, 1] }}
+          transition={{ duration: FLIGHT_MS / 1000, ease: [0.3, 0.7, 0.2, 1] }}
           aria-hidden="true"
         >
           <Chip value={flight.value} big />

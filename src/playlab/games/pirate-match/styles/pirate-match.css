@@ -138,8 +138,41 @@
   cursor: grab;
 }
 
-.pm-tile--done {
-  cursor: default;
+/* ── The letters already found ──
+   The column holds only letters still to match, so this strip under it is
+   the round's record of what is done: one small gold-trimmed plate per
+   letter, in the same white-plate-and-navy language as the planks and the
+   letter seated on its card. Every size is a share of the tile, so the widest
+   round — four letters — still sits on ONE line under the column at every
+   board size, rather than wrapping into a second row of its own. */
+
+.pm-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pm-gap);
+}
+
+.pm-found {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(3px, 0.6vmin, 5px);
+  max-width: var(--pm-tile);
+}
+
+.pm-found-chip {
+  display: grid;
+  place-items: center;
+  min-width: calc(var(--pm-tile) * 0.2);
+  height: calc(var(--pm-tile) * 0.24);
+  padding: 0 calc(var(--pm-tile) * 0.04);
+  border-radius: clamp(6px, 1.2vmin, 12px);
+  background: linear-gradient(180deg, #ffffff 0%, #f3ede0 100%);
+  color: #0d3a5c;
+  font-size: calc(var(--pm-tile) * 0.16);
+  line-height: 1;
 }
 
 .pm-tile-glyph {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Key, VaultDoor } from "@games/door-count/components/DoorArt";
 import { LEVELS_PER_CORRIDOR } from "@games/door-count/constants/levels";
@@ -35,6 +36,10 @@ interface VaultProps {
 }
 
 const LAMPS = Array.from({ length: LEVELS_PER_CORRIDOR }, (_, i) => i);
+
+/** How long a key takes to leave its door, fill the screen and go into the
+ *  vault. The flight below is timed to it, and so is the landing. */
+const FLIGHT_MS = 1600;
 
 export function Vault({ keys, open, flash, mouthRef }: VaultProps) {
   return (
@@ -103,6 +108,15 @@ export interface KeyFlight {
 export function FlyingKey({ flight, onArrive }: { flight: KeyFlight; onArrive: () => void }) {
   const { fromX, fromY, toX, toY, midX, midY } = flight;
 
+  /** It is in. ON THE CLOCK, never on the animation's own completion callback:
+   *  a flight the browser decides not to finish — a backgrounded tab, a
+   *  dropped frame budget — would otherwise leave the corridor waiting for a
+   *  key that has already arrived, with nothing the child could do about it. */
+  useEffect(() => {
+    const timer = setTimeout(onArrive, FLIGHT_MS);
+    return () => clearTimeout(timer);
+  }, [onArrive]);
+
   return (
     <>
       <motion.span
@@ -116,11 +130,10 @@ export function FlyingKey({ flight, onArrive }: { flight: KeyFlight; onArrive: (
           opacity: [0, 1, 1, 1],
         }}
         transition={{
-          duration: 1.6,
+          duration: FLIGHT_MS / 1000,
           times: [0, 0.22, 0.5, 1],
           ease: ["backOut", "linear", "easeInOut"],
         }}
-        onAnimationComplete={onArrive}
         aria-hidden="true"
       >
         <Key />

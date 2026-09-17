@@ -30,6 +30,8 @@ import { PirateShip } from "@shared/components/pirate/PirateShip";
 import { TreasureChest, GoldCoin } from "@shared/components/pirate/PirateTreasure";
 import { DoorLeaf, Item, Key } from "@games/door-count/components/DoorArt";
 import { ThingArt } from "@games/number-match/components/MatchArt";
+import { ShapeGlyph, ShapeHole } from "@games/shape-match/components/ShapeArt";
+import { LeoFigure } from "@games/shape-match/components/Leo";
 import { cssVars } from "@shared/styles/cssVars";
 
 /* ── shared scaffolding ── */
@@ -593,7 +595,7 @@ export function PirateMatchIcon() {
   );
 }
 
-/* ── 12 · Count the Doors: the corridor itself — one door standing open on
+/* ── 12 · Key Quest: the corridor itself — one door standing open on
         the apples it hides, the brass knob that answers, and the key won ── */
 
 /** One door of the corridor at card size, built from the game's own leaf so
@@ -695,6 +697,53 @@ export function NumberMatchIcon() {
   );
 }
 
+/**
+ * SHAPES & PICTURES — Leo watching his board: a yellow circle and a green
+ * square already in their holes, a blue triangle still waiting, and the
+ * missing piece under a hand on the grass. The mechanic in one picture.
+ */
+export function ShapeMatchIcon() {
+  return (
+    <Diorama className="smicon-sky">
+      <span className="smicon-ground" />
+
+      <At x={15} y={6} w={70} z={2}>
+        <span className="smicon-banner" />
+      </At>
+
+      <At x={27} y={25} w={70} z={3}>
+        <span className="smicon-panel">
+          <span className="smicon-slot">
+            <ShapeGlyph piece={{ shape: "circle", hue: "sun" }} />
+          </span>
+          <span className="smicon-slot">
+            <ShapeHole piece={{ shape: "triangle", hue: "sky" }} />
+          </span>
+          <span className="smicon-slot">
+            <ShapeGlyph piece={{ shape: "square", hue: "leaf" }} />
+          </span>
+        </span>
+      </At>
+
+      <At x={0} y={33} w={32} z={4}>
+        <span className="smicon-leo">
+          <LeoFigure mood="watch" still />
+        </span>
+      </At>
+
+      <At x={50} y={63} w={20} z={4}>
+        <span className="smicon-piece">
+          <ShapeGlyph piece={{ shape: "triangle", hue: "sky" }} />
+        </span>
+      </At>
+
+      <At x={60} y={70} w={22} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
 /** id → scene, for the portal card. */
 export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "letter-tracing": LetterTracingIcon,
@@ -710,4 +759,5 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "pirate-match": PirateMatchIcon,
   "door-count": DoorCountIcon,
   "number-match": NumberMatchIcon,
+  "shape-match": ShapeMatchIcon,
 };

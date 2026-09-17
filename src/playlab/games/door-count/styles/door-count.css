@@ -1,5 +1,5 @@
 /**
- * Count the Doors — a school corridor that fills the screen.
+ * Key Quest — a school corridor that fills the screen.
  *
  * HOW THIS STAYS RESPONSIVE WITHOUT A SINGLE BREAKPOINT.
  *
@@ -43,6 +43,15 @@
   container-type: size;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Everything lives inside the stage, because a container query cannot style
+   the container it is asking about — so the shape of the screen is asked of
+   `.dc-canvas` and answered here, on the box inside it. */
+.dc-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
   /* THE design unit — see the note at the top of this file */
   --u: min(1cqh, 0.5625cqw);
   /* where the wall meets the floor */
@@ -125,10 +134,14 @@
 .dc-sign {
   position: absolute;
   left: 50%;
-  /* hung just above the doors rather than pinned to the ceiling, so the
-     whole composition stays together on a tall screen instead of leaving a
-     wall of nothing between the sign and the row */
-  top: calc(var(--dc-floor) - 72 * var(--u));
+  /* HUNG BY ITS BOTTOM EDGE, a little above the tallest row of doors — never
+     pinned to the ceiling, which would leave a wall of nothing between the
+     sign and the doors on a tall screen.
+     Measuring from the bottom is what makes a long question safe: "Which
+     door has MORE apples?" wraps to two lines on a phone, and a sign fixed
+     by its top grows DOWN over the doors. This one grows up into the empty
+     wall instead. */
+  bottom: calc(100% - var(--dc-floor) + 52 * var(--u));
   z-index: 4;
   display: flex;
   align-items: center;
@@ -193,6 +206,12 @@
 
 .dc-sign--title {
   min-height: calc(14 * var(--u));
+}
+/* The home screen's doors are the corridor's doors plus a name plate, a line
+   of blurb and a row of keys, so the slot stands 56u tall — the title sign
+   hangs higher to clear it, its top just under the ceiling. */
+.dc-home .dc-sign {
+  bottom: calc(100% - var(--dc-floor) + 58 * var(--u));
 }
 .dc-title {
   margin: 0;
@@ -265,7 +284,8 @@
   }
 }
 
-/** The number on the wall above the door — the thing a door knob names. */
+/** The plate on the wall above a door. Only the home screen's doors carry
+ *  one: in the corridor, the things behind the door are the only numbers. */
 .dc-door-plate {
   display: flex;
   align-items: center;
@@ -379,94 +399,6 @@
 }
 .dc-leaf-knob-shine {
   fill: #fbe09a;
-}
-
-/* ── The knobs: the answer ───────────────────────────────────────────────── */
-
-.dc-knobs {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(var(--dc-floor) + 2 * var(--u));
-  z-index: 5;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: calc(4.5 * var(--u));
-  height: calc(22 * var(--u));
-}
-.dc-knobs[data-n="4"] {
-  gap: calc(3.5 * var(--u));
-}
-
-.dc-knob {
-  --dc-knob: calc(14 * var(--u));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(0.7 * var(--u));
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  touch-action: manipulation;
-}
-.dc-knob:disabled {
-  cursor: default;
-}
-/** The brass knob itself. It turns when pressed, like a real one. */
-.dc-knob-face {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--dc-knob);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle at 34% 28%, #fbe5a8, #e8b33d 46%, #c08a22 78%, #9a6a14);
-  box-shadow:
-    inset 0 calc(-0.8 * var(--u)) 0 rgba(0, 0, 0, 0.2),
-    0 calc(0.8 * var(--u)) calc(1.6 * var(--u)) rgba(60, 40, 10, 0.3);
-  transition: box-shadow 0.25s ease;
-}
-.dc-knob[data-state="right"] .dc-knob-face {
-  box-shadow:
-    0 0 0 calc(0.9 * var(--u)) #2fc48f,
-    0 0 0 calc(1.8 * var(--u)) rgba(47, 196, 143, 0.35),
-    0 calc(0.8 * var(--u)) calc(1.6 * var(--u)) rgba(60, 40, 10, 0.3);
-}
-.dc-knob[data-state="wrong"] .dc-knob-face {
-  box-shadow:
-    0 0 0 calc(0.8 * var(--u)) #e0655a,
-    0 calc(0.8 * var(--u)) calc(1.6 * var(--u)) rgba(60, 40, 10, 0.3);
-}
-.dc-knob-label {
-  padding: calc(0.3 * var(--u)) calc(1.4 * var(--u));
-  border-radius: calc(1 * var(--u));
-  background: rgba(255, 255, 255, 0.85);
-  font-size: calc(3.2 * var(--u));
-  line-height: 1.2;
-  color: #5a3f1a;
-}
-/** A door knob: the door ghosted behind its own number. */
-.dc-knob-door {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 72%;
-  height: 80%;
-}
-.dc-knob-door .dc-art {
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-}
-.dc-knob-door-n {
-  position: relative;
-  font-size: calc(var(--dc-knob) * 0.46);
-  line-height: 1;
-  color: #3a2608;
-  text-shadow: 0 calc(0.2 * var(--u)) 0 rgba(255, 255, 255, 0.5);
 }
 
 /* ── The teacher ──────────────────────────────────────────────────────────
@@ -754,6 +686,14 @@
 .dc-door-slot--tappable:disabled {
   cursor: default;
 }
+/* A door is the only thing on this screen a keyboard can reach, and it had no
+   focus ring of its own — the portal's shared Button carries one, a door did
+   not. Green, the same "yes" as the ring around a door that answered. */
+.dc-door-slot--tappable:focus-visible {
+  outline: calc(0.8 * var(--u)) solid #2fc48f;
+  outline-offset: calc(0.6 * var(--u));
+  border-radius: calc(1 * var(--u));
+}
 
 /* A home door carries its name, its line of explanation and its keys, so the
    whole slot is far taller than a corridor door. It keeps its feet on the
@@ -868,6 +808,105 @@
   inset: 0;
   --pl-ring: rgba(120, 240, 190, 0.9);
   pointer-events: none;
+}
+
+/* ── A TALL SCREEN ─────────────────────────────────────────────────────────
+ * A phone held upright is not a small landscape screen. With the corridor's
+ * own unit — `min(1cqh, 0.5625cqw)` — a 375 x 812 phone shrinks the whole
+ * game into a 16:9 strip across the middle: doors 53px wide, a teacher the
+ * size of a thumbnail, and two thirds of the screen empty.
+ *
+ * So a tall screen gets its own corridor. The unit is tied to the width the
+ * screen actually has, the row of doors is sized so that however many there
+ * are still fit across it, and the two things that stood out to the sides —
+ * the teacher and the vault — move to where a tall screen has room: the
+ * teacher onto the floor in front, the vault onto the wall above.
+ */
+
+@container (max-aspect-ratio: 1 / 1) {
+  .dc-stage {
+    --u: min(1cqh, 1.5cqw);
+    /* the wall takes less of a tall screen, so the floor the teacher stands
+       on is a band rather than a strip */
+    --dc-floor: 70%;
+  }
+
+  /* THE DOORS ARE SIZED BY THE WIDTH THEY HAVE TO SHARE. A door is 0.52 as
+     wide as it is tall, so "how tall" is really "how many of us are there". */
+  .dc-doors {
+    gap: calc(4 * var(--u));
+    --dc-door-h: calc(34 * var(--u));
+  }
+  .dc-doors[data-n="4"] {
+    gap: calc(3 * var(--u));
+    --dc-door-h: calc(25 * var(--u));
+  }
+  .dc-doors[data-n="5"] {
+    gap: calc(2 * var(--u));
+    --dc-door-h: calc(20 * var(--u));
+  }
+
+  /* the sign hangs just above whatever row is under it */
+  .dc-sign {
+    bottom: calc(100% - var(--dc-floor) + 38 * var(--u));
+    width: min(calc(100% - 130px), calc(62 * var(--u)));
+    min-height: calc(9 * var(--u));
+    padding: calc(1 * var(--u)) calc(2.4 * var(--u));
+    margin-left: calc(-1 * min(calc(50% - 65px), calc(31 * var(--u))));
+  }
+
+  .dc-sign-text {
+    font-size: calc(3.6 * var(--u));
+  }
+
+  .dc-sign-big {
+    font-size: calc(5.2 * var(--u));
+  }
+
+  /* THE TEACHER STANDS IN FRONT. On a wide screen he stands off to one side
+     of the doors; a tall screen has no side, so he comes forward onto the
+     floor where there is room for him. */
+  .dc-teacher {
+    right: auto;
+    left: calc(-2 * var(--u));
+    bottom: calc(100% - var(--dc-floor) - 14 * var(--u));
+    width: calc(34 * var(--u));
+    height: calc(34 * var(--u));
+  }
+
+  /* AND THE VAULT GOES ON THE WALL, top right, where the back pill is not. */
+  .dc-vault {
+    left: auto;
+    right: calc(2 * var(--u));
+    top: max(calc(3 * var(--u)), 76px);
+    width: calc(26 * var(--u));
+  }
+
+  /* ── the home screen: two doors, side by side, with room to read them ── */
+
+  .dc-home .dc-doors {
+    --dc-door-h: calc(24 * var(--u));
+    gap: calc(6 * var(--u));
+  }
+
+  /* the title clears the taller home slot AND the back pill on a 3:4 tablet,
+     where the wall above the doors is only a few units deep */
+  .dc-home .dc-sign {
+    bottom: calc(100% - var(--dc-floor) + 50 * var(--u));
+  }
+
+  .dc-title {
+    font-size: calc(6 * var(--u));
+  }
+
+  .dc-home-blurb {
+    max-width: calc(24 * var(--u));
+    font-size: calc(2.4 * var(--u));
+  }
+
+  .dc-home .dc-door-plate {
+    font-size: calc(3 * var(--u));
+  }
 }
 
 /* ── The Library card ─────────────────────────────────────────────────────

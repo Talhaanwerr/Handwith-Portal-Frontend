@@ -313,35 +313,60 @@ export function MatchLevel() {
 
       {/* the board: planks of letters · cards of pictures */}
       <div className="pm-board relative z-10">
-        {/* letters, extremely big, on wooden planks */}
-        <div className="pm-col" role="list" aria-label="Letters to match">
-          {letters.map((l, i) => {
-            const isMatched = matched.includes(l);
-            const beingDragged = drag?.letter === l;
-            return (
-              <motion.button
-                key={l}
-                ref={(el) => registerTarget(tileRefs.current, l, el)}
-                className={`pm-tile touch-none ${
-                  beingDragged ? "opacity-30" : ""
-                } ${isMatched ? "pm-tile--done" : ""}`}
-                initial={{ x: -40, opacity: 0 }}
-                animate={{ x: 0, opacity: isMatched ? 0.35 : 1, scale: isMatched ? 0.9 : 1 }}
-                transition={{ delay: 0.08 * i, type: "spring", stiffness: 240, damping: 20 }}
-                onPointerDown={(e) => startDrag(e, l)}
-                disabled={isMatched}
-                aria-label={
-                  isMatched
-                    ? `Letter ${displayLetter(l, letterCase)} — matched`
-                    : `Letter ${displayLetter(l, letterCase)} — drag it to its picture`
-                }
-              >
-                <span className="pm-tile-glyph font-rounded font-black">
+        {/* THE LETTERS, on wooden planks — and under them, the ones already
+            found. A matched letter LEAVES this column: a faded plank standing
+            in the row still reads as something left to do, and it kept a dead
+            drag target in the way of the letters that really are left. */}
+        <div className="pm-side">
+          <div className="pm-col" role="list" aria-label="Letters to match">
+            <AnimatePresence>
+              {letters.map((l, i) =>
+                matched.includes(l) ? null : (
+                  <motion.button
+                    key={l}
+                    ref={(el) => registerTarget(tileRefs.current, l, el)}
+                    className={`pm-tile touch-none ${drag?.letter === l ? "opacity-30" : ""}`}
+                    initial={{ x: -40, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ opacity: 0, scale: 0.6, transition: { duration: 0.22 } }}
+                    transition={{ delay: 0.08 * i, type: "spring", stiffness: 240, damping: 20 }}
+                    onPointerDown={(e) => startDrag(e, l)}
+                    aria-label={`Letter ${displayLetter(l, letterCase)} — drag it to its picture`}
+                  >
+                    <span className="pm-tile-glyph font-rounded font-black">
+                      {displayLetter(l, letterCase)}
+                    </span>
+                  </motion.button>
+                )
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* FOUND — where a matched letter goes instead of fading in place:
+              its own little gold-trimmed plate, so the board keeps a record
+              of what is done in the place the plank came from. */}
+          {matched.length > 0 && (
+            // a GROUP, not a status: the star pill above is already the live
+            // region for "how many are done", and two of them announce the
+            // same thing twice on every match
+            <div
+              className="pm-found"
+              role="group"
+              aria-label={`${matched.length} of ${letters.length} letters found`}
+            >
+              {matched.map((l) => (
+                <motion.span
+                  key={l}
+                  className="pm-found-chip pp-trim-gold font-rounded font-black"
+                  initial={{ scale: 0, rotate: -18 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                >
                   {displayLetter(l, letterCase)}
-                </span>
-              </motion.button>
-            );
-          })}
+                </motion.span>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* pictures — the letter-tracing objects on parchment */}

@@ -590,7 +590,7 @@
 /* ─── Corner controls ───────────────────────────────────────────────────────
    The five small buttons of shared/components/game/CornerControls.tsx, in the
    four corners of a full-bleed game: leave, replay, pause, and a step either
-   way. Two games show this exact chrome (Numbers 1–5, Count the Doors), so it
+   way. Two games show this exact chrome (Numbers 1–5, Key Quest), so it
    is stated once here; a game that wants a different palette repaints these
    classes under its own root. Sizes stay in px — a touch target does not
    shrink with the artwork. */

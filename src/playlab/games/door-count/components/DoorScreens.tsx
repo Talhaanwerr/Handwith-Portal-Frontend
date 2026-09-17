@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Door, DustMotes, ExitDoor, Key } from "@games/door-count/components/DoorArt";
-import { WordArt } from "@games/door-count/components/Knob";
+import { WordArt } from "@games/door-count/components/WordArt";
 import { Teacher } from "@games/door-count/components/Teacher";
 import {
   LEVELS_PER_CORRIDOR,
@@ -17,6 +17,7 @@ import {
 import { Confetti } from "@shared/components/game/Confetti";
 import { Button } from "@shared/components/ui/Button";
 import { playClickSound } from "@shared/audio/sfx";
+import { playClip, sayAfter } from "@shared/audio/voice";
 
 /**
  * The screens around the doors: the home screen you choose a module from,
@@ -37,6 +38,11 @@ interface HomeProps {
 }
 
 export function DoorHome({ progress, onOpen }: HomeProps) {
+  /** The corridor introduces itself, once, as the two doors arrive. */
+  useEffect(() => {
+    void playClip("door-home");
+  }, []);
+
   return (
     <div className="dc-screen dc-scene dc-home">
       <DustMotes />
@@ -49,7 +55,7 @@ export function DoorHome({ progress, onOpen }: HomeProps) {
       >
         <span className="dc-sign-rope dc-sign-rope--l" aria-hidden="true" />
         <span className="dc-sign-rope dc-sign-rope--r" aria-hidden="true" />
-        <h1 className="dc-title font-rounded font-black">Count the Doors</h1>
+        <h1 className="dc-title font-rounded font-black">Key Quest</h1>
       </motion.div>
 
       <div className="dc-doors" data-n="2">
@@ -190,6 +196,11 @@ interface FinalProps {
 export function DoorFinal({ moduleId, onAgain }: FinalProps) {
   const mod = MODULES[moduleId];
   const total = levelCount(moduleId);
+
+  /** "Hooray! You opened every door!" — the teacher's bubble, said aloud. */
+  useEffect(() => {
+    void sayAfter("door-hooray");
+  }, []);
 
   return (
     <div className="dc-screen dc-scene dc-scene--final">

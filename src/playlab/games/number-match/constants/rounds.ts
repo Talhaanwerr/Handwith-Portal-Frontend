@@ -1,5 +1,5 @@
 /**
- * Number Match — every round, as data, plus the rules that read it.
+ * Number Pals — every round, as data, plus the rules that read it.
  *
  * ONE PUZZLE, twelve times: a row of cards, each holding a different number
  * of the same thing, an empty socket under each card, and those numbers
@@ -15,9 +15,6 @@
  */
 
 import { unit } from "@shared/utils/hash";
-
-/** Nothing is ever counted past five. */
-export const MAX_COUNT = 5;
 
 /** Stickers to a page = rounds between the big celebrations. */
 export const ROUNDS_PER_PAGE = 4;
@@ -137,11 +134,6 @@ export function answerFor(round: Round, cardIndex: number): number {
 /** 1-based page of the sticker book this round lands on. */
 export function pageOf(index: number): number {
   return Math.floor(index / ROUNDS_PER_PAGE) + 1;
-}
-
-/** Stickers already stuck down when this round starts. */
-export function stickersBefore(index: number): number {
-  return index;
 }
 
 /** Did winning this round fill a page? */

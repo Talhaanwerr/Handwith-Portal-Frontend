@@ -35,3 +35,5 @@ Copy this file into new projects so the same mistakes are not repeated.
 10. After login, do not blindly honor `?redirect=/dashboard`. Unauthenticated visits to `/` or `/dashboard` stamp that query param, so a SUPER_ADMIN would land in the tenant app. Resolve the destination with `getPostLoginPath(role, redirectTo)`: super admins go to `/super-admin/dashboard` unless the redirect is a super-admin (or `/play`) path. Root `/` must also role-route, never hardcode `/dashboard`.
 
 11. `next/dynamic(..., { ssr: false })` is not allowed in Server Components (Next.js 16). Put the dynamic imports in a Client Component (`"use client"`) and render that from the page.
+
+12. A CSS `@container` query can only style elements INSIDE the container it asks about. A game's chrome (the `NavPillButton`, and Shapes & Pictures' red help button) is rendered next to the canvas, not inside it, so container-query rules for it silently never apply — the button stayed in the corner it was supposed to leave on a tall screen. Query the viewport with `@media (max-aspect-ratio: 1 / 1)` for chrome, and keep `@container` for what is drawn inside the canvas.

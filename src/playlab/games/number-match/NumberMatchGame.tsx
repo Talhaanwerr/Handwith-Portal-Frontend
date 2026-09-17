@@ -10,7 +10,8 @@ import { useScheduler } from "@shared/hooks/useScheduler";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound, playFanfare } from "@shared/audio/sfx";
-import { clipText, playClip, stopVoice } from "@shared/audio/voice";
+import { clipText, sayAfter, stopVoice } from "@shared/audio/voice";
+import { cheerFor } from "@shared/audio/cheers";
 import { useMatchStore, type MatchScreen } from "@games/number-match/store/matchStore";
 import { ROUNDS, TOTAL_ROUNDS, completesPage, pageOf } from "@games/number-match/constants/rounds";
 import { Drift } from "@games/number-match/components/MatchArt";
@@ -40,21 +41,6 @@ const CHEER_MS = 1000;
 const REWARD_MS = 2700;
 /** How long a page takes to fill up and turn over. */
 const TURN_MS = 3000;
-
-/**
- * What the friends say, in turn.
- *
- * These are the portal's EXISTING cheer clips, and the words come out of the
- * manifest rather than being typed here — so what is on screen and what is
- * spoken can never drift apart, and this game needs no new audio recorded.
- */
-const PRAISE_CLIPS = [
-  "cheer-well-done",
-  "cheer-great-job",
-  "cheer-amazing",
-  "cheer-you-did-it",
-  "cheer-wonderful",
-] as const;
 
 /**
  * NUMBER MATCH.
@@ -128,7 +114,9 @@ export function NumberMatchGame() {
     const gen = genRef.current;
     const alive = () => genRef.current === gen;
     setCheer(true);
-    void playClip(PRAISE_CLIPS[done % PRAISE_CLIPS.length]);
+    // queued behind the last number's name, so "Three!" is not cut off by
+    // "Well done!"
+    void sayAfter(cheerFor(done));
 
     schedule(() => {
       if (!alive()) return;
@@ -162,65 +150,71 @@ export function NumberMatchGame() {
     }, CHEER_MS + REWARD_MS);
   }, [done, schedule, nextRound]);
 
-  const say = cheer ? clipText(PRAISE_CLIPS[done % PRAISE_CLIPS.length]) : undefined;
+  const say = cheer ? clipText(cheerFor(done)) : undefined;
 
   return (
     <GameStage>
       <div className="nm-root">
         <div className="nm-canvas">
-          {/* the sky drifts behind every screen, so it never restarts when
-              one screen replaces another */}
-          <Drift />
+          {/* Everything lives inside the stage, because a container query
+              cannot style the container it is asking about — and the stage is
+              where the design unit is declared, so the question and the answer
+              are about the same box. */}
+          <div className="nm-stage">
+            {/* the sky drifts behind every screen, so it never restarts when
+                one screen replaces another */}
+            <Drift />
 
-          <AnimatePresence mode="wait" initial={false}>
-            {screen === "home" && (
-              <motion.div key="home" className="nm-screen-wrap" {...PAGE_TRANSITION}>
-                <MatchHome
-                  done={done}
-                  onStart={open}
-                  onRestart={() => {
-                    interrupt();
-                    restart();
-                  }}
-                />
-              </motion.div>
-            )}
+            <AnimatePresence mode="wait" initial={false}>
+              {screen === "home" && (
+                <motion.div key="home" className="nm-screen-wrap" {...PAGE_TRANSITION}>
+                  <MatchHome
+                    done={done}
+                    onStart={open}
+                    onRestart={() => {
+                      interrupt();
+                      restart();
+                    }}
+                  />
+                </motion.div>
+              )}
 
-            {playing && (
-              <motion.div key="play" className="nm-screen-wrap" {...PAGE_TRANSITION}>
-                {/* the cards slide round to round inside the screen; the two
-                    friends below stay where they are while they do */}
-                <AnimatePresence mode="sync" initial={false}>
-                  <motion.div key={done} className="nm-slide" {...SLIDE}>
-                    <RoundBoard
-                      round={round}
-                      index={done}
-                      locked={cheer || reward || turning}
-                      onSolved={handleSolved}
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              </motion.div>
-            )}
+              {playing && (
+                <motion.div key="play" className="nm-screen-wrap" {...PAGE_TRANSITION}>
+                  {/* the cards slide round to round inside the screen; the two
+                      friends below stay where they are while they do */}
+                  <AnimatePresence mode="sync" initial={false}>
+                    <motion.div key={done} className="nm-slide" {...SLIDE}>
+                      <RoundBoard
+                        round={round}
+                        index={done}
+                        locked={cheer || reward || turning}
+                        onSolved={handleSolved}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </motion.div>
+              )}
 
-            {screen === "final" && (
-              <motion.div key="final" className="nm-screen-wrap" {...PAGE_TRANSITION}>
-                <MatchFinal
-                  onAgain={() => {
-                    interrupt();
-                    restart();
-                  }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+              {screen === "final" && (
+                <motion.div key="final" className="nm-screen-wrap" {...PAGE_TRANSITION}>
+                  <MatchFinal
+                    onAgain={() => {
+                      interrupt();
+                      restart();
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-          {playing && <Pal cheer={cheer} say={say} />}
+            {playing && <Pal cheer={cheer} say={say} />}
 
-          <AnimatePresence>
-            {reward && <StickerReward key="reward" index={done} />}
-            {turning && <PageTurn key="turn" page={pageOf(done)} />}
-          </AnimatePresence>
+            <AnimatePresence>
+              {reward && <StickerReward key="reward" index={done} />}
+              {turning && <PageTurn key="turn" page={pageOf(done)} />}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* The portal's own control, where every game puts it. It goes back

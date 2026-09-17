@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { motion } from "framer-motion";
 import {
   ITEM_NAMES,
-  answerBy,
   answerFor,
   isCorrect,
   itemName,
@@ -13,23 +12,34 @@ import {
   type ModuleId,
 } from "@games/door-count/constants/levels";
 import { Door, DustMotes } from "@games/door-count/components/DoorArt";
-import { Knob } from "@games/door-count/components/Knob";
 import { Confetti } from "@shared/components/game/Confetti";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { useScheduler } from "@shared/hooks/useScheduler";
-import { registerTarget, toRootPoint } from "@shared/utils/pointer";
-import { playClickSound, playCorrectSound, playIncorrectSound } from "@shared/audio/sfx";
+import { registerTarget, toRootPoint, type RootPoint } from "@shared/utils/pointer";
+import { playCorrectSound, playDoorOpenSound, playKnockSound } from "@shared/audio/sfx";
+import { sayAfter } from "@shared/audio/voice";
 
 /** How long a wrong answer shakes its head before it can be tried again. */
 const SHAKE_MS = 460;
-/** The doors arrive, the things drop in, and THEN the hand shows what to do
- *  — it must never talk over the reveal it is explaining. */
-const HAND_AFTER_MS = 1700;
+/** The doors arrive, the things drop in, the narrator asks the question, and
+ *  THEN the hand shows what to do. On a module's first door that is two lines
+ *  of narration first — the module announcing itself, then the question — and
+ *  the hand's own line is queued behind them, so it can never talk over the
+ *  question it is answering however long the question takes. */
+const HAND_AFTER_MS = 5400;
+/** How long the narrator waits before asking, so the doors have arrived. */
+const ASK_AFTER_MS = 400;
 
-/** Where a key is born, in the level's own coordinates. */
-export interface Point {
-  x: number;
-  y: number;
+/** The narrator's line for this door's sign — one recorded clip per question,
+ *  named the way the manifest has named them since the game was built. */
+function askClip(level: Level): string {
+  if (level.ask.kind === "find") return `door-find-${level.ask.count}-${level.theme}`;
+  return `door-which-${level.ask.want}-${level.theme}`;
+}
+
+/** And the module announcing itself, on its first door. */
+function startClip(moduleId: ModuleId): string {
+  return moduleId === "count" ? "door-start-count" : "door-start-compare";
 }
 
 interface DoorLevelProps {
@@ -43,7 +53,7 @@ interface DoorLevelProps {
    * The child just got it right. The point is where the winning door is, so
    * the game can throw a key out of it.
    */
-  onCorrect: (from: Point) => void;
+  onCorrect: (from: RootPoint) => void;
 }
 
 /**
@@ -51,12 +61,11 @@ interface DoorLevelProps {
  *
  *   THE SIGN ASKS → THE CHILD ANSWERS → THE RIGHT DOOR LIGHTS UP → A KEY
  *
- * The answer is always a door. How it is named is the only thing that
- * differs between the two modules: counting is a question about ONE door, so
- * the doors themselves are the buttons; comparing is a question about the
- * whole row, so the answer moves down to a knob per door. Either way a wrong
- * answer shakes and the door it named rattles in its frame — nothing is lost
- * and it can be tried again straight away.
+ * The answer is always a door, and the way to give it is always to touch
+ * that door. Counting asks about ONE door and comparing asks about the whole
+ * row, but the child's hand does the same thing either way: it goes to the
+ * door it means. A door touched in error rattles in its frame — nothing is
+ * lost, and it can be tried again straight away.
  *
  * The teacher and the vault are not here: they belong to the game, which
  * keeps them still while this scene slides away to the next door.
@@ -74,25 +83,31 @@ export function DoorLevel({ level, moduleId, index, locked, onCorrect }: DoorLev
   const rootRef = useRef<HTMLDivElement>(null);
   /** Door label → its slot, so a key can fly out of the right doorway. */
   const doorRefs = useRef<Map<number, HTMLElement>>(new Map());
-  /** Door label → its knob, for the same reason on a comparing level. */
-  const knobRefs = useRef<Map<number, HTMLElement>>(new Map());
 
   const answer = useMemo(() => answerFor(level), [level]);
-  const byDoor = answerBy(level) === "door";
 
   /**
    * THE FIRST ROUND OF A MODULE TEACHES ITSELF.
    *
    * Nobody explains this game to a three-year-old, so on the first door the
-   * portal's ghost hand reaches in and does it once: onto the door that holds
-   * the right number, or onto the knob that names the right door, whichever
-   * this module answers with. It comes in from below and to the right, the
+   * portal's ghost hand reaches in and does it once: straight onto the door
+   * that answers the question. It comes in from below and to the right, the
    * way a real hand would, and loops until the child touches anything.
    */
+  /** THE SIGN IS READ ALOUD, once the doors have arrived — after the module
+   *  has announced itself, if this is its first door. Queued, never cut. */
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (index === 0) void sayAfter(startClip(moduleId));
+      void sayAfter(askClip(level));
+    }, ASK_AFTER_MS);
+    return () => clearTimeout(t);
+  }, [level, index, moduleId]);
+
   useEffect(() => {
     if (index !== 0 || touched) return;
     const t = setTimeout(() => {
-      const el = (byDoor ? doorRefs : knobRefs).current.get(answer);
+      const el = doorRefs.current.get(answer);
       const box = el?.getBoundingClientRect();
       if (!box) return;
       const to = toRootPoint(rootRef.current, box.left + box.width / 2, box.top + box.height / 2);
@@ -102,9 +117,10 @@ export function DoorLevel({ level, moduleId, index, locked, onCorrect }: DoorLev
         tx: to.x,
         ty: to.y,
       });
+      void sayAfter("door-demo-door");
     }, HAND_AFTER_MS);
     return () => clearTimeout(t);
-  }, [index, touched, byDoor, answer]);
+  }, [index, touched, answer]);
 
   const pick = useCallback(
     (label: number) => {
@@ -113,12 +129,13 @@ export function DoorLevel({ level, moduleId, index, locked, onCorrect }: DoorLev
       setTouched(true);
       setHand(null);
       if (!isCorrect(level, label)) {
-        playIncorrectSound();
+        // a knuckle on wood, not a buzzer: this door is simply not the one
+        playKnockSound();
         setWrong(label);
         schedule(() => setWrong(null), SHAKE_MS);
         return;
       }
-      playClickSound();
+      playDoorOpenSound();
       playCorrectSound();
       setSolved(true);
 
@@ -143,7 +160,6 @@ export function DoorLevel({ level, moduleId, index, locked, onCorrect }: DoorLev
           const delay = 0.08 + i * 0.1;
           const art = (
             <Door
-              label={door.label}
               count={door.count}
               paint={paintFor(moduleId, index, i)}
               theme={level.theme}
@@ -158,8 +174,11 @@ export function DoorLevel({ level, moduleId, index, locked, onCorrect }: DoorLev
             transition: { delay, duration: 0.35, ease: "easeOut" as const },
           };
 
-          // COUNT: the door is the button, because the answer IS this door
-          return byDoor ? (
+          // THE DOOR IS THE BUTTON, in both modules. Whether the question is
+          // "find three apples" or "which door has more", the answer is a
+          // door the child is already looking at — so they reach for it,
+          // rather than for something underneath that stands for it.
+          return (
             <motion.button
               key={door.label}
               type="button"
@@ -172,36 +191,9 @@ export function DoorLevel({ level, moduleId, index, locked, onCorrect }: DoorLev
             >
               {art}
             </motion.button>
-          ) : (
-            <motion.div
-              key={door.label}
-              className="dc-door-slot"
-              ref={(el) => registerTarget(doorRefs.current, door.label, el)}
-              {...arrive}
-            >
-              {art}
-            </motion.div>
           );
         })}
       </div>
-
-      {/* MORE & LESS: the answer is about the row, so it lives on the knobs */}
-      {!byDoor && (
-        <div className="dc-knobs" data-n={level.doors.length}>
-          {level.doors.map((door) => (
-            <Knob
-              key={door.label}
-              label={door.label}
-              state={
-                solved && answer === door.label ? "right" : wrong === door.label ? "wrong" : "idle"
-              }
-              disabled={solved || locked}
-              onPick={() => pick(door.label)}
-              elementRef={(el) => registerTarget(knobRefs.current, door.label, el)}
-            />
-          ))}
-        </div>
-      )}
 
       {/* the first round of a module shows how it is played */}
       {hand && !solved && <TeachingHand {...hand} />}
