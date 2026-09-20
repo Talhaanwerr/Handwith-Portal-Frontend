@@ -2,7 +2,7 @@ import { ROUTES } from "@/constants";
 import type { UserRole } from "@/types";
 
 /** Routes a super admin may resume after login. */
-const SUPER_ADMIN_ALLOWED_PREFIXES = ["/super-admin", "/play"] as const;
+const SUPER_ADMIN_ALLOWED_PREFIXES = ["/super-admin", "/play", "/library"] as const;
 
 /** Tenant-app routes a workspace user may resume after login. */
 const TENANT_ALLOWED_PREFIXES = [
@@ -17,6 +17,7 @@ const TENANT_ALLOWED_PREFIXES = [
   "/billing",
   "/reports",
   "/branches",
+  "/library",
 ] as const;
 
 function isSafeInternalPath(path: string): boolean {

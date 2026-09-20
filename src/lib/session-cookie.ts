@@ -25,6 +25,8 @@ const VALID_TENANT_STATUSES: ReadonlySet<string> = new Set([
   "TRIAL",
   "SUSPENDED",
   "INACTIVE",
+  "PENDING",
+  "CANCELLED",
 ]);
 
 export function setSessionCookie(payload: SessionPayload): void {

@@ -10,14 +10,28 @@ import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
+import { Select } from "@/components/ui/select";
 import { ApiError } from "@/lib/api-error";
 import { tenantsApi } from "@/lib/tenants-api";
 import { TENANTS_QUERY_KEY, TENANT_DETAIL_QUERY_KEY } from "@/constants/query-keys";
 
+const DOMAIN_REGEX = /^(?!-)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,}$/;
+
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  domain: z.string().optional(),
-  timezone: z.string().optional(),
+  subdomain: z
+    .string()
+    .optional()
+    .refine((v) => !v || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v), {
+      message: "Subdomain: lowercase letters, numbers, and hyphens only",
+    }),
+  domain: z
+    .string()
+    .optional()
+    .refine((v) => !v || DOMAIN_REGEX.test(v), {
+      message: "Enter a valid domain such as app.acme.com",
+    }),
+  timezone: z.literal("Asia/Karachi"),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -43,21 +57,30 @@ export function EditTenantForm({ tenantId }: EditTenantFormProps) {
     reset,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({ resolver: zodResolver(schema) });
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { timezone: "Asia/Karachi" },
+  });
 
   useEffect(() => {
     if (tenant) {
       reset({
         name: tenant.name,
+        subdomain: tenant.subdomain ?? "",
         domain: tenant.domain ?? "",
-        timezone: tenant.timezone ?? "",
+        timezone: "Asia/Karachi",
       });
     }
   }, [tenant, reset]);
 
   async function onSubmit(data: FormValues) {
     try {
-      await tenantsApi.update(tenantId, data);
+      await tenantsApi.update(tenantId, {
+        name: data.name.trim(),
+        subdomain: data.subdomain?.trim() || null,
+        domain: data.domain?.trim() || null,
+        timezone: data.timezone,
+      });
       qc.invalidateQueries({ queryKey: [TENANTS_QUERY_KEY] });
       qc.invalidateQueries({ queryKey: [TENANT_DETAIL_QUERY_KEY, tenantId] });
       router.push(`/super-admin/tenants/${tenantId}`);
@@ -89,12 +112,28 @@ export function EditTenantForm({ tenantId }: EditTenantFormProps) {
           <Input placeholder="Acme Corporation" {...register("name")} />
         </FormField>
 
+        <FormField label="Slug">
+          <Input value={tenant?.slug ?? ""} disabled readOnly />
+          <p className="text-xs text-slate-400">Slug cannot be changed after create.</p>
+        </FormField>
+
+        <FormField label="Currency">
+          <Input value={tenant?.currency ?? ""} disabled readOnly />
+          <p className="text-xs text-slate-400">Currency cannot be changed after create.</p>
+        </FormField>
+
+        <FormField label="Subdomain" error={errors.subdomain?.message}>
+          <Input placeholder="acme (optional)" {...register("subdomain")} />
+        </FormField>
+
         <FormField label="Custom Domain" error={errors.domain?.message}>
           <Input placeholder="app.acme.com" {...register("domain")} />
         </FormField>
 
-        <FormField label="Timezone" error={errors.timezone?.message}>
-          <Input placeholder="UTC" {...register("timezone")} />
+        <FormField label="Timezone" error={errors.timezone?.message} required>
+          <Select {...register("timezone")}>
+            <option value="Asia/Karachi">Pakistan (Asia/Karachi)</option>
+          </Select>
         </FormField>
 
         <div className="flex gap-3 pt-2">

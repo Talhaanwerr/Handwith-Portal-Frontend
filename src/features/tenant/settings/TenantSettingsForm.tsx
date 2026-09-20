@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2, ImageIcon, X, Plus, AlertTriangle } from "lucide-react";
@@ -31,6 +31,12 @@ import { getSafeErrorMessage } from "@/lib/safe-error";
 import { useAuthStore } from "@/store/auth-store";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants";
+import {
+  TABLE_PAGE_SIZE_MAX,
+  TABLE_PAGE_SIZE_MIN,
+  readTablePageSize,
+  writeTablePageSize,
+} from "@/lib/table-page-size";
 
 const schema = z.object({
   orgName: z.string().min(2, "Organization name must be at least 2 characters").max(150),
@@ -98,7 +104,7 @@ export function TenantSettingsForm() {
     register,
     handleSubmit,
     reset,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting, isDirty },
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
@@ -114,6 +120,13 @@ export function TenantSettingsForm() {
       themeColor: settings.themeColor || "#2563eb",
     });
   }, [settings, reset]);
+
+  // Hooks must stay above early returns (loading/error) or React throws
+  // "Rendered more hooks than during the previous render".
+  const themeColor = useWatch({ control, name: "themeColor" });
+  const [tablePageSize, setTablePageSize] = useState(() => readTablePageSize());
+  const [tablePageSizeSaved, setTablePageSizeSaved] = useState(false);
+  const [exporting, setExporting] = useState<"users" | "activity" | "all" | null>(null);
 
   const update = useApiMutation(settingsApi.update, {
     onSuccess: () => {
@@ -216,10 +229,40 @@ export function TenantSettingsForm() {
     );
   }
 
-  const themeColor = watch("themeColor");
-
   return (
     <div className="space-y-6">
+      <div className="rounded-xl border border-slate-200 bg-white p-6">
+        <h2 className="mb-1 text-base font-semibold text-slate-900">Display preferences</h2>
+        <p className="mb-5 text-sm text-slate-500">
+          How many rows each table shows. Min {TABLE_PAGE_SIZE_MIN}, max {TABLE_PAGE_SIZE_MAX}.
+        </p>
+        <div className="flex flex-wrap items-end gap-3">
+          <FormField label="Table rows per page">
+            <Input
+              type="number"
+              className="w-32"
+              min={TABLE_PAGE_SIZE_MIN}
+              max={TABLE_PAGE_SIZE_MAX}
+              value={tablePageSize}
+              onChange={(e) => setTablePageSize(Number(e.target.value))}
+            />
+          </FormField>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              writeTablePageSize(tablePageSize);
+              setTablePageSize(readTablePageSize());
+              setTablePageSizeSaved(true);
+              setTimeout(() => setTablePageSizeSaved(false), 2000);
+            }}
+          >
+            Save page size
+          </Button>
+          {tablePageSizeSaved && <span className="text-sm text-green-600">Saved</span>}
+        </div>
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Organization profile */}
         <div className="rounded-xl border border-slate-200 bg-white p-6">
@@ -330,6 +373,53 @@ export function TenantSettingsForm() {
             </Button>
           </div>
         </PermissionGuard>
+      </div>
+
+      {/* Data export */}
+      <div className="rounded-xl border border-slate-200 bg-white p-6">
+        <h2 className="mb-1 text-base font-semibold text-slate-900">Data Export</h2>
+        <p className="mb-4 text-sm text-slate-500">
+          Download a CSV of workspace users, activity logs, or both. The file uses your signed-in
+          session — no need to open a raw API URL.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {(
+            [
+              { type: "users" as const, label: "Export users" },
+              { type: "activity" as const, label: "Export activity" },
+              { type: "all" as const, label: "Export all" },
+            ] as const
+          ).map(({ type, label }) => (
+            <Button
+              key={type}
+              type="button"
+              variant="outline"
+              disabled={exporting !== null}
+              onClick={async () => {
+                setExporting(type);
+                try {
+                  await settingsApi.exportCsv(type);
+                  toast({
+                    title: "Export started",
+                    description: "Your CSV download should begin shortly.",
+                    variant: "success",
+                  });
+                } catch (err) {
+                  toast({
+                    title: "Export failed",
+                    description: getSafeErrorMessage(err),
+                    variant: "error",
+                  });
+                } finally {
+                  setExporting(null);
+                }
+              }}
+            >
+              {exporting === type && <Loader2 className="h-4 w-4 animate-spin" />}
+              {label}
+            </Button>
+          ))}
+        </div>
       </div>
 
       {/* Allowed domains */}

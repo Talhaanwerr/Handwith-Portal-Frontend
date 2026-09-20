@@ -1,13 +1,3 @@
-// ─── Workspace (Tenant) ───────────────────────────────────────────────────────
-
-/** Slim workspace representation returned by login and /auth/me for the switcher. */
-export interface WorkspaceTenant {
-  id: string;
-  name: string;
-  slug: string;
-  logoUrl?: string | null;
-}
-
 // ─── Role / Status enums ───────────────────────────────────────────────────────
 
 /**
@@ -19,6 +9,18 @@ export type UserRole = "SUPER_ADMIN" | "TENANT_ADMIN" | "TENANT_USER";
 export type UserStatus = "ACTIVE" | "INACTIVE" | "INVITED";
 
 export type TenantStatus = "ACTIVE" | "TRIAL" | "SUSPENDED" | "INACTIVE" | "PENDING" | "CANCELLED";
+
+// ─── Workspace (Tenant) ───────────────────────────────────────────────────────
+
+/** Slim workspace representation returned by login and /auth/me for the switcher. */
+export interface WorkspaceTenant {
+  id: string;
+  name: string;
+  slug: string;
+  logoUrl?: string | null;
+  /** Workspace lifecycle status from Tenant.status (not membership status). */
+  status?: TenantStatus;
+}
 
 // ─── User ─────────────────────────────────────────────────────────────────────
 
@@ -57,6 +59,8 @@ export interface User {
    * the current user's roles. ⚠️ UX ONLY — backend enforces security.
    */
   permissions: string[];
+  /** Real workspace role names from /auth/me (e.g. Tenant Owner). */
+  roles: Array<{ id: string; name: string; slug: string }>;
 }
 
 // ─── Shared API response wrappers ─────────────────────────────────────────────

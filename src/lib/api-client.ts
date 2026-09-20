@@ -1,6 +1,7 @@
 import { API_URL, ROUTES } from "@/constants";
 import { ApiError } from "./api-error";
 import { tokenManager } from "./token";
+import { libraryTokenManager } from "./library-token";
 import type { ApiResponse, PaginatedResponse } from "@/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -49,17 +50,51 @@ async function parseResponse<T>(res: Response): Promise<T> {
   return json as T;
 }
 
-// ─── Refresh token flow ───────────────────────────────────────────────────────
+function normalizePath(path: string): string {
+  return path.split("?")[0] ?? path;
+}
 
-let isRefreshing = false;
-// Queue of callbacks waiting for the new token
-let refreshQueue: Array<(token: string) => void> = [];
-// Queue of callbacks to reject if refresh fails
-let rejectQueue: Array<(err: unknown) => void> = [];
+function isLibraryApiPath(path: string): boolean {
+  return normalizePath(path).startsWith("/library/");
+}
 
-async function refreshAccessToken(): Promise<string> {
-  // The refresh token is an httpOnly cookie — the browser sends it automatically.
-  // No body needed; credentials: "include" ensures the cookie is included.
+/**
+ * Public auth routes where a 401 means "bad credentials / invalid token",
+ * not "access token expired". Never trigger silent refresh + redirect here.
+ */
+function isCredentialAuthPath(path: string): boolean {
+  const normalized = normalizePath(path);
+  return (
+    normalized === "/auth/login" ||
+    normalized === "/auth/refresh" ||
+    normalized === "/auth/forgot-password" ||
+    normalized === "/auth/reset-password" ||
+    normalized === "/auth/verify-email" ||
+    normalized === "/auth/select-tenant" ||
+    normalized === "/library/auth/login" ||
+    normalized === "/library/auth/register" ||
+    normalized === "/library/auth/refresh" ||
+    normalized === "/library/auth/verify-email"
+  );
+}
+
+// ─── Refresh token flow (portal + library, isolated queues) ───────────────────
+
+type RefreshScope = "portal" | "library";
+
+const refreshState: Record<
+  RefreshScope,
+  {
+    isRefreshing: boolean;
+    queue: Array<(token: string) => void>;
+    rejectQueue: Array<(err: unknown) => void>;
+  }
+> = {
+  portal: { isRefreshing: false, queue: [], rejectQueue: [] },
+  library: { isRefreshing: false, queue: [], rejectQueue: [] },
+};
+
+async function refreshPortalAccessToken(): Promise<string> {
   const res = await fetch(`${API_URL}/auth/refresh`, {
     method: "POST",
     credentials: "include",
@@ -70,10 +105,7 @@ async function refreshAccessToken(): Promise<string> {
     throw new ApiError("Session expired. Please sign in again.", 401);
   }
 
-  // BE wraps in ApiEnvelope: { data: { accessToken } }
-  // The rotated refresh token is set as a new httpOnly cookie by the BE.
   const json = (await res.json()) as { data?: { accessToken?: string } } | undefined;
-
   const newAccessToken = json?.data?.accessToken;
   if (!newAccessToken || typeof newAccessToken !== "string") {
     throw new ApiError("Session expired. Please sign in again.", 401);
@@ -82,20 +114,68 @@ async function refreshAccessToken(): Promise<string> {
   return newAccessToken;
 }
 
-/**
- * Public auth routes where a 401 means "bad credentials / invalid token",
- * not "access token expired". Never trigger silent refresh + redirect here.
- */
-function isCredentialAuthPath(path: string): boolean {
-  const normalized = path.split("?")[0] ?? path;
-  return (
-    normalized === "/auth/login" ||
-    normalized === "/auth/refresh" ||
-    normalized === "/auth/forgot-password" ||
-    normalized === "/auth/reset-password" ||
-    normalized === "/auth/verify-email" ||
-    normalized === "/auth/select-tenant"
-  );
+async function refreshLibraryAccessToken(): Promise<string> {
+  const res = await fetch(`${API_URL}/library/auth/refresh`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) {
+    throw new ApiError("Library session expired. Please sign in again.", 401);
+  }
+
+  const json = (await res.json()) as { data?: { accessToken?: string } } | undefined;
+  const newAccessToken = json?.data?.accessToken;
+  if (!newAccessToken || typeof newAccessToken !== "string") {
+    throw new ApiError("Library session expired. Please sign in again.", 401);
+  }
+
+  return newAccessToken;
+}
+
+async function handleUnauthorizedRefresh(scope: RefreshScope): Promise<string> {
+  const state = refreshState[scope];
+
+  if (!state.isRefreshing) {
+    state.isRefreshing = true;
+    try {
+      const newToken =
+        scope === "library" ? await refreshLibraryAccessToken() : await refreshPortalAccessToken();
+
+      if (scope === "library") {
+        libraryTokenManager.setAccessToken(newToken);
+      } else {
+        tokenManager.setAccessToken(newToken);
+      }
+
+      state.queue.forEach((cb) => cb(newToken));
+      return newToken;
+    } catch (err) {
+      state.rejectQueue.forEach((cb) => cb(err));
+      if (scope === "library") {
+        libraryTokenManager.clearAccessToken();
+        if (typeof window !== "undefined") {
+          window.location.href = ROUTES.LIBRARY_LOGIN;
+        }
+      } else {
+        tokenManager.clearAccessToken();
+        if (typeof window !== "undefined") {
+          window.location.href = ROUTES.LOGIN;
+        }
+      }
+      throw err;
+    } finally {
+      state.isRefreshing = false;
+      state.queue = [];
+      state.rejectQueue = [];
+    }
+  }
+
+  return new Promise<string>((resolve, reject) => {
+    state.queue.push(resolve);
+    state.rejectQueue.push(reject);
+  });
 }
 
 // ─── Core fetch wrapper ───────────────────────────────────────────────────────
@@ -109,16 +189,16 @@ async function request<T>(
 ): Promise<T> {
   const { params, headers: extraHeaders, ...rest } = options;
   const url = buildUrl(path, params);
+  const libraryScope = isLibraryApiPath(path);
 
   const isFormData = body instanceof FormData;
 
-  // For FormData, omit Content-Type so the browser sets multipart/form-data + boundary.
   const headers: Record<string, string> = {
     ...(isFormData ? {} : { "Content-Type": "application/json" }),
     ...(extraHeaders as Record<string, string>),
   };
 
-  const token = tokenManager.getAccessToken();
+  const token = libraryScope ? libraryTokenManager.getAccessToken() : tokenManager.getAccessToken();
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
@@ -131,37 +211,8 @@ async function request<T>(
     ...rest,
   });
 
-  // Auto-refresh on 401 for authenticated API calls only — not for login/public auth
   if (res.status === 401 && !isRetry && !isCredentialAuthPath(path)) {
-    if (!isRefreshing) {
-      isRefreshing = true;
-
-      try {
-        const newToken = await refreshAccessToken();
-        tokenManager.setAccessToken(newToken);
-        refreshQueue.forEach((cb) => cb(newToken));
-      } catch (err) {
-        rejectQueue.forEach((cb) => cb(err));
-        tokenManager.clearAccessToken();
-        // Redirect to login on unrecoverable session failure
-        if (typeof window !== "undefined") {
-          window.location.href = ROUTES.LOGIN;
-        }
-        throw err;
-      } finally {
-        isRefreshing = false;
-        refreshQueue = [];
-        rejectQueue = [];
-      }
-    } else {
-      // Another request already triggered refresh — wait for it
-      await new Promise<string>((resolve, reject) => {
-        refreshQueue.push(resolve);
-        rejectQueue.push(reject);
-      });
-    }
-
-    // Retry original request with the new token
+    await handleUnauthorizedRefresh(libraryScope ? "library" : "portal");
     return request<T>(method, path, body, options, true);
   }
 
@@ -191,24 +242,58 @@ export const apiClient = {
     return request<T>("DELETE", path, undefined, options);
   },
 
-  // ── Typed convenience wrappers ─────────────────────────────────────────────
+  /** Authenticated binary/text download (CSV, files). Triggers browser save via blob URL. */
+  async download(
+    path: string,
+    filename: string,
+    options?: RequestOptions,
+    isRetry = false
+  ): Promise<void> {
+    const url = buildUrl(path, options?.params);
+    const token = tokenManager.getAccessToken();
+    const headers: Record<string, string> = {
+      ...(options?.headers as Record<string, string> | undefined),
+    };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  /** GET endpoint that returns { data, message } */
+    const res = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers,
+    });
+
+    if (res.status === 401 && !isRetry) {
+      await handleUnauthorizedRefresh("portal");
+      return apiClient.download(path, filename, options, true);
+    }
+
+    if (!res.ok) {
+      throw new ApiError(res.statusText || "Download failed", res.status);
+    }
+
+    const blob = await res.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(objectUrl);
+  },
+
   getOne<T>(path: string, options?: RequestOptions): Promise<ApiResponse<T>> {
     return request<ApiResponse<T>>("GET", path, undefined, options);
   },
 
-  /** GET endpoint that returns paginated { data[], meta } */
   getPaginated<T>(path: string, options?: RequestOptions): Promise<PaginatedResponse<T>> {
     return request<PaginatedResponse<T>>("GET", path, undefined, options);
   },
 
-  /** POST that returns { data, message } */
   postOne<T>(path: string, body?: unknown, options?: RequestOptions): Promise<ApiResponse<T>> {
     return request<ApiResponse<T>>("POST", path, body, options);
   },
 
-  /** PATCH that returns { data, message } */
   patchOne<T>(path: string, body?: unknown, options?: RequestOptions): Promise<ApiResponse<T>> {
     return request<ApiResponse<T>>("PATCH", path, body, options);
   },

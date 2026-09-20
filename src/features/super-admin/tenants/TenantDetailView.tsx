@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, ShieldOff, ShieldCheck, XCircle, AlertCircle } from "lucide-react";
+import { Loader2, ShieldOff, ShieldCheck, XCircle, AlertCircle, Trash2 } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Button } from "@/components/ui/button";
@@ -14,9 +15,10 @@ interface TenantDetailViewProps {
   tenantId: string;
 }
 
-type StatusAction = "suspend" | "activate" | "cancel";
+type StatusAction = "suspend" | "activate" | "cancel" | "delete";
 
 export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
+  const router = useRouter();
   const qc = useQueryClient();
   const [dialog, setDialog] = useState<StatusAction | null>(null);
   const [isActing, setIsActing] = useState(false);
@@ -39,7 +41,13 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
     try {
       if (act === "suspend") await tenantsApi.suspend(tenantId);
       else if (act === "activate") await tenantsApi.activate(tenantId);
-      else await tenantsApi.cancel(tenantId);
+      else if (act === "cancel") await tenantsApi.cancel(tenantId);
+      else {
+        await tenantsApi.remove(tenantId);
+        await qc.invalidateQueries({ queryKey: [TENANTS_QUERY_KEY] });
+        router.push("/super-admin/tenants");
+        return;
+      }
 
       await qc.invalidateQueries({ queryKey: [TENANT_DETAIL_QUERY_KEY, tenantId] });
       await qc.invalidateQueries({ queryKey: [TENANTS_QUERY_KEY] });
@@ -69,12 +77,16 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
   }
 
   const initials = tenant.name.slice(0, 2).toUpperCase();
+  const memberCount =
+    (tenant._count as { users?: number; members?: number } | undefined)?.users ??
+    (tenant._count as { users?: number; members?: number } | undefined)?.members ??
+    "—";
 
   const details = [
     { label: "Slug", value: tenant.slug },
     { label: "Domain", value: tenant.domain ?? "—" },
     { label: "Plan", value: tenant.subscriptions?.[0]?.plan?.name ?? "—" },
-    { label: "Users", value: String(tenant._count?.users ?? "—") },
+    { label: "Users", value: String(memberCount) },
     { label: "Timezone", value: tenant.timezone ?? "—" },
     { label: "Created", value: new Date(tenant.createdAt).toLocaleDateString() },
   ];
@@ -88,7 +100,6 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
         </div>
       )}
 
-      {/* Info card */}
       <div className="rounded-xl border border-slate-200 bg-white p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-3">
@@ -123,11 +134,14 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
                 Cancel
               </Button>
             )}
+            <Button variant="outline" size="sm" onClick={() => setDialog("delete")}>
+              <Trash2 className="h-4 w-4 text-red-600" />
+              Delete
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Details grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {details.map(({ label, value }) => (
           <div key={label} className="rounded-xl border border-slate-200 bg-white p-4">
@@ -137,7 +151,6 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
         ))}
       </div>
 
-      {/* Subscription table (if any) */}
       {(tenant.subscriptions?.length ?? 0) > 0 && (
         <div className="rounded-xl border border-slate-200 bg-white p-6">
           <h3 className="mb-4 text-sm font-semibold text-slate-700">Subscriptions</h3>
@@ -152,7 +165,6 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
         </div>
       )}
 
-      {/* Confirm dialogs */}
       <ConfirmDialog
         open={dialog === "suspend"}
         onClose={() => setDialog(null)}
@@ -168,7 +180,7 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
         onClose={() => setDialog(null)}
         onConfirm={() => handleAction("activate")}
         title="Activate Tenant"
-        description="This will restore access for all users of this tenant."
+        description="This unlocks the workspace so the owner and members can use the tenant dashboard."
         confirmLabel="Activate"
         isLoading={isActing}
       />
@@ -179,6 +191,16 @@ export function TenantDetailView({ tenantId }: TenantDetailViewProps) {
         title="Cancel Tenant"
         description="This will permanently cancel the tenant. This action cannot be undone."
         confirmLabel="Cancel Tenant"
+        variant="destructive"
+        isLoading={isActing}
+      />
+      <ConfirmDialog
+        open={dialog === "delete"}
+        onClose={() => setDialog(null)}
+        onConfirm={() => handleAction("delete")}
+        title="Delete Tenant"
+        description="This soft-deletes the tenant and signs out its users. The record is hidden from the list."
+        confirmLabel="Delete Tenant"
         variant="destructive"
         isLoading={isActing}
       />

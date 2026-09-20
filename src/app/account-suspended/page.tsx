@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { AccountGateSignOut } from "@/components/ui/account-gate-sign-out";
 
 export const metadata: Metadata = {
   title: "Account Suspended",
@@ -23,12 +23,7 @@ export default function AccountSuspendedPage() {
         >
           Contact Support
         </a>
-        <Link
-          href="/login"
-          className="rounded-lg border border-slate-300 bg-white px-6 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
-        >
-          Sign out
-        </Link>
+        <AccountGateSignOut />
       </div>
     </div>
   );

@@ -23,12 +23,16 @@ export interface BEMeUser {
   tenantId: string | null;
   isSuperAdmin: boolean;
   status: string;
+  /** Active workspace Tenant.status (PENDING / ACTIVE / SUSPENDED / …). Null for Super Admin. */
+  tenantStatus: string | null;
   emailVerified: boolean;
   avatarUrl: string | null;
   timezone: string | null;
   createdAt: string;
   /** Flat "module:action" strings loaded from the user's roles. Super admins receive []. */
   permissions: string[];
+  /** Workspace roles from /auth/me (display names, not FE routing hints). */
+  roles: Array<{ id: string; name: string; slug: string }>;
   /** All workspaces this user belongs to (ACTIVE memberships). */
   tenants: WorkspaceTenant[];
   /** Currently active workspace. */

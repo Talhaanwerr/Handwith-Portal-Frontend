@@ -25,6 +25,14 @@ export interface UserListItem {
   isSuperAdmin: boolean;
   createdAt: string;
   updatedAt: string;
+  /** Super Admin platform list — memberships on non-deleted tenants */
+  tenants?: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    memberStatus: UserStatus;
+    roles: Array<{ id: string; name: string; slug: string }>;
+  }>;
 }
 
 /** Returned by GET /users/:id (detail) */

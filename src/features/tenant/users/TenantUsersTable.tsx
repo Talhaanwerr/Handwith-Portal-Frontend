@@ -17,6 +17,7 @@ import { EditUserModal } from "./EditUserModal";
 import { AssignRolesModal } from "./AssignRolesModal";
 import { UserDetailDrawer } from "./UserDetailDrawer";
 import { USERS_QUERY_KEY } from "@/constants/query-keys";
+import { useTablePageSize } from "@/hooks/use-table-page-size";
 import type { UserListItem } from "@/types/users";
 
 const STATUS_OPTIONS = [
@@ -37,11 +38,17 @@ export function TenantUsersTable() {
     user: UserListItem;
     action: "deactivate" | "reactivate";
   } | null>(null);
+  const pageSize = useTablePageSize();
 
   const { data: res, isLoading } = useQuery({
-    queryKey: [USERS_QUERY_KEY, page, search, status],
+    queryKey: [USERS_QUERY_KEY, page, pageSize, search, status],
     queryFn: () =>
-      usersApi.list({ page, limit: 15, search: search || undefined, status: status || undefined }),
+      usersApi.list({
+        page,
+        limit: pageSize,
+        search: search || undefined,
+        status: status || undefined,
+      }),
     placeholderData: (prev) => prev,
   });
 

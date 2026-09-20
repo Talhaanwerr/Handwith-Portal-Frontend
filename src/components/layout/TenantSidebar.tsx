@@ -11,35 +11,54 @@ import {
   ScrollText,
   LogOut,
   X,
-  GitBranch,
-  BarChart3,
-  CreditCard,
-  Flag,
+  // GitBranch,
+  // BarChart3,
+  // CreditCard,
+  // Flag,
+  Library,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./sidebar-context";
 import { TenantSwitcher } from "./TenantSwitcher";
 import { useAuthStore } from "@/store/auth-store";
+import { canAccess } from "@/lib/can-access";
+import { PERMISSIONS } from "@/constants/permissions";
 
 interface NavItem {
   href: string;
   labelKey: string;
   icon: React.ElementType;
-  /** Roles allowed to see this item. Undefined = any authenticated tenant user. */
-  roles?: string[];
+  /** If set, item is shown only when the user has this permission (SA always sees it). */
+  permission?: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
-  { href: "/users", labelKey: "users", icon: Users, roles: ["TENANT_ADMIN"] },
-  { href: "/roles", labelKey: "roles", icon: ShieldCheck, roles: ["TENANT_ADMIN"] },
-  { href: "/branches", labelKey: "branches", icon: GitBranch, roles: ["TENANT_ADMIN"] },
-  { href: "/reports", labelKey: "reports", icon: BarChart3 },
-  { href: "/billing", labelKey: "billing", icon: CreditCard, roles: ["TENANT_ADMIN"] },
-  { href: "/activity-logs", labelKey: "activityLogs", icon: ScrollText },
-  { href: "/settings", labelKey: "settings", icon: Settings, roles: ["TENANT_ADMIN"] },
-  { href: "/feature-flags", labelKey: "featureFlags", icon: Flag, roles: ["TENANT_ADMIN"] },
+  { href: "/library", labelKey: "library", icon: Library },
+  { href: "/users", labelKey: "users", icon: Users, permission: PERMISSIONS.USERS.READ },
+  { href: "/roles", labelKey: "roles", icon: ShieldCheck, permission: PERMISSIONS.ROLES.READ },
+  // { href: "/branches", labelKey: "branches", icon: GitBranch },
+  // { href: "/reports", labelKey: "reports", icon: BarChart3 },
+  // { href: "/billing", labelKey: "billing", icon: CreditCard },
+  {
+    href: "/activity-logs",
+    labelKey: "activityLogs",
+    icon: ScrollText,
+    permission: PERMISSIONS.AUDIT_LOGS.READ,
+  },
+  {
+    href: "/settings",
+    labelKey: "settings",
+    icon: Settings,
+    permission: PERMISSIONS.SETTINGS.READ,
+  },
+  // {
+  //   href: "/feature-flags",
+  //   labelKey: "featureFlags",
+  //   icon: Flag,
+  //   permission: PERMISSIONS.FEATURE_FLAGS.READ,
+  // },
   { href: "/profile", labelKey: "profile", icon: UserCircle },
 ];
 
@@ -49,7 +68,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
   const t = useTranslations("nav");
 
   const visibleItems = NAV_ITEMS.filter(
-    (item) => !item.roles || (user?.role && item.roles.includes(user.role))
+    (item) => !item.permission || canAccess(user, item.permission)
   );
 
   return (

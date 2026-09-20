@@ -16,6 +16,7 @@ import { RolePermissionsModal } from "./RolePermissionsModal";
 import { ROLES_QUERY_KEY } from "@/constants/query-keys";
 import { useToast } from "@/components/ui/toast";
 import { getSafeErrorMessage } from "@/lib/safe-error";
+import { useTablePageSize } from "@/hooks/use-table-page-size";
 import type { RoleItem } from "@/types/roles";
 
 interface RolesTableProps {
@@ -27,6 +28,8 @@ export function RolesTable({ onCreateRef }: RolesTableProps) {
   const qc = useQueryClient();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = useTablePageSize();
   const [editRole, setEditRole] = useState<RoleItem | null>(null);
   const [permRole, setPermRole] = useState<RoleItem | null>(null);
   const [confirmRole, setConfirmRole] = useState<RoleItem | null>(null);
@@ -55,6 +58,10 @@ export function RolesTable({ onCreateRef }: RolesTableProps) {
           (r.description ?? "").toLowerCase().includes(search.toLowerCase())
       )
     : allRoles;
+
+  const totalPages = Math.max(1, Math.ceil(roles.length / pageSize));
+  const pageSafe = Math.min(page, totalPages);
+  const pagedRoles = roles.slice((pageSafe - 1) * pageSize, pageSafe * pageSize);
 
   const del = useApiMutation((id: string) => rolesApi.delete(id), {
     onSuccess: () => {
@@ -161,15 +168,21 @@ export function RolesTable({ onCreateRef }: RolesTableProps) {
         <SearchInput
           placeholder="Search roles…"
           value={search}
-          onChange={setSearch}
+          onChange={(v) => {
+            setSearch(v);
+            setPage(1);
+          }}
           className="sm:max-w-xs"
         />
       </div>
 
       <DataTable
         columns={columns}
-        data={roles}
+        data={pagedRoles}
         isLoading={isLoading}
+        totalPages={totalPages}
+        currentPage={pageSafe}
+        onPageChange={setPage}
         emptyState={
           <EmptyState
             illustration="roles"

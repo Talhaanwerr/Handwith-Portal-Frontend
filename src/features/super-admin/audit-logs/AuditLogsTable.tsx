@@ -1,27 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { ScrollText } from "lucide-react";
+import { ScrollText, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { DataTable, type Column } from "@/components/ui/data-table";
 import { SearchInput } from "@/components/ui/search-input";
 import { EmptyState } from "@/components/ui/empty-state";
+import { AuditLogDetailDialog } from "@/components/ui/audit-log-detail-dialog";
 import { auditLogsApi } from "@/lib/audit-logs-api";
 import { AUDIT_LOGS_QUERY_KEY } from "@/constants/query-keys";
+import { useTablePageSize } from "@/hooks/use-table-page-size";
 import type { AuditLogItem } from "@/types/audit-logs";
 
 export function AuditLogsTable() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [detail, setDetail] = useState<AuditLogItem | null>(null);
+  const pageSize = useTablePageSize();
 
   const { data: res, isLoading } = useQuery({
-    queryKey: [AUDIT_LOGS_QUERY_KEY, page, search],
+    queryKey: [AUDIT_LOGS_QUERY_KEY, page, pageSize, search],
     queryFn: () =>
       auditLogsApi.list({
         page,
-        limit: 20,
-        // The list endpoint doesn't have a full-text search, but we send the
-        // search value as "module" filter — refined per product requirements.
+        limit: pageSize,
         module: search || undefined,
       }),
     placeholderData: (prev) => prev,
@@ -67,12 +69,18 @@ export function AuditLogsTable() {
     {
       key: "tenant",
       header: "Tenant",
-      render: (r) =>
-        r.tenant ? (
-          <span className="text-sm">{r.tenant.name}</span>
+      render: (r) => {
+        const fromValue =
+          typeof r.newValue === "object" && r.newValue && "tenantName" in r.newValue
+            ? String((r.newValue as { tenantName?: string }).tenantName ?? "")
+            : "";
+        const name = r.tenant?.name || fromValue;
+        return name ? (
+          <span className="text-sm">{name}</span>
         ) : (
           <span className="text-slate-400">—</span>
-        ),
+        );
+      },
     },
     {
       key: "ip",
@@ -88,12 +96,26 @@ export function AuditLogsTable() {
         </span>
       ),
     },
+    {
+      key: "detail",
+      header: "",
+      render: (r) => (
+        <button
+          type="button"
+          aria-label="View log details"
+          className="rounded p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+          onClick={() => setDetail(r)}
+        >
+          <Eye className="h-4 w-4" />
+        </button>
+      ),
+    },
   ];
 
   return (
     <div className="space-y-4">
       <SearchInput
-        placeholder="Filter by module…"
+        placeholder="Filter by module (e.g. te for tenants)…"
         value={search}
         onChange={(v) => {
           setSearch(v);
@@ -111,10 +133,11 @@ export function AuditLogsTable() {
           <EmptyState
             icon={ScrollText}
             title="No audit logs yet"
-            description="Actions performed on the platform will appear here."
+            description="Platform and Super Admin actions will appear here."
           />
         }
       />
+      <AuditLogDetailDialog log={detail} open={Boolean(detail)} onClose={() => setDetail(null)} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import type {
   CreateTenantPayload,
   UpdateTenantPayload,
   ListTenantsParams,
+  TenantPlatformStats,
 } from "@/types/tenants";
 
 /** All API calls for the /tenants resource (super admin only). */
@@ -14,6 +15,8 @@ export const tenantsApi = {
     apiClient.get<ApiEnvelope<PaginatedPayload<TenantListItem>>>("/tenants", {
       params: params as Record<string, string | number | boolean | undefined | null>,
     }),
+
+  getStats: () => apiClient.get<ApiEnvelope<TenantPlatformStats>>("/tenants/stats"),
 
   getOne: (id: string) => apiClient.get<ApiEnvelope<TenantDetail>>(`/tenants/${id}`),
 
@@ -28,4 +31,6 @@ export const tenantsApi = {
   suspend: (id: string) => apiClient.patch<ApiEnvelope<TenantListItem>>(`/tenants/${id}/suspend`),
 
   cancel: (id: string) => apiClient.patch<ApiEnvelope<TenantListItem>>(`/tenants/${id}/cancel`),
+
+  remove: (id: string) => apiClient.delete<ApiEnvelope<null>>(`/tenants/${id}`),
 };

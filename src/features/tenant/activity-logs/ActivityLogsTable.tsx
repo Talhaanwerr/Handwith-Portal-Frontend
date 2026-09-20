@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { Eye } from "lucide-react";
 import { DataTable, type Column } from "@/components/ui/data-table";
 import { Select } from "@/components/ui/select";
 import { SearchInput } from "@/components/ui/search-input";
 import { EmptyState } from "@/components/ui/empty-state";
+import { AuditLogDetailDialog } from "@/components/ui/audit-log-detail-dialog";
 import { usePaginatedQuery } from "@/hooks/use-paginated-query";
+import { useTablePageSize } from "@/hooks/use-table-page-size";
 import { AUDIT_LOGS_QUERY_KEY } from "@/constants/query-keys";
 import type { AuditLogItem } from "@/types/audit-logs";
 
@@ -14,20 +17,26 @@ const MODULE_OPTIONS = [
   { value: "users", label: "Users" },
   { value: "roles", label: "Roles" },
   { value: "settings", label: "Settings" },
-  { value: "feature-flags", label: "Feature Flags" },
   { value: "files", label: "Files" },
-  { value: "tenants", label: "Tenants" },
+  { value: "notifications", label: "Notifications" },
 ];
 
 export function ActivityLogsTable() {
   const [search, setSearch] = useState("");
   const [moduleFilter, setModuleFilter] = useState("");
   const [page, setPage] = useState(1);
+  const [detail, setDetail] = useState<AuditLogItem | null>(null);
+  const pageSize = useTablePageSize();
 
   const { data: res, isLoading } = usePaginatedQuery<AuditLogItem>({
-    queryKey: [AUDIT_LOGS_QUERY_KEY, "tenant", page, moduleFilter, search],
+    queryKey: [AUDIT_LOGS_QUERY_KEY, "tenant", page, pageSize, moduleFilter, search],
     path: "/audit-logs",
-    params: { page, limit: 20, module: moduleFilter || undefined, search: search || undefined },
+    params: {
+      page,
+      limit: pageSize,
+      module: moduleFilter || undefined,
+      search: search || undefined,
+    },
     placeholderData: (prev) => prev,
   });
 
@@ -69,22 +78,6 @@ export function ActivityLogsTable() {
       ),
     },
     {
-      key: "details",
-      header: "Details",
-      render: (r) => {
-        const detail = r.newValue
-          ? JSON.stringify(r.newValue).slice(0, 60)
-          : r.oldValue
-            ? JSON.stringify(r.oldValue).slice(0, 60)
-            : null;
-        return (
-          <span className="text-xs text-slate-500">
-            {detail ? `${detail}${detail.length >= 60 ? "…" : ""}` : "—"}
-          </span>
-        );
-      },
-    },
-    {
       key: "time",
       header: "Time",
       render: (r) => (
@@ -93,11 +86,24 @@ export function ActivityLogsTable() {
         </span>
       ),
     },
+    {
+      key: "detail",
+      header: "Details",
+      render: (r) => (
+        <button
+          type="button"
+          aria-label="View log details"
+          className="rounded p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+          onClick={() => setDetail(r)}
+        >
+          <Eye className="h-4 w-4" />
+        </button>
+      ),
+    },
   ];
 
   return (
     <div className="space-y-4">
-      {/* Filters */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <SearchInput
           placeholder="Search by action or actor…"
@@ -139,6 +145,7 @@ export function ActivityLogsTable() {
           />
         }
       />
+      <AuditLogDetailDialog log={detail} open={Boolean(detail)} onClose={() => setDetail(null)} />
     </div>
   );
 }

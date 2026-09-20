@@ -56,6 +56,31 @@ export const acceptInviteSchema = z
     path: ["confirmPassword"],
   });
 
+export const libraryRegisterSchema = z
+  .object({
+    firstName: z.string().min(1, "First name is required").max(100),
+    lastName: z.string().min(1, "Last name is required").max(100),
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .max(254, "Email is too long")
+      .email("Enter a valid email address"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(128, "Password is too long")
+      .regex(/[a-z]/, "Password must contain a lowercase letter")
+      .regex(/[A-Z]/, "Password must contain an uppercase letter")
+      .regex(/[0-9]/, "Password must contain a number")
+      .regex(/[\W_]/, "Password must contain a special character"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type LibraryRegisterInput = z.infer<typeof libraryRegisterSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

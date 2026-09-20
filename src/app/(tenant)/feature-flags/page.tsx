@@ -9,7 +9,7 @@ export default function TenantFeatureFlagsPage() {
     <div className="space-y-6">
       <PageHeader
         title="Feature Flags"
-        description="Enable or disable optional features for your workspace"
+        description="Features available for your workspace (managed by the platform)"
       />
       <TenantFeatureFlagsList />
     </div>

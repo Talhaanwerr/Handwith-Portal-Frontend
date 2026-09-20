@@ -18,14 +18,6 @@ export interface TenantFeatureFlagItem extends FeatureFlagItem {
   effectivelyEnabled: boolean;
 }
 
-export interface CreateFeatureFlagPayload {
-  name: string;
-  slug: string;
-  description?: string;
-  isGlobal?: boolean;
-  isActive?: boolean;
-}
-
 export interface UpdateFeatureFlagPayload {
   name?: string;
   description?: string;

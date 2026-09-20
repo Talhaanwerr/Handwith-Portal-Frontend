@@ -48,21 +48,33 @@ export interface CreateTenantPayload {
   slug: string;
   domain?: string;
   subdomain?: string;
+  ownerEmail: string;
+  ownerFirstName: string;
+  ownerLastName: string;
   ownerUserId?: string;
   timezone?: string;
-  currency?: string;
+  currency: "PKR" | "USD";
   logo?: string;
 }
 
 /** PATCH /tenants/:id */
 export interface UpdateTenantPayload {
   name?: string;
-  domain?: string;
-  subdomain?: string;
+  domain?: string | null;
+  subdomain?: string | null;
   ownerUserId?: string;
   timezone?: string;
-  currency?: string;
   logo?: string;
+}
+
+export interface TenantPlatformStats {
+  totalTenants: number;
+  activeTenants: number;
+  pendingTenants: number;
+  suspendedTenants: number;
+  cancelledTenants: number;
+  newThisMonth: number;
+  totalUsers: number;
 }
 
 export interface ListTenantsParams {

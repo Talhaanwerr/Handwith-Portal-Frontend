@@ -28,6 +28,9 @@ export function UserMenu({ className }: { className?: string }) {
   const displayName = user?.name ?? "User";
   const email = user?.email ?? "";
   const initials = getInitials(displayName);
+  const isSuperAdmin = user?.isSuperAdmin === true || user?.role === "SUPER_ADMIN";
+  const profileHref = isSuperAdmin ? "/super-admin/profile" : "/profile";
+  const settingsHref = isSuperAdmin ? "/super-admin/settings" : "/settings";
 
   return (
     <DropdownMenu>
@@ -60,14 +63,14 @@ export function UserMenu({ className }: { className?: string }) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/profile" className="cursor-pointer">
+          <Link href={profileHref} className="cursor-pointer">
             <UserCircle className="h-4 w-4" />
             My Profile
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/settings" className="cursor-pointer">
+          <Link href={settingsHref} className="cursor-pointer">
             <Settings className="h-4 w-4" />
             Settings
           </Link>

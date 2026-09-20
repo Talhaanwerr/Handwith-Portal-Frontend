@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,12 +11,13 @@ import { ApiError } from "@/lib/api-error";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 function LoginForm() {
   const { login, isLoading } = useAuthStore();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -54,7 +55,7 @@ function LoginForm() {
           </div>
         )}
 
-        <FormField label="Email" error={errors.email?.message} required>
+        <FormField label="Email" error={errors.email?.message}>
           <Input
             type="email"
             placeholder="you@example.com"
@@ -77,15 +78,25 @@ function LoginForm() {
             </span>
           }
           error={errors.password?.message}
-          required
         >
-          <Input
-            type="password"
-            placeholder="••••••••"
-            autoComplete="current-password"
-            aria-invalid={!!errors.password}
-            {...register("password")}
-          />
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              autoComplete="current-password"
+              aria-invalid={!!errors.password}
+              className="pr-10"
+              {...register("password")}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute top-1/2 right-2.5 -translate-y-1/2 rounded p-1 text-slate-400 hover:text-slate-700"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </FormField>
 
         <Button type="submit" className="w-full" disabled={isLoading}>

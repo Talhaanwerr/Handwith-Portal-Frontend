@@ -8,24 +8,33 @@ import { DataTable, type Column } from "@/components/ui/data-table";
 import { SearchInput } from "@/components/ui/search-input";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Select } from "@/components/ui/select";
 import { Building2 } from "lucide-react";
 import { tenantsApi } from "@/lib/tenants-api";
 import { TENANTS_QUERY_KEY } from "@/constants/query-keys";
+import { useTablePageSize } from "@/hooks/use-table-page-size";
 import type { TenantListItem } from "@/types/tenants";
 
-const STATUS_OPTIONS = ["All", "ACTIVE", "PENDING", "SUSPENDED", "CANCELLED"];
+const STATUS_OPTIONS = [
+  { value: "All", label: "All statuses" },
+  { value: "ACTIVE", label: "ACTIVE" },
+  { value: "PENDING", label: "PENDING" },
+  { value: "SUSPENDED", label: "SUSPENDED" },
+  { value: "CANCELLED", label: "CANCELLED" },
+];
 
 export function TenantsTable() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [page, setPage] = useState(1);
+  const pageSize = useTablePageSize();
 
   const { data: res, isLoading } = useQuery({
-    queryKey: [TENANTS_QUERY_KEY, page, search, statusFilter],
+    queryKey: [TENANTS_QUERY_KEY, page, pageSize, search, statusFilter],
     queryFn: () =>
       tenantsApi.list({
         page,
-        limit: 15,
+        limit: pageSize,
         search: search || undefined,
         status: statusFilter === "All" ? undefined : statusFilter,
       }),
@@ -94,7 +103,6 @@ export function TenantsTable() {
 
   return (
     <div className="space-y-4">
-      {/* Filters */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <SearchInput
           placeholder="Search tenants…"
@@ -104,24 +112,21 @@ export function TenantsTable() {
             setPage(1);
           }}
         />
-        <div className="flex flex-wrap gap-1.5">
+        <Select
+          className="sm:w-48"
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setPage(1);
+          }}
+          aria-label="Filter by status"
+        >
           {STATUS_OPTIONS.map((s) => (
-            <button
-              key={s}
-              onClick={() => {
-                setStatusFilter(s);
-                setPage(1);
-              }}
-              className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                statusFilter === s
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-slate-200 bg-white text-slate-500 hover:border-slate-300"
-              }`}
-            >
-              {s}
-            </button>
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
           ))}
-        </div>
+        </Select>
       </div>
 
       <DataTable

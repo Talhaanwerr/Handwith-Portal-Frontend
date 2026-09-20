@@ -15,6 +15,7 @@ import { usersApi } from "@/lib/users-api";
 import { authApi } from "@/lib/auth";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { getSafeErrorMessage } from "@/lib/safe-error";
+import { normalizePublicFileUrl } from "@/lib/public-file-url";
 
 const TIMEZONES = [
   "UTC",
@@ -67,7 +68,7 @@ export function ProfileForm() {
 
   const passwordForm = useForm<PasswordValues>({ resolver: zodResolver(passwordSchema) });
 
-  const updateProfile = useApiMutation((data: ProfileValues) => usersApi.update(user!.id, data), {
+  const updateProfile = useApiMutation((data: ProfileValues) => usersApi.updateMe(data), {
     onSuccess: (res, data) => {
       if (user) {
         setUser({
@@ -111,7 +112,7 @@ export function ProfileForm() {
     onSuccess: (res) => {
       const updated = res?.data;
       if (user && updated) {
-        setUser({ ...user, avatarUrl: updated.avatarUrl ?? null });
+        setUser({ ...user, avatarUrl: normalizePublicFileUrl(updated.avatarUrl) });
       }
       toast({ title: "Avatar updated", variant: "success" });
     },
@@ -140,16 +141,17 @@ export function ProfileForm() {
     await changePassword.mutateAsync(data);
   }
 
+  const avatarSrc = normalizePublicFileUrl(user?.avatarUrl);
   return (
     <div className="space-y-6">
       {/* Avatar / identity card */}
       <div className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-6">
         <div className="relative shrink-0">
           <div className="bg-primary/10 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full">
-            {user?.avatarUrl ? (
+            {avatarSrc ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={user.avatarUrl}
+                src={avatarSrc}
                 alt={user?.name ?? "Avatar"}
                 className="h-16 w-16 rounded-full object-cover"
               />
@@ -181,7 +183,14 @@ export function ProfileForm() {
         <div>
           <p className="font-semibold text-slate-900">{user?.name ?? "—"}</p>
           <p className="text-sm text-slate-400">{user?.email ?? "—"}</p>
-          <p className="mt-1 text-xs text-slate-300">Role: {user?.role ?? "—"}</p>
+          <p className="mt-1 text-xs text-slate-300">
+            Role:{" "}
+            {user?.roles?.length
+              ? user.roles.map((r) => r.name).join(", ")
+              : user?.isSuperAdmin
+                ? "Super Admin"
+                : "—"}
+          </p>
           <p className="mt-1 text-xs text-slate-400">Click the camera icon to change your avatar</p>
         </div>
       </div>

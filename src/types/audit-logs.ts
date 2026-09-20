@@ -24,6 +24,7 @@ export interface ListAuditLogsParams {
   limit?: number;
   module?: string;
   action?: string;
+  search?: string;
   actorId?: string;
   entityId?: string;
   dateFrom?: string;

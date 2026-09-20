@@ -25,7 +25,10 @@ const contentSecurityPolicy = [
   "form-action 'self'",
   "frame-ancestors 'none'",
   "object-src 'none'",
-  "img-src 'self' data: blob: https:",
+  // https: for prod CDNs; api origin + local BE for absolute avatar URLs
+  `img-src 'self' data: blob: https:${apiConnectOrigin() ? ` ${apiConnectOrigin()}` : ""}${
+    isProd ? "" : " http://localhost:4601 http://127.0.0.1:4601"
+  }`,
   "font-src 'self' data: https://fonts.gstatic.com",
   isProd ? "script-src 'self' 'unsafe-inline'" : "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",

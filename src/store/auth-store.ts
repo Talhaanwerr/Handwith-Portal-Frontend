@@ -6,13 +6,21 @@ import { tokenManager } from "@/lib/token";
 import { setSessionCookie, clearSessionCookie } from "@/lib/session-cookie";
 import { ROUTES } from "@/constants";
 import { getPostLoginPath } from "@/lib/post-login-path";
-import type { User, UserRole, UserStatus, WorkspaceTenant } from "@/types";
+import type { User, UserRole, UserStatus, WorkspaceTenant, TenantStatus } from "@/types";
 import type { BELoginUser, BEMeUser, LoginCredentials, LoginTokens } from "@/lib/auth";
+import { normalizePublicFileUrl } from "@/lib/public-file-url";
 
 // ─── BE → FE user mapping ─────────────────────────────────────────────────────
 
 function deriveRole(isSuperAdmin: boolean): UserRole {
   return isSuperAdmin ? "SUPER_ADMIN" : "TENANT_USER";
+}
+
+function sessionPayloadFromMe(be: BEMeUser, role: UserRole) {
+  if (be.isSuperAdmin || !be.tenantStatus) {
+    return { role };
+  }
+  return { role, tenantStatus: be.tenantStatus as TenantStatus };
 }
 
 /** Map the slim login-response user to the FE User shape. */
@@ -32,6 +40,7 @@ function mapLoginUser(be: BELoginUser): User {
     avatarUrl: null,
     timezone: null,
     permissions: [],
+    roles: [],
     createdAt: new Date().toISOString(),
   };
 }
@@ -50,9 +59,10 @@ function mapMeUser(be: BEMeUser): User {
     status: (be.status as UserStatus) ?? "ACTIVE",
     isActive: be.status === "ACTIVE",
     emailVerified: be.emailVerified,
-    avatarUrl: be.avatarUrl,
+    avatarUrl: normalizePublicFileUrl(be.avatarUrl),
     timezone: be.timezone,
     permissions: [...new Set(be.permissions ?? [])],
+    roles: be.roles ?? [],
     createdAt: be.createdAt,
   };
 }
@@ -133,10 +143,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       let feUser = mapLoginUser(tokens.user);
       let userTenants: WorkspaceTenant[] = [];
       let activeTenant: WorkspaceTenant | null = null;
+      let meData: BEMeUser | null = null;
 
       try {
         const meEnvelope = await authApi.me();
         if (meEnvelope.data) {
+          meData = meEnvelope.data;
           feUser = mapMeUser(meEnvelope.data);
           userTenants = meEnvelope.data.tenants ?? [];
           activeTenant = meEnvelope.data.activeTenant ?? null;
@@ -145,7 +157,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         // Non-fatal: continue with slim login user if /auth/me fails
       }
 
-      setSessionCookie({ role: feUser.role });
+      setSessionCookie(meData ? sessionPayloadFromMe(meData, feUser.role) : { role: feUser.role });
       set({ user: feUser, userTenants, activeTenant, isLoading: false });
 
       window.location.href = getPostLoginPath(feUser.role, redirectTo);
@@ -171,10 +183,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       let feUser = mapLoginUser(payload.user);
       let userTenants: WorkspaceTenant[] = [];
       let activeTenant: WorkspaceTenant | null = null;
+      let meData: BEMeUser | null = null;
 
       try {
         const meEnvelope = await authApi.me();
         if (meEnvelope.data) {
+          meData = meEnvelope.data;
           feUser = mapMeUser(meEnvelope.data);
           userTenants = meEnvelope.data.tenants ?? [];
           activeTenant = meEnvelope.data.activeTenant ?? null;
@@ -183,7 +197,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         // Non-fatal
       }
 
-      setSessionCookie({ role: feUser.role });
+      setSessionCookie(meData ? sessionPayloadFromMe(meData, feUser.role) : { role: feUser.role });
       set({ user: feUser, userTenants, activeTenant, isLoading: false });
 
       window.location.href = ROUTES.TENANT_DASHBOARD;
@@ -256,7 +270,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       const feUser = mapMeUser(meUser);
 
-      setSessionCookie({ role: feUser.role });
+      setSessionCookie(sessionPayloadFromMe(meUser, feUser.role));
       set({
         user: feUser,
         userTenants: meUser.tenants ?? [],

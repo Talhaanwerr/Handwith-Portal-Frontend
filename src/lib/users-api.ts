@@ -32,6 +32,10 @@ export const usersApi = {
   update: (id: string, payload: UpdateUserPayload) =>
     apiClient.patch<ApiEnvelope<UserListItem>>(`/users/${id}`, payload),
 
+  /** Self-service profile update (works for Super Admin without tenant context). */
+  updateMe: (payload: UpdateUserPayload) =>
+    apiClient.patch<ApiEnvelope<UserListItem>>("/users/me", payload),
+
   deactivate: (id: string) => apiClient.patch<ApiEnvelope<UserListItem>>(`/users/${id}/deactivate`),
 
   reactivate: (id: string) => apiClient.patch<ApiEnvelope<UserListItem>>(`/users/${id}/reactivate`),
@@ -41,6 +45,10 @@ export const usersApi = {
 
   removeRole: (userId: string, roleId: string) =>
     apiClient.delete<ApiEnvelope<null>>(`/users/${userId}/roles/${roleId}`),
+
+  /** Super Admin platform soft-delete (no tenant context). */
+  softDelete: (id: string) =>
+    apiClient.delete<ApiEnvelope<{ id: string; deleted: true }>>(`/users/${id}`),
 
   uploadAvatar: (file: File) => {
     const form = new FormData();
