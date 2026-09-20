@@ -435,37 +435,43 @@ export function LetterSequencingScreen({ onHome }: LetterSequencingScreenProps) 
 
   if (phase === "success") {
     return (
-      <div className="bg-wash-lavender-mint relative flex h-full w-full flex-col items-center gap-6 overflow-x-hidden overflow-y-auto px-6 py-6">
-        <div className="pointer-events-none fixed inset-0 z-40" aria-hidden="true">
+      // Shell + inner scroller: the confetti stays put and the mt-auto/mb-auto
+      // pair is gone. Those two auto margins centred the OVERFLOW as well, so
+      // on a short landscape screen the 🎉 and the heading sat above scroll
+      // origin where nothing could reach them.
+      <div className="bg-wash-lavender-mint pl-screen-shell">
+        <div className="pointer-events-none absolute inset-0 z-40" aria-hidden="true">
           <CelebrationSparkles active width={dimensions.w} height={dimensions.h} />
         </div>
-        <motion.div
-          className="relative z-10 mt-auto flex flex-col items-center gap-4 text-center"
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 220, damping: 16 }}
-        >
-          <div className="text-6xl">🎉</div>
-          <h2 className="font-rounded text-plum text-4xl font-black">
-            {clipText("cheer-amazing")}
-          </h2>
-          <p className="font-rounded text-plum/70 text-lg font-semibold">
-            You finished all the puzzles!
-          </p>
-        </motion.div>
-        <motion.div
-          className="relative z-10 mb-auto flex w-full max-w-md flex-col gap-3 md:max-w-2xl"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Button size="xl" onClick={() => startGame(difficulty)} className="w-full">
-            Play Again
-          </Button>
-          <Button size="md" variant="secondary" onClick={onHome} className="w-full">
-            Back to Menu
-          </Button>
-        </motion.div>
+        <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-6 px-6 py-6">
+          <motion.div
+            className="relative z-10 flex flex-col items-center gap-4 text-center"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 220, damping: 16 }}
+          >
+            <div className="text-6xl">🎉</div>
+            <h2 className="font-rounded text-plum text-4xl font-black">
+              {clipText("cheer-amazing")}
+            </h2>
+            <p className="font-rounded text-plum/70 text-lg font-semibold">
+              You finished all the puzzles!
+            </p>
+          </motion.div>
+          <motion.div
+            className="relative z-10 flex w-full max-w-md flex-col gap-3 md:max-w-2xl"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Button size="xl" onClick={() => startGame(difficulty)} className="w-full">
+              Play Again
+            </Button>
+            <Button size="md" variant="secondary" onClick={onHome} className="w-full">
+              Back to Menu
+            </Button>
+          </motion.div>
+        </div>
       </div>
     );
   }
@@ -635,7 +641,18 @@ export function LetterSequencingScreen({ onHome }: LetterSequencingScreenProps) 
                       : { scale: 1, x: 0 }
                   }
                   exit={{ scale: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                  transition={{
+                    x: {
+                      type: "tween",
+                      duration: 0.4,
+                      ease: "easeInOut",
+                    },
+                    scale: {
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 18,
+                    },
+                  }}
                   onPointerDown={(e) => startDrag(letter, idx, -1, e)}
                   aria-label={`Drag letter ${letter}`}
                 >

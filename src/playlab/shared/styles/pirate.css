@@ -1,0 +1,149 @@
+/* ── Pirate World — shared UI treatment ─────────────────────────────────────
+   The THEME's paint for the portal's EXISTING structures: panels, pills,
+   plates, progress. No new component system — a future pirate screen keeps
+   using NavPillButton (tone="pirate"), StartOptions, ProgressBar,
+   CaseSelectScreen and the shared celebration, and reaches for these classes
+   for its surfaces. Chrome colours come from the `pirate` token family
+   (var(--color-pirate-*)); illustration colours never appear here.
+
+   Scope: put `pp-world` on a screen's root to pick up the scoped paints
+   (case plates etc.), exactly how each game scopes its own paint. */
+
+/* Every pirate SVG fills its parent — size the WRAPPER, never the art. */
+.pp-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pp-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pp-motion {
+  width: 100%;
+}
+
+/* ── The ocean layer ── */
+.pp-ocean {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.pp-ocean-front {
+  position: absolute;
+  inset-inline: -6%;
+  bottom: 0;
+  height: 26%;
+  width: 112%;
+}
+
+/* ── Surfaces ── */
+
+/** Warm wood panel — the theme's primary surface. */
+.pp-panel-wood {
+  background: linear-gradient(180deg, #9a6534 0%, #5c3a1c 100%);
+  border: 3px solid #4a2e14;
+  border-radius: var(--radius-board, 24px);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.22),
+    0 10px 26px rgba(46, 26, 8, 0.4);
+  color: #fff;
+}
+
+/** Parchment panel — the reading surface (rules, maps behind UI, labels). */
+.pp-panel-parchment {
+  background: linear-gradient(180deg, #f4e6c4 0%, #e4ce9e 100%);
+  border: 3px solid #c9a96c;
+  border-radius: var(--radius-board, 24px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.6),
+    0 8px 22px rgba(46, 26, 8, 0.25);
+  color: #4a2e14;
+}
+
+/** Gold accent edge — used sparingly (one per surface at most). */
+.pp-trim-gold {
+  box-shadow:
+    inset 0 0 0 3px #e9b44c,
+    inset 0 3px 0 rgba(255, 255, 255, 0.22),
+    0 10px 26px rgba(46, 26, 8, 0.4);
+}
+
+/** The theme's pill (counters, small status chips) — parchment on wood. */
+.pp-pill {
+  background: #f4e6c4;
+  color: #4a2e14;
+  box-shadow: var(--shadow-soft);
+}
+
+/** Progress fill: sea into gold — the voyage toward treasure. */
+.pp-progress-fill {
+  background: linear-gradient(90deg, #2e86ab 0%, #e9b44c 100%);
+}
+
+/* ── Scoped paint for the SHARED case plates ── */
+.pp-world .pl-cs-title {
+  color: #ffffff;
+  text-shadow: 0 4px 14px rgba(21, 60, 84, 0.6);
+}
+.pp-world .pl-cs-subtitle {
+  background: #f4e6c4;
+  color: #4a2e14;
+}
+.pp-world .pl-cs-btn {
+  border: 3px solid #4a2e14;
+  background: linear-gradient(165deg, #9a6534, #5c3a1c);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.22),
+    0 14px 34px rgba(21, 60, 84, 0.45);
+}
+/* The SECOND plate on any pirate picker wears the lighter gold, so the pair
+   reads as two choices rather than two of the same thing. `--lower` is the
+   case picker's second plate; `--hard` is the difficulty picker's. */
+.pp-world .pl-cs-btn--lower,
+.pp-world .pl-cs-btn--hard {
+  background: linear-gradient(165deg, #e9b44c, #9a6534);
+}
+
+/* The difficulty previews are letter RUNS ("A B C"), not a single word, so
+   they need room to breathe without shrinking the plate's own type scale. */
+.pp-world .pl-cs-btn--easy .pl-cs-preview,
+.pp-world .pl-cs-btn--hard .pl-cs-preview {
+  letter-spacing: 0.06em;
+  font-size: clamp(22px, 5vmin, 40px);
+}
+.pp-world .pl-cs-preview {
+  color: #ffffff;
+  text-shadow: 0 3px 10px rgba(46, 26, 8, 0.5);
+}
+.pp-world .pl-cs-label {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ── Utility fallbacks ──
+   NavPillButton's tone="pirate" and the finale's classes use Tailwind
+   utilities generated from the pirate token family. If the token pipeline
+   has not regenerated (the invisible-plates lesson), those classes do not
+   exist and the chrome loses its colours — so the same class names are
+   defined here with the same values. When Tailwind DOES generate them,
+   the definitions agree and nothing changes. */
+
+.text-pirate-ink {
+  color: #4a2e14;
+}
+.stroke-pirate-ink {
+  stroke: #4a2e14;
+}
+.bg-pirate {
+  background-color: #9a6534;
+}
+.bg-pirate-gold {
+  background-color: #e9b44c;
+}
+.text-pirate-gold {
+  color: #e9b44c;
+}

@@ -1,0 +1,435 @@
+/* ── Screen base ──
+   The world itself is composed from the shared Pirate Theme (PirateOcean,
+   IslandMound, PalmTree); this file only places it and paints this game's
+   own pieces. UI surfaces come from shared/styles/pirate.css (pp-*). */
+
+.pm-screen {
+  color: #ffffff;
+  background: linear-gradient(180deg, #bde7f7 0%, #8fd0ec 100%);
+}
+
+/* ── Sizing ──
+   ONE dial for the board: the letter tile. Cards derive from it, so the
+   thing being dragged always relates to the space it lands on. The clamp is
+   sized so THREE rows of tile+card+gaps fit every mainstream viewport —
+   verified numerically, not hoped. */
+.pm-screen {
+  /* 1.5× board: letters and pictures dominate the screen */
+  --pm-tile: max(120px, min(36vw, 22vh, 250px));
+  /* the picture card: SQUARE — same footprint as the letter plate */
+  --pm-card-w: var(--pm-tile);
+  --pm-card-h: var(--pm-tile);
+  --pm-gap: clamp(10px, 2vh, 20px);
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .pm-screen {
+    /* short landscape can't take the full 1.5× — three rows must still fit */
+    --pm-tile: max(64px, min(14vw, 20vh, 105px));
+  }
+}
+
+/* ── The composed world ── */
+
+.pm-world-ship {
+  position: absolute;
+  left: -3%;
+  bottom: 2%;
+  width: min(32vw, 300px);
+}
+
+.pm-world-island {
+  position: absolute;
+  right: -4%;
+  bottom: -2%;
+  width: min(46vw, 420px);
+}
+
+.pm-world-palm {
+  position: absolute;
+  right: 14%;
+  bottom: 40%;
+  width: 38%;
+}
+
+/* ── Chrome & headings ── */
+
+.pm-topbar {
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.pm-title {
+  font-size: clamp(34px, 8vmin, 62px);
+  line-height: 1.05;
+  color: #ffffff;
+  text-shadow:
+    0 0 26px rgba(233, 180, 76, 0.55),
+    0 6px 16px rgba(21, 60, 84, 0.6);
+}
+
+.pm-heading {
+  font-size: clamp(24px, 5vmin, 38px);
+}
+
+.pm-splash-ship {
+  width: min(72vw, 460px);
+  margin-top: auto;
+  margin-bottom: 6vh;
+}
+
+.pm-splash-parrot {
+  right: clamp(8px, 6vw, 90px);
+  top: clamp(76px, 16vh, 150px);
+  width: clamp(80px, 15vmin, 140px);
+}
+
+/* ── The board: two flex columns, side by side ──
+   FLEX throughout — the corner-pile lesson. Nothing on this board is
+   absolutely positioned except the ghost and the hand; every tile and card
+   is a flow item, and Framer's entrance transforms move visuals without
+   touching layout. */
+
+/* A FLEX CHILD, not an absolute box with a guessed top offset. The old
+   `inset: clamp(56px, 9vh, 78px) 0 0 0` assumed the chrome was 56–78px tall;
+   the bar is a 24px-padded row of pills and stands taller than the 56px floor
+   a short screen collapses to, so the board's first column was drawn over the
+   star and anchor pills. `flex: 1` is the leftover height by construction. */
+.pm-board {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* generous open water between the two columns — the crossing is the game */
+  gap: clamp(34px, 16vw, 260px);
+  padding: 0 clamp(10px, 3vw, 40px) clamp(10px, 3vh, 30px);
+}
+
+.pm-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--pm-gap);
+}
+
+/* ── The letter planks ──
+   The letter is the POINT of the game, so it takes almost the whole plank:
+   glyph at 62% of the tile — far past every touch-target minimum and
+   readable from across a room. */
+
+/** A WHITE plate so the letter is unmissable against any water behind it —
+ *  dark wood-ink glyph on white is the highest contrast on the screen. */
+.pm-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pm-tile);
+  height: calc(var(--pm-tile) * 0.88);
+  border-radius: clamp(16px, 2.6vmin, 26px);
+  background: linear-gradient(180deg, #ffffff 0%, #f3ede0 100%);
+  border: 3px solid #4a2e14;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    0 10px 24px rgba(21, 60, 84, 0.35);
+  touch-action: none;
+  cursor: grab;
+}
+
+/* ── The letters already found ──
+   The column holds only letters still to match, so this strip under it is
+   the round's record of what is done: one small gold-trimmed plate per
+   letter, in the same white-plate-and-navy language as the planks and the
+   letter seated on its card. Every size is a share of the tile, so the widest
+   round — four letters — still sits on ONE line under the column at every
+   board size, rather than wrapping into a second row of its own. */
+
+.pm-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pm-gap);
+}
+
+.pm-found {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(3px, 0.6vmin, 5px);
+  max-width: var(--pm-tile);
+}
+
+.pm-found-chip {
+  display: grid;
+  place-items: center;
+  min-width: calc(var(--pm-tile) * 0.2);
+  height: calc(var(--pm-tile) * 0.24);
+  padding: 0 calc(var(--pm-tile) * 0.04);
+  border-radius: clamp(6px, 1.2vmin, 12px);
+  background: linear-gradient(180deg, #ffffff 0%, #f3ede0 100%);
+  color: #0d3a5c;
+  font-size: calc(var(--pm-tile) * 0.16);
+  line-height: 1;
+}
+
+.pm-tile-glyph {
+  font-size: calc(var(--pm-tile) * 0.62);
+  line-height: 1;
+  color: #0d3a5c; /* dark navy — full weight on the white plate */
+}
+
+/* ── The picture cards ── */
+
+.pm-card {
+  position: relative;
+  width: var(--pm-card-w);
+  height: var(--pm-card-h);
+  padding: clamp(5px, 0.8vmin, 9px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pm-card-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.pm-card-img img,
+.pm-card-img svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/** The held (correct) letter is over its card — the card answers. */
+.pm-card--ready {
+  outline: 4px solid #e9b44c;
+  outline-offset: 2px;
+}
+
+/** The matched letter, seated on its card's corner. */
+.pm-card-letter {
+  position: absolute;
+  left: -12px;
+  top: -14px;
+  min-width: calc(var(--pm-tile) * 0.42);
+  padding: 2px 10px;
+  border-radius: 14px;
+  /* the same white plate + navy letter as the tiles — one letter style
+     everywhere on the board */
+  background: linear-gradient(180deg, #ffffff 0%, #f3ede0 100%);
+  border: 3px solid #4a2e14;
+  color: #0d3a5c;
+  font-size: calc(var(--pm-tile) * 0.3);
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(21, 60, 84, 0.4);
+}
+
+.pm-card-coin {
+  position: absolute;
+  right: -10px;
+  bottom: -12px;
+  width: calc(var(--pm-tile) * 0.3);
+}
+
+/* ── Ghost & cheer ── */
+
+/** The dragged letter, centred on the finger by MARGINS (never a transform
+ *  — Framer/pl-at own this element's position). */
+.pm-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pm-tile);
+  height: calc(var(--pm-tile) * 0.88);
+  margin-left: calc(var(--pm-tile) / -2);
+  margin-top: calc(var(--pm-tile) * -0.44);
+  border-radius: clamp(16px, 2.6vmin, 26px);
+  background: linear-gradient(180deg, #ffffff 0%, #f3ede0 100%);
+  border: 3px solid #4a2e14;
+  box-shadow:
+    0 14px 30px rgba(21, 60, 84, 0.45),
+    0 0 22px #e9b44c;
+  font-size: calc(var(--pm-tile) * 0.62);
+  line-height: 1;
+  color: #0d3a5c; /* matches the plate glyph — no colour shift mid-drag */
+}
+
+.pm-cheer-word {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40%;
+  text-align: center;
+  font-size: clamp(30px, 8vmin, 64px);
+  color: #ffffff;
+  text-shadow:
+    0 0 24px #e9b44c,
+    0 6px 16px rgba(21, 60, 84, 0.6);
+}
+
+/* ── The teaching trail ──
+   The map's dotted-route language under the hand: golden dots marching
+   from the letter to a little red X on its picture. The march is a
+   stroke-dashoffset loop — pure CSS, no layout, no transforms. */
+
+.pm-trace-dots {
+  fill: none;
+  stroke: #e9b44c;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 1 16;
+  filter: drop-shadow(0 2px 4px rgba(21, 60, 84, 0.5));
+  animation: pm-march 1.1s linear infinite;
+}
+
+.pm-trace-x line {
+  stroke: #e56a6a;
+  stroke-width: 7;
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 4px rgba(21, 60, 84, 0.5));
+}
+
+@keyframes pm-march {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -34;
+  }
+}
+
+/* ── Finale ── */
+
+.pm-finale-heading {
+  font-size: clamp(28px, 7vmin, 44px);
+}
+
+.pm-finale-mascot {
+  width: clamp(120px, 26vmin, 220px);
+}
+
+/* ── THE TREASURE (MatchWin.tsx) ──
+   The chest lands, rocks and bursts open; coins, gems and the matched letters
+   fountain out; the giant letter rises out of it. Clipped by the stage so the
+   fountain can never widen the overlay's scroll area. */
+.pm-win-tint {
+  background: rgba(38, 24, 10, 0.86);
+}
+.pm-win-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1.2vmin, 12px);
+  padding: 12px 16px;
+}
+/** Where the letter hangs, over the chest. It rises from BEHIND the chest,
+ *  so this sits under it in the stack and the chest's lid hides its start. */
+.pm-win-letter-zone {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: clamp(90px, 24vmin, 200px);
+  /* the rings around the letter are gold */
+  --pl-ring: rgba(255, 217, 61, 0.9);
+}
+.pm-win-letter {
+  position: relative;
+  font-size: clamp(90px, 24vmin, 200px);
+  line-height: 1;
+  color: #ffd93d;
+  text-shadow:
+    0 0 28px rgba(233, 180, 76, 0.8),
+    0 8px 20px rgba(20, 12, 4, 0.55);
+}
+.pm-win-chest {
+  position: relative;
+  z-index: 2;
+  width: clamp(150px, 36vmin, 300px);
+  filter: drop-shadow(0 14px 22px rgba(20, 12, 4, 0.5));
+}
+/** The light pouring up out of the open chest. Grows from its base. */
+.pm-win-beam {
+  position: absolute;
+  left: 30%;
+  bottom: 55%;
+  z-index: 0;
+  width: 40%;
+  height: 60vmin;
+  transform-origin: 50% 100%;
+  background: linear-gradient(0deg, rgba(255, 217, 61, 0.75), rgba(255, 217, 61, 0));
+  clip-path: polygon(30% 100%, 70% 100%, 100% 0, 0 0);
+  pointer-events: none;
+}
+/** The mouth of the chest — a zero-height line the fountain rises from. */
+.pm-win-mouth {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 42%;
+  height: 0;
+  z-index: 3;
+}
+/** A letter card in the fountain — one of the matched letters, on parchment. */
+.pm-win-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 22%;
+  background: linear-gradient(180deg, #f4e6c4 0%, #e4ce9e 100%);
+  border: 2px solid #c9a96c;
+  box-shadow: inset 0 0 0 2px #e9b44c;
+  /* the piece's box (--pl-size) is set by the burst; the glyph fills it */
+  font-size: calc(var(--pl-size, 40px) * 0.55);
+  line-height: 1;
+  color: #4a2e14;
+}
+/** The parrot, swooping in beside the letter. */
+.pm-win-parrot {
+  position: absolute;
+  right: 6%;
+  top: 14%;
+  z-index: 4;
+  width: clamp(80px, 20vmin, 170px);
+  pointer-events: none;
+}
+.pm-win-heading {
+  position: relative;
+  z-index: 4;
+  font-size: clamp(26px, 6vmin, 42px);
+  color: #ffffff;
+}
+
+/* Short landscape: the chest and the letter share a ~300px column, and the
+   parrot would sit on the letter. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .pm-win-chest {
+    width: clamp(100px, 26vmin, 170px);
+  }
+  .pm-win-letter-zone {
+    min-height: clamp(60px, 18vmin, 110px);
+  }
+  .pm-win-letter {
+    font-size: clamp(56px, 18vmin, 110px);
+  }
+  .pm-win-parrot {
+    display: none;
+  }
+}

@@ -6,11 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { AlphabetStrip } from "@games/dino-dig/components/AlphabetStrip";
+import { displayLetter, type LetterCase } from "@games/dino-dig/store/dinoStore";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { cssVars } from "@shared/styles/cssVars";
 import { playClickSound, playCorrectSound, playIncorrectSound, playChime } from "@shared/audio/sfx";
 import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
+import { cheerFor } from "@shared/audio/cheers";
 import { shuffle } from "@shared/utils/random";
 import { findDropTarget, registerTarget, toRootPoint } from "@shared/utils/pointer";
 import {
@@ -24,6 +26,8 @@ import { DinoBackdrop } from "@games/dino-dig/components/DinoBackdrop";
 import { CAST, LetterStone } from "@games/dino-dig/components/DinoArt";
 
 interface StonesLevelProps {
+  /** BIG or small letters — display only; data stays canonical uppercase. */
+  letterCase: LetterCase;
   /** Which crossing this is (0–6) — also which cast member is waiting. */
   crossing: number;
   onCrossingDone: () => void;
@@ -36,15 +40,11 @@ const HOP_MS = 1700;
 /** Cheer window after the hop — praise clips run up to ~2.3s (measured). */
 const CHEER_MS = 2600;
 
-/** Praise rotates per crossing so seven crossings never repeat back-to-back. */
-const CHEERS = [
-  "cheer-great-job",
-  "cheer-wonderful",
-  "cheer-fantastic",
-  "cheer-well-done",
-  "cheer-amazing",
-  "cheer-youre-doing-great",
-] as const;
+/** Praise for a crossing, from the ONE shared rotation — seeded by the
+ *  crossing index so the seven crossings never repeat back-to-back. This used
+ *  to be a private six-item list that had drifted out of the shared pool and
+ *  named clips the manifest no longer carries. */
+const cheerForCrossing = (crossing: number) => cheerFor(crossing);
 
 /**
  * RIVER CROSSING — sequencing mode.
@@ -60,7 +60,9 @@ const CHEERS = [
  * pointer capture, a root-relative ghost (never position:fixed — see
  * shared/utils/pointer.ts), and an inflated drop target.
  */
-export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
+export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLevelProps) {
+  /** The letter as the child sees it. */
+  const show = (l: string) => displayLetter(l, letterCase);
   const router = useRouter();
   const group = STONE_GROUPS[crossing];
   const crosser = CAST[crossing % CAST.length];
@@ -86,6 +88,12 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
   /** Steps already landed — guards a double onAnimationComplete, which would
    *  double the sound and double-schedule the crossing (skipping one). */
   const landedRef = useRef(-1);
+  /**
+   * The confirmation clip for the letter just placed. The next gap's
+   * announcement chains off THIS, rather than off a guessed timeout — see the
+   * announcement effect below.
+   */
+  const confirmRef = useRef<Promise<void>>(Promise.resolve());
   useEffect(() => () => stopVoice(), []);
 
   /** The letter the gap is waiting for; null once the bridge is complete. */
@@ -98,15 +106,31 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
   );
 
   // Each gap announces its letter; the very first also explains the game.
+  //
+  // TIMING: this used to sit behind a flat 550ms setTimeout, which is why the
+  // ask always arrived late. The delay was not pointless though — playClip()
+  // calls stopVoice() on entry, so announcing instantly would have cut off the
+  // confirmation clip that land() fires for the stone just placed.
+  //
+  // So the wait is now on the REAL event instead of a guess: chain off the
+  // confirmation clip's own promise, which resolves at that clip's actual end.
+  // At the start of a crossing there is nothing to wait for — confirmRef holds
+  // an already-resolved promise — so the first ask is effectively immediate,
+  // and mid-crossing the two clips simply never overlap. No fixed delay left.
   useEffect(() => {
     if (!next) return;
-    preloadClips([`letter-${next.toLowerCase()}`, CHEERS[crossing % CHEERS.length]]);
-    const t = setTimeout(() => {
-      void (crossing === 0 && placedCount === 0
+    preloadClips([`letter-${next.toLowerCase()}`, cheerForCrossing(crossing)]);
+    let cancelled = false;
+    const first = crossing === 0 && placedCount === 0;
+    void confirmRef.current.then(() => {
+      if (cancelled) return;
+      void (first
         ? playSequence(["instr-put-letters-in-order", `letter-${next.toLowerCase()}`], 260)
         : playClip(`letter-${next.toLowerCase()}`));
-    }, 550);
-    return () => clearTimeout(t);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [crossing, placedCount, next]);
 
   const toRoot = useCallback(
@@ -151,7 +175,9 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
       landedRef.current = placedCount;
       setFlying(null);
       playCorrectSound();
-      void playClip(`letter-${letter.toLowerCase()}`);
+      // Held so the next gap's announcement can wait for this clip's real end
+      // instead of a guessed delay (see the announcement effect above).
+      confirmRef.current = playClip(`letter-${letter.toLowerCase()}`);
       const now = placedCount + 1;
       setPlacedCount(now);
       if (now >= group.length) {
@@ -159,7 +185,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
         schedule(() => {
           setCelebrating(true);
           playChime();
-          void playClip(CHEERS[crossing % CHEERS.length]);
+          void playClip(cheerForCrossing(crossing));
         }, 500 + HOP_MS);
         schedule(onCrossingDone, 500 + HOP_MS + CHEER_MS);
       }
@@ -213,8 +239,10 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
   const revealedIndex = PLACED_BEFORE[crossing] + placedCount - 1;
   /** Up to two dinos queueing behind the crosser (hidden on narrow phones). */
   const waiting = CAST.slice(crossing + 1, crossing + 3);
-  /** The most recent arrivals on the far bank. */
-  const crossed = CAST.slice(0, crossing).slice(-2);
+  /** The most recent arrival on the far bank. Only ONE is shown: the bridge
+   *  stones are now double size, and the width the second mini used to take is
+   *  exactly what they need to reach that size on a desktop river. */
+  const crossed = CAST.slice(0, crossing).slice(-1);
 
   return (
     <div
@@ -227,7 +255,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
       <DinoBackdrop />
 
       {/* ── Top bar: back · crossing counter ── */}
-      <div className="relative z-10 flex w-full max-w-3xl items-center justify-between gap-2">
+      <div className="relative z-10 flex w-full max-w-5xl items-center justify-between gap-2">
         <NavPillButton
           label="Back"
           ariaLabel="Back to the start screen"
@@ -241,7 +269,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
         />
         <div className="shadow-soft flex min-h-[44px] items-center rounded-full bg-white/85 px-4">
           <span
-            className="font-rounded text-dino-ink text-sm font-black"
+            className="font-rounded text-dino-ink text-sm font-black whitespace-nowrap"
             aria-label={`Crossing ${crossing + 1} of ${TOTAL_CROSSINGS}`}
           >
             {crossing + 1} / {TOTAL_CROSSINGS}
@@ -249,9 +277,16 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
         </div>
       </div>
 
-      {/* ── The alphabet so far ── */}
-      <div className="hide-on-short relative z-10 mt-2 w-full max-w-3xl">
+      {/* ── The alphabet so far ──
+          Stays on screen at every size. It used to carry `hide-on-short`, so
+          on a landscape phone the one thing that shows the child where they
+          are in the alphabet — the whole point of a bridge built A to Z —
+          simply vanished. It SHRINKS on a short screen instead (see
+          .dd-tile in dino-dig.css): 26 tiles still fit one row and cost about
+          24px of height, which the crossing can afford. */}
+      <div className="dd-strip-wrap relative z-10 mt-2 w-full max-w-5xl shrink-0">
         <AlphabetStrip
+          letterCase={letterCase}
           revealedIndex={revealedIndex}
           current={next ?? ""}
           targets={[]}
@@ -270,10 +305,13 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
       </div>
 
       {/* ── The river ── */}
-      <div className="relative z-10 flex min-h-0 w-full max-w-4xl flex-1 items-center justify-center">
-        <div className="dd-river relative flex w-full items-center justify-between px-2 py-3 sm:px-4">
+      {/* The whole crossing was cramped, so the container is rebalanced too —
+          a bigger dino inside the same narrow column would only have made it
+          tighter. Wider ceiling, more air inside the river. */}
+      <div className="relative z-10 flex min-h-0 w-full max-w-7xl flex-1 items-center justify-center">
+        <div className="dd-river relative flex w-full items-center justify-between px-3 py-5 sm:px-6">
           {/* left bank: the crosser, and the queue behind it */}
-          <div className="dd-bank flex flex-col items-center gap-1 px-1.5 py-2 sm:px-3">
+          <div className="dd-bank flex flex-col items-center gap-1 px-2 py-3 sm:px-4">
             {!walking && (
               <motion.div
                 className="dd-crosser"
@@ -296,8 +334,9 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
             </div>
           </div>
 
-          {/* the bridge: placed stones · the glowing gap · stones still to come */}
-          <div className="relative mx-1 flex flex-1 items-center justify-center gap-1.5 sm:mx-3 sm:gap-2">
+          {/* the bridge: placed stones · the glowing gap · stones still to come.
+              Wraps two-by-two where one line cannot hold four (see .dd-bridge). */}
+          <div className="dd-bridge relative mx-2 flex flex-1 items-center justify-center gap-2 sm:mx-4 sm:gap-3">
             {group.map((letter, i) => {
               if (i < placedCount) {
                 return (
@@ -308,7 +347,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 16 }}
                   >
-                    {letter}
+                    {show(letter)}
                   </motion.div>
                 );
               }
@@ -323,7 +362,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
                     animate={wrongShake ? { x: [-6, 6, -4, 4, 0] } : { x: 0 }}
                     transition={{ duration: 0.42 }}
                     role="img"
-                    aria-label={`Bridge gap — drop the letter ${letter} here`}
+                    aria-label={`Bridge gap — drop the letter ${show(letter)} here`}
                   >
                     ?
                   </motion.div>
@@ -348,7 +387,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
 
           {/* right bank: everyone who has already made it */}
           <div
-            className="dd-bank flex min-h-[44px] items-end gap-0.5 px-1.5 py-2 sm:px-3"
+            className="dd-bank dd-bank--far flex min-h-[44px] items-end gap-1 px-2 py-3 sm:px-4"
             aria-hidden="true"
           >
             {crossed.map((m) => {
@@ -365,7 +404,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
       </div>
 
       {/* ── The floating stones ── */}
-      <div className="dd-tray relative z-10 flex w-full max-w-3xl items-center justify-center gap-[3vw] sm:gap-5">
+      <div className="dd-tray relative z-10 flex w-full max-w-5xl items-center justify-center gap-[3vw] sm:gap-6">
         <AnimatePresence mode="popLayout">
           {!celebrating &&
             candidates.map((letter, i) => {
@@ -381,9 +420,9 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
                   onPointerDown={(e) => startDrag(e, letter)}
                   role="button"
                   tabIndex={0}
-                  aria-label={`Stone with the letter ${letter} — drag it to the bridge gap`}
+                  aria-label={`Stone with the letter ${show(letter)} — drag it to the bridge gap`}
                 >
-                  <LetterStone letter={letter} />
+                  <LetterStone letter={show(letter)} />
                 </motion.div>
               );
             })}
@@ -407,7 +446,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
               animate={{ scale: 0.8, rotate: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <LetterStone letter={flying.letter} />
+              <LetterStone letter={show(flying.letter)} />
             </motion.div>
           </div>
         </motion.div>
@@ -420,7 +459,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
           style={cssVars({ "--pl-x": `${drag.x}px`, "--pl-y": `${drag.y}px` })}
           aria-hidden="true"
         >
-          <LetterStone letter={drag.letter} />
+          <LetterStone letter={show(drag.letter)} />
         </div>
       )}
 
@@ -434,7 +473,7 @@ export function StonesLevel({ crossing, onCrossingDone }: StonesLevelProps) {
               animate={{ scale: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 220, damping: 15 }}
             >
-              {clipText(CHEERS[crossing % CHEERS.length])}
+              {clipText(cheerForCrossing(crossing))}
             </motion.h2>
             <p className="font-rounded text-dino-lime text-xl font-black tracking-[0.2em] drop-shadow">
               {crosser.name} made it! {group.join(" ")}

@@ -32,6 +32,53 @@
   --mm-slot: calc(var(--mm-pot, 240px) * 0.2);
 }
 
+/* Short landscape (a phone on its side) — the ONE case the 210px floor above
+   cannot survive.
+   The station is about 1.1x the pot tall (the tray of three magnets plus its
+   gaps is taller than the pot itself), and it shares the screen with a ~68px
+   top bar and the counter. At 210px that comes to ~300px of station in a
+   ~300px viewport, so the bottom of the station — tray included — was cut off
+   with no way to reach it: this root is overflow-hidden.
+   Everything here shrinks together, because they are all multiples of
+   --mm-pot; the magnet still lands at ~49px, clear of the 48px finger floor. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .mm-stage {
+    --mm-pot: clamp(120px, min(52vh, 32vw), 300px);
+  }
+  /* the kitchen furniture has to give up its share of the height too, or the
+     counter alone eats what the station just saved */
+  .mm-counter {
+    height: clamp(26px, 8vh, 56px);
+  }
+  .mm-backsplash {
+    bottom: clamp(26px, 8vh, 56px);
+    height: clamp(20px, 5vh, 40px);
+  }
+  .mm-fixtures-left,
+  .mm-fixtures-right {
+    bottom: clamp(26px, 8vh, 56px);
+    height: clamp(70px, 22vh, 150px);
+    width: clamp(88px, 18vw, 240px);
+  }
+}
+
+/* Portrait phones: the station is WIDTH-bound, so the pot takes 60% of the
+   width instead of the 42% a wide screen shares with the chef beside it —
+   and the chef moves ABOVE the station, smaller, rather than disappearing:
+   the character the child is cooking for was simply gone on every phone. */
+@media (orientation: portrait) {
+  .mm-stage {
+    --mm-pot: clamp(170px, min(56vh, 60vw), 600px);
+  }
+  .mm-play-row {
+    flex-direction: column;
+    gap: calc(var(--mm-pot, 240px) * 0.04);
+  }
+  .mm-chef-level {
+    width: calc(var(--mm-pot, 240px) * 0.42);
+  }
+}
+
 /* ── Kitchen stage ── */
 
 .mm-wall {
@@ -178,4 +225,102 @@
 .mm-cheer {
   font-size: clamp(26px, 6.5vmin, 42px);
   color: var(--color-kitchen);
+}
+
+/* ── Group complete — THE BIG MAGNET (MagnetWin.tsx) ──
+   The soup boils over with joy — carrots, peas, noodles and the three letters
+   fountain out of the pot — then the game's namesake finally appears: a giant
+   horseshoe magnet swings down and the three letter magnets SNAP up onto its
+   poles in a shower of sparks. */
+
+/** Everything the show throws is clipped here, so the fountain can never
+ *  widen the overlay's scroll area. Its own centred column. */
+.mm-win-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.6vmin, 14px);
+  padding: 12px 16px;
+}
+/** The chef, jumping for joy beside the show. */
+.mm-win-chef {
+  position: absolute;
+  left: 6%;
+  bottom: 8%;
+  z-index: 2;
+  width: clamp(80px, 20vmin, 170px);
+  pointer-events: none;
+}
+/** The magnet and the letters below it, as one rig — it rocks as a whole
+ *  when the letters clack on. The gap is exactly the distance they jump. */
+.mm-win-rig {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7vmin;
+}
+.mm-win-magnet {
+  position: relative;
+  width: clamp(110px, 26vmin, 220px);
+  aspect-ratio: 1;
+  /* its field is its own red */
+  --pl-ring: rgba(232, 116, 106, 0.85);
+}
+.mm-win-letters {
+  position: relative;
+}
+/** A zero-height line at the top of the letters — where the sparks fly from. */
+.mm-win-poles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+}
+/** The three letters that just went into the soup, shown as their magnets. */
+.mm-cheer-letters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.6vmin, 16px);
+}
+.mm-cheer-magnet {
+  width: clamp(38px, 8vmin, 66px);
+}
+/** The pot, and the soup surface the fountain rises from — the art's surface
+ *  sits 0.2 of the pot's width from the top (see .mm-slot-column). */
+.mm-win-pot {
+  position: relative;
+  z-index: 1;
+  width: clamp(120px, 30vmin, 260px);
+}
+.mm-win-soup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20%;
+  height: 0;
+}
+
+/* Short landscape: the celebration is the one place the chef can go, since
+   the magnet and the letters are what carry the meaning. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .mm-win-chef {
+    display: none;
+  }
+  .mm-win-magnet {
+    width: clamp(80px, 18vmin, 140px);
+  }
+  .mm-win-pot {
+    width: clamp(90px, 22vmin, 170px);
+  }
+  .mm-cheer-magnet {
+    width: clamp(30px, 7vmin, 48px);
+  }
 }

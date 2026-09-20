@@ -29,6 +29,12 @@ export function FeedTheSharkGame() {
   const handlePop = useCallback(
     (bucket: string) => {
       if (bucket === "menu") setScreen("splash");
+      // Restore the round when history says "play" (reload, forward-nav,
+      // re-entry with a stale ?step=play URL) — ignoring it left the game on
+      // a menu screen while the URL claimed play, so the next Back press
+      // appeared to do nothing (the space-letters routing bug, fixed
+      // portal-wide).
+      else if (bucket === "play") setScreen("play");
     },
     [setScreen]
   );

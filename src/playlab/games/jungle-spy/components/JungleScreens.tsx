@@ -20,7 +20,12 @@ import {
 } from "@shared/components/illustrations/AnimalArt";
 import { playClip } from "@shared/audio/voice";
 import { playClickSound } from "@shared/audio/sfx";
+import { continueLetter } from "@shared/utils/progression";
 import { StartOptions } from "@shared/components/ui/StartOptions";
+import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
+
+/** Four familiar faces flanking the title — existing art, no new assets. */
+const JSP_TITLE_ANIMALS = ["monkey", "lion", "giraffe", "elephant"] as const;
 
 /** Soft jungle backdrop: layered pastel leaves and vines in the margins.
  *  Decorative only — pointer-events none, calm slow sway. */
@@ -104,7 +109,7 @@ export function JungleSplash({ onExitPortal }: { onExitPortal?: () => void }) {
     setScreen("grid");
   };
   return (
-    <div className="jsp-bg-canopy relative flex h-full w-full flex-col items-center gap-8 overflow-x-hidden overflow-y-auto px-6 py-8">
+    <div className="jsp-bg-canopy pl-screen-shell">
       <JungleBackdrop />
 
       {onExitPortal && (
@@ -169,93 +174,101 @@ export function JungleSplash({ onExitPortal }: { onExitPortal?: () => void }) {
         </motion.svg>
       ))}
 
-      <motion.div
-        className="relative z-10 mt-auto flex flex-col items-center gap-2"
-        initial={{ y: -16, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-      >
-        <div className="flex items-end gap-2">
-          <div className="jsp-mascot-lg">
-            <Monkey />
+      {/* Canopy, sun and leaves are all `absolute z-0` and stay OUTSIDE this
+          scroller, so they cover the whole screen instead of one screenful
+          with the shell's white showing under the rest. The mt-auto/mb-auto
+          pair that used to centre this column also centred its overflow —
+          pushing the title above scroll origin — and is replaced by
+          overflow-safe centring on the scroller itself. */}
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-8 px-6 py-8 pt-16">
+        <motion.div
+          className="relative z-10 flex flex-col items-center gap-2"
+          initial={{ y: -16, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          <div className="flex items-end gap-2">
+            <div className="jsp-mascot-lg">
+              <Monkey />
+            </div>
+            <div className="jsp-mascot-sm">
+              <Frog />
+            </div>
           </div>
-          <div className="jsp-mascot-sm">
-            <Frog />
-          </div>
-        </div>
-        <h1 className="font-rounded text-plum text-center text-4xl font-black md:text-5xl">
-          Jungle ABC Spy
-        </h1>
-        <p className="font-rounded text-plum/55 text-sm font-semibold md:text-base">
-          Spy the hiding letters!
-        </p>
-      </motion.div>
+          <h1 className="font-rounded text-plum text-center text-4xl font-black md:text-5xl">
+            Jungle ABC Spy
+          </h1>
+          <p className="font-rounded text-plum/55 text-sm font-semibold md:text-base">
+            Spy the hiding letters!
+          </p>
+        </motion.div>
 
-      <div className="relative z-10 flex gap-5">
-        {[
-          { c: "upper" as const, label: "ABC", aria: "Play with big letters" },
-          { c: "lower" as const, label: "abc", aria: "Play with small letters" },
-        ].map((b, i) => (
-          <motion.button
-            key={b.c}
-            onClick={() => pick(b.c)}
-            className={`jsp-case-btn flex items-center justify-center rounded-4xl shadow-lg ${
-              i === 0 ? "jsp-case-btn--upper" : "jsp-case-btn--lower"
-            }`}
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.15 + i * 0.08 }}
-            whileTap={{ scale: 0.94 }}
-            whileHover={{ scale: 1.05 }}
-            aria-label={b.aria}
-          >
-            <span
-              className={`jsp-case-glyph font-rounded font-black ${
-                i === 0 ? "jsp-case-glyph--upper" : "jsp-case-glyph--lower"
+        <div className="relative z-10 flex gap-5">
+          {[
+            { c: "upper" as const, label: "ABC", aria: "Play with big letters" },
+            { c: "lower" as const, label: "abc", aria: "Play with small letters" },
+          ].map((b, i) => (
+            <motion.button
+              key={b.c}
+              onClick={() => pick(b.c)}
+              className={`jsp-case-btn flex items-center justify-center rounded-4xl shadow-lg ${
+                i === 0 ? "jsp-case-btn--upper" : "jsp-case-btn--lower"
               }`}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.15 + i * 0.08 }}
+              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.05 }}
+              aria-label={b.aria}
             >
-              {b.label}
-            </span>
-          </motion.button>
-        ))}
-      </div>
+              <span
+                className={`jsp-case-glyph font-rounded font-black ${
+                  i === 0 ? "jsp-case-glyph--upper" : "jsp-case-glyph--lower"
+                }`}
+              >
+                {b.label}
+              </span>
+            </motion.button>
+          ))}
+        </div>
 
-      {/* The whole gang waits at the bottom, gently bobbing */}
-      <div
-        className="pointer-events-none relative z-10 mb-auto flex w-full max-w-3xl items-end justify-center gap-1 px-2 sm:gap-3"
-        aria-hidden="true"
-      >
-        {[
-          { A: Lion, w: "clamp(44px, 8vmin, 76px)", d: 0 },
-          { A: Giraffe, w: "clamp(52px, 9.5vmin, 88px)", d: 0.3 },
-          { A: Elephant, w: "clamp(50px, 9vmin, 84px)", d: 0.6 },
-          { A: Zebra, w: "clamp(46px, 8.5vmin, 80px)", d: 0.9 },
-          { A: Penguin, w: "clamp(38px, 7vmin, 64px)", d: 1.2 },
-          { A: Koala, w: "clamp(42px, 7.5vmin, 70px)", d: 1.5 },
-          { A: Turtle, w: "clamp(44px, 8vmin, 74px)", d: 1.8 },
-        ].map(({ A, w, d }, i) => (
-          <motion.div
-            key={i}
-            className="pl-width"
-            style={cssVars({ "--pl-size": w })}
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: [0, -7, 0], opacity: 1 }}
-            transition={{
-              opacity: { delay: 0.3 + i * 0.08, duration: 0.4 },
-              y: { duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: d },
-            }}
-          >
-            <A />
-          </motion.div>
-        ))}
+        {/* The whole gang waits at the bottom, gently bobbing */}
+        <div
+          className="pointer-events-none relative z-10 flex w-full max-w-3xl items-end justify-center gap-1 px-2 sm:gap-3"
+          aria-hidden="true"
+        >
+          {[
+            { A: Lion, w: "clamp(44px, 8vmin, 76px)", d: 0 },
+            { A: Giraffe, w: "clamp(52px, 9.5vmin, 88px)", d: 0.3 },
+            { A: Elephant, w: "clamp(50px, 9vmin, 84px)", d: 0.6 },
+            { A: Zebra, w: "clamp(46px, 8.5vmin, 80px)", d: 0.9 },
+            { A: Penguin, w: "clamp(38px, 7vmin, 64px)", d: 1.2 },
+            { A: Koala, w: "clamp(42px, 7.5vmin, 70px)", d: 1.5 },
+            { A: Turtle, w: "clamp(44px, 8vmin, 74px)", d: 1.8 },
+          ].map(({ A, w, d }, i) => (
+            <motion.div
+              key={i}
+              className="pl-width"
+              style={cssVars({ "--pl-size": w })}
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: [0, -7, 0], opacity: 1 }}
+              transition={{
+                opacity: { delay: 0.3 + i * 0.08, duration: 0.4 },
+                y: { duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: d },
+              }}
+            >
+              <A />
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
 /** Alphabet grid on leafy tiles + rainbow progress */
-export function JungleGrid() {
+export function JungleGrid({ onExitPortal = () => {} }: { onExitPortal?: () => void }) {
   const store = useJungleStore();
-  const { letterCase, setLetter, setScreen, setCase } = store;
+  const { letterCase, setScreen, setCase, beginRun, jumpTo } = store;
   // progress is per case: switching BIG ↔ little switches to that run's board
   const found = foundFor(store, letterCase);
   const foundCount = found.length;
@@ -266,129 +279,201 @@ export function JungleGrid() {
     return () => clearTimeout(t);
   }, []);
 
+  /** Tapping a tile starts (or redirects) a run at that animal. */
   const openLetter = (l: string) => {
     playClickSound();
-    setLetter(l);
+    jumpTo(l);
     setScreen("level");
   };
 
   // Unified start flow (same as Letter Tracing / Letter Hunt): continue from
   // the first animal not yet found, or start over from A.
   const ALPHA = JUNGLE_ANIMALS.map((a) => a.letter);
-  const nextUnfound = ALPHA.find((l) => !found.includes(l)) ?? "A";
+  /** What Continue will ACTUALLY open — the shared calculation, identical to
+   *  the one beginRun("continue") uses. */
+  const nextUnfound = continueLetter(ALPHA, found);
   const runComplete = found.length >= ALPHA.length;
   const hasProgress = found.length > 0 && !runComplete;
 
   return (
-    <div className="jsp-bg-canopy relative flex h-full w-full flex-col items-center gap-4 overflow-x-hidden overflow-y-auto px-5 py-6">
+    <div className="jsp-bg-canopy pl-screen-shell">
       <JungleBackdrop />
 
       {/* Back to this game's home (the ABC/abc splash) — pinned top-left */}
       <NavPillButton
         label="Back"
-        ariaLabel="Back to Jungle Spy home"
+        ariaLabel="Back to all games"
         tone="jungle"
         surface="soft"
         pinned
         onClick={() => {
           playClickSound();
-          setScreen("splash");
+          onExitPortal();
         }}
       />
 
-      {/* Top bar — case toggle now centered on its own, no longer sharing
-          the row with the back button */}
-      <div className="relative z-10 mt-auto flex w-full max-w-md items-center justify-center md:max-w-2xl">
-        <div className="flex rounded-full bg-white/70 p-1" role="group" aria-label="Letter size">
-          {(["upper", "lower"] as const).map((c) => (
-            <button
-              key={c}
-              onClick={() => {
-                playClickSound();
-                setCase(c);
-              }}
-              className={`font-rounded min-h-[38px] rounded-full px-3.5 text-sm font-black ${
-                letterCase === c
-                  ? "text-jungle shadow-pill-jungle bg-white"
-                  : "text-jungle-muted bg-transparent"
-              }`}
-              aria-pressed={letterCase === c}
-              aria-label={c === "upper" ? "Big letters" : "Small letters"}
-            >
-              {c === "upper" ? "ABC" : "abc"}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Rainbow progress */}
-      <div className="relative z-10 w-full max-w-md md:max-w-2xl">
-        <div className="mb-1 flex justify-between">
-          <span className="font-rounded text-plum/70 text-sm font-bold">Found animals</span>
-          <span className="font-rounded text-plum text-sm font-black">{foundCount} / 26</span>
-        </div>
-        <ProgressBar
-          value={foundCount / 26}
-          trackClassName="h-4 w-full rounded-full bg-white/60"
-          fillClassName="jsp-progress-fill h-full rounded-full"
-          ariaLabel={`${foundCount} of 26 animals found`}
-        />
-      </div>
-
-      {/* Letter tiles */}
-      <div className="jsp-letter-grid relative z-10 w-full max-w-md gap-2.5 md:max-w-2xl">
-        {JUNGLE_ANIMALS.map((a, i) => {
-          const isFound = found.includes(a.letter);
-          const display = letterCase === "lower" ? a.letter.toLowerCase() : a.letter;
-          const shades = ["#C8F0D8", "#D9F2C4", "#BFEAD2"];
-          return (
-            <motion.button
-              key={a.letter}
-              onClick={() => openLetter(a.letter)}
-              className="jsp-letter-tile pl-swatch relative flex aspect-square items-center justify-center rounded-2xl shadow-sm"
-              style={cssVars({
-                "--pl-bg": isFound ? "#FFE79C" : shades[i % 3],
-                "--pl-border": isFound ? "#F2C94C" : "#8FD6A8",
-              })}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.02 * i, type: "spring", stiffness: 300, damping: 20 }}
-              whileTap={{ scale: 0.92 }}
-              aria-label={`${a.letter} — find the ${a.name}${isFound ? " (found)" : ""}`}
-            >
-              <span
-                className={`jsp-tile-glyph font-rounded font-black ${isFound ? "text-gold-dim" : "text-jungle"}`}
-              >
-                {display}
-              </span>
-              {isFound && (
-                <span
-                  className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] shadow-sm"
+      {/* ── Jungle Spy identity: the title, with animals perched around it ──
+          Existing SVG art from ANIMAL_ART, laid straight onto the screen with
+          no cards or frames around them — they read as inhabitants of the
+          screen rather than as UI. Decorative only: aria-hidden and
+          pointer-events-none, so they never sit between a child and a tile. */}
+      <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-4 px-5 py-6 pt-16">
+        <div className="relative z-10 flex w-full flex-col items-center">
+          <div className="jsp-title-row relative flex items-end justify-center gap-3">
+            {JSP_TITLE_ANIMALS.slice(0, 2).map((key) => {
+              const Art = ANIMAL_ART[key];
+              return Art ? (
+                <motion.div
+                  key={key}
+                  className="jsp-title-animal"
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{
+                    duration: 3.4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: key.length * 0.2,
+                  }}
                   aria-hidden="true"
                 >
-                  ⭐
-                </span>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
+                  <Art />
+                </motion.div>
+              ) : null;
+            })}
 
-      {/* Unified start flow — beneath the grid, matching the other games */}
-      <div className="relative z-10 mb-auto">
-        <StartOptions
-          hasProgress={hasProgress || runComplete}
-          onContinue={
-            runComplete
-              ? () => {
+            <h1 className="jsp-title font-rounded text-jungle text-center font-black">
+              Jungle Spy
+            </h1>
+
+            {JSP_TITLE_ANIMALS.slice(2).map((key) => {
+              const Art = ANIMAL_ART[key];
+              return Art ? (
+                <motion.div
+                  key={key}
+                  className="jsp-title-animal"
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{
+                    duration: 3.8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: key.length * 0.25,
+                  }}
+                  aria-hidden="true"
+                >
+                  <Art />
+                </motion.div>
+              ) : null;
+            })}
+          </div>
+          <p className="font-rounded text-jungle-muted text-sm font-semibold">
+            Spy the letters hiding in the jungle — pick one to start
+          </p>
+        </div>
+
+        {/* Top bar — case toggle now centered on its own, no longer sharing
+          the row with the back button */}
+        <div className="relative z-10 flex w-full max-w-md items-center justify-center md:max-w-2xl">
+          <div className="flex rounded-full bg-white/70 p-1" role="group" aria-label="Letter size">
+            {(["upper", "lower"] as const).map((c) => (
+              <button
+                key={c}
+                onClick={() => {
                   playClickSound();
-                  setScreen("complete");
-                }
-              : () => openLetter(nextUnfound)
-          }
-          continueLabel={runComplete ? "See my alphabet!" : `Continue · ${nextUnfound}`}
-          onStartFromA={() => openLetter("A")}
-        />
+                  setCase(c);
+                }}
+                className={`font-rounded min-h-[38px] rounded-full px-3.5 text-sm font-black ${
+                  letterCase === c
+                    ? "text-jungle shadow-pill-jungle bg-white"
+                    : "text-jungle-muted bg-transparent"
+                }`}
+                aria-pressed={letterCase === c}
+                aria-label={c === "upper" ? "Big letters" : "Small letters"}
+              >
+                {c === "upper" ? "ABC" : "abc"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Rainbow progress */}
+        <div className="relative z-10 w-full max-w-md md:max-w-2xl">
+          <div className="mb-1 flex justify-between">
+            <span className="font-rounded text-plum/70 text-sm font-bold">Found animals</span>
+            <span className="font-rounded text-plum text-sm font-black">{foundCount} / 26</span>
+          </div>
+          <ProgressBar
+            value={foundCount / 26}
+            trackClassName="h-4 w-full rounded-full bg-white/60"
+            fillClassName="jsp-progress-fill h-full rounded-full"
+            ariaLabel={`${foundCount} of 26 animals found`}
+          />
+        </div>
+
+        {/* Letter tiles */}
+        <div className="jsp-letter-grid relative z-10 w-full max-w-md gap-2.5 md:max-w-2xl">
+          {JUNGLE_ANIMALS.map((a, i) => {
+            const isFound = found.includes(a.letter);
+            const display = letterCase === "lower" ? a.letter.toLowerCase() : a.letter;
+            const shades = ["#C8F0D8", "#D9F2C4", "#BFEAD2"];
+            return (
+              <motion.button
+                key={a.letter}
+                onClick={() => openLetter(a.letter)}
+                className="jsp-letter-tile pl-swatch relative flex aspect-square items-center justify-center rounded-2xl shadow-sm"
+                style={cssVars({
+                  "--pl-bg": isFound ? "#FFE79C" : shades[i % 3],
+                  "--pl-border": isFound ? "#F2C94C" : "#8FD6A8",
+                })}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.02 * i, type: "spring", stiffness: 300, damping: 20 }}
+                whileTap={{ scale: 0.92 }}
+                aria-label={`${a.letter} — find the ${a.name}${isFound ? " (found)" : ""}`}
+              >
+                <span
+                  className={`jsp-tile-glyph font-rounded font-black ${isFound ? "text-gold-dim" : "text-jungle"}`}
+                >
+                  {display}
+                </span>
+                {isFound && (
+                  <span
+                    className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] shadow-sm"
+                    aria-hidden="true"
+                  >
+                    ⭐
+                  </span>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+
+        {/* Unified start flow — beneath the grid, matching the other games */}
+        <div className="relative z-10">
+          <StartOptions
+            hasProgress={hasProgress || runComplete}
+            onContinue={
+              runComplete
+                ? () => {
+                    playClickSound();
+                    setScreen("complete");
+                  }
+                : () => {
+                    // CONTINUE — only the animals still to find.
+                    playClickSound();
+                    beginRun(0, "continue");
+                    setScreen("level");
+                  }
+            }
+            continueLabel={runComplete ? "See my alphabet!" : `Continue · ${nextUnfound}`}
+            onStartFromA={() => {
+              // START FROM A — a FRESH run: every animal from A onward, found or
+              // not. Saved progress is left untouched.
+              playClickSound();
+              beginRun(0, "fresh");
+              setScreen("level");
+            }}
+          />
+        </div>
       </div>
     </div>
   );

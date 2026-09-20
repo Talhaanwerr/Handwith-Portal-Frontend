@@ -12,7 +12,11 @@ export function FriendlyShark({
   letter,
   fedLower,
 }: {
-  letter: string;
+  /** The uppercase letter on the card above the shark. Omit it (or pass an
+   *  empty string) to show the shark ALONE — Ocean ABC uses the shark as a
+   *  mascot on its splash and finale, where there is no letter to match and
+   *  an empty white card floating over its head was pure noise. */
+  letter?: string;
   /** When set, this lowercase letter's fish is shown snapped in the mouth */
   fedLower?: string;
 }) {
@@ -36,29 +40,35 @@ export function FriendlyShark({
           space, so they scale exactly with the image at every size. Nudge the
           x/y numbers below to sit them on YOUR image's fin and mouth. */}
       <svg viewBox="0 0 200 210" className="absolute inset-0 h-full w-full">
-        {/* the uppercase letter card the fish must match — top-center */}
-        <rect
-          x="70"
-          y="2"
-          width="60"
-          height="44"
-          rx="9"
-          fill="white"
-          stroke="#3E7FC4"
-          strokeWidth="3"
-        />
-        <text
-          x="100"
-          y="26"
-          textAnchor="middle"
-          dominantBaseline="central"
-          fontSize="31"
-          fontWeight="900"
-          fill="#2980B9"
-          fontFamily="Nunito, sans-serif"
-        >
-          {letter}
-        </text>
+        {/* the uppercase letter card the fish must match — top-center.
+            Only drawn when there IS a letter; otherwise the shark stands on
+            its own. */}
+        {letter ? (
+          <>
+            <rect
+              x="70"
+              y="2"
+              width="60"
+              height="44"
+              rx="9"
+              fill="white"
+              stroke="#3E7FC4"
+              strokeWidth="3"
+            />
+            <text
+              x="100"
+              y="26"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize="31"
+              fontWeight="900"
+              fill="#2980B9"
+              fontFamily="Nunito, sans-serif"
+            >
+              {letter}
+            </text>
+          </>
+        ) : null}
 
         {/* the fish that was just fed — sits over the mouth area */}
         {fedLower && (

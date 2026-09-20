@@ -59,7 +59,7 @@ export const LETTER_WORDS: Record<string, string> = {
   M: "moon",
   N: "nest",
   O: "octopus",
-  P: "pig",
+  P: "penguin",
   Q: "queen",
   R: "rabbit",
   S: "sun",

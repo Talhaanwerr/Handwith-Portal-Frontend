@@ -8,6 +8,10 @@ import { GAMES } from "@/constants/games";
 export const metadata: Metadata = { title: "Library" };
 
 export default function LibraryPage() {
+  /** Games still being worked on keep their entry — and their /play route —
+   *  but are not offered on the shelf. */
+  const shelf = GAMES.filter((game) => !game.hidden);
+
   return (
     <div className="space-y-8">
       <PageHeader
@@ -15,7 +19,7 @@ export default function LibraryPage() {
         description="Browse and launch educational games for children"
       />
 
-      {GAMES.length === 0 ? (
+      {shelf.length === 0 ? (
         <EmptyState
           icon={Library}
           title="No games available"
@@ -23,7 +27,7 @@ export default function LibraryPage() {
         />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-          {GAMES.map((game) => (
+          {shelf.map((game) => (
             <GameCard key={game.id} game={game} />
           ))}
         </div>

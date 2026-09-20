@@ -21,6 +21,11 @@
    minimum on the narrowest phone. */
 .dd-stage {
   --dd-unit: clamp(58px, min(10.5vh, 13vw), 96px);
+  /* A bridge stone. Up to 22vw — big enough that two fill a phone's width —
+     because the bridge WRAPS now (see .dd-bridge): four stones that cannot
+     share one line sit two-by-two instead of squeezing into it with the last
+     one hidden under the far bank. */
+  --dd-bstone: max(var(--dd-unit), min(calc(var(--dd-unit) * 3), 22vw, 26vh));
   --dd-stone: var(--dd-unit);
   --dd-ring: calc(var(--dd-unit) * 1.55);
 }
@@ -77,44 +82,71 @@
    be ~11px wide on a 360px phone. Wrapping keeps each tile legible and makes
    horizontal overflow impossible at any width. */
 .dd-strip {
-  padding: 0 2px;
+  /* vertical room for the enlarged active tile (up to 1.62x) so the glow is
+     never clipped by the row above or below */
+  padding: 6px 4px;
 }
 .dd-tile {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(13px, 3.1vw, 24px);
-  height: clamp(13px, 3.1vw, 24px);
-  border-radius: 5px;
+  /* Grown substantially: at ~13px the strip was a decorative ribbon nobody
+     could actually read the letters in. It still wraps, so a bigger tile can
+     never cause horizontal overflow — it just uses more rows on a phone. */
+  width: clamp(22px, 4.4vw, 38px);
+  height: clamp(22px, 4.4vw, 38px);
+  border-radius: 7px;
   font-family: "Nunito", "Varela Round", sans-serif;
-  font-size: clamp(8px, 1.9vw, 14px);
+  font-size: clamp(13px, 2.7vw, 22px);
   font-weight: 900;
   line-height: 1;
   transition:
     background-color var(--duration-base, 300ms) var(--ease-settle),
     color var(--duration-base, 300ms) var(--ease-settle);
 }
-/** Not yet reached — cold, buried stone. */
-.dd-tile--pending {
-  background: rgba(201, 212, 227, 0.14);
-  color: rgba(201, 212, 227, 0.45);
+/** FUTURE — a blank gray stone. The glyph is not rendered at all (see
+ *  AlphabetStrip.tsx), so there is nothing to read ahead to: the child cannot
+ *  tell which letter is coming next until it becomes the active one. */
+.dd-tile--future {
+  background: rgba(150, 158, 170, 0.18);
+  color: transparent;
 }
-/** Already dug up. */
-.dd-tile--dug {
-  background: var(--color-dino);
-  color: var(--color-dino-night);
-}
-/** One of the two letters being dug right now. */
-.dd-tile--target {
-  background: rgba(168, 255, 0, 0.18);
-  color: var(--color-dino-lime);
-  box-shadow: inset 0 0 0 1.5px var(--color-dino-lime);
-}
-/** The anchor letter on the fossil ring — the warm glow. */
-.dd-tile--current {
+
+/** DONE — banked, and now quiet. Orange, back at normal size. */
+.dd-tile--done {
   background: var(--color-dino-orange);
   color: #ffffff;
-  box-shadow: 0 0 10px 2px rgba(255, 127, 0, 0.55);
+}
+
+/** CURRENT — golden, glowing, animated and LARGER. The one element on the
+ *  strip that is allowed to attract attention. The scale is applied here
+ *  rather than by changing the box size, so the surrounding tiles never
+ *  reflow as the active letter moves along the strip. */
+.dd-tile--active {
+  background: linear-gradient(160deg, #ffe27a 0%, #ffc21f 55%, #f5a300 100%);
+  color: #4a3000;
+  transform: scale(1.5);
+  z-index: 1;
+  box-shadow:
+    0 0 0 2px rgba(255, 226, 122, 0.9),
+    0 0 12px 3px rgba(255, 194, 31, 0.75);
+  animation: dd-tile-shine 1.7s ease-in-out infinite;
+}
+
+@keyframes dd-tile-shine {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px rgba(255, 226, 122, 0.9),
+      0 0 10px 2px rgba(255, 194, 31, 0.6);
+    transform: scale(1.45);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(255, 240, 170, 1),
+      0 0 20px 6px rgba(255, 194, 31, 0.9);
+    transform: scale(1.62);
+  }
 }
 
 /* ── Question copy ── */
@@ -146,14 +178,39 @@
 }
 
 .dd-bubble {
-  min-width: calc(var(--dd-unit) * 1.05);
+  /* widened to hold the enlarged asked-for letter without clipping it */
+  min-width: calc(var(--dd-unit) * 1.7);
   border-radius: 20px;
 }
 
+/** THE letter the dino is asking for — the single most important thing on the
+ *  Feed the Dinos screen, so it is dramatically larger than everything around
+ *  it and gently shines. The pulse is slow and small (never a flash), so it
+ *  draws the eye without becoming a distraction. */
 .dd-bubble-letter {
-  font-size: calc(var(--dd-unit) * 0.72);
+  /* Capped against the VIEWPORT as well as --dd-unit. The dino and this card
+     sit in an `items-center` flex row; when the card grows taller than the row
+     it does not push anything, it simply paints outside it — over the "Can you
+     find X?" pill above. --dd-unit alone does not know how much height the row
+     actually got, so the vh term is what keeps the card inside it. */
+  font-size: min(calc(var(--dd-unit) * 1.15), 11vh);
   line-height: 1;
   color: var(--color-dino-night);
+  animation: dd-ask-shine 2s ease-in-out infinite;
+}
+
+@keyframes dd-ask-shine {
+  0%,
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(255, 194, 31, 0.5);
+  }
+  50% {
+    transform: scale(1.08);
+    text-shadow:
+      0 0 18px rgba(255, 210, 90, 0.95),
+      0 0 32px rgba(255, 160, 0, 0.55);
+  }
 }
 
 /** One tummy dot per serving — fills orange as the dinos get fed. */
@@ -172,7 +229,10 @@
 
 .dd-river {
   background: linear-gradient(180deg, rgba(0, 196, 204, 0.32), rgba(0, 150, 160, 0.5));
-  border-radius: 18px;
+  border-radius: 22px;
+  /* the composition was cramped as a whole, not just small in one place —
+     the river itself needs room around its contents too */
+  min-height: max(calc(var(--dd-unit) * 3.3), calc(var(--dd-bstone) * 1.6));
 }
 
 .dd-bank {
@@ -180,14 +240,113 @@
   border-radius: 14px;
 }
 
-/** A dino waiting in the queue or resting on the far bank. */
-.dd-mini {
-  width: calc(var(--dd-unit) * 0.6);
+/** The bridge itself. Stones are fixed-size and never shrink; when the line
+ *  is narrower than four of them they wrap into two rows of two, centred. */
+.dd-bridge {
+  flex-wrap: wrap;
+  row-gap: clamp(6px, 1.5vh, 12px);
+}
+.dd-bridge > .dd-bstone {
+  flex: 0 0 auto;
 }
 
-/** The dino whose crossing this is. */
+/* Portrait phones: the far bank's resting dino is decoration the row cannot
+   afford, and the crosser gives back a little width — that is what lets two
+   big stones sit side by side between the banks. */
+@media (orientation: portrait) and (max-width: 640px) {
+  .dd-bank--far {
+    display: none;
+  }
+  .dd-crosser {
+    width: calc(var(--dd-unit) * 1.4);
+  }
+}
+
+/** A dino waiting in the queue or resting on the far bank. */
+.dd-mini {
+  width: calc(var(--dd-unit) * 0.85);
+}
+
+/** The dino whose crossing this is — the STAR of the screen.
+ *
+ *  Was 1.05 units, which on a phone made the character who the whole module is
+ *  about smaller than the stones it walks on. At 2.15 it is comfortably the
+ *  largest thing on the bank and its expression actually reads. Still derived
+ *  from --dd-unit, so it scales with everything else instead of needing its
+ *  own breakpoints. */
 .dd-crosser {
-  width: calc(var(--dd-unit) * 1.05);
+  width: calc(var(--dd-unit) * 2.15);
+}
+
+/* The dino art is a 1:1 viewBox, so a width multiplier is a HEIGHT multiplier
+   too. On a short landscape phone the bank column (crosser + the queue beneath
+   it) would then be taller than the river band it lives in and get clipped by
+   the stage's overflow:hidden. Trimmed back there only — it is still ~1.5x its
+   original size on that viewport, and the full 2.15x everywhere with the room
+   to show it. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .dd-crosser {
+    width: calc(var(--dd-unit) * 1.55);
+  }
+  .dd-mini {
+    width: calc(var(--dd-unit) * 0.7);
+  }
+  .dd-river {
+    min-height: calc(var(--dd-unit) * 2.5);
+  }
+}
+
+/* VERY short landscape — a phone on its side WITH browser chrome, which is
+   about 300px of usable height rather than the ~360px the rules above were
+   tuned for. At 560px-and-under sizing the column still came to more than the
+   screen, and the floating-stone tray is the last child of an overflow-hidden
+   flex column, so the tray is what got cut in half: the child could see the
+   letters they were meant to drag but only reach the top of them.
+   One variable moves the whole composition, and 42px keeps every stone above
+   the finger-target floor. */
+@media (orientation: landscape) and (max-height: 420px) {
+  .dd-stage {
+    --dd-unit: clamp(42px, 13vh, 58px);
+    --dd-bstone: max(var(--dd-unit), min(calc(var(--dd-unit) * 2), 11vw, 19vh));
+  }
+  .dd-crosser {
+    width: calc(var(--dd-unit) * 1.05);
+  }
+  .dd-river {
+    min-height: calc(var(--dd-unit) * 1.9);
+  }
+  /* Measured on an 820x300 viewport: the river band came to 150px inside the
+     102px the flex column had left for it, and `items-center` let it spill
+     24px above and below — over the "Put the letters in order!" pill and over
+     the stone tray. Two thirds of that 150px was padding (py-5 on the river,
+     py-3 on each bank) and an oversized dino queue, none of which a 300px
+     screen can pay for. Descendant selectors (0,2,0) so these beat the Tailwind
+     padding utilities in the markup regardless of stylesheet order. */
+  .dd-stage .dd-river {
+    padding-block: 6px;
+  }
+  .dd-stage .dd-bank {
+    padding-block: 4px;
+  }
+  .dd-mini {
+    width: calc(var(--dd-unit) * 0.55);
+  }
+  .dd-question {
+    font-size: clamp(12px, 3vw, 16px);
+  }
+  /* The alphabet strip stays VISIBLE on a short screen and pays for itself by
+     shrinking. 26 tiles at 18px still fit one row on any landscape phone, so
+     the whole strip costs about 24px of height — far less than the value of
+     showing a child how far along the alphabet their bridge has got. */
+  .dd-strip {
+    padding: 2px 4px;
+  }
+  .dd-tile {
+    width: clamp(16px, 3.1vw, 24px);
+    height: clamp(16px, 3.1vw, 24px);
+    border-radius: 5px;
+    font-size: clamp(10px, 1.9vw, 15px);
+  }
 }
 
 /**
@@ -198,11 +357,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(var(--dd-unit) * 0.72);
-  height: calc(var(--dd-unit) * 0.62);
+  width: var(--dd-bstone);
+  height: calc(var(--dd-bstone) * 0.86);
   border-radius: 38% 42% 40% 44% / 55% 50% 58% 52%;
   font-weight: 900;
-  font-size: calc(var(--dd-unit) * 0.32);
+  font-size: calc(var(--dd-bstone) * 0.44);
 }
 
 /** Placed — a solid stone the dino can step on. */
@@ -283,4 +442,54 @@
   font-size: clamp(30px, 8vmin, 56px);
   color: var(--color-dino-orange);
   text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ── River Crossing start screen ── */
+
+/** The dino waiting at the next crossing — the screen's hero. */
+.dd-start-dino {
+  width: clamp(110px, 24vmin, 190px);
+}
+
+/** One letter of the crossing ahead — a small stone tile, matching the
+ *  bridge's stone language rather than a plain text row. */
+.dd-start-letter {
+  width: clamp(34px, 6vmin, 46px);
+  height: clamp(34px, 6vmin, 46px);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #d8cfc0 0%, #b8ab97 100%);
+  border: 2px solid #8f8271;
+  color: #5a4d3c;
+  font-size: clamp(16px, 3vmin, 22px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    0 3px 8px rgba(64, 52, 38, 0.3);
+}
+
+/* ── BIG/small letters choice ── */
+
+.dd-case-btn {
+  width: clamp(140px, 30vmin, 230px);
+  min-height: clamp(120px, 24vmin, 190px);
+  padding: clamp(12px, 2.5vmin, 22px);
+  border-radius: clamp(20px, 4vmin, 34px);
+  border: 3px solid rgba(255, 255, 255, 0.65);
+  background: linear-gradient(160deg, rgba(125, 179, 66, 0.55), rgba(64, 92, 38, 0.65));
+  box-shadow:
+    0 14px 38px rgba(38, 52, 24, 0.45),
+    inset 0 0 40px rgba(255, 255, 255, 0.12);
+}
+.dd-case-btn--lower {
+  background: linear-gradient(160deg, rgba(240, 158, 66, 0.55), rgba(140, 84, 28, 0.65));
+}
+.dd-case-preview {
+  font-size: clamp(28px, 6.5vmin, 50px);
+  line-height: 1.1;
+  color: #ffffff;
+  text-shadow: 0 3px 10px rgba(38, 52, 24, 0.55);
+}
+.dd-case-title {
+  font-size: clamp(13px, 2.2vmin, 18px);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.92);
 }

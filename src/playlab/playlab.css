@@ -15,6 +15,23 @@
 @import "./games/magnet-match/styles/magnet-match.css";
 @import "./games/feed-the-shark/styles/feed-the-shark.css";
 @import "./games/dino-dig/styles/dino-dig.css";
+@import "./games/letter-treats/styles/letter-treats.css";
+@import "./games/space-letters/styles/space-letters.css";
+@import "./games/ocean-abc/styles/ocean-abc.css";
+@import "./games/ocean-hunt/styles/ocean-hunt.css";
+@import "./shared/styles/pirate.css";
+@import "./shared/styles/arctic.css";
+@import "./shared/styles/construction.css";
+@import "./games/pirate-match/styles/pirate-match.css";
+@import "./games/color-paint/styles/color-paint.css";
+/* Numbers 1 – 5 */
+@import "./games/counting-numbers/styles/counting-numbers.css";
+/* Key Quest */
+@import "./games/door-count/styles/door-count.css";
+/* Number Pals */
+@import "./games/number-match/styles/number-match.css";
+/* Leo's Puzzles */
+@import "./games/shape-match/styles/shape-match.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

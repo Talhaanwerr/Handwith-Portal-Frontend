@@ -20,8 +20,40 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "dino-dig": lazy(() =>
     import("@games/dino-dig/AlphabetDinoDigGame").then((m) => ({ default: m.AlphabetDinoDigGame }))
   ),
+  "letter-treats": lazy(() =>
+    import("@games/letter-treats/LetterTreatsGame").then((m) => ({ default: m.LetterTreatsGame }))
+  ),
   "feed-the-shark": lazy(() =>
     import("@games/feed-the-shark/FeedTheSharkGame").then((m) => ({ default: m.FeedTheSharkGame }))
+  ),
+  "space-letters": lazy(() =>
+    import("@games/space-letters/SpaceLettersGame").then((m) => ({ default: m.SpaceLettersGame }))
+  ),
+  "ocean-abc": lazy(() =>
+    import("@games/ocean-abc/OceanAbcGame").then((m) => ({ default: m.OceanAbcGame }))
+  ),
+  "ocean-hunt": lazy(() =>
+    import("@games/ocean-hunt/OceanHuntGame").then((m) => ({ default: m.OceanHuntGame }))
+  ),
+  "pirate-match": lazy(() =>
+    import("@games/pirate-match/PirateMatchGame").then((m) => ({ default: m.PirateMatchGame }))
+  ),
+  "color-paint": lazy(() =>
+    import("@games/color-paint/ColorPaintGame").then((m) => ({ default: m.ColorPaintGame }))
+  ),
+  "counting-numbers": lazy(() =>
+    import("@games/counting-numbers/CountingNumbersGame").then((m) => ({
+      default: m.CountingNumbersGame,
+    }))
+  ),
+  "door-count": lazy(() =>
+    import("@games/door-count/DoorCountGame").then((m) => ({ default: m.DoorCountGame }))
+  ),
+  "number-match": lazy(() =>
+    import("@games/number-match/NumberMatchGame").then((m) => ({ default: m.NumberMatchGame }))
+  ),
+  "shape-match": lazy(() =>
+    import("@games/shape-match/ShapeMatchGame").then((m) => ({ default: m.ShapeMatchGame }))
   ),
 };
 

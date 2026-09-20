@@ -332,7 +332,7 @@ export const LETTER_DATA: LetterDefinition[] = [
   },
   {
     letter: "P",
-    phonetic: "P — like in Pen",
+    phonetic: "P — like in Penguin",
     strokes: [
       { id: "P-1", points: pS1, pathData: pS1p },
       { id: "P-2", points: pS2, pathData: pS2p },

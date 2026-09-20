@@ -42,6 +42,23 @@
   color: var(--color-gold-dim);
 }
 
+/* ── Letter-choosing screen title ── */
+
+.jsp-title {
+  font-size: clamp(30px, 7vmin, 54px);
+  line-height: 1.05;
+}
+/** Animals perched either side of the title. Plain art, no card or frame —
+ *  they belong to the scene rather than sitting in a container. */
+.jsp-title-animal {
+  width: clamp(34px, 7.5vmin, 68px);
+  pointer-events: none;
+  filter: drop-shadow(0 4px 7px rgba(28, 64, 44, 0.22));
+}
+.jsp-title-row {
+  gap: clamp(6px, 1.6vmin, 16px);
+}
+
 /* ── Letter grid ── */
 
 /** The A–Z board.
@@ -74,41 +91,375 @@
 
 /* ── Level ── */
 
-/** The animal as a framed print: a SQUARE white mount with a thin white
- *  border, not a circular medallion. A circle cropped the corners off every
- *  photo — a long animal (a snake, a whale) lost its ends, which is exactly
- *  the identifying detail a child is being asked to recognise. Square keeps
- *  the whole picture, and the photo inside uses object-contain so nothing is
- *  cut off whatever its proportions are.
+/** The animal itself IS the visual — no mount, no border, no card, no
+ *  medallion. The white square frame made every animal look like a stamp on a
+ *  page and, worse, capped how big the animal could be: half the frame was
+ *  empty white on any photo that was not square.
  *
- *  Slightly smaller than the old circle: a square shows more picture at the
- *  same width, and the extra room lets the scattered letters breathe. */
-.jsp-photo-frame {
-  width: clamp(124px, 27vmin, 208px);
-  height: clamp(124px, 27vmin, 208px);
-  background: white;
-  border: 3px solid white;
-  border-radius: 14px;
-  overflow: hidden;
+ *  Now the picture is the element and it is far larger (≈1.7x the old frame's
+ *  edge, so well over twice the drawn area). The photo inside still uses
+ *  object-contain, so the aspect ratio is untouched and nothing is cropped —
+ *  a long snake keeps its ends, a tall giraffe keeps its neck.
+ *
+ *  A drop-shadow FILTER (not a box-shadow) traces the animal's own silhouette,
+ *  which is what lets it sit on the mint background with no container and
+ *  still read as a distinct object. */
+.jsp-animal {
+  width: clamp(200px, 46vmin, 360px);
+  height: clamp(200px, 46vmin, 360px);
+  filter: drop-shadow(0 10px 16px rgba(28, 64, 44, 0.28));
 }
+
+/* Short landscape (a phone on its side) is the one viewport where the 200px
+   floor above would backfire: the play area is only ~250px tall there, so a
+   200px animal plus its keep-out box would leave the scattered letters almost
+   no room — bubbleCount() would collapse toward its floor and scatterSlots()
+   would start dropping letters it cannot place. Still far larger than the old
+   framed print (124px), just not larger than the screen. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .jsp-animal {
+    width: clamp(120px, 34vmin, 200px);
+    height: clamp(120px, 34vmin, 200px);
+  }
+  .jsp-win-photo {
+    width: clamp(132px, 38vmin, 224px);
+    height: clamp(132px, 38vmin, 224px);
+  }
+}
+/* The animal's name — roughly double its old 13-17px, which read as a caption
+   rather than as the answer to "what is this?".
+   It is safe to grow because the name sits INSIDE the box measured into
+   `play.keep` (see JungleLevel's animalRef, which wraps the picture and this
+   label together), so the letter scatter routes around whatever size it ends
+   up. Sized against the longest name in the set, "Umbrella Bird": ~14 characters
+   still fit one line on a phone at the 20px floor.
+   `balance` rather than `nowrap` for the two-word names, so if a very narrow
+   screen ever does break the line it breaks evenly instead of orphaning a word. */
 .jsp-animal-name {
-  font-size: clamp(13px, 2.6vmin, 17px);
+  font-size: clamp(30px, 7vmin, 56px);
+  padding: 0.1em 0.5em;
+  max-width: min(90vw, 15ch);
+  text-wrap: balance;
+  line-height: 1.1;
 }
-/** A tappable letter bubble — position + colour arrive per-round via cssVars. */
+/** A tappable letter bubble — position, size and colour arrive per-round via
+ *  cssVars. The box is the one the placement solver reserved (--pl-size), so a
+ *  large tier can never grow past the space it was tested against. */
+/* Centred by MARGIN, never by transform.
+   --pl-x/--pl-y are the centre the placement solver computed, but this element
+   is a Framer motion.button that animates `scale` and `x` — both transform
+   properties — so an inline transform is written on every frame and a CSS
+   `translate(-50%, -50%)` here is silently overwritten. The board was
+   therefore drawn from each bubble's TOP-LEFT corner: the whole scatter sat
+   half a bubble down and right, leaving the top-left of the screen empty and
+   pushing the right-hand letters off the edge.
+   Negative margins do the same centring in a channel Framer does not touch. */
 .jsp-bubble {
-  transform: translate(-50%, -50%);
+  width: var(--pl-size, 48px);
+  height: var(--pl-size, 48px);
+  margin-left: calc(var(--pl-size, 48px) / -2);
+  margin-top: calc(var(--pl-size, 48px) / -2);
   touch-action: manipulation;
 }
 
 /* ── Win overlay ── */
 
+/** The sunburst behind the celebrating animal. A conic gradient rather than a
+ *  stack of SVG wedges: one element, one paint, and it turns on the
+ *  compositor. Sits at z-0 so the animal and the heading stay over it. */
+.jsp-win-rays {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  width: min(150vw, 150vh);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 217, 61, 0.34) 0deg 9deg,
+    rgba(255, 217, 61, 0) 9deg 30deg
+  );
+  /* fades out before the edges, so the rays read as light rather than as a
+     hard-edged wheel sitting on the screen */
+  mask-image: radial-gradient(circle, #000 8%, rgba(0, 0, 0, 0.55) 40%, transparent 70%);
+}
+
+/** A friend who answered the call, perched around the edge of the clearing.
+ *  Positioned by the percentages in CALLED_FRIENDS and centred on that point,
+ *  by MARGIN rather than transform — Framer owns this element's transform for
+ *  the pop-in, and a CSS translate here would be overwritten. */
+.jsp-win-friend {
+  position: absolute;
+  left: var(--pl-x);
+  top: var(--pl-y);
+  z-index: 1;
+  width: clamp(46px, 11vmin, 96px);
+  margin-left: calc(clamp(46px, 11vmin, 96px) / -2);
+  margin-top: calc(clamp(46px, 11vmin, 96px) / -2);
+  pointer-events: none;
+  filter: drop-shadow(0 5px 10px rgba(28, 64, 44, 0.3));
+}
+/** Half the friends face back into the clearing. */
+.jsp-win-friend.is-flipped {
+  scale: -1 1;
+}
+
+/** ACT ONE of the celebration — the animal, its name and the friends — as one
+ *  block, so it can leave the screen together when the door takes over. */
+.jsp-win-act {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vmin, 16px);
+}
+
+/** ACT TWO — the door leads, Again sits under it. */
+.jsp-win-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2.4vmin, 18px);
+}
+
+/* ── The secret door ──
+   A spy passage in the undergrowth: a tall arch of golden light with the next
+   animal waiting inside. It is a BUTTON — going through it is how the child
+   moves on — so it carries a real tap target and its own label. */
+/** The doorway itself: a carved arch in the undergrowth. `perspective` is what
+ *  lets the two panels swing in 3D rather than just squashing flat. */
+.jsp-door {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  /* BIG. Act two has the whole centre of the screen to itself — act one has
+     cleared — so the door owns it: over half the short side, the largest
+     single thing in any celebration in the portal. */
+  width: min(58vmin, 340px);
+  height: min(66vmin, 388px);
+  padding-bottom: 10px;
+  border: 7px solid #6b4a22;
+  border-radius: 999px 999px 20px 20px;
+  background: #4a3317;
+  box-shadow:
+    0 12px 0 rgba(58, 38, 14, 0.55),
+    0 0 42px rgba(255, 217, 61, 0.6);
+  perspective: 620px;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+/** The passage behind the doors — everything the opening reveals. */
+.jsp-door-well {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px 999px 14px 14px;
+  background: radial-gradient(ellipse at 50% 58%, #fff6d4 0%, var(--color-gold) 46%, #b9791f 100%);
+  overflow: hidden;
+}
+
+/** The light flooding out once the panels part. */
+.jsp-door-light {
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 62%);
+  pointer-events: none;
+}
+
+/** Who is waiting on the other side — the real photograph, standing in the
+ *  light on its own. No mount: a white circle around it read as a badge, not
+ *  an animal in a doorway. */
+.jsp-door-peek {
+  position: relative;
+  width: 74%;
+  aspect-ratio: 1;
+  filter: drop-shadow(0 8px 14px rgba(58, 38, 14, 0.45));
+}
+
+/** One of the two panels. Hinged on its OUTER edge, so they part in the
+ *  middle and swing back into the jungle. */
+.jsp-door-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: repeating-linear-gradient(
+    90deg,
+    #7a5628 0px,
+    #7a5628 10px,
+    #6b4a22 10px,
+    #6b4a22 20px
+  );
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.jsp-door-panel--l {
+  left: 0;
+  border-radius: 999px 0 0 14px;
+  transform-origin: left center;
+  box-shadow: inset -6px 0 10px rgba(40, 26, 10, 0.5);
+}
+.jsp-door-panel--r {
+  right: 0;
+  border-radius: 0 999px 14px 0;
+  transform-origin: right center;
+  box-shadow: inset 6px 0 10px rgba(40, 26, 10, 0.5);
+}
+
+/** The next animal's NAME, on the door under its picture. */
+.jsp-door-label {
+  position: relative;
+  z-index: 2;
+  padding: 4px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: clamp(16px, 3.4vmin, 26px);
+  color: #5c3a12;
+  text-transform: capitalize;
+}
+
+/** Its letter, on the arch above — the thing the child is about to hunt. */
+.jsp-door-badge {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  z-index: 2;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(34px, 7vmin, 52px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: #5c3a12;
+  font-size: clamp(18px, 3.8vmin, 30px);
+  line-height: 1;
+  box-shadow: 0 4px 0 rgba(58, 38, 14, 0.35);
+}
+
+/** The way back and the way on, side by side under the door — BIG, the two
+ *  obvious things on the screen to tap. Each carries its animal. */
+.jsp-win-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 3vmin, 24px);
+}
+.jsp-win-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: clamp(58px, 10vmin, 78px);
+  padding: 0 clamp(24px, 5vmin, 42px);
+  border-radius: 999px;
+  font-size: clamp(18px, 3.6vmin, 28px);
+  box-shadow:
+    0 8px 0 rgba(58, 38, 14, 0.25),
+    0 12px 24px rgba(28, 64, 44, 0.3);
+  touch-action: manipulation;
+}
+.jsp-win-btn--again {
+  background: #ffffff;
+  color: var(--color-plum);
+}
+.jsp-win-btn--next {
+  background: var(--color-jungle);
+  color: #ffffff;
+}
+.jsp-win-btn-art {
+  width: clamp(30px, 6vmin, 46px);
+  aspect-ratio: 1;
+}
+.jsp-win-btn-art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No swing: the doors are simply already open. */
+  .jsp-door-panel {
+    display: none;
+  }
+}
+
+/* Short landscape: the friends would crowd the star animal, so only the door
+   and the shower stay. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .jsp-win-friend {
+    display: none;
+  }
+  .jsp-door {
+    width: clamp(96px, 20vmin, 132px);
+    height: clamp(104px, 22vmin, 146px);
+  }
+  .jsp-win-btn {
+    min-height: 48px;
+    padding: 0 20px;
+    font-size: 16px;
+  }
+  .jsp-door-badge {
+    width: 26px;
+    font-size: 15px;
+  }
+}
+
+/** The letter itself, falling among the leaves and the animals. */
+.jsp-win-fall-letter {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(20px, 4.6vmin, 40px);
+  line-height: 1;
+  color: var(--pl-color, #7c4dbe);
+  text-shadow: 0 2px 6px rgba(28, 64, 44, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jsp-win-rays {
+    display: none;
+  }
+}
+
+/** The overlay's own wash is all but gone: the garden below paints the whole
+ *  sheet, and this only tints the instant before it has. */
 .jsp-win-tint {
   background: rgba(232, 248, 238, 0.92);
 }
-/** Same frame on the win overlay, a touch larger for the celebration. */
+/** The garden the celebration is set in — sky above, meadow below, with the
+ *  shared GardenScene and HomeEnvironment drawn over it, and a light veil on
+ *  top so the door, the animal and the words stay the subject. Bottom of
+ *  the stack; everything else in the overlay is positioned above it. */
+.jsp-win-garden {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--color-sky-pastel, #d4eeff) 0%, #eaf8ef 100%);
+  pointer-events: none;
+}
+.jsp-win-garden::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.16);
+}
+/** Same frameless animal on the win overlay, a touch larger for the celebration. */
 .jsp-win-photo {
-  width: clamp(132px, 30vmin, 224px);
-  height: clamp(132px, 30vmin, 224px);
+  width: clamp(216px, 50vmin, 396px);
+  height: clamp(216px, 50vmin, 396px);
 }
 .jsp-win-heading {
   font-size: clamp(28px, 7vmin, 44px);

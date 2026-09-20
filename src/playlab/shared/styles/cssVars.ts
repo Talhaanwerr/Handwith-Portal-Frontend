@@ -15,12 +15,15 @@ import type { CSSProperties } from "react";
  * that contains the actual declaration. The rule stays in the stylesheet;
  * only the number crosses the boundary.
  *
- * The `--pl-` prefix is mandatory at the type level, so this helper can never
- * be used to smuggle a normal CSS property back into a component.
+ * A CUSTOM PROPERTY is mandatory at the type level — the name must start with
+ * `--` — so this helper can never be used to smuggle a normal CSS property
+ * (`color`, `top`, `display`) back into a component. Shared machinery uses the
+ * `--pl-` prefix; a game or theme may use its own (`--sap-`, `--oab-`, `--ac-`)
+ * for a value only its own stylesheet reads.
  *
  *   <div className="pl-at pl-box" style={cssVars({ "--pl-x": `${x}px`, ... })} />
  */
-export type PlayLabCssVar = `--pl-${string}`;
+export type PlayLabCssVar = `--${string}`;
 
 export function cssVars(vars: Record<PlayLabCssVar, string | number>): CSSProperties {
   return vars as CSSProperties;

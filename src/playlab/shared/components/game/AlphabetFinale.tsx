@@ -3,6 +3,7 @@
 import { useEffect, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { CelebrationSparkles } from "@shared/components/animations/Sparkles";
+import { Confetti } from "@shared/components/game/Confetti";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { playCelebrationSound } from "@shared/audio/sfx";
 import { playClip, stopVoice } from "@shared/audio/voice";
@@ -81,6 +82,9 @@ export function AlphabetFinale({
       {backdrop}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <CelebrationSparkles active width={dims.w} height={dims.h} />
+        {/* the paper on top of the sparkle canvas — every game's finale
+            rains confetti now, from the one shared layer */}
+        <Confetti count={56} />
       </div>
 
       {/* m-auto: short landscape viewports scroll from the top instead of clipping */}

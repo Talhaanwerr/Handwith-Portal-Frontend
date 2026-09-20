@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 
 /** Which game's identity the pill borrows. Chevron + label share the tone. */
-export type NavTone = "plum" | "jungle" | "ocean" | "kitchen" | "dino";
+export type NavTone =
+  "plum" | "jungle" | "ocean" | "kitchen" | "dino" | "space" | "pirate" | "arctic" | "builder";
 
 /**
  * How opaque the white pill sits over the scene behind it. The three levels
@@ -38,6 +39,15 @@ const TONE_CHEVRON: Record<NavTone, string> = {
   // Dino Dig's teal is a fill colour; its navy ink is what stays legible as a
   // small chevron/label on the white pill.
   dino: "stroke-dino-ink",
+  // Same reasoning as Dino Dig: the bright cosmic blue is a fill colour, so
+  // the pill chrome uses the deep-navy ink for contrast on white.
+  space: "stroke-space-ink",
+  // Pirate wood is mid-value; the dark wood ink keeps the chevron legible.
+  pirate: "stroke-pirate-ink",
+  // Arctic ice is pale; the deep-water ink carries the chevron.
+  arctic: "stroke-arctic-ink",
+  // Machine yellow is bright; the hard-hat ink carries the chevron.
+  builder: "stroke-builder-ink",
 };
 
 const TONE_LABEL: Record<NavTone, string> = {
@@ -48,6 +58,10 @@ const TONE_LABEL: Record<NavTone, string> = {
   ocean: "text-ocean",
   kitchen: "text-kitchen",
   dino: "text-dino-ink",
+  space: "text-space-ink",
+  pirate: "text-pirate-ink",
+  arctic: "text-arctic-ink",
+  builder: "text-builder-ink",
 };
 
 const SURFACE: Record<NavSurface, string> = {

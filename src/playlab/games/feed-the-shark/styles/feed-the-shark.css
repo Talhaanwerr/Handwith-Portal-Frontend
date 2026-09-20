@@ -67,15 +67,56 @@
 
 /* ── Round-complete overlay ── */
 
+/** Deeper than it was: the celebration now fizzes with white bubbles and
+ *  rays of light, and they need dark water behind them to read. */
 .fs-celebrate-tint {
-  background: rgba(111, 199, 239, 0.55);
+  background: rgba(41, 128, 185, 0.62);
 }
 .fs-cheer {
   font-size: clamp(26px, 6.5vmin, 42px);
+}
+
+/** The shark, well fed, at the top of the round celebration. */
+.fs-cheer-shark {
+  width: clamp(110px, 26vmin, 220px);
+}
+@media (orientation: landscape) and (max-height: 560px) {
+  .fs-cheer-shark {
+    width: clamp(80px, 20vmin, 140px);
+  }
 }
 
 /* ── Finale ── */
 
 .fs-shark-finale {
   width: clamp(190px, 42vmin, 320px);
+}
+
+/* ── Short landscape (a phone on its side) ────────────────────────────────
+   This sheet had no orientation rule at all, so every floor above — a 150px
+   shark, an 84px fish, a 190px finale shark — held at full size on a viewport
+   about 300px tall. Stacked with the top bar and the fish tray that overran
+   the screen, and the level root is overflow-hidden, so the overrun was simply
+   cut off. Each floor drops to roughly half; the fish stays well clear of the
+   48px finger minimum, which is the only hard limit here. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .fs-shark {
+    width: clamp(96px, 30vmin, 190px);
+  }
+  .fs-fish,
+  .fs-ghost {
+    width: clamp(56px, 13vmin, 96px);
+  }
+  .fs-shark-splash {
+    width: clamp(96px, 30vmin, 190px);
+  }
+  .fs-fish-chip {
+    width: clamp(40px, 9vmin, 66px);
+  }
+  .fs-shark-finale {
+    width: clamp(110px, 30vmin, 200px);
+  }
+  .fs-cheer {
+    font-size: clamp(20px, 5vmin, 32px);
+  }
 }

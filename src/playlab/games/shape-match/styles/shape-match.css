@@ -1,0 +1,1366 @@
+/**
+ * Leo's Puzzles — a meadow, two activity boards, and a purple party.
+ *
+ * THE DESIGN UNIT. `--u` is one hundredth of the height of the largest box of
+ * the right proportions that fits the canvas, so every size below is a
+ * fraction of the same thing and the whole composition holds its shape from a
+ * phone held sideways to a 21:9 monitor. Nothing here is sized in px.
+ *
+ * TWO COMPOSITIONS, ONE SET OF SIZES. A container query switches `--u` and a
+ * handful of layout rules between the landscape composition (Leo at the left,
+ * the board beside him) and the portrait one (Leo below the board). Every
+ * size in `u` is shared by both, so there is only ever one design to keep.
+ *
+ * HORIZONTAL OFFSETS ARE MEASURED FROM THE CENTRE, never from an edge: that
+ * is what keeps Leo standing next to his board at 16:9 and at 21:9 instead of
+ * drifting off to the far wall. Only the grass line is a percentage.
+ *
+ * Two rules this file must keep:
+ *   · Anything Framer animates is centred with MARGIN, never `transform` — a
+ *     transform here would be overwritten mid-flight.
+ *   · Touch targets stay generous: every piece a child has to hit is at least
+ *     13u across, which is a fat thumb at any screen size.
+ */
+
+.sm-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #8fdbfa;
+}
+
+.sm-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* a bright, flat, poster-paint sky */
+  background:
+    radial-gradient(42% 34% at 16% 10%, rgba(255, 255, 255, 0.55), transparent 70%),
+    linear-gradient(180deg, #58c2f5 0%, #7fd6fb 38%, #b6ebfd 70%, #dcf5ff 100%);
+}
+
+/* Everything lives inside the stage, because a container query cannot style
+   the container it is asking about. */
+.sm-stage {
+  --u: min(1cqh, 0.5625cqw);
+  --sm-ink: #2f3550;
+  --sm-grape: #8e44d8;
+  --sm-thing: calc(18 * var(--u));
+  --sm-scene-h: calc(46 * var(--u));
+  --sm-card: calc(26 * var(--u));
+  /* an answer card and the three pieces on it */
+  --sm-card-w: calc(40 * var(--u));
+  --sm-card-h: calc(17 * var(--u));
+  --sm-card-piece: calc(10 * var(--u));
+  /* the jigsaw picture, and one tall piece of it */
+  --sm-jig-h: calc(38 * var(--u));
+  /* a tall piece in the tray, and it is HALF AS WIDE AS IT IS TALL — so its
+     width is what decides whether a small hand can pick it up, and the height
+     below is set by that and not by how much room the picture leaves. */
+  --sm-strip-h: calc(22 * var(--u));
+  --sm-strip-w: calc(var(--sm-strip-h) * 0.5);
+  --sm-gap-size: calc(3.6 * var(--u));
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.sm-screen-wrap,
+.sm-screen,
+.sm-slide,
+.sm-board {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── The meadow ───────────────────────────────────────────────────────────── */
+
+.sm-meadow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sm-sun {
+  position: absolute;
+  top: calc(-6 * var(--u));
+  left: calc(50% - 96 * var(--u));
+  width: calc(30 * var(--u));
+  height: calc(30 * var(--u));
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6c4 0%, #ffe27a 58%, rgba(255, 226, 122, 0) 72%);
+}
+
+.sm-hill {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  border-radius: 50% 50% 0 0;
+}
+
+.sm-hill--far {
+  bottom: 20%;
+  height: 26%;
+  background: #86dd6b;
+}
+
+.sm-hill--near {
+  bottom: 20%;
+  height: 16%;
+  left: 26%;
+  right: -20%;
+  background: #74d258;
+}
+
+.sm-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22%;
+  background: linear-gradient(180deg, #8ee06a 0%, #6cc94c 42%, #56b93c 100%);
+  box-shadow: inset 0 calc(0.8 * var(--u)) 0 rgba(255, 255, 255, 0.4);
+}
+
+.sm-tuft {
+  position: absolute;
+  bottom: 20%;
+  left: var(--sm-x);
+  width: var(--sm-w);
+  aspect-ratio: 4 / 3;
+  transform-origin: bottom center;
+  opacity: 0.9;
+}
+
+.sm-tuft[data-tall="yes"] {
+  bottom: 14%;
+  opacity: 0.75;
+}
+
+/* ── Art ──────────────────────────────────────────────────────────────────── */
+
+.sm-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── The board ────────────────────────────────────────────────────────────── */
+
+.sm-board,
+.sm-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sm-gap-size);
+  /* the left inset is Leo's room; the board is centred in what is left */
+  padding: calc(4 * var(--u)) calc(6 * var(--u)) calc(4 * var(--u)) calc(44 * var(--u));
+}
+
+/* The visitors board has nothing in its flow but the banner — the animals
+   place themselves — so without this the instruction would float in the
+   middle of the meadow instead of sitting at the top where it always is. */
+.sm-board[data-kind="visitors"] {
+  justify-content: flex-start;
+}
+
+/* ── The instruction banner ───────────────────────────────────────────────── */
+
+.sm-banner {
+  max-width: calc(108 * var(--u));
+  padding: calc(1.8 * var(--u)) calc(5 * var(--u));
+  border-radius: 999px;
+  background: linear-gradient(180deg, #c06ff0 0%, #9a4ce0 52%, #8a3ed4 100%);
+  border: calc(0.8 * var(--u)) solid #ffffff;
+  box-shadow: 0 calc(1.2 * var(--u)) 0 rgba(90, 40, 140, 0.35);
+  color: #ffffff;
+  font-size: calc(5 * var(--u));
+  line-height: 1.15;
+  text-align: center;
+  text-wrap: balance;
+  text-shadow: 0 calc(0.3 * var(--u)) 0 rgba(80, 30, 130, 0.45);
+}
+
+/* ── The white panels ─────────────────────────────────────────────────────── */
+
+.sm-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: calc(3.4 * var(--u));
+  max-width: calc(116 * var(--u));
+  padding: calc(2.6 * var(--u)) calc(4 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background: rgba(255, 255, 255, 0.94);
+  border: calc(0.7 * var(--u)) solid #ffffff;
+  box-shadow: 0 calc(1.2 * var(--u)) 0 rgba(40, 90, 60, 0.2);
+}
+
+.sm-panel--tray {
+  background: rgba(255, 255, 255, 0.86);
+}
+
+/* ── The question row: these shapes, added up ────────────────────────────── */
+
+.sm-panel--sum {
+  gap: calc(2.4 * var(--u));
+  background: #ffffff;
+  box-shadow:
+    inset 0 calc(0.8 * var(--u)) 0 rgba(47, 53, 80, 0.06),
+    0 calc(1.2 * var(--u)) 0 rgba(40, 90, 60, 0.2);
+}
+
+.sm-sum-step {
+  display: flex;
+  align-items: center;
+  gap: calc(2.4 * var(--u));
+}
+
+.sm-part {
+  display: block;
+  width: calc(14 * var(--u));
+  height: calc(14 * var(--u));
+}
+
+.sm-sign {
+  color: rgba(47, 53, 80, 0.45);
+  font-size: calc(7 * var(--u));
+  line-height: 1;
+}
+
+/* ── The empty slot the answer goes into ──────────────────────────────────── */
+
+.sm-slot {
+  position: relative;
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+  padding: calc(1.4 * var(--u));
+  border: none;
+  border-radius: calc(3.4 * var(--u));
+  background: rgba(47, 53, 80, 0.06);
+  box-shadow: inset 0 0 0 calc(0.6 * var(--u)) rgba(47, 53, 80, 0.16);
+  cursor: pointer;
+}
+
+/* it is being aimed at: it opens up and glows */
+.sm-slot[data-near="yes"],
+.sm-slot[data-open="yes"] {
+  background: rgba(142, 68, 216, 0.16);
+  box-shadow:
+    inset 0 0 0 calc(0.6 * var(--u)) rgba(142, 68, 216, 0.5),
+    0 0 calc(3 * var(--u)) rgba(142, 68, 216, 0.45);
+}
+
+.sm-slot[data-near="yes"] {
+  animation: sm-breathe 0.9s ease-in-out infinite;
+}
+
+.sm-slot[data-filled="yes"] {
+  background: rgba(95, 203, 82, 0.16);
+  box-shadow: inset 0 0 0 calc(0.6 * var(--u)) rgba(95, 203, 82, 0.5);
+  cursor: default;
+}
+
+.sm-slot[data-bump="yes"],
+.sm-gap[data-bump="yes"] {
+  animation: sm-bump 0.44s ease;
+}
+
+.sm-slot:focus-visible,
+.sm-gap:focus-visible {
+  outline: calc(0.7 * var(--u)) solid var(--sm-grape);
+  outline-offset: calc(0.5 * var(--u));
+}
+
+@keyframes sm-bump {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.08);
+  }
+  60% {
+    transform: scale(0.97);
+  }
+}
+
+@keyframes sm-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+/* THE THREE PLACES INSIDE THE SLOT. A child can see before they choose that
+   three things go up there — which is the question the puzzle is asking. */
+
+.sm-slot-row {
+  position: absolute;
+  inset: calc(1.4 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(0.8 * var(--u));
+}
+
+.sm-slot-part {
+  display: block;
+  flex: 0 1 calc(6.8 * var(--u));
+  height: calc(6.8 * var(--u));
+}
+
+/* one of the three, still empty */
+.sm-slot-ghost {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(1.4 * var(--u));
+  border: calc(0.5 * var(--u)) dashed rgba(47, 53, 80, 0.26);
+}
+
+/* and the question over the top of them */
+.sm-slot-ask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(142, 68, 216, 0.5);
+  font-size: calc(13 * var(--u));
+  line-height: 1;
+  pointer-events: none;
+}
+
+.sm-slot-fill {
+  position: absolute;
+  inset: calc(1.4 * var(--u));
+}
+
+.sm-slot-tick {
+  position: absolute;
+  right: calc(-1 * var(--u));
+  bottom: calc(-1 * var(--u));
+  width: calc(7 * var(--u));
+  height: calc(7 * var(--u));
+}
+
+/* ── The four answers ─────────────────────────────────────────────────────── *
+ * Two rows of two, because four in a line makes each card — and every shape on
+ * it — half the size, and these have to be read at a glance from across a
+ * tablet. */
+
+.sm-cards {
+  display: grid;
+  grid-template-columns: repeat(2, var(--sm-card-w));
+  gap: calc(2.2 * var(--u));
+}
+
+.sm-card-answer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(1.4 * var(--u));
+  width: var(--sm-card-w);
+  height: var(--sm-card-h);
+  padding: calc(1.4 * var(--u));
+  border: calc(0.7 * var(--u)) solid #ffffff;
+  border-radius: calc(3.4 * var(--u));
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 calc(1 * var(--u)) 0 rgba(40, 90, 60, 0.2);
+  cursor: pointer;
+}
+
+/* it is in the child's hand: the space it left behind stays, empty */
+.sm-card-answer[data-carried="yes"] {
+  opacity: 0.2;
+}
+
+.sm-card-answer[data-used="yes"] {
+  opacity: 0.2;
+  pointer-events: none;
+  cursor: default;
+}
+
+.sm-card-answer:focus-visible {
+  outline: calc(0.7 * var(--u)) solid var(--sm-grape);
+  outline-offset: calc(0.5 * var(--u));
+}
+
+.sm-card-part {
+  display: block;
+  flex: 0 0 var(--sm-card-piece);
+  width: var(--sm-card-piece);
+  height: var(--sm-card-piece);
+  /* each piece goes out at the moment its flying copy sets off */
+  transition: opacity 0.09s linear var(--sm-delay, 0s);
+}
+
+.sm-card-part[data-gone="yes"] {
+  opacity: 0;
+}
+
+/* ── A shape, or a thing, in the tray ─────────────────────────────────────── */
+
+.sm-thing {
+  width: var(--sm-thing);
+  height: var(--sm-thing);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sm-thing[data-picked="yes"] {
+  filter: drop-shadow(0 0 calc(1.4 * var(--u)) rgba(255, 201, 60, 0.95));
+}
+
+.sm-thing[data-used="yes"] {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+/* it is in the child's hand: the space it left behind stays, empty */
+.sm-thing[data-carried="yes"] {
+  opacity: 0.2;
+}
+
+.sm-thing:focus-visible {
+  outline: calc(0.7 * var(--u)) solid var(--sm-grape);
+  outline-offset: calc(0.4 * var(--u));
+  border-radius: calc(2 * var(--u));
+}
+
+/* ── The thing under the finger, and the one on its way home ──────────────── *
+ * Both start where the finger is and are carried by a TRANSFORM, never by
+ * `left`/`top`: transforms are the path the animation library actually runs,
+ * and the landing itself is on a timer in `useCarry`, so a piece can never be
+ * left hanging in the air. */
+
+.sm-ghost,
+.sm-flight {
+  position: absolute;
+  left: var(--sm-x);
+  top: var(--sm-y);
+  width: calc(var(--sm-thing) * 1.2);
+  height: calc(var(--sm-thing) * 1.2);
+  /* centred on its point with margin: the transform belongs to the animation */
+  margin-left: calc(var(--sm-thing) * -0.6);
+  margin-top: calc(var(--sm-thing) * -0.6);
+  pointer-events: none;
+}
+
+/* a whole answer card, carried */
+.sm-ghost[data-card="yes"],
+.sm-flight[data-card="yes"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(1.4 * var(--u));
+  width: calc(var(--sm-card-w) * 1.06);
+  height: calc(var(--sm-card-h) * 1.06);
+  margin-left: calc(var(--sm-card-w) * -0.53);
+  margin-top: calc(var(--sm-card-h) * -0.53);
+  padding: calc(1.4 * var(--u));
+  border-radius: calc(3.4 * var(--u));
+  background: #ffffff;
+}
+
+/* one of its three pieces, on its way to the slot */
+.sm-ghost[data-part="yes"],
+.sm-flight[data-part="yes"] {
+  width: var(--sm-card-piece);
+  height: var(--sm-card-piece);
+  margin-left: calc(var(--sm-card-piece) * -0.5);
+  margin-top: calc(var(--sm-card-piece) * -0.5);
+}
+
+/* and a tall piece of a picture */
+.sm-ghost[data-strip="yes"],
+.sm-flight[data-strip="yes"] {
+  width: calc(var(--sm-strip-w) * 1.1);
+  height: calc(var(--sm-strip-h) * 1.1);
+  margin-left: calc(var(--sm-strip-w) * -0.55);
+  margin-top: calc(var(--sm-strip-h) * -0.55);
+}
+
+/* A THING IN THE HAND IS OFF THE TABLE: it is bigger than it was in the tray
+   and it casts a shadow onto the board, which is the whole difference between
+   dragging an object and sliding a picture around. */
+.sm-ghost {
+  filter: drop-shadow(0 calc(1.6 * var(--u)) calc(1.2 * var(--u)) rgba(30, 60, 40, 0.35));
+}
+
+.sm-ghost {
+  z-index: 40;
+}
+
+.sm-flight {
+  z-index: 41;
+}
+
+/* ── A picture ────────────────────────────────────────────────────────────── *
+ * One drawing serves three jobs — a card on the start screen, the board being
+ * played, and the big picture at the end — so everything inside it is placed
+ * in PERCENTAGES of its own box and nothing knows how big it is. */
+
+.sm-scene,
+.sm-card-picture,
+.sm-reward-frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.sm-scene {
+  height: var(--sm-scene-h);
+  border-radius: calc(3.4 * var(--u));
+  border: calc(0.9 * var(--u)) solid #ffffff;
+  box-shadow: 0 calc(1.4 * var(--u)) 0 rgba(40, 90, 60, 0.22);
+}
+
+.sm-scene[data-solved="yes"] {
+  box-shadow:
+    0 0 0 calc(0.8 * var(--u)) rgba(95, 203, 82, 0.55),
+    0 calc(1.4 * var(--u)) 0 rgba(40, 90, 60, 0.22);
+}
+
+.sm-scene-art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* --sm-paper, --sm-band and --sm-band-h come from the scene's own data */
+  background: var(--sm-paper);
+}
+
+.sm-scene-band {
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: 0;
+  height: var(--sm-band-h);
+  background: var(--sm-band);
+  border-radius: 50% 50% 0 0 / 22% 22% 0 0;
+}
+
+.sm-scene-thing,
+.sm-gap {
+  position: absolute;
+  left: var(--sm-x);
+  top: var(--sm-y);
+  width: var(--sm-w);
+  aspect-ratio: 1;
+  margin-left: calc(var(--sm-w) * -0.5);
+  margin-top: calc(var(--sm-w) * -0.5);
+}
+
+.sm-scene-thing svg,
+.sm-gap svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.sm-scene-tick {
+  position: absolute;
+  top: -12%;
+  right: -12%;
+  width: 40%;
+  height: 40%;
+}
+
+/* ── A gap in a picture ───────────────────────────────────────────────────── *
+ * The missing thing, drawn faint where it belongs. A three-year-old does not
+ * have to work out what a piece is a piece OF: they can see a sun, and they
+ * can see the sun-shaped gap. */
+
+.sm-gap {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sm-gap-ghost {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.26;
+  border-radius: 24%;
+  outline: calc(0.5 * var(--u)) dashed rgba(47, 53, 80, 0.45);
+  outline-offset: calc(0.6 * var(--u));
+}
+
+.sm-scene[data-night="yes"] .sm-gap-ghost {
+  opacity: 0.42;
+  outline-color: rgba(255, 255, 255, 0.7);
+}
+
+.sm-gap[data-open="yes"] .sm-gap-ghost {
+  opacity: 0.55;
+  outline-color: var(--sm-grape);
+  background: rgba(142, 68, 216, 0.16);
+}
+
+/* the thing being carried is near enough to go in: the gap opens up */
+.sm-gap[data-near="yes"] .sm-gap-ghost {
+  opacity: 0.7;
+  outline-color: var(--sm-grape);
+  background: rgba(142, 68, 216, 0.22);
+  box-shadow: 0 0 calc(3 * var(--u)) rgba(142, 68, 216, 0.5);
+}
+
+.sm-gap[data-near="yes"] {
+  animation: sm-breathe 0.9s ease-in-out infinite;
+}
+
+/* ── The jigsaw ──────────────────────────────────────────────────────────── *
+ * The picture standing in three tall pieces with one of them taken out. Each
+ * piece is a WINDOW onto the whole picture, three windows wide and slid along
+ * by one window per piece — so the three of them are one drawing cut up, not
+ * three drawings that happen to line up. */
+
+.sm-jigsaw {
+  position: relative;
+  display: flex;
+  gap: calc(1 * var(--u));
+  height: var(--sm-jig-h);
+  aspect-ratio: 3 / 2;
+  padding: calc(1 * var(--u));
+  border-radius: calc(3.4 * var(--u));
+  background: rgba(255, 255, 255, 0.94);
+  border: calc(0.7 * var(--u)) solid #ffffff;
+  box-shadow: 0 calc(1.2 * var(--u)) 0 rgba(40, 90, 60, 0.2);
+}
+
+.sm-strip {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+/* the piece that is missing */
+.sm-strip--gap {
+  background: rgba(47, 53, 80, 0.06);
+  border-radius: calc(1.8 * var(--u));
+  cursor: pointer;
+}
+
+.sm-strip--gap[data-open="yes"],
+.sm-strip--gap[data-near="yes"] {
+  background: rgba(142, 68, 216, 0.16);
+  box-shadow: 0 0 calc(3 * var(--u)) rgba(142, 68, 216, 0.45);
+}
+
+.sm-strip--gap[data-near="yes"] {
+  animation: sm-breathe 0.9s ease-in-out infinite;
+}
+
+.sm-strip--gap[data-bump="yes"] {
+  animation: sm-bump 0.44s ease;
+}
+
+.sm-strip--gap:focus-visible {
+  outline: calc(0.7 * var(--u)) solid var(--sm-grape);
+  outline-offset: calc(0.5 * var(--u));
+}
+
+.sm-strip-mark {
+  position: absolute;
+  inset: calc(0.8 * var(--u));
+  border-radius: calc(1.4 * var(--u));
+  border: calc(0.6 * var(--u)) dashed rgba(47, 53, 80, 0.3);
+}
+
+/* ONE PIECE OF THE PICTURE, LOOSE. It is framed and it casts a shadow, which
+   is what stops three pieces standing side by side from reading as one
+   picture again instead of as three things to pick up. */
+.sm-strip-choice {
+  position: relative;
+  width: var(--sm-strip-w);
+  height: var(--sm-strip-h);
+  padding: calc(0.7 * var(--u));
+  border: none;
+  border-radius: calc(2 * var(--u));
+  background: #ffffff;
+  box-shadow: 0 calc(0.8 * var(--u)) 0 rgba(40, 90, 60, 0.22);
+  cursor: pointer;
+}
+
+.sm-strip-choice[data-picked="yes"] {
+  filter: drop-shadow(0 0 calc(1.4 * var(--u)) rgba(255, 201, 60, 0.95));
+}
+
+.sm-strip-choice[data-carried="yes"] {
+  opacity: 0.2;
+}
+
+.sm-strip-choice[data-used="yes"] {
+  opacity: 0.18;
+  pointer-events: none;
+  cursor: default;
+}
+
+.sm-strip-choice:focus-visible {
+  outline: calc(0.7 * var(--u)) solid var(--sm-grape);
+  outline-offset: calc(0.4 * var(--u));
+  border-radius: calc(1.8 * var(--u));
+}
+
+/* THE WINDOW, and the picture behind it. The picture is as wide as all the
+   pieces put together and slides sideways by exactly one window per piece,
+   so a piece shows its own third of it and nothing else. */
+.sm-strip-window {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: calc(1.4 * var(--u));
+}
+
+/* only a loose piece is inset — the ones still in the picture butt together */
+.sm-strip-choice .sm-strip-window {
+  inset: calc(0.7 * var(--u));
+}
+
+.sm-strip-inner {
+  position: absolute;
+  top: 0;
+  left: calc(var(--sm-col) * -100%);
+  width: calc(var(--sm-cols) * 100%);
+  height: 100%;
+}
+
+/* ── The visitors ─────────────────────────────────────────────────────────── *
+ * They stand in the open meadow — no panel, no frame. Sized in `u` and placed
+ * in percentages, so a rabbit that comes in from the left edge is the same
+ * rabbit at the same size whatever the screen is doing. */
+
+.sm-visitor {
+  position: absolute;
+  left: var(--sm-x);
+  top: var(--sm-y);
+  width: calc(var(--sm-w) * var(--u));
+  height: calc(var(--sm-w) * var(--u));
+  margin-left: calc(var(--sm-w) * var(--u) * -0.5);
+  margin-top: calc(var(--sm-w) * var(--u) * -0.5);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 calc(1 * var(--u)) calc(0.8 * var(--u)) rgba(30, 60, 40, 0.28));
+}
+
+/* Where each one comes to rest: clear of the banner along the top and clear
+   of Leo in the bottom-left corner, which is all the room this screen has. */
+.sm-visitor[data-edge="left"] {
+  /* clear of Leo, who is placed from the CENTRE and so drifts right of any
+     percentage as the screen gets wider */
+  --sm-x: 38%;
+  --sm-y: 58%;
+  --sm-w: 24;
+}
+.sm-visitor[data-edge="right"] {
+  --sm-x: 86%;
+  --sm-y: 40%;
+  --sm-w: 22;
+}
+.sm-visitor[data-edge="bottom"] {
+  --sm-x: 68%;
+  --sm-y: 86%;
+  --sm-w: 26;
+}
+.sm-visitor[data-edge="top"] {
+  --sm-x: 44%;
+  --sm-y: 30%;
+  --sm-w: 20;
+}
+
+.sm-visitor svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.sm-visitor:focus-visible {
+  outline: calc(0.7 * var(--u)) solid var(--sm-grape);
+  outline-offset: calc(0.6 * var(--u));
+  border-radius: 24%;
+}
+
+/** How many friends are still to meet, as dots rather than a number. */
+.sm-hellos {
+  position: absolute;
+  bottom: calc(3 * var(--u));
+  left: 50%;
+  display: flex;
+  gap: calc(2 * var(--u));
+  margin-left: calc(-8 * var(--u));
+}
+
+.sm-hello {
+  width: calc(3 * var(--u));
+  height: calc(3 * var(--u));
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: inset 0 0 0 calc(0.4 * var(--u)) rgba(47, 53, 80, 0.15);
+}
+
+.sm-hello[data-met="yes"] {
+  background: #ffc93c;
+  box-shadow: inset 0 0 0 calc(0.4 * var(--u)) rgba(217, 154, 17, 0.6);
+}
+
+/* ── The start screen: eight pictures to choose from ──────────────────────── */
+
+.sm-title {
+  max-width: calc(120 * var(--u));
+  color: #ffffff;
+  font-size: calc(10 * var(--u));
+  line-height: 1;
+  text-align: center;
+  text-shadow:
+    0 calc(0.8 * var(--u)) 0 #8e44d8,
+    0 calc(1.8 * var(--u)) 0 rgba(60, 20, 100, 0.35);
+}
+
+.sm-picker {
+  display: grid;
+  grid-template-columns: repeat(4, var(--sm-card));
+  gap: calc(3 * var(--u));
+  justify-content: center;
+}
+
+.sm-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(1 * var(--u));
+  width: var(--sm-card);
+  padding: calc(1 * var(--u)) calc(1 * var(--u)) calc(1.4 * var(--u));
+  border: none;
+  border-radius: calc(2.6 * var(--u));
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 calc(1.2 * var(--u)) 0 rgba(40, 90, 60, 0.25);
+  cursor: pointer;
+}
+
+.sm-card:focus-visible {
+  outline: calc(0.8 * var(--u)) solid var(--sm-grape);
+  outline-offset: calc(0.6 * var(--u));
+}
+
+.sm-card-picture {
+  width: 100%;
+  border-radius: calc(1.8 * var(--u));
+}
+
+.sm-card-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.sm-card-name {
+  color: var(--sm-ink);
+  font-size: calc(3.2 * var(--u));
+  line-height: 1.1;
+  text-align: center;
+}
+
+.sm-card-tick {
+  position: absolute;
+  top: calc(-1.6 * var(--u));
+  right: calc(-1.6 * var(--u));
+  width: calc(7 * var(--u));
+  height: calc(7 * var(--u));
+}
+
+.sm-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(3 * var(--u));
+  flex-wrap: wrap;
+}
+
+/* ── Leo ──────────────────────────────────────────────────────────────────── */
+
+.sm-leo {
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-86 * var(--u));
+  bottom: calc(8 * var(--u));
+  width: calc(36 * var(--u));
+  height: calc(54 * var(--u));
+  pointer-events: none;
+  z-index: 6;
+}
+
+.sm-leo-figure {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The arms SWING from the shoulder and the head tilts on the neck, so both
+   need their pivot stated in the drawing's own coordinates. */
+.sm-leo-arm {
+  transform-box: view-box;
+}
+
+.sm-leo-arm--left {
+  transform-origin: 32px 88px;
+}
+
+.sm-leo-arm--right {
+  transform-origin: 68px 88px;
+}
+
+.sm-leo-head {
+  transform-box: view-box;
+  transform-origin: 50px 62px;
+}
+
+.sm-leo-shadow {
+  position: absolute;
+  bottom: calc(-1.4 * var(--u));
+  left: 22%;
+  width: 56%;
+  height: calc(2.6 * var(--u));
+  border-radius: 50%;
+  background: rgba(40, 90, 40, 0.25);
+}
+
+/* The bubble sits OVER Leo's head, inside his own column — hanging it off his
+   inner side put it across the board on a five-hole round. */
+.sm-leo-says {
+  position: absolute;
+  top: calc(-9 * var(--u));
+  left: 0;
+  width: calc(34 * var(--u));
+  padding: calc(1.6 * var(--u)) calc(2.4 * var(--u));
+  border-radius: calc(3.2 * var(--u));
+  background: #ffffff;
+  border: calc(0.6 * var(--u)) solid #cfeaff;
+  box-shadow: 0 calc(0.8 * var(--u)) 0 rgba(40, 90, 60, 0.2);
+  color: var(--sm-ink);
+  font-size: calc(4 * var(--u));
+  line-height: 1.15;
+  text-align: center;
+  z-index: 2;
+}
+
+/* ── The party at the end of a module ─────────────────────────────────────── */
+
+.sm-reward {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(3.4 * var(--u));
+  overflow: hidden;
+  background:
+    radial-gradient(60% 50% at 50% 34%, rgba(255, 190, 255, 0.55), transparent 70%),
+    linear-gradient(180deg, #7b2bc4 0%, #9c28c8 45%, #c72fb0 100%);
+}
+
+.sm-orb {
+  position: absolute;
+  left: var(--sm-x);
+  top: var(--sm-y);
+  width: var(--sm-w);
+  aspect-ratio: 1;
+  margin-left: calc(var(--sm-w) * -0.5);
+  margin-top: calc(var(--sm-w) * -0.5);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 236, 160, 0.9) 0%, rgba(255, 120, 220, 0) 70%);
+  pointer-events: none;
+}
+
+.sm-reward-title {
+  color: #ffffff;
+  font-size: calc(8.4 * var(--u));
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 calc(0.9 * var(--u)) 0 rgba(70, 10, 90, 0.5);
+  z-index: 2;
+}
+
+.sm-reward-frame {
+  width: calc(62 * var(--u));
+  border-radius: calc(3 * var(--u));
+  border: calc(1.2 * var(--u)) solid #ffffff;
+  box-shadow: 0 calc(1.6 * var(--u)) 0 rgba(70, 10, 90, 0.45);
+  z-index: 2;
+}
+
+/** A light sweeping across the finished picture when it lands: the one thing
+ *  on this screen that says "look at THIS" rather than "look at everything".
+ *  It lives inside the frame, which clips it. */
+.sm-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 62%
+  );
+  background-size: 260% 100%;
+  animation: sm-shine 1.1s ease-out 1 both;
+}
+
+@keyframes sm-shine {
+  from {
+    background-position: 180% 0;
+  }
+  to {
+    background-position: -80% 0;
+  }
+}
+
+.sm-reward .sm-buttons {
+  z-index: 3;
+}
+
+/* The five places a friend can stand. In CSS rather than in the component,
+   because where they fit depends on the SHAPE of the screen: the party has a
+   picture in the middle of it and Leo in the bottom-left corner, and both of
+   those move when the screen turns. */
+/* A guest is a BUTTON now: poke one and it jumps and throws sparkle. It
+   carries no chrome of its own — the animal is the whole control. */
+.sm-guest {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  width: var(--sm-w);
+  aspect-ratio: 1;
+  margin-left: calc(var(--sm-w) * -0.5);
+  margin-top: calc(var(--sm-w) * -0.5);
+}
+
+.sm-guest[data-spot="1"] {
+  --sm-w: calc(15 * var(--u));
+  left: 88%;
+  top: 18%;
+}
+.sm-guest[data-spot="2"] {
+  --sm-w: calc(13 * var(--u));
+  left: 94%;
+  top: 48%;
+}
+.sm-guest[data-spot="3"] {
+  --sm-w: calc(14 * var(--u));
+  left: 86%;
+  top: 78%;
+}
+.sm-guest[data-spot="4"] {
+  --sm-w: calc(12 * var(--u));
+  left: 74%;
+  top: 93%;
+}
+.sm-guest:focus-visible {
+  outline: calc(0.7 * var(--u)) solid #ffffff;
+  outline-offset: calc(0.6 * var(--u));
+  border-radius: 50%;
+}
+
+.sm-guest svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── PORTRAIT ─────────────────────────────────────────────────────────────── *
+ * Taller than it is wide: Leo cannot have a column of his own, so he stands on
+ * the grass BELOW the board and the whole composition is re-proportioned
+ * around a narrower unit. Same sizes, different `--u`. */
+
+@container (max-aspect-ratio: 1 / 1) {
+  .sm-stage {
+    --u: min(1cqh, 1.5cqw);
+    /* small enough that even six pieces stay on ONE line: a second line of
+       anything and the board, the tray and Leo no longer fit the height */
+    --sm-thing: calc(11 * var(--u));
+    --sm-scene-h: calc(32 * var(--u));
+    --sm-card: calc(14.5 * var(--u));
+    --sm-card-w: calc(26 * var(--u));
+    --sm-card-h: calc(11.5 * var(--u));
+    --sm-card-piece: calc(6.5 * var(--u));
+    --sm-jig-h: calc(26 * var(--u));
+    --sm-strip-h: calc(17 * var(--u));
+    --sm-gap-size: calc(2.6 * var(--u));
+  }
+
+  .sm-board,
+  .sm-screen {
+    /* the top inset clears the back pill; the bottom is Leo's ground */
+    padding: max(calc(3 * var(--u)), 76px) calc(2 * var(--u)) calc(34 * var(--u));
+    justify-content: flex-start;
+  }
+
+  /* the start screen carries eight pictures, so it takes its slack from Leo */
+  .sm-screen {
+    padding-bottom: calc(31 * var(--u));
+  }
+
+  .sm-banner,
+  .sm-panel,
+  .sm-title {
+    max-width: calc(64 * var(--u));
+  }
+
+  .sm-banner {
+    padding: calc(1.2 * var(--u)) calc(3 * var(--u));
+    font-size: calc(3.4 * var(--u));
+  }
+
+  .sm-panel {
+    gap: calc(1.8 * var(--u));
+    padding: calc(2 * var(--u)) calc(2.4 * var(--u));
+  }
+
+  .sm-title {
+    font-size: calc(6.4 * var(--u));
+  }
+
+  .sm-picker {
+    /* four to a row and two rows: three rows of three ran into Leo */
+    grid-template-columns: repeat(4, var(--sm-card));
+    gap: calc(2 * var(--u));
+  }
+
+  .sm-card-name {
+    font-size: calc(2.6 * var(--u));
+  }
+
+  /* a tall screen has one free band — between the banner and Leo — so the
+     visitors gather there, smaller */
+  .sm-visitor[data-edge="left"] {
+    --sm-x: 24%;
+    --sm-y: 32%;
+    --sm-w: 16;
+  }
+  .sm-visitor[data-edge="right"] {
+    --sm-x: 76%;
+    --sm-y: 32%;
+    --sm-w: 16;
+  }
+  .sm-visitor[data-edge="bottom"] {
+    --sm-x: 68%;
+    --sm-y: 54%;
+    --sm-w: 16;
+  }
+  .sm-visitor[data-edge="top"] {
+    --sm-x: 28%;
+    --sm-y: 54%;
+    --sm-w: 16;
+  }
+
+  .sm-part {
+    width: calc(8 * var(--u));
+    height: calc(8 * var(--u));
+  }
+
+  .sm-sign {
+    font-size: calc(4.6 * var(--u));
+  }
+
+  .sm-slot {
+    width: calc(17 * var(--u));
+    height: calc(17 * var(--u));
+  }
+
+  /* THE EQUATION MUST STAY ON ONE LINE. A tall screen is barely wider than
+     the sum is long, and three shapes, two plus signs, an equals and the slot
+     wrapping onto a second line stops being a sentence a child can read. */
+  .sm-panel--sum,
+  .sm-sum-step {
+    gap: calc(1.2 * var(--u));
+  }
+
+  .sm-panel--sum {
+    flex-wrap: nowrap;
+    padding: calc(2 * var(--u)) calc(2.4 * var(--u));
+  }
+
+  .sm-board[data-kind="combine"] .sm-slot {
+    width: calc(15 * var(--u));
+    height: calc(15 * var(--u));
+  }
+
+  .sm-slot-part {
+    flex-basis: calc(3.4 * var(--u));
+    height: calc(3.4 * var(--u));
+  }
+
+  .sm-slot-row {
+    gap: calc(0.6 * var(--u));
+  }
+
+  .sm-slot-ask {
+    font-size: calc(8 * var(--u));
+  }
+
+  .sm-slot-tick {
+    width: calc(5 * var(--u));
+    height: calc(5 * var(--u));
+  }
+
+  .sm-cards {
+    gap: calc(1.6 * var(--u));
+  }
+
+  .sm-card-answer {
+    gap: calc(1 * var(--u));
+    padding: calc(1 * var(--u));
+    border-radius: calc(2.4 * var(--u));
+  }
+
+  .sm-ghost[data-card="yes"],
+  .sm-flight[data-card="yes"] {
+    gap: calc(1 * var(--u));
+    padding: calc(1 * var(--u));
+    border-radius: calc(2.4 * var(--u));
+  }
+
+  .sm-leo {
+    margin-left: calc(-32 * var(--u));
+    bottom: calc(2 * var(--u));
+    width: calc(20 * var(--u));
+    height: calc(29 * var(--u));
+  }
+
+  /* A tall screen has no band for a speech bubble: it lands on the tray, on
+     the buttons, or on the picture, whichever way it is turned. Leo still
+     cheers, jumps and waves — he just does it quietly, and the praise is
+     spoken aloud anyway. */
+  .sm-leo-says {
+    display: none;
+  }
+
+  /* the party: a narrower picture, lifted clear of Leo, and one friend fewer
+     because a tall screen has fewer corners to stand in */
+  .sm-reward {
+    justify-content: flex-start;
+    padding: calc(12 * var(--u)) calc(3 * var(--u)) calc(34 * var(--u));
+    gap: calc(2.6 * var(--u));
+  }
+
+  .sm-reward-frame {
+    width: calc(50 * var(--u));
+  }
+
+  .sm-reward-title {
+    max-width: calc(40 * var(--u));
+    font-size: calc(6 * var(--u));
+  }
+
+  /* A tall screen has only two free bands — the strip between the back pill
+     and the title, and everything below the picture that is not Leo's. */
+  .sm-guest[data-spot="1"] {
+    --sm-w: calc(11 * var(--u));
+    left: 91%;
+    top: 7%;
+  }
+  .sm-guest[data-spot="2"] {
+    --sm-w: calc(11 * var(--u));
+    left: 88%;
+    top: 79%;
+  }
+  .sm-guest[data-spot="3"] {
+    --sm-w: calc(12 * var(--u));
+    left: 44%;
+    top: 92%;
+  }
+  .sm-guest[data-spot="4"] {
+    --sm-w: calc(11 * var(--u));
+    left: 66%;
+    top: 92%;
+  }
+}
+
+/* ── The Library card ─────────────────────────────────────────────────────── *
+ * The portal card's diorama, built from this game's own art. Sized in % of the
+ * card, never in `u` — the card is not the game's canvas. */
+
+.smicon-sky {
+  background: linear-gradient(180deg, #58c2f5 0%, #8fdbfa 52%, #b6ebfd 100%);
+}
+
+.smicon-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  background: linear-gradient(180deg, #8ee06a 0%, #5fc244 100%);
+}
+
+.smicon-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8%;
+  width: 100%;
+  padding: 7% 6%;
+  border-radius: 18%;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 3px 0 rgba(40, 90, 60, 0.2);
+}
+
+.smicon-slot {
+  width: 26%;
+  aspect-ratio: 1;
+}
+
+.smicon-banner {
+  display: block;
+  width: 100%;
+  padding: 6% 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #c06ff0 0%, #9a4ce0 100%);
+}
+
+/* the art fills its box, so on the card every box states its own shape */
+.smicon-piece {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.smicon-leo {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+}

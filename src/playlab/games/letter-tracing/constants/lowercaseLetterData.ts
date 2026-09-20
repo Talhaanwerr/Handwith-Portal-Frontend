@@ -384,7 +384,7 @@ export const LOWERCASE_LETTER_DATA: LetterDefinition[] = [
   },
   {
     letter: "p",
-    phonetic: "P — puh as in pig",
+    phonetic: "P — puh as in penguin",
     strokes: [
       { id: "p-s1", points: pS1, pathData: pS1p },
       { id: "p-s2", points: pS2, pathData: pS2p },

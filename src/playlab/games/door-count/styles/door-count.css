@@ -1,0 +1,979 @@
+/**
+ * Key Quest — a school corridor that fills the screen.
+ *
+ * HOW THIS STAYS RESPONSIVE WITHOUT A SINGLE BREAKPOINT.
+ *
+ * The corridor is full-bleed: wall, floor and light cover the whole viewport
+ * whatever its shape. What keeps the composition honest is ONE DESIGN UNIT:
+ *
+ *     --u: min(1cqh, 0.5625cqw)
+ *
+ * 1u is 1% of the height of the largest 16:9 box that fits the screen. On a
+ * 16:9 screen it is exactly 1% of the height; on anything wider the height
+ * still governs and the extra width simply becomes more corridor; on anything
+ * taller the width governs and the whole scene scales down together. Every
+ * size and every horizontal offset is a multiple of u measured from the
+ * CENTRE, so the doors, the teacher, the key board and the knobs hold their
+ * relationship to each other at every aspect ratio there is. Only the floor
+ * line is a percentage, because the floor really should reach the bottom of
+ * the screen.
+ *
+ * The vertical budget, in u, on a 16:9 screen:
+ *
+ *      2 ── 14   the question sign
+ *     16 ── 74   the doors: a 9u number plate, then a 48u door
+ *     74 ──      the floor: knobs at 76, and the teacher standing on it
+ */
+
+/* ── The stage ───────────────────────────────────────────────────────────── */
+
+.dc-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  background: #c3a173;
+}
+
+/** Full-bleed: the corridor IS the screen. */
+.dc-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Everything lives inside the stage, because a container query cannot style
+   the container it is asking about — so the shape of the screen is asked of
+   `.dc-canvas` and answered here, on the box inside it. */
+.dc-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* THE design unit — see the note at the top of this file */
+  --u: min(1cqh, 0.5625cqw);
+  /* where the wall meets the floor */
+  --dc-floor: 74%;
+}
+
+/** One screen of the game (splash, the doors, the end). */
+.dc-screen-wrap,
+.dc-slide,
+.dc-screen,
+.dc-level {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── The corridor ─────────────────────────────────────────────────────────
+   Wall, dado, skirting and floor in one gradient, with a pool of warm light
+   where the child is looking. The floorboards are a ::before so they paint
+   BEHIND the doors rather than over them. */
+
+.dc-level,
+.dc-scene {
+  background:
+    radial-gradient(64% 30% at 50% 88%, rgba(255, 246, 219, 0.55), transparent 72%),
+    linear-gradient(
+      #f3ecdb 0 34%,
+      #ebe0c8 34% 58%,
+      #d8c9a8 58% 60%,
+      #e4d7ba 60% calc(var(--dc-floor) - 2 * var(--u)),
+      #8a6a3a calc(var(--dc-floor) - 2 * var(--u)) var(--dc-floor),
+      #c9a878 var(--dc-floor) 100%
+    );
+}
+.dc-level::before,
+.dc-scene::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--dc-floor);
+  bottom: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 calc(16 * var(--u)),
+    rgba(90, 60, 20, 0.09) calc(16 * var(--u)) calc(16.8 * var(--u))
+  );
+}
+.dc-scene--final {
+  background:
+    radial-gradient(58% 46% at 50% 40%, #ffe9a8 0 60%, transparent 61%),
+    linear-gradient(
+      #f6dc9a 0 58%,
+      #eccf86 58% calc(var(--dc-floor) - 2 * var(--u)),
+      #8a6a3a calc(var(--dc-floor) - 2 * var(--u)) var(--dc-floor),
+      #c9a878 var(--dc-floor) 100%
+    );
+}
+
+/** Any SVG in this game fills the box its parent gives it. */
+.dc-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/** Dust drifting through the corridor light — it is never quite still. */
+.dc-mote {
+  position: absolute;
+  width: calc(var(--pl-scale, 1) * 0.9 * var(--u));
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 248, 224, 0.9);
+  pointer-events: none;
+}
+
+/* ── The question sign ───────────────────────────────────────────────────── */
+
+.dc-sign {
+  position: absolute;
+  left: 50%;
+  /* HUNG BY ITS BOTTOM EDGE, a little above the tallest row of doors — never
+     pinned to the ceiling, which would leave a wall of nothing between the
+     sign and the doors on a tall screen.
+     Measuring from the bottom is what makes a long question safe: "Which
+     door has MORE apples?" wraps to two lines on a phone, and a sign fixed
+     by its top grows DOWN over the doors. This one grows up into the empty
+     wall instead. */
+  bottom: calc(100% - var(--dc-floor) + 52 * var(--u));
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 340px of gutter is what keeps the sign clear of the back pill, which is
+     sized in fixed pixels and so takes a bigger share of a small screen */
+  width: min(calc(100% - 340px), calc(112 * var(--u)));
+  min-height: calc(12 * var(--u));
+  padding: calc(1.2 * var(--u)) calc(3.4 * var(--u));
+  margin-left: calc(-1 * min(calc(50% - 170px), calc(56 * var(--u))));
+  border: calc(0.8 * var(--u)) solid #6b4a1e;
+  border-radius: calc(2 * var(--u));
+  background: linear-gradient(#a8763c, #8a5a2e);
+  box-shadow:
+    inset 0 calc(0.6 * var(--u)) 0 rgba(255, 255, 255, 0.18),
+    0 calc(1.4 * var(--u)) calc(2.6 * var(--u)) rgba(60, 40, 10, 0.28);
+}
+/* the two cords it hangs from */
+.dc-sign-rope {
+  position: absolute;
+  top: calc(-2 * var(--u));
+  width: calc(0.5 * var(--u));
+  height: calc(2 * var(--u));
+  background: #6b4a1e;
+}
+.dc-sign-rope--l {
+  left: 16%;
+}
+.dc-sign-rope--r {
+  right: 16%;
+}
+.dc-sign-text {
+  margin: 0;
+  font-size: calc(4.6 * var(--u));
+  line-height: 1.12;
+  text-align: center;
+  text-wrap: balance;
+  color: #fff7e4;
+  text-shadow: 0 calc(0.3 * var(--u)) 0 rgba(0, 0, 0, 0.25);
+}
+/** The word the whole question turns on. */
+.dc-sign-big {
+  font-size: calc(6.8 * var(--u));
+  letter-spacing: 0.02em;
+}
+.dc-sign-big[data-word="more"] {
+  color: #8ced9b;
+}
+.dc-sign-big[data-word="less"] {
+  color: #ffc46a;
+}
+/** The number a counting level asks for, and the gap a comparing level asks
+ *  the child to fill. */
+.dc-sign-big[data-word="count"] {
+  color: #ffd76a;
+}
+/** The number a counting level asks for, and the gap a comparing level asks
+ *  the child to fill. */
+.dc-sign-big[data-word="count"] {
+  color: #ffd76a;
+}
+
+.dc-sign--title {
+  min-height: calc(14 * var(--u));
+}
+/* The home screen's doors are the corridor's doors plus a name plate, a line
+   of blurb and a row of keys, so the slot stands 56u tall — the title sign
+   hangs higher to clear it, its top just under the ceiling. */
+.dc-home .dc-sign {
+  bottom: calc(100% - var(--dc-floor) + 58 * var(--u));
+}
+.dc-title {
+  margin: 0;
+  font-size: calc(8 * var(--u));
+  line-height: 1.05;
+  text-align: center;
+  color: #fff7e4;
+  text-shadow: 0 calc(0.5 * var(--u)) 0 rgba(0, 0, 0, 0.28);
+}
+
+/* ── The doors ────────────────────────────────────────────────────────────
+   The row stands ON the floor line and is centred, so it keeps its place at
+   any aspect ratio. Taller rows hold fewer doors: the height comes down as
+   the count goes up, so five doors take no more width than three. */
+
+.dc-doors {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% - var(--dc-floor));
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: calc(5 * var(--u));
+  --dc-door-h: calc(48 * var(--u));
+  --dc-door-w: calc(var(--dc-door-h) * 0.52);
+}
+.dc-doors[data-n="4"] {
+  gap: calc(3.5 * var(--u));
+  --dc-door-h: calc(44 * var(--u));
+}
+.dc-doors[data-n="5"] {
+  gap: calc(2.5 * var(--u));
+  --dc-door-h: calc(39 * var(--u));
+}
+
+.dc-door-slot {
+  display: flex;
+  align-items: flex-end;
+}
+.dc-door {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(1 * var(--u));
+}
+
+/** An open door throws a wedge of warm light across the floor in front of
+ *  it. Painted below the door, so it lies on the floor, not on the wall. */
+.dc-door[data-open="yes"]::after {
+  content: "";
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  top: 100%;
+  height: calc(15 * var(--u));
+  clip-path: polygon(32% 0, 68% 0, 100% 100%, 0 100%);
+  background: linear-gradient(rgba(255, 238, 186, 0.6), rgba(255, 238, 186, 0));
+  pointer-events: none;
+  animation: dc-spill 0.7s ease-out both;
+}
+@keyframes dc-spill {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/** The plate on the wall above a door. Only the home screen's doors carry
+ *  one: in the corridor, the things behind the door are the only numbers. */
+.dc-door-plate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(9 * var(--u));
+  height: calc(9 * var(--u));
+  padding: 0 calc(1.4 * var(--u));
+  border: calc(0.4 * var(--u)) solid #f2e8cf;
+  border-radius: calc(1.2 * var(--u));
+  background: #2e3a4a;
+  font-size: calc(5.2 * var(--u));
+  line-height: 1;
+  color: #ffffff;
+  /* it flips down into place on the hook above it */
+  transform-origin: top center;
+  box-shadow:
+    inset 0 calc(-0.5 * var(--u)) 0 rgba(0, 0, 0, 0.28),
+    0 calc(0.5 * var(--u)) calc(1 * var(--u)) rgba(0, 0, 0, 0.22);
+}
+
+/** The architrave. Its border IS the frame, so the doorway and the leaf sit
+ *  inside it at inset 0, and the leaf is clipped by it as it swings. */
+.dc-door-frame {
+  position: relative;
+  width: var(--dc-door-w);
+  height: var(--dc-door-h);
+  overflow: hidden;
+  border: calc(1.3 * var(--u)) solid var(--dc-frame, #d9d3c4);
+  border-radius: calc(0.8 * var(--u)) calc(0.8 * var(--u)) 0 0;
+  perspective: calc(60 * var(--u));
+  box-shadow: 0 calc(1 * var(--u)) calc(2 * var(--u)) rgba(60, 40, 10, 0.22);
+  transition: box-shadow 0.3s ease;
+}
+/** The door that turned out to be the answer. */
+.dc-door[data-won="yes"] .dc-door-frame {
+  box-shadow:
+    0 0 0 calc(0.9 * var(--u)) #2fc48f,
+    0 0 calc(6 * var(--u)) rgba(47, 196, 143, 0.55);
+}
+
+/** Behind the door: a dark room with whatever is in it. */
+.dc-door-room {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  overflow: hidden;
+  /* a room with its own lit floor, not a black hole in the wall */
+  background:
+    linear-gradient(
+      transparent 0 70%,
+      rgba(255, 226, 176, 0.16) 70%,
+      rgba(255, 226, 176, 0.24) 100%
+    ),
+    linear-gradient(#3d3122, #574734 45%, #6b5842);
+  box-shadow: inset 0 calc(1 * var(--u)) calc(2.4 * var(--u)) rgba(0, 0, 0, 0.5);
+}
+/** What is inside, in a grid a child can count: one column up to three, two
+ *  columns above that, and a fifth item centred under the other four. */
+.dc-door-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: calc(1.1 * var(--u));
+  justify-items: center;
+  padding: calc(1.4 * var(--u));
+  --dc-item: calc(var(--dc-door-h) * 0.25);
+}
+.dc-door-items[data-n="4"],
+.dc-door-items[data-n="5"] {
+  grid-template-columns: 1fr 1fr;
+  --dc-item: calc(var(--dc-door-h) * 0.19);
+}
+.dc-door-items[data-n="5"] .dc-door-item:last-child {
+  grid-column: 1 / -1;
+}
+.dc-door-item {
+  width: var(--dc-item);
+  aspect-ratio: 1;
+}
+
+/** The leaf swings on its hinge — the only moving part of a door. Framer
+ *  owns its transform; the hinge is this transform-origin. */
+.dc-door-leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+.dc-leaf {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.dc-leaf-body {
+  fill: var(--dc-leaf, #3fa33a);
+}
+.dc-leaf-panel {
+  fill: var(--dc-panel, #2e8a2a);
+}
+.dc-leaf-inlay {
+  fill: rgba(255, 255, 255, 0.1);
+}
+.dc-leaf-lit {
+  fill: rgba(255, 255, 255, 0.22);
+}
+.dc-leaf-shade {
+  fill: rgba(0, 0, 0, 0.22);
+}
+.dc-leaf-knob {
+  fill: #e8b33d;
+}
+.dc-leaf-knob-shine {
+  fill: #fbe09a;
+}
+
+/* ── The teacher ──────────────────────────────────────────────────────────
+   A real photograph of a person STANDING IN THE CORRIDOR, not a portrait
+   pinned to the wall. The file is a cartoon on white, so `multiply` drops the
+   white against the corridor behind it and leaves the figure — no cut-out
+   asset to generate, and nothing to redo if the photo is ever replaced.
+
+   For that blend to reach the corridor, nothing between this element and the
+   canvas may create a stacking context: no z-index here, no transform on the
+   wrapper (the IMAGE is what Framer animates), no opacity, no filter. Paint
+   order puts him in front of the doors anyway, because he is mounted after
+   them. The white margins of the photo are invisible for the same reason the
+   background is, so this box may overlap the doors: only the figure shows. */
+
+.dc-teacher {
+  position: absolute;
+  right: calc(50% + 46 * var(--u));
+  bottom: calc(100% - var(--dc-floor) - 2 * var(--u));
+  width: calc(44 * var(--u));
+  height: calc(44 * var(--u));
+  pointer-events: none;
+}
+.dc-teacher-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+/** The shadow he stands in, so he is ON the floor and not floating over it. */
+.dc-teacher-shadow {
+  position: absolute;
+  left: 20%;
+  bottom: calc(2 * var(--u));
+  width: 48%;
+  height: calc(2.4 * var(--u));
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 60, 20, 0.38), transparent 70%);
+}
+.dc-teacher-says {
+  position: absolute;
+  left: 42%;
+  bottom: 88%;
+  z-index: 1;
+  padding: calc(0.8 * var(--u)) calc(2 * var(--u));
+  translate: -50% 0;
+  white-space: nowrap;
+  border-radius: calc(2 * var(--u));
+  background: #ffffff;
+  font-size: calc(4 * var(--u));
+  line-height: 1.1;
+  color: #2f8f4f;
+  box-shadow: 0 calc(0.8 * var(--u)) calc(1.6 * var(--u)) rgba(60, 40, 10, 0.25);
+}
+.dc-teacher-says::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1.4 * var(--u));
+  width: 0;
+  height: 0;
+  margin-left: calc(-1.2 * var(--u));
+  border-left: calc(1.2 * var(--u)) solid transparent;
+  border-right: calc(1.2 * var(--u)) solid transparent;
+  border-top: calc(1.6 * var(--u)) solid #ffffff;
+}
+
+/* ── The vault: progress, on the wall ─────────────────────────────────────
+   A steel door set into the corridor wall that swings open to swallow a key
+   and clangs shut on it, with a lamp on the face for each key inside. It
+   stands where the widest row of doors ends: five doors reach 56u from the
+   centre, so the vault starts at 57u. */
+
+.dc-vault {
+  position: absolute;
+  left: calc(50% + 57 * var(--u));
+  top: calc(var(--dc-floor) - 48 * var(--u));
+  z-index: 5;
+  width: calc(30 * var(--u));
+  padding: calc(1.6 * var(--u));
+  border: calc(0.8 * var(--u)) solid #5c6472;
+  border-radius: calc(1.6 * var(--u));
+  background: linear-gradient(#7f8a99, #5f6a78);
+  box-shadow:
+    inset 0 calc(0.5 * var(--u)) 0 rgba(255, 255, 255, 0.25),
+    0 calc(1 * var(--u)) calc(2 * var(--u)) rgba(30, 40, 55, 0.35);
+  transition:
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+/** A key has just gone in. */
+.dc-vault[data-flash="yes"] {
+  background: linear-gradient(#a9b6c6, #7d8a99);
+  box-shadow:
+    inset 0 calc(0.5 * var(--u)) 0 rgba(255, 255, 255, 0.4),
+    0 0 calc(5 * var(--u)) rgba(255, 214, 120, 0.9),
+    0 calc(1 * var(--u)) calc(2 * var(--u)) rgba(30, 40, 55, 0.35);
+}
+
+/** The doorway of the vault. Its border is the steel surround; the door and
+ *  the dark inside sit within it, and the door swings on its hinge. */
+.dc-vault-body {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: calc(0.8 * var(--u));
+  perspective: calc(50 * var(--u));
+}
+.dc-vault-inside {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  overflow: hidden;
+  border-radius: calc(0.8 * var(--u));
+  background: radial-gradient(70% 70% at 50% 45%, #3b3020, #16120b 85%);
+  box-shadow: inset 0 calc(0.8 * var(--u)) calc(2 * var(--u)) rgba(0, 0, 0, 0.7);
+}
+/** Standing open, waiting for a key: the inside takes the corridor light so
+ *  it is obvious the vault is ready for it. */
+.dc-vault[data-open="yes"] .dc-vault-inside {
+  background: radial-gradient(70% 70% at 50% 45%, #6a5330, #241c10 88%);
+  box-shadow:
+    inset 0 0 calc(3 * var(--u)) rgba(255, 214, 120, 0.55),
+    inset 0 calc(0.8 * var(--u)) calc(2 * var(--u)) rgba(0, 0, 0, 0.6);
+}
+/** The point a flying key aims for — the middle of the opening. */
+.dc-vault-mouth {
+  display: block;
+  width: calc(2 * var(--u));
+  height: calc(2 * var(--u));
+}
+.dc-vault-door {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+/** The clang, when it shuts on a key. */
+.dc-vault-shock {
+  position: absolute;
+  inset: 0;
+  --pl-ring: rgba(255, 226, 150, 0.9);
+  pointer-events: none;
+}
+
+/** One lamp per key this corridor holds: dark until its key is inside. */
+.dc-vault-lamps {
+  display: flex;
+  justify-content: center;
+  gap: calc(1.2 * var(--u));
+  margin-top: calc(1.4 * var(--u));
+}
+.dc-vault-lamp {
+  display: block;
+  width: calc(4.4 * var(--u));
+  height: calc(7 * var(--u));
+  opacity: 0.22;
+  transition: opacity 0.35s ease;
+}
+.dc-vault-lamp[data-on="yes"] {
+  opacity: 1;
+}
+.dc-vault-lamp .dc-art {
+  width: auto;
+  height: 100%;
+  margin: 0 auto;
+}
+
+/** The key in flight: out of the door it was won at, into the middle of the
+ *  screen at four times its size, then away into the vault. Centred on its
+ *  own point by margin, so Framer keeps the transform for the spin. */
+.dc-flying-key {
+  position: absolute;
+  z-index: 20;
+  width: calc(7 * var(--u));
+  height: calc(17.5 * var(--u));
+  margin-left: calc(-3.5 * var(--u));
+  margin-top: calc(-8.75 * var(--u));
+  pointer-events: none;
+  filter: drop-shadow(0 calc(1 * var(--u)) calc(1.5 * var(--u)) rgba(40, 25, 0, 0.35));
+}
+/** The shockwave of the eruption, centred on wherever the key filled the
+ *  screen. */
+.dc-erupt {
+  position: absolute;
+  z-index: 19;
+  width: 0;
+  height: 0;
+  --pl-ring: rgba(255, 232, 170, 0.9);
+  pointer-events: none;
+}
+
+/* ── A corridor is clear ─────────────────────────────────────────────────── */
+
+.dc-clear {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(2.5 * var(--u));
+  overflow: hidden;
+  background: rgba(26, 18, 8, 0.55);
+  pointer-events: none;
+}
+.dc-clear-keys {
+  display: flex;
+  gap: calc(2 * var(--u));
+  height: calc(14 * var(--u));
+}
+.dc-clear-key {
+  display: block;
+  height: 100%;
+}
+.dc-clear-key .dc-art {
+  width: auto;
+}
+.dc-clear-door {
+  width: calc(58 * var(--u));
+  height: calc(50 * var(--u));
+}
+
+/** The double door at the end of a corridor, both leaves swinging out on the
+ *  light of the next one. */
+.dc-exit {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: calc(80 * var(--u));
+}
+.dc-exit-light {
+  position: absolute;
+  inset: 3%;
+  border-radius: calc(1 * var(--u));
+  background: radial-gradient(60% 70% at 50% 60%, #fff6d8, #ffd97a 70%, #e8a83a);
+}
+.dc-exit-leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  backface-visibility: hidden;
+}
+.dc-exit-leaf--l {
+  left: 0;
+  transform-origin: left center;
+}
+.dc-exit-leaf--r {
+  right: 0;
+  transform-origin: right center;
+}
+.dc-exit-body {
+  fill: #8a5a2e;
+}
+.dc-exit-window {
+  fill: #cfe4f2;
+}
+.dc-exit-panel {
+  fill: #6b4a1e;
+}
+
+/* ── The home screen, and the end of a module ─────────────────────────────
+   The home screen IS the game: two doors, one per module, and the child
+   starts by opening one. Each carries its module's name on the plate where a
+   corridor door carries its number, its one line of explanation below, and a
+   key for every corridor already cleared. */
+
+/** A door that is a button: no chrome of its own, and it lifts under the
+ *  finger so a child can see it is the thing to press. */
+.dc-door-slot--tappable {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: translate 0.2s ease;
+}
+.dc-door-slot--tappable:enabled:hover {
+  translate: 0 calc(-1 * var(--u));
+}
+.dc-door-slot--tappable:disabled {
+  cursor: default;
+}
+/* A door is the only thing on this screen a keyboard can reach, and it had no
+   focus ring of its own — the portal's shared Button carries one, a door did
+   not. Green, the same "yes" as the ring around a door that answered. */
+.dc-door-slot--tappable:focus-visible {
+  outline: calc(0.8 * var(--u)) solid #2fc48f;
+  outline-offset: calc(0.6 * var(--u));
+  border-radius: calc(1 * var(--u));
+}
+
+/* A home door carries its name, its line of explanation and its keys, so the
+   whole slot is far taller than a corridor door. It keeps its feet on the
+   floor and takes the height out of the DOOR instead, or the row would run
+   off the top of the screen and under the title. The gap is wide because the
+   names are wider than the doors they sit on. */
+.dc-home .dc-doors {
+  --dc-door-h: calc(32 * var(--u));
+  gap: calc(16 * var(--u));
+}
+.dc-home-door {
+  flex-direction: column;
+  align-items: center;
+  gap: calc(1 * var(--u));
+}
+/* a module's name is a word, not a number, so it is set smaller to stay
+   inside the width of its own door */
+.dc-home .dc-door-plate {
+  font-size: calc(3.6 * var(--u));
+  letter-spacing: 0.02em;
+}
+.dc-home-blurb {
+  max-width: calc(26 * var(--u));
+  font-size: calc(2.8 * var(--u));
+  line-height: 1.15;
+  text-align: center;
+  color: #6b4a1e;
+}
+.dc-home-keys {
+  display: flex;
+  justify-content: center;
+  gap: calc(0.8 * var(--u));
+  height: calc(5.6 * var(--u));
+}
+/** One key per corridor of the module: lit once that corridor is cleared. */
+.dc-home-key {
+  display: block;
+  height: 100%;
+  opacity: 0.22;
+}
+.dc-home-key[data-on="yes"] {
+  opacity: 1;
+}
+.dc-home-key .dc-art {
+  width: auto;
+  height: 100%;
+}
+/** Behind the More & Less door: the two pictures the knobs will carry,
+ *  stacked so more really is above less — and so each is big enough to read
+ *  at the width of a door. */
+.dc-home-emblem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(1 * var(--u));
+  padding: calc(1.4 * var(--u));
+}
+.dc-home-emblem-art {
+  display: block;
+  width: calc(var(--dc-door-h) * 0.42);
+  aspect-ratio: 1;
+}
+
+/** The two ways on from the end of a module. */
+.dc-final-buttons {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(4 * var(--u));
+  z-index: 7;
+  display: flex;
+  justify-content: center;
+  gap: calc(2 * var(--u));
+}
+
+.dc-final-count {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(24 * var(--u));
+  z-index: 4;
+  margin: 0;
+  text-align: center;
+  font-size: calc(5.4 * var(--u));
+  color: #6b4a1e;
+}
+.dc-final-keys {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(36 * var(--u));
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(4 * var(--u));
+  height: calc(20 * var(--u));
+}
+.dc-final-key {
+  display: block;
+  height: 100%;
+}
+.dc-final-key .dc-art {
+  width: auto;
+}
+
+/** The shockwave out of the doorway when the answer is found. Green, so it
+ *  reads as the same "yes" as the ring around the frame. */
+.dc-shock {
+  position: absolute;
+  inset: 0;
+  --pl-ring: rgba(120, 240, 190, 0.9);
+  pointer-events: none;
+}
+
+/* ── A TALL SCREEN ─────────────────────────────────────────────────────────
+ * A phone held upright is not a small landscape screen. With the corridor's
+ * own unit — `min(1cqh, 0.5625cqw)` — a 375 x 812 phone shrinks the whole
+ * game into a 16:9 strip across the middle: doors 53px wide, a teacher the
+ * size of a thumbnail, and two thirds of the screen empty.
+ *
+ * So a tall screen gets its own corridor. The unit is tied to the width the
+ * screen actually has, the row of doors is sized so that however many there
+ * are still fit across it, and the two things that stood out to the sides —
+ * the teacher and the vault — move to where a tall screen has room: the
+ * teacher onto the floor in front, the vault onto the wall above.
+ */
+
+@container (max-aspect-ratio: 1 / 1) {
+  .dc-stage {
+    --u: min(1cqh, 1.5cqw);
+    /* the wall takes less of a tall screen, so the floor the teacher stands
+       on is a band rather than a strip */
+    --dc-floor: 70%;
+  }
+
+  /* THE DOORS ARE SIZED BY THE WIDTH THEY HAVE TO SHARE. A door is 0.52 as
+     wide as it is tall, so "how tall" is really "how many of us are there". */
+  .dc-doors {
+    gap: calc(4 * var(--u));
+    --dc-door-h: calc(34 * var(--u));
+  }
+  .dc-doors[data-n="4"] {
+    gap: calc(3 * var(--u));
+    --dc-door-h: calc(25 * var(--u));
+  }
+  .dc-doors[data-n="5"] {
+    gap: calc(2 * var(--u));
+    --dc-door-h: calc(20 * var(--u));
+  }
+
+  /* the sign hangs just above whatever row is under it */
+  .dc-sign {
+    bottom: calc(100% - var(--dc-floor) + 38 * var(--u));
+    width: min(calc(100% - 130px), calc(62 * var(--u)));
+    min-height: calc(9 * var(--u));
+    padding: calc(1 * var(--u)) calc(2.4 * var(--u));
+    margin-left: calc(-1 * min(calc(50% - 65px), calc(31 * var(--u))));
+  }
+
+  .dc-sign-text {
+    font-size: calc(3.6 * var(--u));
+  }
+
+  .dc-sign-big {
+    font-size: calc(5.2 * var(--u));
+  }
+
+  /* THE TEACHER STANDS IN FRONT. On a wide screen he stands off to one side
+     of the doors; a tall screen has no side, so he comes forward onto the
+     floor where there is room for him. */
+  .dc-teacher {
+    right: auto;
+    left: calc(-2 * var(--u));
+    bottom: calc(100% - var(--dc-floor) - 14 * var(--u));
+    width: calc(34 * var(--u));
+    height: calc(34 * var(--u));
+  }
+
+  /* AND THE VAULT GOES ON THE WALL, top right, where the back pill is not. */
+  .dc-vault {
+    left: auto;
+    right: calc(2 * var(--u));
+    top: max(calc(3 * var(--u)), 76px);
+    width: calc(26 * var(--u));
+  }
+
+  /* ── the home screen: two doors, side by side, with room to read them ── */
+
+  .dc-home .dc-doors {
+    --dc-door-h: calc(24 * var(--u));
+    gap: calc(6 * var(--u));
+  }
+
+  /* the title clears the taller home slot AND the back pill on a 3:4 tablet,
+     where the wall above the doors is only a few units deep */
+  .dc-home .dc-sign {
+    bottom: calc(100% - var(--dc-floor) + 50 * var(--u));
+  }
+
+  .dc-title {
+    font-size: calc(6 * var(--u));
+  }
+
+  .dc-home-blurb {
+    max-width: calc(24 * var(--u));
+    font-size: calc(2.4 * var(--u));
+  }
+
+  .dc-home .dc-door-plate {
+    font-size: calc(3 * var(--u));
+  }
+}
+
+/* ── The Library card ─────────────────────────────────────────────────────
+   The miniature of this corridor shown on the portal card (see
+   shared/components/icons/GameSceneIcons.tsx). It is the game's own door
+   leaf and the game's own apples, at card size — so the child recognises
+   the exact doors they are about to meet. Sized in percentages of the card,
+   never in `u`: the card is not the game's canvas. */
+
+.dcicon-corridor {
+  background: linear-gradient(#f3ecdb 0 66%, #8a6a3a 66% 70%, #c9a878 70% 100%);
+}
+.dcicon-door {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 13 / 25;
+  padding: 6%;
+  overflow: hidden;
+  border-radius: 9% 9% 0 0;
+  background: #e8dfc8;
+}
+.dcicon-room {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(#3d3122, #6b5842);
+}
+.dcicon-things {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6%;
+  padding: 12%;
+}
+.dcicon-thing {
+  width: 54%;
+  aspect-ratio: 1;
+}
+/** Shut: the whole leaf. Open: the leaf folded back against the jamb. */
+.dcicon-leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.dcicon-leaf--open {
+  width: 13%;
+  background: var(--dc-leaf);
+}
+/** The game's own brass knob, carrying the number that answers. */
+.dcicon-knob {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #fbe5a8, #e8b33d 46%, #c08a22 78%, #9a6a14);
+  box-shadow:
+    inset 0 -8% 0 rgba(0, 0, 0, 0.2),
+    0 8% 16% rgba(60, 40, 10, 0.3);
+  font-size: 62%;
+  line-height: 1;
+  color: #3a2608;
+}

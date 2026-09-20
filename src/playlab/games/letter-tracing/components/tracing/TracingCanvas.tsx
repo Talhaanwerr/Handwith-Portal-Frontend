@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import React, { useRef, useEffect, useCallback, useMemo, useState } from "react";
 import type { LetterDefinition, Point } from "@games/letter-tracing/types";
 import { distance } from "@games/letter-tracing/utils/pathUtils";
 import {
@@ -9,11 +9,8 @@ import {
   LETTER_SCALE,
   TOLERANCE_PX,
   STROKE_THRESHOLD,
-  COLOR_COMPLETED,
-  COLOR_ACTIVE_GUIDE,
-  COLOR_ACTIVE_GLOW,
-  COLOR_FUTURE,
-  COLOR_CHILD_INK,
+  DEFAULT_TRACING_THEME,
+  type TracingTheme,
   type TracingPhase,
 } from "./constants";
 import { buildGeometry, type StrokeGeom } from "./geometry";
@@ -54,6 +51,10 @@ interface TracingCanvasProps {
   /** While true, the pencil demonstration waits (used so the letter's voice
    *  introduction always finishes before tracing guidance begins) */
   holdDemo?: boolean;
+  /** Palette override, merged over DEFAULT_TRACING_THEME. Lets a game in a
+   *  different world (Ocean ABC) trace in its own colours without forking
+   *  this canvas; omitting it leaves Letter Tracing exactly as it was. */
+  theme?: Partial<TracingTheme>;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -70,7 +71,12 @@ export function TracingCanvas({
   onPhaseChange,
   replayToken: _replayToken = 0,
   holdDemo = false,
+  theme,
 }: TracingCanvasProps) {
+  // Memoized so the draw-loop effect below can list it as a dependency
+  // without re-running on every render: identity changes only when the theme
+  // itself does (games pass a module-level constant or nothing).
+  const palette: TracingTheme = useMemo(() => ({ ...DEFAULT_TRACING_THEME, ...theme }), [theme]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const geomRef = useRef<StrokeGeom[]>([]);
@@ -319,20 +325,20 @@ export function TracingCanvas({
             strokePath2D(
               ctx,
               g.path,
-              COLOR_COMPLETED,
+              palette.completed,
               17 + (1 - ft) * 5,
               (0.55 + ft * 0.4) * guideAlpha
             );
           } else if (i === active && phase !== "done") {
             // Active stroke — soft glow + clear gray guide
-            strokePath2D(ctx, g.path, COLOR_ACTIVE_GLOW, 26, 0.26 * guideAlpha, undefined, {
+            strokePath2D(ctx, g.path, palette.activeGlow, 26, 0.26 * guideAlpha, undefined, {
               color: "rgba(168,130,232,0.35)",
               blur: 10,
             });
-            strokePath2D(ctx, g.path, COLOR_ACTIVE_GUIDE, 15, 0.68 * guideAlpha, [1, 14]);
+            strokePath2D(ctx, g.path, palette.activeGuide, 15, 0.68 * guideAlpha, [1, 14]);
           } else {
             // Upcoming strokes — visible but subdued
-            strokePath2D(ctx, g.path, COLOR_FUTURE, 15, 0.5 * guideAlpha, [8, 9]);
+            strokePath2D(ctx, g.path, palette.future, 15, 0.5 * guideAlpha, [8, 9]);
           }
         }
       }
@@ -342,7 +348,7 @@ export function TracingCanvas({
       if (activeGeom && phase !== "done") {
         // ── 2. Directional arrows — only once the child is tracing ─────────
         if (phase === "trace" || phase === "await-lift") {
-          drawArrows(ctx, activeGeom, t);
+          drawArrows(ctx, activeGeom, t, palette.arrow);
         }
 
         // ── 3. Full-letter demonstration on the empty board ─────────────────
@@ -431,7 +437,7 @@ export function TracingCanvas({
         if (demoInkAlpha > 0) {
           for (const ink of demoInkStrokesRef.current) {
             if (ink.length > 1) {
-              drawPolyline(ctx, ink, COLOR_COMPLETED, 16, 0.85 * demoInkAlpha);
+              drawPolyline(ctx, ink, palette.completed, 16, 0.85 * demoInkAlpha);
             }
           }
         }
@@ -454,7 +460,7 @@ export function TracingCanvas({
               // soft ink dot keeps the guide gently filled — supportive, not
               // dominant, so the child's OWN line stays the star of the show
               ctx.globalAlpha = 0.32 * ease;
-              ctx.fillStyle = COLOR_CHILD_INK;
+              ctx.fillStyle = palette.childInk;
               ctx.beginPath();
               ctx.arc(p[0], p[1], 8, 0, Math.PI * 2);
               ctx.fill();
@@ -481,7 +487,7 @@ export function TracingCanvas({
               inkFadeRef.current = 1;
             }
           }
-          drawPolyline(ctx, inkRef.current, COLOR_CHILD_INK, 12, 0.7 * inkFadeRef.current);
+          drawPolyline(ctx, inkRef.current, palette.childInk, 12, 0.7 * inkFadeRef.current);
 
           // Pulsing dot marks where to (re)start: the frontier — the exact
           // point where the child paused — or the stroke start if untouched
@@ -569,7 +575,7 @@ export function TracingCanvas({
       running = false;
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
-  }, [letter, setPhase, onFirstTurn, primeDemoStroke]);
+  }, [letter, setPhase, onFirstTurn, primeDemoStroke, palette]);
 
   // ── Pointer input ───────────────────────────────────────────────────────────
   const getCanvasPoint = useCallback(
