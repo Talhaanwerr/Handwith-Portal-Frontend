@@ -32,6 +32,20 @@
 @import "./games/number-match/styles/number-match.css";
 /* Leo's Puzzles */
 @import "./games/shape-match/styles/shape-match.css";
+/* Blend & Seek */
+@import "./games/blend-read/styles/blend-read.css";
+/* Number Safari */
+@import "./games/number-safari/styles/number-safari.css";
+/* Word Site */
+@import "./games/cvc-match/styles/cvc-match.css";
+/* Sort It */
+@import "./games/sort-it/styles/sort-it.css";
+/* Picture Words */
+@import "./games/word-quiz/styles/word-quiz.css";
+/* Math Maze */
+@import "./games/math-maze/styles/math-maze.css";
+/* Sorting Food */
+@import "./games/food-sort/styles/food-sort.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

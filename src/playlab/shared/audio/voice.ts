@@ -22,15 +22,42 @@ interface ClipDef {
   file: string;
   text: string;
   speak?: string;
+  /** This clip IS another clip: same words, already recorded elsewhere. */
+  alias?: string;
 }
 
-const CLIPS: Record<string, ClipDef> = manifest.clips as Record<string, ClipDef>;
+const RAW: Record<string, ClipDef> = manifest.clips as Record<string, ClipDef>;
+
+/**
+ * Follow a clip's `alias` to the clip that actually owns the recording.
+ *
+ * Different games ask for the same words — "cat" is a Candy ABC word, a Blend
+ * & Seek answer and a Word Site tile — and each game named its own clip id for
+ * it. Rather than record "cat" three times, the duplicates carry
+ * `alias: "treat-word-cat"` and resolve here, so a game keeps its own readable
+ * id and still gets a real voice instead of the browser synthesiser.
+ *
+ * Resolution is shallow-looped with a hop limit: an alias chain is data, and
+ * data can be edited into a circle.
+ */
+function resolve(id: ClipId): ClipDef | undefined {
+  let def = RAW[id];
+  for (let hop = 0; def?.alias && hop < 4; hop++) def = RAW[def.alias];
+  return def;
+}
+
+/** The clips as the player sees them, aliases already followed. */
+const CLIPS: Record<string, ClipDef> = new Proxy(RAW, {
+  get: (_t, key: string) => resolve(key),
+  has: (_t, key: string) => resolve(key as string) !== undefined,
+}) as Record<string, ClipDef>;
 
 const cache = new Map<ClipId, Howl>();
-/** Whether a missing MP3 may fall back to browser speech. Games that ship
- *  only recorded/generated clips (Candy ABC) switch this off so the browser
- *  never synthesises a line; a missing clip is then a short silence. */
-let speechFallback = true;
+/** Whether a missing MP3 may fall back to browser speech. OFF: the portal
+ *  speaks only with real recordings, so a missing clip is a short silence,
+ *  never a synthesised voice. `setSpeechFallback(true)` exists for local
+ *  debugging only — no game ships with it on. */
+let speechFallback = false;
 export function setSpeechFallback(enabled: boolean): void {
   speechFallback = enabled;
 }
@@ -46,7 +73,7 @@ let settleCurrent: (() => void) | null = null;
 let speaking: Promise<void> = Promise.resolve();
 
 function missing(id: ClipId, reason: string): void {
-  console.warn(`[voice] clip "${id}" ${reason} — using browser speech so the game can continue.`);
+  console.warn(`[voice] clip "${id}" ${reason} — staying silent.`);
 }
 
 function spokenText(def: ClipDef): string {

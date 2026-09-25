@@ -570,6 +570,471 @@
       "text": "zebra",
       "speak": "zebra!"
     },
+    "word-bag": {
+      "file": "/audio/words/bag.mp3",
+      "text": "bag",
+      "speak": "bag!"
+    },
+    "word-bed": {
+      "file": "/audio/words/bed.mp3",
+      "text": "bed",
+      "speak": "bed!"
+    },
+    "word-big": {
+      "file": "/audio/words/big.mp3",
+      "text": "big",
+      "speak": "big!"
+    },
+    "word-bin": {
+      "file": "/audio/words/bin.mp3",
+      "text": "bin",
+      "speak": "bin!"
+    },
+    "word-bug": {
+      "file": "/audio/words/bug.mp3",
+      "text": "bug",
+      "speak": "bug!"
+    },
+    "word-can": {
+      "file": "/audio/words/can.mp3",
+      "text": "can",
+      "speak": "can!"
+    },
+    "word-cap": {
+      "file": "/audio/words/cap.mp3",
+      "text": "cap",
+      "speak": "cap!"
+    },
+    "word-cob": {
+      "file": "/audio/words/cob.mp3",
+      "text": "cob",
+      "speak": "cob!"
+    },
+    "word-dot": {
+      "file": "/audio/words/dot.mp3",
+      "text": "dot",
+      "speak": "dot!"
+    },
+    "word-fog": {
+      "file": "/audio/words/fog.mp3",
+      "text": "fog",
+      "speak": "fog!"
+    },
+    "word-gas": {
+      "file": "/audio/words/gas.mp3",
+      "text": "gas",
+      "speak": "gas!"
+    },
+    "word-gem": {
+      "file": "/audio/words/gem.mp3",
+      "text": "gem",
+      "speak": "gem!"
+    },
+    "word-ham": {
+      "file": "/audio/words/ham.mp3",
+      "text": "ham",
+      "speak": "ham!"
+    },
+    "word-hot": {
+      "file": "/audio/words/hot.mp3",
+      "text": "hot",
+      "speak": "hot!"
+    },
+    "word-hug": {
+      "file": "/audio/words/hug.mp3",
+      "text": "hug",
+      "speak": "hug!"
+    },
+    "word-kid": {
+      "file": "/audio/words/kid.mp3",
+      "text": "kid",
+      "speak": "kid!"
+    },
+    "word-land": {
+      "file": "/audio/words/land.mp3",
+      "text": "land",
+      "speak": "land!"
+    },
+    "word-leg": {
+      "file": "/audio/words/leg.mp3",
+      "text": "leg",
+      "speak": "leg!"
+    },
+    "word-lip": {
+      "file": "/audio/words/lip.mp3",
+      "text": "lip",
+      "speak": "lip!"
+    },
+    "word-log": {
+      "file": "/audio/words/log.mp3",
+      "text": "log",
+      "speak": "log!"
+    },
+    "word-map": {
+      "file": "/audio/words/map.mp3",
+      "text": "map",
+      "speak": "map!"
+    },
+    "word-mug": {
+      "file": "/audio/words/mug.mp3",
+      "text": "mug",
+      "speak": "mug!"
+    },
+    "word-pan": {
+      "file": "/audio/words/pan.mp3",
+      "text": "pan",
+      "speak": "pan!"
+    },
+    "word-pin": {
+      "file": "/audio/words/pin.mp3",
+      "text": "pin",
+      "speak": "pin!"
+    },
+    "word-pot": {
+      "file": "/audio/words/pot.mp3",
+      "text": "pot",
+      "speak": "pot!"
+    },
+    "word-pup": {
+      "file": "/audio/words/pup.mp3",
+      "text": "pup",
+      "speak": "pup!"
+    },
+    "word-rat": {
+      "file": "/audio/words/rat.mp3",
+      "text": "rat",
+      "speak": "rat!"
+    },
+    "word-red": {
+      "file": "/audio/words/red.mp3",
+      "text": "red",
+      "speak": "red!"
+    },
+    "word-sky": {
+      "file": "/audio/words/sky.mp3",
+      "text": "sky",
+      "speak": "sky!"
+    },
+    "word-small": {
+      "file": "/audio/words/small.mp3",
+      "text": "small",
+      "speak": "small!"
+    },
+    "word-sub": {
+      "file": "/audio/words/sub.mp3",
+      "text": "sub",
+      "speak": "sub!"
+    },
+    "word-ten": {
+      "file": "/audio/words/ten.mp3",
+      "text": "ten",
+      "speak": "ten!"
+    },
+    "word-top": {
+      "file": "/audio/words/top.mp3",
+      "text": "top",
+      "speak": "top!"
+    },
+    "word-tub": {
+      "file": "/audio/words/tub.mp3",
+      "text": "tub",
+      "speak": "tub!"
+    },
+    "word-web": {
+      "file": "/audio/words/web.mp3",
+      "text": "web",
+      "speak": "web!"
+    },
+    "word-dig": {
+      "file": "/audio/words/dig.mp3",
+      "text": "dig",
+      "speak": "dig!"
+    },
+    "word-hop": {
+      "file": "/audio/words/hop.mp3",
+      "text": "hop",
+      "speak": "hop!"
+    },
+    "word-man": {
+      "file": "/audio/words/man.mp3",
+      "text": "man",
+      "speak": "man!"
+    },
+    "word-mat": {
+      "file": "/audio/words/mat.mp3",
+      "text": "mat",
+      "speak": "mat!"
+    },
+    "word-peg": {
+      "file": "/audio/words/peg.mp3",
+      "text": "peg",
+      "speak": "peg!"
+    },
+    "word-sit": {
+      "file": "/audio/words/sit.mp3",
+      "text": "sit",
+      "speak": "sit!"
+    },
+    "word-sock": {
+      "file": "/audio/words/sock.mp3",
+      "text": "sock",
+      "speak": "sock!"
+    },
+    "word-tap": {
+      "file": "/audio/words/tap.mp3",
+      "text": "tap",
+      "speak": "tap!"
+    },
+    "word-tin": {
+      "file": "/audio/words/tin.mp3",
+      "text": "tin",
+      "speak": "tin!"
+    },
+    "name-apple": {
+      "file": "/audio/names/apple.mp3",
+      "text": "apple",
+      "speak": "apple"
+    },
+    "name-ball": {
+      "file": "/audio/names/ball.mp3",
+      "text": "ball",
+      "speak": "ball"
+    },
+    "name-banana": {
+      "file": "/audio/names/banana.mp3",
+      "text": "banana",
+      "speak": "banana"
+    },
+    "name-box": {
+      "file": "/audio/names/box.mp3",
+      "text": "box",
+      "speak": "box"
+    },
+    "name-bus": {
+      "file": "/audio/names/bus.mp3",
+      "text": "bus",
+      "speak": "bus"
+    },
+    "name-cake": {
+      "file": "/audio/names/cake.mp3",
+      "text": "cake",
+      "speak": "cake"
+    },
+    "name-car": {
+      "file": "/audio/names/car.mp3",
+      "text": "car",
+      "speak": "car"
+    },
+    "name-cat": {
+      "file": "/audio/names/cat.mp3",
+      "text": "cat",
+      "speak": "cat"
+    },
+    "name-cup": {
+      "file": "/audio/names/cup.mp3",
+      "text": "cup",
+      "speak": "cup"
+    },
+    "name-dog": {
+      "file": "/audio/names/dog.mp3",
+      "text": "dog",
+      "speak": "dog"
+    },
+    "name-drum": {
+      "file": "/audio/names/drum.mp3",
+      "text": "drum",
+      "speak": "drum"
+    },
+    "name-egg": {
+      "file": "/audio/names/egg.mp3",
+      "text": "egg",
+      "speak": "egg"
+    },
+    "name-fan": {
+      "file": "/audio/names/fan.mp3",
+      "text": "fan",
+      "speak": "fan"
+    },
+    "name-flag": {
+      "file": "/audio/names/flag.mp3",
+      "text": "flag",
+      "speak": "flag"
+    },
+    "name-fox": {
+      "file": "/audio/names/fox.mp3",
+      "text": "fox",
+      "speak": "fox"
+    },
+    "name-frog": {
+      "file": "/audio/names/frog.mp3",
+      "text": "frog",
+      "speak": "frog"
+    },
+    "name-grapes": {
+      "file": "/audio/names/grapes.mp3",
+      "text": "grapes",
+      "speak": "grapes"
+    },
+    "name-hat": {
+      "file": "/audio/names/hat.mp3",
+      "text": "hat",
+      "speak": "hat"
+    },
+    "name-hen": {
+      "file": "/audio/names/hen.mp3",
+      "text": "hen",
+      "speak": "hen"
+    },
+    "name-house": {
+      "file": "/audio/names/house.mp3",
+      "text": "house",
+      "speak": "house"
+    },
+    "name-jam": {
+      "file": "/audio/names/jam.mp3",
+      "text": "jam",
+      "speak": "jam"
+    },
+    "name-jar": {
+      "file": "/audio/names/jar.mp3",
+      "text": "jar",
+      "speak": "jar"
+    },
+    "name-jelly": {
+      "file": "/audio/names/jelly.mp3",
+      "text": "jelly",
+      "speak": "jelly"
+    },
+    "name-jet": {
+      "file": "/audio/names/jet.mp3",
+      "text": "jet",
+      "speak": "jet"
+    },
+    "name-juice": {
+      "file": "/audio/names/juice.mp3",
+      "text": "juice",
+      "speak": "juice"
+    },
+    "name-lemon": {
+      "file": "/audio/names/lemon.mp3",
+      "text": "lemon",
+      "speak": "lemon"
+    },
+    "name-lion": {
+      "file": "/audio/names/lion.mp3",
+      "text": "lion",
+      "speak": "lion"
+    },
+    "name-milk": {
+      "file": "/audio/names/milk.mp3",
+      "text": "milk",
+      "speak": "milk"
+    },
+    "name-mouse": {
+      "file": "/audio/names/mouse.mp3",
+      "text": "mouse",
+      "speak": "mouse"
+    },
+    "name-nest": {
+      "file": "/audio/names/nest.mp3",
+      "text": "nest",
+      "speak": "nest"
+    },
+    "name-net": {
+      "file": "/audio/names/net.mp3",
+      "text": "net",
+      "speak": "net"
+    },
+    "name-nut": {
+      "file": "/audio/names/nut.mp3",
+      "text": "nut",
+      "speak": "nut"
+    },
+    "name-orange": {
+      "file": "/audio/names/orange.mp3",
+      "text": "orange",
+      "speak": "orange"
+    },
+    "name-pen": {
+      "file": "/audio/names/pen.mp3",
+      "text": "pen",
+      "speak": "pen"
+    },
+    "name-penguin": {
+      "file": "/audio/names/penguin.mp3",
+      "text": "penguin",
+      "speak": "penguin"
+    },
+    "name-pineapple": {
+      "file": "/audio/names/pineapple.mp3",
+      "text": "pineapple",
+      "speak": "pineapple"
+    },
+    "name-pizza": {
+      "file": "/audio/names/pizza.mp3",
+      "text": "pizza",
+      "speak": "pizza"
+    },
+    "name-queen": {
+      "file": "/audio/names/queen.mp3",
+      "text": "queen",
+      "speak": "queen"
+    },
+    "name-shoe": {
+      "file": "/audio/names/shoe.mp3",
+      "text": "shoe",
+      "speak": "shoe"
+    },
+    "name-six": {
+      "file": "/audio/names/six.mp3",
+      "text": "six",
+      "speak": "six"
+    },
+    "name-snake": {
+      "file": "/audio/names/snake.mp3",
+      "text": "snake",
+      "speak": "snake"
+    },
+    "name-soup": {
+      "file": "/audio/names/soup.mp3",
+      "text": "soup",
+      "speak": "soup"
+    },
+    "name-sun": {
+      "file": "/audio/names/sun.mp3",
+      "text": "sun",
+      "speak": "sun"
+    },
+    "name-train": {
+      "file": "/audio/names/train.mp3",
+      "text": "train",
+      "speak": "train"
+    },
+    "name-van": {
+      "file": "/audio/names/van.mp3",
+      "text": "van",
+      "speak": "van"
+    },
+    "name-water": {
+      "file": "/audio/names/water.mp3",
+      "text": "water",
+      "speak": "water"
+    },
+    "name-whale": {
+      "file": "/audio/names/whale.mp3",
+      "text": "whale",
+      "speak": "whale"
+    },
+    "name-zip": {
+      "file": "/audio/names/zip.mp3",
+      "text": "zip",
+      "speak": "zip"
+    },
+    "name-zucchini": {
+      "file": "/audio/names/zucchini.mp3",
+      "text": "zucchini",
+      "speak": "zucchini"
+    },
     "number-1": {
       "file": "/audio/numbers/1.mp3",
       "text": "1",
@@ -620,6 +1085,41 @@
       "text": "10",
       "speak": "10."
     },
+    "number-20": {
+      "file": "/audio/numbers/20.mp3",
+      "text": "20",
+      "speak": "20."
+    },
+    "number-25": {
+      "file": "/audio/numbers/25.mp3",
+      "text": "25",
+      "speak": "25."
+    },
+    "number-30": {
+      "file": "/audio/numbers/30.mp3",
+      "text": "30",
+      "speak": "30."
+    },
+    "number-35": {
+      "file": "/audio/numbers/35.mp3",
+      "text": "35",
+      "speak": "35."
+    },
+    "number-40": {
+      "file": "/audio/numbers/40.mp3",
+      "text": "40",
+      "speak": "40."
+    },
+    "number-45": {
+      "file": "/audio/numbers/45.mp3",
+      "text": "45",
+      "speak": "45."
+    },
+    "number-50": {
+      "file": "/audio/numbers/50.mp3",
+      "text": "50",
+      "speak": "50."
+    },
     "instr-watch-carefully": {
       "file": "/audio/instructions/watch-carefully.mp3",
       "text": "Watch carefully!",
@@ -659,6 +1159,126 @@
       "file": "/audio/instructions/put-letters-in-order.mp3",
       "text": "Put the letters in order!",
       "speak": "Put the letters in order!"
+    },
+    "instr-click-the-word": {
+      "file": "/audio/instructions/click-the-word.mp3",
+      "text": "Click the word that matches the picture.",
+      "speak": "Click the word that matches the picture."
+    },
+    "instr-tap-play": {
+      "file": "/audio/instructions/tap-play.mp3",
+      "text": "Tap Play to start.",
+      "speak": "Tap Play to start."
+    },
+    "instr-safari-pick-level": {
+      "file": "/audio/instructions/safari-pick-level.mp3",
+      "text": "Pick easy, medium or hard.",
+      "speak": "Pick easy, medium or hard."
+    },
+    "instr-safari-count": {
+      "file": "/audio/instructions/safari-count.mp3",
+      "text": "Count them all. Then tap the number.",
+      "speak": "Count them all. Then tap the number."
+    },
+    "instr-safari-missing": {
+      "file": "/audio/instructions/safari-missing.mp3",
+      "text": "Which number is missing?",
+      "speak": "Which number is missing?"
+    },
+    "instr-safari-drag": {
+      "file": "/audio/instructions/safari-drag.mp3",
+      "text": "Drag the number to the empty spot.",
+      "speak": "Drag the number to the empty spot."
+    },
+    "instr-site-pick-vowel": {
+      "file": "/audio/instructions/site-pick-vowel.mp3",
+      "text": "Pick a vowel to build with.",
+      "speak": "Pick a vowel to build with."
+    },
+    "instr-site-drag-word": {
+      "file": "/audio/instructions/site-drag-word.mp3",
+      "text": "Read the word. Drag it to its picture.",
+      "speak": "Read the word. Drag it to its picture."
+    },
+    "instr-site-blend": {
+      "file": "/audio/instructions/site-blend.mp3",
+      "text": "Say each sound, then blend them together.",
+      "speak": "Say each sound, then blend them together."
+    },
+    "instr-site-built": {
+      "file": "/audio/instructions/site-built.mp3",
+      "text": "The site is built!",
+      "speak": "The site is built!"
+    },
+    "instr-sort-pick": {
+      "file": "/audio/instructions/sort-pick.mp3",
+      "text": "Pick a sorting game.",
+      "speak": "Pick a sorting game."
+    },
+    "instr-sort-size": {
+      "file": "/audio/instructions/sort-size.mp3",
+      "text": "Is it big or small? Drag it to the right box.",
+      "speak": "Is it big or small? Drag it to the right box."
+    },
+    "instr-sort-home": {
+      "file": "/audio/instructions/sort-home.mp3",
+      "text": "Where does it live? Drag it home.",
+      "speak": "Where does it live? Drag it home."
+    },
+    "instr-sort-done": {
+      "file": "/audio/instructions/sort-done.mp3",
+      "text": "Everything is sorted!",
+      "speak": "Everything is sorted!"
+    },
+    "instr-snow-tap-word": {
+      "file": "/audio/instructions/snow-tap-word.mp3",
+      "text": "Look at the picture. Tap the word that names it.",
+      "speak": "Look at the picture. Tap the word that names it."
+    },
+    "instr-snow-review": {
+      "file": "/audio/instructions/snow-review.mp3",
+      "text": "Let's see how you did!",
+      "speak": "Let's see how you did!"
+    },
+    "instr-food-colours": {
+      "file": "/audio/instructions/food-colours.mp3",
+      "text": "Let's sort by colour! Put each food with its colour.",
+      "speak": "Let's sort by colour! Put each food with its colour."
+    },
+    "instr-food-shapes": {
+      "file": "/audio/instructions/food-shapes.mp3",
+      "text": "Let's sort by shape! Put each one with its shape.",
+      "speak": "Let's sort by shape! Put each one with its shape."
+    },
+    "instr-food-sizes": {
+      "file": "/audio/instructions/food-sizes.mp3",
+      "text": "Let's sort by size! Find where each one fits.",
+      "speak": "Let's sort by size! Find where each one fits."
+    },
+    "instr-food-kitchen": {
+      "file": "/audio/instructions/food-kitchen.mp3",
+      "text": "Let's sort the kitchen! Where does each one go?",
+      "speak": "Let's sort the kitchen! Where does each one go?"
+    },
+    "instr-food-toys": {
+      "file": "/audio/instructions/food-toys.mp3",
+      "text": "Is it food or a toy?",
+      "speak": "Is it food or a toy?"
+    },
+    "instr-food-drink": {
+      "file": "/audio/instructions/food-drink.mp3",
+      "text": "Do we drink it or eat it?",
+      "speak": "Do we drink it or eat it?"
+    },
+    "instr-food-hot": {
+      "file": "/audio/instructions/food-hot.mp3",
+      "text": "Is it hot or cold?",
+      "speak": "Is it hot or cold?"
+    },
+    "instr-food-fruit": {
+      "file": "/audio/instructions/food-fruit.mp3",
+      "text": "Is it fruit or a treat?",
+      "speak": "Is it fruit or a treat?"
     },
     "cheer-well-done": {
       "file": "/audio/encouragement/well-done.mp3",
@@ -3093,157 +3713,183 @@
       "file": "/audio/space/find-a.mp3",
       "text": "Find the A!",
       "speak": "Find the A! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-a"
     },
     "space-find-b": {
       "file": "/audio/space/find-b.mp3",
       "text": "Find the B!",
       "speak": "Find the B! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-b"
     },
     "space-find-c": {
       "file": "/audio/space/find-c.mp3",
       "text": "Find the C!",
       "speak": "Find the C! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-c"
     },
     "space-find-d": {
       "file": "/audio/space/find-d.mp3",
       "text": "Find the D!",
       "speak": "Find the D! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-d"
     },
     "space-find-e": {
       "file": "/audio/space/find-e.mp3",
       "text": "Find the E!",
       "speak": "Find the E! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-e"
     },
     "space-find-f": {
       "file": "/audio/space/find-f.mp3",
       "text": "Find the F!",
       "speak": "Find the F! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-f"
     },
     "space-find-g": {
       "file": "/audio/space/find-g.mp3",
       "text": "Find the G!",
       "speak": "Find the G! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-g"
     },
     "space-find-h": {
       "file": "/audio/space/find-h.mp3",
       "text": "Find the H!",
       "speak": "Find the H! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-h"
     },
     "space-find-i": {
       "file": "/audio/space/find-i.mp3",
       "text": "Find the I!",
       "speak": "Find the I! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-i"
     },
     "space-find-j": {
       "file": "/audio/space/find-j.mp3",
       "text": "Find the J!",
       "speak": "Find the J! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-j"
     },
     "space-find-k": {
       "file": "/audio/space/find-k.mp3",
       "text": "Find the K!",
       "speak": "Find the K! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-k"
     },
     "space-find-l": {
       "file": "/audio/space/find-l.mp3",
       "text": "Find the L!",
       "speak": "Find the L! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-l"
     },
     "space-find-m": {
       "file": "/audio/space/find-m.mp3",
       "text": "Find the M!",
       "speak": "Find the M! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-m"
     },
     "space-find-n": {
       "file": "/audio/space/find-n.mp3",
       "text": "Find the N!",
       "speak": "Find the N! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-n"
     },
     "space-find-o": {
       "file": "/audio/space/find-o.mp3",
       "text": "Find the O!",
       "speak": "Find the O! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-o"
     },
     "space-find-p": {
       "file": "/audio/space/find-p.mp3",
       "text": "Find the P!",
       "speak": "Find the P! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-p"
     },
     "space-find-q": {
       "file": "/audio/space/find-q.mp3",
       "text": "Find the Q!",
       "speak": "Find the Q! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-q"
     },
     "space-find-r": {
       "file": "/audio/space/find-r.mp3",
       "text": "Find the R!",
       "speak": "Find the R! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-r"
     },
     "space-find-s": {
       "file": "/audio/space/find-s.mp3",
       "text": "Find the S!",
       "speak": "Find the S! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-s"
     },
     "space-find-t": {
       "file": "/audio/space/find-t.mp3",
       "text": "Find the T!",
       "speak": "Find the T! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-t"
     },
     "space-find-u": {
       "file": "/audio/space/find-u.mp3",
       "text": "Find the U!",
       "speak": "Find the U! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-u"
     },
     "space-find-v": {
       "file": "/audio/space/find-v.mp3",
       "text": "Find the V!",
       "speak": "Find the V! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-v"
     },
     "space-find-w": {
       "file": "/audio/space/find-w.mp3",
       "text": "Find the W!",
       "speak": "Find the W! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-w"
     },
     "space-find-x": {
       "file": "/audio/space/find-x.mp3",
       "text": "Find the X!",
       "speak": "Find the X! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-x"
     },
     "space-find-y": {
       "file": "/audio/space/find-y.mp3",
       "text": "Find the Y!",
       "speak": "Find the Y! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-y"
     },
     "space-find-z": {
       "file": "/audio/space/find-z.mp3",
       "text": "Find the Z!",
       "speak": "Find the Z! It's shining among the stars!",
-      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free"
+      "note": "space-letters level intro — one line per letter, same shape as jungle-find-*/hunt-find-*; needs generation via npm run generate-audio:free",
+      "alias": "jungle-find-z"
     },
     "treat-bakery-intro": {
       "file": "/audio/treats/bakery-intro.mp3",
@@ -3807,6 +4453,1516 @@
       "file": "/audio/leo/shape-heart.mp3",
       "text": "Heart",
       "speak": "Heart."
+    },
+    "blend-word-level1-cat": {
+      "file": "/audio/blend/word-level1-cat.mp3",
+      "text": "cat",
+      "speak": "cat",
+      "alias": "name-cat"
+    },
+    "blend-sound-level1-cat-0": {
+      "file": "/audio/blend/sound-level1-cat-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level1-cat-1": {
+      "file": "/audio/blend/sound-level1-cat-1.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "phonics-a"
+    },
+    "blend-sound-level1-cat-2": {
+      "file": "/audio/blend/sound-level1-cat-2.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-merge-level1-cat": {
+      "file": "/audio/blend/merge-level1-cat.mp3",
+      "text": "c-c-c... aaaaa... t-t-t... ccaaaatt",
+      "speak": "c-c-c... aaaaa... t-t-t... ccaaaatt"
+    },
+    "blend-word-level1-dog": {
+      "file": "/audio/blend/word-level1-dog.mp3",
+      "text": "dog",
+      "speak": "dog",
+      "alias": "name-dog"
+    },
+    "blend-sound-level1-dog-0": {
+      "file": "/audio/blend/sound-level1-dog-0.mp3",
+      "text": "d",
+      "speak": "d",
+      "alias": "phonics-d"
+    },
+    "blend-sound-level1-dog-1": {
+      "file": "/audio/blend/sound-level1-dog-1.mp3",
+      "text": "o",
+      "speak": "o",
+      "alias": "phonics-o"
+    },
+    "blend-sound-level1-dog-2": {
+      "file": "/audio/blend/sound-level1-dog-2.mp3",
+      "text": "g",
+      "speak": "g",
+      "alias": "phonics-g"
+    },
+    "blend-merge-level1-dog": {
+      "file": "/audio/blend/merge-level1-dog.mp3",
+      "text": "d-d-d... ooooo... g-g-g... ddoooogg",
+      "speak": "d-d-d... ooooo... g-g-g... ddoooogg"
+    },
+    "blend-word-level1-sun": {
+      "file": "/audio/blend/word-level1-sun.mp3",
+      "text": "sun",
+      "speak": "sun",
+      "alias": "name-sun"
+    },
+    "blend-sound-level1-sun-0": {
+      "file": "/audio/blend/sound-level1-sun-0.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-sound-level1-sun-1": {
+      "file": "/audio/blend/sound-level1-sun-1.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "phonics-u"
+    },
+    "blend-sound-level1-sun-2": {
+      "file": "/audio/blend/sound-level1-sun-2.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level1-sun": {
+      "file": "/audio/blend/merge-level1-sun.mp3",
+      "text": "sssss... uuuuu... nnnnn... ssssuuuunnnn",
+      "speak": "sssss... uuuuu... nnnnn... ssssuuuunnnn"
+    },
+    "blend-word-level1-hat": {
+      "file": "/audio/blend/word-level1-hat.mp3",
+      "text": "hat",
+      "speak": "hat",
+      "alias": "name-hat"
+    },
+    "blend-sound-level1-hat-0": {
+      "file": "/audio/blend/sound-level1-hat-0.mp3",
+      "text": "h",
+      "speak": "h",
+      "alias": "phonics-h"
+    },
+    "blend-sound-level1-hat-1": {
+      "file": "/audio/blend/sound-level1-hat-1.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "phonics-a"
+    },
+    "blend-sound-level1-hat-2": {
+      "file": "/audio/blend/sound-level1-hat-2.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-merge-level1-hat": {
+      "file": "/audio/blend/merge-level1-hat.mp3",
+      "text": "hhhhh... aaaaa... t-t-t... hhhhaaaatt",
+      "speak": "hhhhh... aaaaa... t-t-t... hhhhaaaatt"
+    },
+    "blend-word-level1-fox": {
+      "file": "/audio/blend/word-level1-fox.mp3",
+      "text": "fox",
+      "speak": "fox",
+      "alias": "name-fox"
+    },
+    "blend-sound-level1-fox-0": {
+      "file": "/audio/blend/sound-level1-fox-0.mp3",
+      "text": "f",
+      "speak": "f",
+      "alias": "phonics-f"
+    },
+    "blend-sound-level1-fox-1": {
+      "file": "/audio/blend/sound-level1-fox-1.mp3",
+      "text": "o",
+      "speak": "o",
+      "alias": "phonics-o"
+    },
+    "blend-sound-level1-fox-2": {
+      "file": "/audio/blend/sound-level1-fox-2.mp3",
+      "text": "x",
+      "speak": "x",
+      "alias": "phonics-x"
+    },
+    "blend-merge-level1-fox": {
+      "file": "/audio/blend/merge-level1-fox.mp3",
+      "text": "fffff... ooooo... x-x-x... ffffooooxx",
+      "speak": "fffff... ooooo... x-x-x... ffffooooxx"
+    },
+    "blend-word-level1-bed": {
+      "file": "/audio/blend/word-level1-bed.mp3",
+      "text": "bed",
+      "speak": "bed"
+    },
+    "blend-sound-level1-bed-0": {
+      "file": "/audio/blend/sound-level1-bed-0.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-sound-level1-bed-1": {
+      "file": "/audio/blend/sound-level1-bed-1.mp3",
+      "text": "e",
+      "speak": "e",
+      "alias": "phonics-e"
+    },
+    "blend-sound-level1-bed-2": {
+      "file": "/audio/blend/sound-level1-bed-2.mp3",
+      "text": "d",
+      "speak": "d",
+      "alias": "phonics-d"
+    },
+    "blend-merge-level1-bed": {
+      "file": "/audio/blend/merge-level1-bed.mp3",
+      "text": "b-b-b... eeeee... d-d-d... bbeeeedd",
+      "speak": "b-b-b... eeeee... d-d-d... bbeeeedd"
+    },
+    "blend-word-level1-cup": {
+      "file": "/audio/blend/word-level1-cup.mp3",
+      "text": "cup",
+      "speak": "cup",
+      "alias": "name-cup"
+    },
+    "blend-sound-level1-cup-0": {
+      "file": "/audio/blend/sound-level1-cup-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level1-cup-1": {
+      "file": "/audio/blend/sound-level1-cup-1.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "phonics-u"
+    },
+    "blend-sound-level1-cup-2": {
+      "file": "/audio/blend/sound-level1-cup-2.mp3",
+      "text": "p",
+      "speak": "p",
+      "alias": "phonics-p"
+    },
+    "blend-merge-level1-cup": {
+      "file": "/audio/blend/merge-level1-cup.mp3",
+      "text": "c-c-c... uuuuu... p-p-p... ccuuuupp",
+      "speak": "c-c-c... uuuuu... p-p-p... ccuuuupp"
+    },
+    "blend-word-level1-box": {
+      "file": "/audio/blend/word-level1-box.mp3",
+      "text": "box",
+      "speak": "box",
+      "alias": "name-box"
+    },
+    "blend-sound-level1-box-0": {
+      "file": "/audio/blend/sound-level1-box-0.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-sound-level1-box-1": {
+      "file": "/audio/blend/sound-level1-box-1.mp3",
+      "text": "o",
+      "speak": "o",
+      "alias": "phonics-o"
+    },
+    "blend-sound-level1-box-2": {
+      "file": "/audio/blend/sound-level1-box-2.mp3",
+      "text": "x",
+      "speak": "x",
+      "alias": "phonics-x"
+    },
+    "blend-merge-level1-box": {
+      "file": "/audio/blend/merge-level1-box.mp3",
+      "text": "b-b-b... ooooo... x-x-x... bbooooxx",
+      "speak": "b-b-b... ooooo... x-x-x... bbooooxx"
+    },
+    "blend-word-level1-bus": {
+      "file": "/audio/blend/word-level1-bus.mp3",
+      "text": "bus",
+      "speak": "bus",
+      "alias": "name-bus"
+    },
+    "blend-sound-level1-bus-0": {
+      "file": "/audio/blend/sound-level1-bus-0.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-sound-level1-bus-1": {
+      "file": "/audio/blend/sound-level1-bus-1.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "phonics-u"
+    },
+    "blend-sound-level1-bus-2": {
+      "file": "/audio/blend/sound-level1-bus-2.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level1-bus": {
+      "file": "/audio/blend/merge-level1-bus.mp3",
+      "text": "b-b-b... uuuuu... sssss... bbuuuussss",
+      "speak": "b-b-b... uuuuu... sssss... bbuuuussss"
+    },
+    "blend-word-level1-hen": {
+      "file": "/audio/blend/word-level1-hen.mp3",
+      "text": "hen",
+      "speak": "hen",
+      "alias": "name-hen"
+    },
+    "blend-sound-level1-hen-0": {
+      "file": "/audio/blend/sound-level1-hen-0.mp3",
+      "text": "h",
+      "speak": "h",
+      "alias": "phonics-h"
+    },
+    "blend-sound-level1-hen-1": {
+      "file": "/audio/blend/sound-level1-hen-1.mp3",
+      "text": "e",
+      "speak": "e",
+      "alias": "phonics-e"
+    },
+    "blend-sound-level1-hen-2": {
+      "file": "/audio/blend/sound-level1-hen-2.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level1-hen": {
+      "file": "/audio/blend/merge-level1-hen.mp3",
+      "text": "hhhhh... eeeee... nnnnn... hhhheeeennnn",
+      "speak": "hhhhh... eeeee... nnnnn... hhhheeeennnn"
+    },
+    "blend-word-level2-ship": {
+      "file": "/audio/blend/word-level2-ship.mp3",
+      "text": "ship",
+      "speak": "ship"
+    },
+    "blend-sound-level2-ship-0": {
+      "file": "/audio/blend/sound-level2-ship-0.mp3",
+      "text": "sh",
+      "speak": "sh"
+    },
+    "blend-sound-level2-ship-1": {
+      "file": "/audio/blend/sound-level2-ship-1.mp3",
+      "text": "i",
+      "speak": "i",
+      "alias": "phonics-i"
+    },
+    "blend-sound-level2-ship-2": {
+      "file": "/audio/blend/sound-level2-ship-2.mp3",
+      "text": "p",
+      "speak": "p",
+      "alias": "phonics-p"
+    },
+    "blend-merge-level2-ship": {
+      "file": "/audio/blend/merge-level2-ship.mp3",
+      "text": "shhhh... iiiii... p-p-p... shhhiiiipp",
+      "speak": "shhhh... iiiii... p-p-p... shhhiiiipp"
+    },
+    "blend-word-level2-frog": {
+      "file": "/audio/blend/word-level2-frog.mp3",
+      "text": "frog",
+      "speak": "frog",
+      "alias": "name-frog"
+    },
+    "blend-sound-level2-frog-0": {
+      "file": "/audio/blend/sound-level2-frog-0.mp3",
+      "text": "f",
+      "speak": "f",
+      "alias": "phonics-f"
+    },
+    "blend-sound-level2-frog-1": {
+      "file": "/audio/blend/sound-level2-frog-1.mp3",
+      "text": "r",
+      "speak": "r",
+      "alias": "phonics-r"
+    },
+    "blend-sound-level2-frog-2": {
+      "file": "/audio/blend/sound-level2-frog-2.mp3",
+      "text": "o",
+      "speak": "o",
+      "alias": "phonics-o"
+    },
+    "blend-sound-level2-frog-3": {
+      "file": "/audio/blend/sound-level2-frog-3.mp3",
+      "text": "g",
+      "speak": "g",
+      "alias": "phonics-g"
+    },
+    "blend-merge-level2-frog": {
+      "file": "/audio/blend/merge-level2-frog.mp3",
+      "text": "fffff... rrrrr... ooooo... g-g-g... ffffrrrroooogg",
+      "speak": "fffff... rrrrr... ooooo... g-g-g... ffffrrrroooogg"
+    },
+    "blend-word-level2-star": {
+      "file": "/audio/blend/word-level2-star.mp3",
+      "text": "star",
+      "speak": "star",
+      "alias": "leo-shape-star"
+    },
+    "blend-sound-level2-star-0": {
+      "file": "/audio/blend/sound-level2-star-0.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-sound-level2-star-1": {
+      "file": "/audio/blend/sound-level2-star-1.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-sound-level2-star-2": {
+      "file": "/audio/blend/sound-level2-star-2.mp3",
+      "text": "ar",
+      "speak": "ar"
+    },
+    "blend-merge-level2-star": {
+      "file": "/audio/blend/merge-level2-star.mp3",
+      "text": "sssss... t-t-t... arrrr... ssssttarrr",
+      "speak": "sssss... t-t-t... arrrr... ssssttarrr"
+    },
+    "blend-word-level2-crab": {
+      "file": "/audio/blend/word-level2-crab.mp3",
+      "text": "crab",
+      "speak": "crab"
+    },
+    "blend-sound-level2-crab-0": {
+      "file": "/audio/blend/sound-level2-crab-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level2-crab-1": {
+      "file": "/audio/blend/sound-level2-crab-1.mp3",
+      "text": "r",
+      "speak": "r",
+      "alias": "phonics-r"
+    },
+    "blend-sound-level2-crab-2": {
+      "file": "/audio/blend/sound-level2-crab-2.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "phonics-a"
+    },
+    "blend-sound-level2-crab-3": {
+      "file": "/audio/blend/sound-level2-crab-3.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-merge-level2-crab": {
+      "file": "/audio/blend/merge-level2-crab.mp3",
+      "text": "c-c-c... rrrrr... aaaaa... b-b-b... ccrrrraaaabb",
+      "speak": "c-c-c... rrrrr... aaaaa... b-b-b... ccrrrraaaabb"
+    },
+    "blend-word-level2-plum": {
+      "file": "/audio/blend/word-level2-plum.mp3",
+      "text": "plum",
+      "speak": "plum"
+    },
+    "blend-sound-level2-plum-0": {
+      "file": "/audio/blend/sound-level2-plum-0.mp3",
+      "text": "p",
+      "speak": "p",
+      "alias": "phonics-p"
+    },
+    "blend-sound-level2-plum-1": {
+      "file": "/audio/blend/sound-level2-plum-1.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-sound-level2-plum-2": {
+      "file": "/audio/blend/sound-level2-plum-2.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "phonics-u"
+    },
+    "blend-sound-level2-plum-3": {
+      "file": "/audio/blend/sound-level2-plum-3.mp3",
+      "text": "m",
+      "speak": "m",
+      "alias": "phonics-m"
+    },
+    "blend-merge-level2-plum": {
+      "file": "/audio/blend/merge-level2-plum.mp3",
+      "text": "p-p-p... lllll... uuuuu... mmmmm... pplllluuuummmm",
+      "speak": "p-p-p... lllll... uuuuu... mmmmm... pplllluuuummmm"
+    },
+    "blend-word-level2-drum": {
+      "file": "/audio/blend/word-level2-drum.mp3",
+      "text": "drum",
+      "speak": "drum",
+      "alias": "name-drum"
+    },
+    "blend-sound-level2-drum-0": {
+      "file": "/audio/blend/sound-level2-drum-0.mp3",
+      "text": "d",
+      "speak": "d",
+      "alias": "phonics-d"
+    },
+    "blend-sound-level2-drum-1": {
+      "file": "/audio/blend/sound-level2-drum-1.mp3",
+      "text": "r",
+      "speak": "r",
+      "alias": "phonics-r"
+    },
+    "blend-sound-level2-drum-2": {
+      "file": "/audio/blend/sound-level2-drum-2.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "phonics-u"
+    },
+    "blend-sound-level2-drum-3": {
+      "file": "/audio/blend/sound-level2-drum-3.mp3",
+      "text": "m",
+      "speak": "m",
+      "alias": "phonics-m"
+    },
+    "blend-merge-level2-drum": {
+      "file": "/audio/blend/merge-level2-drum.mp3",
+      "text": "d-d-d... rrrrr... uuuuu... mmmmm... ddrrrruuuummmm",
+      "speak": "d-d-d... rrrrr... uuuuu... mmmmm... ddrrrruuuummmm"
+    },
+    "blend-word-level2-flag": {
+      "file": "/audio/blend/word-level2-flag.mp3",
+      "text": "flag",
+      "speak": "flag",
+      "alias": "name-flag"
+    },
+    "blend-sound-level2-flag-0": {
+      "file": "/audio/blend/sound-level2-flag-0.mp3",
+      "text": "f",
+      "speak": "f",
+      "alias": "phonics-f"
+    },
+    "blend-sound-level2-flag-1": {
+      "file": "/audio/blend/sound-level2-flag-1.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-sound-level2-flag-2": {
+      "file": "/audio/blend/sound-level2-flag-2.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "phonics-a"
+    },
+    "blend-sound-level2-flag-3": {
+      "file": "/audio/blend/sound-level2-flag-3.mp3",
+      "text": "g",
+      "speak": "g",
+      "alias": "phonics-g"
+    },
+    "blend-merge-level2-flag": {
+      "file": "/audio/blend/merge-level2-flag.mp3",
+      "text": "fffff... lllll... aaaaa... g-g-g... ffffllllaaaagg",
+      "speak": "fffff... lllll... aaaaa... g-g-g... ffffllllaaaagg"
+    },
+    "blend-word-level2-shell": {
+      "file": "/audio/blend/word-level2-shell.mp3",
+      "text": "shell",
+      "speak": "shell"
+    },
+    "blend-sound-level2-shell-0": {
+      "file": "/audio/blend/sound-level2-shell-0.mp3",
+      "text": "sh",
+      "speak": "sh"
+    },
+    "blend-sound-level2-shell-1": {
+      "file": "/audio/blend/sound-level2-shell-1.mp3",
+      "text": "e",
+      "speak": "e",
+      "alias": "phonics-e"
+    },
+    "blend-sound-level2-shell-2": {
+      "file": "/audio/blend/sound-level2-shell-2.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-merge-level2-shell": {
+      "file": "/audio/blend/merge-level2-shell.mp3",
+      "text": "shhhh... eeeee... lllll... shhheeeellll",
+      "speak": "shhhh... eeeee... lllll... shhheeeellll"
+    },
+    "blend-word-level2-nest": {
+      "file": "/audio/blend/word-level2-nest.mp3",
+      "text": "nest",
+      "speak": "nest",
+      "alias": "name-nest"
+    },
+    "blend-sound-level2-nest-0": {
+      "file": "/audio/blend/sound-level2-nest-0.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-sound-level2-nest-1": {
+      "file": "/audio/blend/sound-level2-nest-1.mp3",
+      "text": "e",
+      "speak": "e",
+      "alias": "phonics-e"
+    },
+    "blend-sound-level2-nest-2": {
+      "file": "/audio/blend/sound-level2-nest-2.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-sound-level2-nest-3": {
+      "file": "/audio/blend/sound-level2-nest-3.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-merge-level2-nest": {
+      "file": "/audio/blend/merge-level2-nest.mp3",
+      "text": "nnnnn... eeeee... sssss... t-t-t... nnnneeeesssstt",
+      "speak": "nnnnn... eeeee... sssss... t-t-t... nnnneeeesssstt"
+    },
+    "blend-word-level2-clam": {
+      "file": "/audio/blend/word-level2-clam.mp3",
+      "text": "clam",
+      "speak": "clam"
+    },
+    "blend-sound-level2-clam-0": {
+      "file": "/audio/blend/sound-level2-clam-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level2-clam-1": {
+      "file": "/audio/blend/sound-level2-clam-1.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-sound-level2-clam-2": {
+      "file": "/audio/blend/sound-level2-clam-2.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "phonics-a"
+    },
+    "blend-sound-level2-clam-3": {
+      "file": "/audio/blend/sound-level2-clam-3.mp3",
+      "text": "m",
+      "speak": "m",
+      "alias": "phonics-m"
+    },
+    "blend-merge-level2-clam": {
+      "file": "/audio/blend/merge-level2-clam.mp3",
+      "text": "c-c-c... lllll... aaaaa... mmmmm... ccllllaaaammmm",
+      "speak": "c-c-c... lllll... aaaaa... mmmmm... ccllllaaaammmm"
+    },
+    "blend-word-level3-cake": {
+      "file": "/audio/blend/word-level3-cake.mp3",
+      "text": "cake",
+      "speak": "cake",
+      "alias": "name-cake"
+    },
+    "blend-sound-level3-cake-0": {
+      "file": "/audio/blend/sound-level3-cake-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level3-cake-1": {
+      "file": "/audio/blend/sound-level3-cake-1.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "blend-sound-level3-train-2"
+    },
+    "blend-sound-level3-cake-2": {
+      "file": "/audio/blend/sound-level3-cake-2.mp3",
+      "text": "k",
+      "speak": "k",
+      "alias": "phonics-k"
+    },
+    "blend-merge-level3-cake": {
+      "file": "/audio/blend/merge-level3-cake.mp3",
+      "text": "c-c-c... aaaaa... k-k-k... ccaaaakk",
+      "speak": "c-c-c... aaaaa... k-k-k... ccaaaakk"
+    },
+    "blend-word-level3-house": {
+      "file": "/audio/blend/word-level3-house.mp3",
+      "text": "house",
+      "speak": "house",
+      "alias": "name-house"
+    },
+    "blend-sound-level3-house-0": {
+      "file": "/audio/blend/sound-level3-house-0.mp3",
+      "text": "h",
+      "speak": "h",
+      "alias": "phonics-h"
+    },
+    "blend-sound-level3-house-1": {
+      "file": "/audio/blend/sound-level3-house-1.mp3",
+      "text": "ou",
+      "speak": "ow"
+    },
+    "blend-sound-level3-house-2": {
+      "file": "/audio/blend/sound-level3-house-2.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level3-house": {
+      "file": "/audio/blend/merge-level3-house.mp3",
+      "text": "hhhhh... ouuuu... sssss... hhhhouuussss",
+      "speak": "hhhhh... ouuuu... sssss... hhhhouuussss"
+    },
+    "blend-word-level3-spoon": {
+      "file": "/audio/blend/word-level3-spoon.mp3",
+      "text": "spoon",
+      "speak": "spoon"
+    },
+    "blend-sound-level3-spoon-0": {
+      "file": "/audio/blend/sound-level3-spoon-0.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-sound-level3-spoon-1": {
+      "file": "/audio/blend/sound-level3-spoon-1.mp3",
+      "text": "p",
+      "speak": "p",
+      "alias": "phonics-p"
+    },
+    "blend-sound-level3-spoon-2": {
+      "file": "/audio/blend/sound-level3-spoon-2.mp3",
+      "text": "oo",
+      "speak": "oo"
+    },
+    "blend-sound-level3-spoon-3": {
+      "file": "/audio/blend/sound-level3-spoon-3.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level3-spoon": {
+      "file": "/audio/blend/merge-level3-spoon.mp3",
+      "text": "sssss... p-p-p... ooooo... nnnnn... ssssppoooonnnn",
+      "speak": "sssss... p-p-p... ooooo... nnnnn... ssssppoooonnnn"
+    },
+    "blend-word-level3-juice": {
+      "file": "/audio/blend/word-level3-juice.mp3",
+      "text": "juice",
+      "speak": "juice",
+      "alias": "name-juice"
+    },
+    "blend-sound-level3-juice-0": {
+      "file": "/audio/blend/sound-level3-juice-0.mp3",
+      "text": "j",
+      "speak": "j",
+      "alias": "phonics-j"
+    },
+    "blend-sound-level3-juice-1": {
+      "file": "/audio/blend/sound-level3-juice-1.mp3",
+      "text": "ui",
+      "speak": "oo"
+    },
+    "blend-sound-level3-juice-2": {
+      "file": "/audio/blend/sound-level3-juice-2.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level3-juice": {
+      "file": "/audio/blend/merge-level3-juice.mp3",
+      "text": "j-j-j... uiiii... c-c-c... jjuiiicc",
+      "speak": "j-j-j... uiiii... c-c-c... jjuiiicc"
+    },
+    "blend-word-level3-mice": {
+      "file": "/audio/blend/word-level3-mice.mp3",
+      "text": "mice",
+      "speak": "mice"
+    },
+    "blend-sound-level3-mice-0": {
+      "file": "/audio/blend/sound-level3-mice-0.mp3",
+      "text": "m",
+      "speak": "m",
+      "alias": "phonics-m"
+    },
+    "blend-sound-level3-mice-1": {
+      "file": "/audio/blend/sound-level3-mice-1.mp3",
+      "text": "i",
+      "speak": "i",
+      "alias": "blend-sound-level5-tie-1"
+    },
+    "blend-sound-level3-mice-2": {
+      "file": "/audio/blend/sound-level3-mice-2.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level3-mice": {
+      "file": "/audio/blend/merge-level3-mice.mp3",
+      "text": "mmmmm... iiiii... c-c-c... mmmmiiiicc",
+      "speak": "mmmmm... iiiii... c-c-c... mmmmiiiicc"
+    },
+    "blend-word-level3-toes": {
+      "file": "/audio/blend/word-level3-toes.mp3",
+      "text": "toes",
+      "speak": "toes"
+    },
+    "blend-sound-level3-toes-0": {
+      "file": "/audio/blend/sound-level3-toes-0.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-sound-level3-toes-1": {
+      "file": "/audio/blend/sound-level3-toes-1.mp3",
+      "text": "oe",
+      "speak": "oh"
+    },
+    "blend-sound-level3-toes-2": {
+      "file": "/audio/blend/sound-level3-toes-2.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level3-toes": {
+      "file": "/audio/blend/merge-level3-toes.mp3",
+      "text": "t-t-t... oeeee... sssss... ttoeeessss",
+      "speak": "t-t-t... oeeee... sssss... ttoeeessss"
+    },
+    "blend-word-level3-bowl": {
+      "file": "/audio/blend/word-level3-bowl.mp3",
+      "text": "bowl",
+      "speak": "bowl"
+    },
+    "blend-sound-level3-bowl-0": {
+      "file": "/audio/blend/sound-level3-bowl-0.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-sound-level3-bowl-1": {
+      "file": "/audio/blend/sound-level3-bowl-1.mp3",
+      "text": "ow",
+      "speak": "ow",
+      "alias": "blend-sound-level3-toes-1"
+    },
+    "blend-sound-level3-bowl-2": {
+      "file": "/audio/blend/sound-level3-bowl-2.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-merge-level3-bowl": {
+      "file": "/audio/blend/merge-level3-bowl.mp3",
+      "text": "b-b-b... owwww... lllll... bbowwwllll",
+      "speak": "b-b-b... owwww... lllll... bbowwwllll"
+    },
+    "blend-word-level3-blue": {
+      "file": "/audio/blend/word-level3-blue.mp3",
+      "text": "blue",
+      "speak": "blue"
+    },
+    "blend-sound-level3-blue-0": {
+      "file": "/audio/blend/sound-level3-blue-0.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-sound-level3-blue-1": {
+      "file": "/audio/blend/sound-level3-blue-1.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-sound-level3-blue-2": {
+      "file": "/audio/blend/sound-level3-blue-2.mp3",
+      "text": "ue",
+      "speak": "oo"
+    },
+    "blend-merge-level3-blue": {
+      "file": "/audio/blend/merge-level3-blue.mp3",
+      "text": "b-b-b... lllll... ueeee... bbllllueee",
+      "speak": "b-b-b... lllll... ueeee... bbllllueee"
+    },
+    "blend-word-level3-train": {
+      "file": "/audio/blend/word-level3-train.mp3",
+      "text": "train",
+      "speak": "train",
+      "alias": "name-train"
+    },
+    "blend-sound-level3-train-0": {
+      "file": "/audio/blend/sound-level3-train-0.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-sound-level3-train-1": {
+      "file": "/audio/blend/sound-level3-train-1.mp3",
+      "text": "r",
+      "speak": "r",
+      "alias": "phonics-r"
+    },
+    "blend-sound-level3-train-2": {
+      "file": "/audio/blend/sound-level3-train-2.mp3",
+      "text": "ai",
+      "speak": "ay"
+    },
+    "blend-sound-level3-train-3": {
+      "file": "/audio/blend/sound-level3-train-3.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level3-train": {
+      "file": "/audio/blend/merge-level3-train.mp3",
+      "text": "t-t-t... rrrrr... aiiii... nnnnn... ttrrrraiiinnnn",
+      "speak": "t-t-t... rrrrr... aiiii... nnnnn... ttrrrraiiinnnn"
+    },
+    "blend-word-level3-mouse": {
+      "file": "/audio/blend/word-level3-mouse.mp3",
+      "text": "mouse",
+      "speak": "mouse",
+      "alias": "name-mouse"
+    },
+    "blend-sound-level3-mouse-0": {
+      "file": "/audio/blend/sound-level3-mouse-0.mp3",
+      "text": "m",
+      "speak": "m",
+      "alias": "phonics-m"
+    },
+    "blend-sound-level3-mouse-1": {
+      "file": "/audio/blend/sound-level3-mouse-1.mp3",
+      "text": "ou",
+      "speak": "ow"
+    },
+    "blend-sound-level3-mouse-2": {
+      "file": "/audio/blend/sound-level3-mouse-2.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level3-mouse": {
+      "file": "/audio/blend/merge-level3-mouse.mp3",
+      "text": "mmmmm... ouuuu... sssss... mmmmouuussss",
+      "speak": "mmmmm... ouuuu... sssss... mmmmouuussss"
+    },
+    "blend-word-level4-clock": {
+      "file": "/audio/blend/word-level4-clock.mp3",
+      "text": "clock",
+      "speak": "clock"
+    },
+    "blend-sound-level4-clock-0": {
+      "file": "/audio/blend/sound-level4-clock-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level4-clock-1": {
+      "file": "/audio/blend/sound-level4-clock-1.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-sound-level4-clock-2": {
+      "file": "/audio/blend/sound-level4-clock-2.mp3",
+      "text": "o",
+      "speak": "o",
+      "alias": "phonics-o"
+    },
+    "blend-sound-level4-clock-3": {
+      "file": "/audio/blend/sound-level4-clock-3.mp3",
+      "text": "ck",
+      "speak": "k"
+    },
+    "blend-merge-level4-clock": {
+      "file": "/audio/blend/merge-level4-clock.mp3",
+      "text": "c-c-c... lllll... ooooo... ck-ck-ck... cclllloooockck",
+      "speak": "c-c-c... lllll... ooooo... ck-ck-ck... cclllloooockck"
+    },
+    "blend-word-level4-thumb": {
+      "file": "/audio/blend/word-level4-thumb.mp3",
+      "text": "thumb",
+      "speak": "thumb"
+    },
+    "blend-sound-level4-thumb-0": {
+      "file": "/audio/blend/sound-level4-thumb-0.mp3",
+      "text": "th",
+      "speak": "th"
+    },
+    "blend-sound-level4-thumb-1": {
+      "file": "/audio/blend/sound-level4-thumb-1.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "phonics-u"
+    },
+    "blend-sound-level4-thumb-2": {
+      "file": "/audio/blend/sound-level4-thumb-2.mp3",
+      "text": "m",
+      "speak": "m",
+      "alias": "phonics-m"
+    },
+    "blend-merge-level4-thumb": {
+      "file": "/audio/blend/merge-level4-thumb.mp3",
+      "text": "thhhh... uuuuu... mmmmm... thhhuuuummmm",
+      "speak": "thhhh... uuuuu... mmmmm... thhhuuuummmm"
+    },
+    "blend-word-level4-cheese": {
+      "file": "/audio/blend/word-level4-cheese.mp3",
+      "text": "cheese",
+      "speak": "cheese"
+    },
+    "blend-sound-level4-cheese-0": {
+      "file": "/audio/blend/sound-level4-cheese-0.mp3",
+      "text": "ch",
+      "speak": "ch"
+    },
+    "blend-sound-level4-cheese-1": {
+      "file": "/audio/blend/sound-level4-cheese-1.mp3",
+      "text": "ee",
+      "speak": "ee"
+    },
+    "blend-sound-level4-cheese-2": {
+      "file": "/audio/blend/sound-level4-cheese-2.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level4-cheese": {
+      "file": "/audio/blend/merge-level4-cheese.mp3",
+      "text": "ch-ch-ch... eeeee... sssss... chcheeeessss",
+      "speak": "ch-ch-ch... eeeee... sssss... chcheeeessss"
+    },
+    "blend-word-level4-queen": {
+      "file": "/audio/blend/word-level4-queen.mp3",
+      "text": "queen",
+      "speak": "queen",
+      "alias": "name-queen"
+    },
+    "blend-sound-level4-queen-0": {
+      "file": "/audio/blend/sound-level4-queen-0.mp3",
+      "text": "qu",
+      "speak": "kw"
+    },
+    "blend-sound-level4-queen-1": {
+      "file": "/audio/blend/sound-level4-queen-1.mp3",
+      "text": "ee",
+      "speak": "ee"
+    },
+    "blend-sound-level4-queen-2": {
+      "file": "/audio/blend/sound-level4-queen-2.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level4-queen": {
+      "file": "/audio/blend/merge-level4-queen.mp3",
+      "text": "qu-qu-qu... eeeee... nnnnn... ququeeeennnn",
+      "speak": "qu-qu-qu... eeeee... nnnnn... ququeeeennnn"
+    },
+    "blend-word-level4-whale": {
+      "file": "/audio/blend/word-level4-whale.mp3",
+      "text": "whale",
+      "speak": "whale",
+      "alias": "name-whale"
+    },
+    "blend-sound-level4-whale-0": {
+      "file": "/audio/blend/sound-level4-whale-0.mp3",
+      "text": "wh",
+      "speak": "wh"
+    },
+    "blend-sound-level4-whale-1": {
+      "file": "/audio/blend/sound-level4-whale-1.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "blend-sound-level3-train-2"
+    },
+    "blend-sound-level4-whale-2": {
+      "file": "/audio/blend/sound-level4-whale-2.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-merge-level4-whale": {
+      "file": "/audio/blend/merge-level4-whale.mp3",
+      "text": "whhhh... aaaaa... lllll... whhhaaaallll",
+      "speak": "whhhh... aaaaa... lllll... whhhaaaallll"
+    },
+    "blend-word-level4-brush": {
+      "file": "/audio/blend/word-level4-brush.mp3",
+      "text": "brush",
+      "speak": "brush"
+    },
+    "blend-sound-level4-brush-0": {
+      "file": "/audio/blend/sound-level4-brush-0.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-sound-level4-brush-1": {
+      "file": "/audio/blend/sound-level4-brush-1.mp3",
+      "text": "r",
+      "speak": "r",
+      "alias": "phonics-r"
+    },
+    "blend-sound-level4-brush-2": {
+      "file": "/audio/blend/sound-level4-brush-2.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "phonics-u"
+    },
+    "blend-sound-level4-brush-3": {
+      "file": "/audio/blend/sound-level4-brush-3.mp3",
+      "text": "sh",
+      "speak": "sh"
+    },
+    "blend-merge-level4-brush": {
+      "file": "/audio/blend/merge-level4-brush.mp3",
+      "text": "b-b-b... rrrrr... uuuuu... shhhh... bbrrrruuuushhh",
+      "speak": "b-b-b... rrrrr... uuuuu... shhhh... bbrrrruuuushhh"
+    },
+    "blend-word-level4-chair": {
+      "file": "/audio/blend/word-level4-chair.mp3",
+      "text": "chair",
+      "speak": "chair"
+    },
+    "blend-sound-level4-chair-0": {
+      "file": "/audio/blend/sound-level4-chair-0.mp3",
+      "text": "ch",
+      "speak": "ch"
+    },
+    "blend-sound-level4-chair-1": {
+      "file": "/audio/blend/sound-level4-chair-1.mp3",
+      "text": "air",
+      "speak": "air"
+    },
+    "blend-merge-level4-chair": {
+      "file": "/audio/blend/merge-level4-chair.mp3",
+      "text": "ch-ch-ch... airrrr... chchairrr",
+      "speak": "ch-ch-ch... airrrr... chchairrr"
+    },
+    "blend-word-level4-crown": {
+      "file": "/audio/blend/word-level4-crown.mp3",
+      "text": "crown",
+      "speak": "crown"
+    },
+    "blend-sound-level4-crown-0": {
+      "file": "/audio/blend/sound-level4-crown-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level4-crown-1": {
+      "file": "/audio/blend/sound-level4-crown-1.mp3",
+      "text": "r",
+      "speak": "r",
+      "alias": "phonics-r"
+    },
+    "blend-sound-level4-crown-2": {
+      "file": "/audio/blend/sound-level4-crown-2.mp3",
+      "text": "ow",
+      "speak": "ow"
+    },
+    "blend-sound-level4-crown-3": {
+      "file": "/audio/blend/sound-level4-crown-3.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level4-crown": {
+      "file": "/audio/blend/merge-level4-crown.mp3",
+      "text": "c-c-c... rrrrr... owwww... nnnnn... ccrrrrowwwnnnn",
+      "speak": "c-c-c... rrrrr... owwww... nnnnn... ccrrrrowwwnnnn"
+    },
+    "blend-word-level4-teeth": {
+      "file": "/audio/blend/word-level4-teeth.mp3",
+      "text": "teeth",
+      "speak": "teeth"
+    },
+    "blend-sound-level4-teeth-0": {
+      "file": "/audio/blend/sound-level4-teeth-0.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-sound-level4-teeth-1": {
+      "file": "/audio/blend/sound-level4-teeth-1.mp3",
+      "text": "ee",
+      "speak": "ee"
+    },
+    "blend-sound-level4-teeth-2": {
+      "file": "/audio/blend/sound-level4-teeth-2.mp3",
+      "text": "th",
+      "speak": "th"
+    },
+    "blend-merge-level4-teeth": {
+      "file": "/audio/blend/merge-level4-teeth.mp3",
+      "text": "t-t-t... eeeee... thhhh... tteeeethhh",
+      "speak": "t-t-t... eeeee... thhhh... tteeeethhh"
+    },
+    "blend-word-level4-shoe": {
+      "file": "/audio/blend/word-level4-shoe.mp3",
+      "text": "shoe",
+      "speak": "shoe",
+      "alias": "name-shoe"
+    },
+    "blend-sound-level4-shoe-0": {
+      "file": "/audio/blend/sound-level4-shoe-0.mp3",
+      "text": "sh",
+      "speak": "sh"
+    },
+    "blend-sound-level4-shoe-1": {
+      "file": "/audio/blend/sound-level4-shoe-1.mp3",
+      "text": "oe",
+      "speak": "oe",
+      "alias": "blend-sound-level3-spoon-2"
+    },
+    "blend-merge-level4-shoe": {
+      "file": "/audio/blend/merge-level4-shoe.mp3",
+      "text": "shhhh... oeeee... shhhoeee",
+      "speak": "shhhh... oeeee... shhhoeee"
+    },
+    "blend-word-level5-lion": {
+      "file": "/audio/blend/word-level5-lion.mp3",
+      "text": "lion",
+      "speak": "lion",
+      "alias": "name-lion"
+    },
+    "blend-sound-level5-lion-0": {
+      "file": "/audio/blend/sound-level5-lion-0.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-sound-level5-lion-1": {
+      "file": "/audio/blend/sound-level5-lion-1.mp3",
+      "text": "i",
+      "speak": "i",
+      "alias": "blend-sound-level5-tie-1"
+    },
+    "blend-sound-level5-lion-2": {
+      "file": "/audio/blend/sound-level5-lion-2.mp3",
+      "text": "o",
+      "speak": "o",
+      "alias": "phonics-o"
+    },
+    "blend-sound-level5-lion-3": {
+      "file": "/audio/blend/sound-level5-lion-3.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level5-lion": {
+      "file": "/audio/blend/merge-level5-lion.mp3",
+      "text": "lllll... iiiii... ooooo... nnnnn... lllliiiioooonnnn",
+      "speak": "lllll... iiiii... ooooo... nnnnn... lllliiiioooonnnn"
+    },
+    "blend-word-level5-snake": {
+      "file": "/audio/blend/word-level5-snake.mp3",
+      "text": "snake",
+      "speak": "snake",
+      "alias": "name-snake"
+    },
+    "blend-sound-level5-snake-0": {
+      "file": "/audio/blend/sound-level5-snake-0.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-sound-level5-snake-1": {
+      "file": "/audio/blend/sound-level5-snake-1.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-sound-level5-snake-2": {
+      "file": "/audio/blend/sound-level5-snake-2.mp3",
+      "text": "a",
+      "speak": "a",
+      "alias": "blend-sound-level3-train-2"
+    },
+    "blend-sound-level5-snake-3": {
+      "file": "/audio/blend/sound-level5-snake-3.mp3",
+      "text": "k",
+      "speak": "k",
+      "alias": "phonics-k"
+    },
+    "blend-merge-level5-snake": {
+      "file": "/audio/blend/merge-level5-snake.mp3",
+      "text": "sssss... nnnnn... aaaaa... k-k-k... ssssnnnnaaaakk",
+      "speak": "sssss... nnnnn... aaaaa... k-k-k... ssssnnnnaaaakk"
+    },
+    "blend-word-level5-toys": {
+      "file": "/audio/blend/word-level5-toys.mp3",
+      "text": "toys",
+      "speak": "toys"
+    },
+    "blend-sound-level5-toys-0": {
+      "file": "/audio/blend/sound-level5-toys-0.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-sound-level5-toys-1": {
+      "file": "/audio/blend/sound-level5-toys-1.mp3",
+      "text": "oy",
+      "speak": "oy"
+    },
+    "blend-sound-level5-toys-2": {
+      "file": "/audio/blend/sound-level5-toys-2.mp3",
+      "text": "s",
+      "speak": "s",
+      "alias": "phonics-s"
+    },
+    "blend-merge-level5-toys": {
+      "file": "/audio/blend/merge-level5-toys.mp3",
+      "text": "t-t-t... oyyyy... sssss... ttoyyyssss",
+      "speak": "t-t-t... oyyyy... sssss... ttoyyyssss"
+    },
+    "blend-word-level5-cloud": {
+      "file": "/audio/blend/word-level5-cloud.mp3",
+      "text": "cloud",
+      "speak": "cloud"
+    },
+    "blend-sound-level5-cloud-0": {
+      "file": "/audio/blend/sound-level5-cloud-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level5-cloud-1": {
+      "file": "/audio/blend/sound-level5-cloud-1.mp3",
+      "text": "l",
+      "speak": "l",
+      "alias": "phonics-l"
+    },
+    "blend-sound-level5-cloud-2": {
+      "file": "/audio/blend/sound-level5-cloud-2.mp3",
+      "text": "ou",
+      "speak": "ow"
+    },
+    "blend-sound-level5-cloud-3": {
+      "file": "/audio/blend/sound-level5-cloud-3.mp3",
+      "text": "d",
+      "speak": "d",
+      "alias": "phonics-d"
+    },
+    "blend-merge-level5-cloud": {
+      "file": "/audio/blend/merge-level5-cloud.mp3",
+      "text": "c-c-c... lllll... ouuuu... d-d-d... ccllllouuudd",
+      "speak": "c-c-c... lllll... ouuuu... d-d-d... ccllllouuudd"
+    },
+    "blend-word-level5-meat": {
+      "file": "/audio/blend/word-level5-meat.mp3",
+      "text": "meat",
+      "speak": "meat"
+    },
+    "blend-sound-level5-meat-0": {
+      "file": "/audio/blend/sound-level5-meat-0.mp3",
+      "text": "m",
+      "speak": "m",
+      "alias": "phonics-m"
+    },
+    "blend-sound-level5-meat-1": {
+      "file": "/audio/blend/sound-level5-meat-1.mp3",
+      "text": "ea",
+      "speak": "ee"
+    },
+    "blend-sound-level5-meat-2": {
+      "file": "/audio/blend/sound-level5-meat-2.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-merge-level5-meat": {
+      "file": "/audio/blend/merge-level5-meat.mp3",
+      "text": "mmmmm... eaaaa... t-t-t... mmmmeaaatt",
+      "speak": "mmmmm... eaaaa... t-t-t... mmmmeaaatt"
+    },
+    "blend-word-level5-bike": {
+      "file": "/audio/blend/word-level5-bike.mp3",
+      "text": "bike",
+      "speak": "bike"
+    },
+    "blend-sound-level5-bike-0": {
+      "file": "/audio/blend/sound-level5-bike-0.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-sound-level5-bike-1": {
+      "file": "/audio/blend/sound-level5-bike-1.mp3",
+      "text": "i",
+      "speak": "i",
+      "alias": "blend-sound-level5-tie-1"
+    },
+    "blend-sound-level5-bike-2": {
+      "file": "/audio/blend/sound-level5-bike-2.mp3",
+      "text": "k",
+      "speak": "k",
+      "alias": "phonics-k"
+    },
+    "blend-merge-level5-bike": {
+      "file": "/audio/blend/merge-level5-bike.mp3",
+      "text": "b-b-b... iiiii... k-k-k... bbiiiikk",
+      "speak": "b-b-b... iiiii... k-k-k... bbiiiikk"
+    },
+    "blend-word-level5-cube": {
+      "file": "/audio/blend/word-level5-cube.mp3",
+      "text": "cube",
+      "speak": "cube"
+    },
+    "blend-sound-level5-cube-0": {
+      "file": "/audio/blend/sound-level5-cube-0.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level5-cube-1": {
+      "file": "/audio/blend/sound-level5-cube-1.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "letter-u"
+    },
+    "blend-sound-level5-cube-2": {
+      "file": "/audio/blend/sound-level5-cube-2.mp3",
+      "text": "b",
+      "speak": "b",
+      "alias": "phonics-b"
+    },
+    "blend-merge-level5-cube": {
+      "file": "/audio/blend/merge-level5-cube.mp3",
+      "text": "c-c-c... uuuuu... b-b-b... ccuuuubb",
+      "speak": "c-c-c... uuuuu... b-b-b... ccuuuubb"
+    },
+    "blend-word-level5-chef": {
+      "file": "/audio/blend/word-level5-chef.mp3",
+      "text": "chef",
+      "speak": "chef"
+    },
+    "blend-sound-level5-chef-0": {
+      "file": "/audio/blend/sound-level5-chef-0.mp3",
+      "text": "ch",
+      "speak": "ch",
+      "alias": "blend-sound-level2-shell-0"
+    },
+    "blend-sound-level5-chef-1": {
+      "file": "/audio/blend/sound-level5-chef-1.mp3",
+      "text": "e",
+      "speak": "e",
+      "alias": "phonics-e"
+    },
+    "blend-sound-level5-chef-2": {
+      "file": "/audio/blend/sound-level5-chef-2.mp3",
+      "text": "f",
+      "speak": "f",
+      "alias": "phonics-f"
+    },
+    "blend-merge-level5-chef": {
+      "file": "/audio/blend/merge-level5-chef.mp3",
+      "text": "ch-ch-ch... eeeee... fffff... chcheeeeffff",
+      "speak": "ch-ch-ch... eeeee... fffff... chcheeeeffff"
+    },
+    "blend-word-level5-tie": {
+      "file": "/audio/blend/word-level5-tie.mp3",
+      "text": "tie",
+      "speak": "tie"
+    },
+    "blend-sound-level5-tie-0": {
+      "file": "/audio/blend/sound-level5-tie-0.mp3",
+      "text": "t",
+      "speak": "t",
+      "alias": "phonics-t"
+    },
+    "blend-sound-level5-tie-1": {
+      "file": "/audio/blend/sound-level5-tie-1.mp3",
+      "text": "ie",
+      "speak": "eye"
+    },
+    "blend-merge-level5-tie": {
+      "file": "/audio/blend/merge-level5-tie.mp3",
+      "text": "t-t-t... ieeee... ttieee",
+      "speak": "t-t-t... ieeee... ttieee"
+    },
+    "blend-word-level5-unicorn": {
+      "file": "/audio/blend/word-level5-unicorn.mp3",
+      "text": "unicorn",
+      "speak": "unicorn"
+    },
+    "blend-sound-level5-unicorn-0": {
+      "file": "/audio/blend/sound-level5-unicorn-0.mp3",
+      "text": "u",
+      "speak": "u",
+      "alias": "letter-u"
+    },
+    "blend-sound-level5-unicorn-1": {
+      "file": "/audio/blend/sound-level5-unicorn-1.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-sound-level5-unicorn-2": {
+      "file": "/audio/blend/sound-level5-unicorn-2.mp3",
+      "text": "i",
+      "speak": "i",
+      "alias": "phonics-i"
+    },
+    "blend-sound-level5-unicorn-3": {
+      "file": "/audio/blend/sound-level5-unicorn-3.mp3",
+      "text": "c",
+      "speak": "c",
+      "alias": "phonics-c"
+    },
+    "blend-sound-level5-unicorn-4": {
+      "file": "/audio/blend/sound-level5-unicorn-4.mp3",
+      "text": "or",
+      "speak": "or"
+    },
+    "blend-sound-level5-unicorn-5": {
+      "file": "/audio/blend/sound-level5-unicorn-5.mp3",
+      "text": "n",
+      "speak": "n",
+      "alias": "phonics-n"
+    },
+    "blend-merge-level5-unicorn": {
+      "file": "/audio/blend/merge-level5-unicorn.mp3",
+      "text": "uuuuu... nnnnn... iiiii... c-c-c... orrrr... nnnnn... uuuunnnniiiiccorrrnnnn",
+      "speak": "uuuuu... nnnnn... iiiii... c-c-c... orrrr... nnnnn... uuuunnnniiiiccorrrnnnn"
+    },
+    "blend-title": {
+      "file": "/audio/blend/title.mp3",
+      "text": "Blend & Seek! Levels 1 to 5 phonics.",
+      "speak": "Blend & Seek! Levels 1 to 5 phonics."
+    },
+    "blend-menu": {
+      "file": "/audio/blend/menu.mp3",
+      "text": "Choose a level to practise.",
+      "speak": "Choose a level to practise."
+    },
+    "blend-instructions": {
+      "file": "/audio/blend/instructions.mp3",
+      "text": "Sound out the word at the top of the screen, then select the picture that matches the word.",
+      "speak": "Sound out the word at the top of the screen, then select the picture that matches the word."
+    },
+    "blend-instructions-hint": {
+      "file": "/audio/blend/instructions-hint.mp3",
+      "text": "Hint: Click on the letter, or the sound button beneath it, to hear the sound that the letter makes!",
+      "speak": "Hint: click on the letter, or the sound button beneath it, to hear the sound that the letter makes!"
+    },
+    "blend-well-done": {
+      "file": "/audio/blend/well-done.mp3",
+      "text": "Great work! You matched up all the words and pictures correctly. Would you like to play again?",
+      "speak": "Great work! You matched up all the words and pictures correctly. Would you like to play again?"
     }
   },
   "edgeVoice": {
