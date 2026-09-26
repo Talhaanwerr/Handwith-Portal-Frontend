@@ -11,6 +11,8 @@ const STANDALONE_LINKS = [
   { href: ROUTES.LIBRARY, label: "Home" },
   { href: ROUTES.LIBRARY_BROWSE, label: "Browse" },
   { href: ROUTES.LIBRARY_DASHBOARD, label: "My dashboard" },
+  { href: ROUTES.LIBRARY_HISTORY, label: "History" },
+  { href: ROUTES.LIBRARY_CHILDREN, label: "Children" },
 ] as const;
 
 export function LibraryShell({ children }: { children: React.ReactNode }) {
@@ -53,6 +55,24 @@ export function LibraryShell({ children }: { children: React.ReactNode }) {
                 )}
               >
                 Dashboard
+              </Link>
+              <Link
+                href={ROUTES.LIBRARY_HISTORY}
+                className={cn(
+                  "text-slate-600 hover:text-slate-900",
+                  pathname.startsWith(ROUTES.LIBRARY_HISTORY) && "font-medium text-slate-900"
+                )}
+              >
+                History
+              </Link>
+              <Link
+                href={ROUTES.LIBRARY_CHILDREN}
+                className={cn(
+                  "text-slate-600 hover:text-slate-900",
+                  pathname.startsWith(ROUTES.LIBRARY_CHILDREN) && "font-medium text-slate-900"
+                )}
+              >
+                Children
               </Link>
             </nav>
           </div>
