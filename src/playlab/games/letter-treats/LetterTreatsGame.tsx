@@ -7,7 +7,7 @@ import { GameStage } from "@shared/components/game/GameStage";
 import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
-import { setSpeechFallback, stopVoice } from "@shared/audio/voice";
+import { stopVoice } from "@shared/audio/voice";
 import { TreatSplash } from "@games/letter-treats/components/TreatScreens";
 import { AlphabetSetScreen } from "@games/letter-treats/components/AlphabetSetScreen";
 import { LetterScreen } from "@games/letter-treats/components/LetterScreen";
@@ -60,14 +60,8 @@ export function LetterTreatsGame() {
   const pendingLetterRef = useRef<string | null>(null);
   const bucket = toBucket(screen);
 
-  // Candy ABC ships only recorded clips - never let the browser synthesise a line.
-  useEffect(() => {
-    setSpeechFallback(false);
-    return () => {
-      stopVoice();
-      setSpeechFallback(true);
-    };
-  }, []);
+  // Browser speech is off portal-wide now (voice.ts); only the stop is left.
+  useEffect(() => () => stopVoice(), []);
 
   const handlePop = useCallback(
     (popped: string) => {

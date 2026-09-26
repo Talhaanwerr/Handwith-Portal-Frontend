@@ -35,3 +35,5 @@ Copy this file into new projects so the same mistakes are not repeated.
 10. After login, do not blindly honor `?redirect=/dashboard`. Unauthenticated visits to `/` or `/dashboard` stamp that query param, so a SUPER_ADMIN would land in the tenant app. Resolve the destination with `getPostLoginPath(role, redirectTo)`: super admins go to `/super-admin/dashboard` unless the redirect is a super-admin (or `/play`) path. Root `/` must also role-route, never hardcode `/dashboard`.
 
 11. `next/dynamic(..., { ssr: false })` is not allowed in Server Components (Next.js 16). Put the dynamic imports in a Client Component (`"use client"`) and render that from the page.
+
+12. A blend clip aliased by LETTER is not the same sound in every word. `a` in cake, `i` in mice, `c` in juice and `ch` in chef are long vowels, a soft c and "sh", so aliasing them to `phonics-a`, `phonics-i`, `phonics-c` or the `ch` recording teaches the wrong sound. Check the word, not just the letter, before aliasing a `blend-sound-*` clip.

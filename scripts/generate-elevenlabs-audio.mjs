@@ -235,6 +235,13 @@ function selectClips() {
   const planned = [];
   let skipped = 0;
   for (const [id, clip] of entries) {
+    // An aliased clip is the same words as one we already have; it borrows
+    // that recording at play time and must never be generated, or we would
+    // pay ElevenLabs twice for one line.
+    if (clip.alias) {
+      skipped++;
+      continue;
+    }
     const out = join(PUBLIC_DIR, clip.file);
     if (!FORCE && existsSync(out)) {
       skipped++;

@@ -1,0 +1,584 @@
+/**
+ * Sort It — two boards, a pile of things, and a rule nobody states.
+ *
+ * The reference's look is almost entirely restraint: a very pale sky-blue
+ * stage, two big white cards, enormous objects, and no chrome. The background
+ * is deliberately EMPTY — the things being sorted are the only busy part of
+ * the screen, which is what lets a three-year-old see the grouping at all. So
+ * there is no scenery layer in this file, and that is the design, not an
+ * omission.
+ *
+ * Sized in `vmin` clamps like Blend & Seek (the screen is the board; there is
+ * no fixed canvas here), with ONE shared item size so a big thing and a small
+ * thing differ because of the object, never because of the slot.
+ */
+
+.so-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── The stage ───────────────────────────────────────────────────────────── */
+
+.so-play,
+.so-splash,
+.so-done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2.4vmin, 28px);
+  overflow: hidden;
+  /* 64px clears the pinned pills (16px + 44px) at every size; 50px let the
+     Back pill sit on the first board on a phone held sideways */
+  padding: clamp(64px, 9vmin, 84px) clamp(10px, 2.4vw, 32px) clamp(14px, 3vmin, 34px);
+  /* the reference's pale preschool blue, flat on purpose */
+  background: #b4ddf0;
+  touch-action: none;
+}
+/* the picnic cloth, for the sort-by-kind rounds — the ONE decorated
+   background in the game, and still only two colours */
+.so-play--category {
+  background:
+    repeating-linear-gradient(90deg, rgba(224, 96, 96, 0.22) 0 8vmin, transparent 8vmin 16vmin),
+    repeating-linear-gradient(0deg, rgba(224, 96, 96, 0.22) 0 8vmin, transparent 8vmin 16vmin),
+    #f4f1ea;
+}
+
+/* ── The bar along the top ───────────────────────────────────────────────── */
+
+.so-progress {
+  /* pinned near the top rather than sitting in the column: it belongs to the
+     screen, not to the boards, and in the middle it pushed them down */
+  position: absolute;
+  left: 50%;
+  /* level with the two pinned pills and BETWEEN them: at 84vw wide it ran
+     under both of them on every screen */
+  top: 16px;
+  z-index: 3;
+  display: flex;
+  height: 44px;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 18px);
+  width: min(calc(100% - 340px), 860px);
+  translate: -50% 0;
+}
+/** The track is a ruler: white, with tick marks printed across it. */
+.so-progress-bar {
+  position: relative;
+  flex: 1;
+  height: clamp(14px, 2.8vmin, 26px);
+  overflow: hidden;
+  border: clamp(2px, 0.4vmin, 4px) solid #2f7ba6;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 calc(10% - 2px),
+      rgba(47, 123, 166, 0.45) calc(10% - 2px) 10%
+    ),
+    #ffffff;
+}
+.so-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7ad063, #34a93f);
+}
+/** A little wooden rule that slides along the front of the fill. Positioned
+ *  by `left` and centred on itself by margin — never by a transform, which
+ *  Framer is already using for the slide. */
+.so-progress-ruler {
+  position: absolute;
+  top: 50%;
+  width: clamp(26px, 5.4vmin, 54px);
+  height: clamp(13px, 2.7vmin, 27px);
+  margin-top: calc(clamp(13px, 2.7vmin, 27px) / -2);
+  margin-left: calc(clamp(26px, 5.4vmin, 54px) / -2);
+  border: clamp(2px, 0.4vmin, 4px) solid #a8721f;
+  border-radius: 3px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 calc(25% - 2px),
+      rgba(120, 80, 20, 0.6) calc(25% - 2px) 25%
+    ),
+    linear-gradient(#ffd977, #f0b445);
+  pointer-events: none;
+}
+.so-round {
+  flex: none;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: clamp(11px, 1.8vmin, 16px);
+  color: #235d7e;
+}
+
+/* ── The two boards ──────────────────────────────────────────────────────── */
+
+.so-boards {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  /* two boards with the pal standing in the gap between them. STRETCH, not
+     end: boards being compared must be the same height, or BIG sits higher
+     than SMALL and the comparison reads as a difference in the boards rather
+     than in the things inside them. */
+  /* minmax(0,1fr), not 1fr: a plain 1fr track grows to fit its content, so
+     the BIG board — whose things are twice the size — came out wider than the
+     SMALL one and the comparison read as a difference between the BOARDS */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: clamp(6px, 1.6vw, 28px);
+  width: min(94vw, 1100px);
+  max-width: 100%;
+}
+.so-boardcard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(132px, 32vmin, 320px);
+  padding: clamp(24px, 5vmin, 52px) clamp(10px, 2.4vmin, 26px) clamp(10px, 2.4vmin, 26px);
+  border: clamp(3px, 0.7vmin, 7px) solid #2f7ba6;
+  border-radius: clamp(14px, 2.8vmin, 32px);
+  background: #ffffff;
+  box-shadow:
+    inset 0 clamp(-14px, -1.8vmin, -7px) 0 rgba(30, 90, 130, 0.12),
+    0 clamp(5px, 1vmin, 10px) 0 rgba(25, 75, 110, 0.35);
+  transition:
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+/** A thing is over this board — it lights, so a child knows it will be caught
+ *  before they let go. */
+.so-boardcard--lit {
+  background: #f3fbd9;
+  box-shadow:
+    0 0 0 clamp(3px, 0.6vmin, 6px) #a6d43f,
+    0 8px 20px rgba(30, 70, 100, 0.22);
+}
+/* the sort-by-kind rounds use the reference's grey trays instead of white */
+.so-play--category .so-boardcard {
+  background: #cfd2d6;
+}
+.so-play--category .so-boardcard--lit {
+  background: #e4eec4;
+}
+/** The word this board is for, sitting on its rim — BIG, SMALL, FOOD. */
+.so-board-label {
+  position: absolute;
+  left: 50%;
+  top: clamp(-16px, -2.4vmin, -8px);
+  padding: 0.3em 1.1em;
+  translate: -50% 0;
+  white-space: nowrap;
+  border: clamp(3px, 0.6vmin, 6px) solid #2f7ba6;
+  border-radius: 999px;
+  background: #ffd977;
+  font-size: clamp(13px, 2.6vmin, 28px);
+  line-height: 1;
+  color: #1d4f6e;
+  box-shadow: inset 0 -0.25em 0 rgba(0, 0, 0, 0.14);
+}
+.so-board-items {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.6vmin, 18px);
+}
+
+/* ── The things ──────────────────────────────────────────────────────────── */
+
+/** ONE size for everything, so "big" and "small" are a property of the object
+ *  and never of where it happens to be sitting. */
+.so-item {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  width: clamp(46px, 10vmin, 104px);
+  height: clamp(46px, 10vmin, 104px);
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.so-item :is(svg, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+/** Big is nearly double small — the difference has to be obvious across a
+ *  room, not measurable. */
+.so-item--big {
+  /* capped against the VIEWPORT too: four big things in a row used to add up
+     to more than the screen was wide */
+  width: min(clamp(86px, 19vmin, 196px), 21vw);
+  height: min(clamp(86px, 19vmin, 196px), 21vw);
+}
+/** An empty place in a board: a question mark, not a blacked-out copy of the
+ *  example. The silhouette handed the answer over; this asks the question. */
+.so-item--ghost {
+  border-radius: 50%;
+  background: rgba(30, 70, 100, 0.09);
+  box-shadow: inset 0 0 0 clamp(3px, 0.6vmin, 6px) rgba(30, 70, 100, 0.16);
+  font-size: clamp(26px, 6vmin, 62px);
+  line-height: 1;
+  color: rgba(30, 70, 100, 0.34);
+}
+.so-item--loose {
+  cursor: grab;
+  touch-action: none;
+}
+.so-item--used {
+  visibility: hidden;
+}
+.so-item--dragging {
+  opacity: 0.25;
+}
+/** The copy under the finger, centred on the point by margin. */
+.so-ghost {
+  width: 0;
+  height: 0;
+}
+.so-item--carry {
+  margin-left: calc(clamp(46px, 10vmin, 104px) / -2);
+  margin-top: calc(clamp(46px, 10vmin, 104px) / -2);
+  filter: drop-shadow(0 10px 14px rgba(20, 50, 70, 0.4));
+}
+.so-item--carry.so-item--big {
+  margin-left: calc(clamp(86px, 19vmin, 196px) / -2);
+  margin-top: calc(clamp(86px, 19vmin, 196px) / -2);
+}
+/** The burst of squares where a thing lands. */
+.so-puff {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.so-confetti {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--pl-color, #f6c544);
+}
+
+/* ── The pile underneath ─────────────────────────────────────────────────── */
+
+.so-tray {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(96vw, 1100px);
+  align-items: flex-end;
+  justify-content: center;
+  /* wide gaps on purpose: a preschooler's finger needs room around a target.
+     `vw` not `vmin`, so the row narrows with the SCREEN rather than with its
+     short side — on a phone the vmin version was wider than the display and
+     the end things hung off it. */
+  gap: clamp(8px, 3vw, 56px);
+  min-height: clamp(76px, 16vmin, 160px);
+  padding: 0 clamp(8px, 2vw, 28px);
+}
+.so-tray-slot {
+  display: flex;
+  min-width: 0;
+  flex: 0 1 auto;
+  align-items: flex-end;
+  justify-content: center;
+  /* the slot keeps its HEIGHT when its thing is gone so nothing shuffles under
+     a finger, but it may narrow: a fixed width overflowed the row */
+  min-height: clamp(86px, 19vmin, 196px);
+}
+
+/* ── Choosing a rule ─────────────────────────────────────────────────────
+   `ChoiceScreen` is the portal's shared picker: it brings the layout, the
+   entrance and the pinned Back, and NOTHING else. Colour is each game's own,
+   painted here under this game's root — without these rules the plates render
+   as the bare grey boxes the component ships. */
+
+.so-pick {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 55% at 50% 16%, #d9f0fb 0 55%, transparent 56%),
+    linear-gradient(#b4ddf0, #8dc8e6);
+}
+/* same reasoning as Word Site's picker: safe centring only centres when the
+   column fits, so the column is kept short */
+/* qualified through the shell so it outranks the `pt-16 py-8` utilities
+   ChoiceScreen sets inline on the same element — balanced padding is what
+   makes the centred column actually look centred */
+.so-pick .pl-screen-shell .pl-screen-scroll {
+  gap: clamp(12px, 2.6vmin, 28px);
+  padding-top: clamp(46px, 8vh, 76px);
+  padding-bottom: clamp(46px, 8vh, 76px);
+}
+.so-pick .pl-cs-title {
+  font-size: clamp(24px, 5.6vmin, 58px);
+  color: #16495f;
+  text-shadow: 0 clamp(2px, 0.4vmin, 4px) 0 rgba(255, 255, 255, 0.7);
+}
+.so-pick .pl-cs-subtitle {
+  font-size: clamp(12px, 2.2vmin, 22px);
+  color: #2f7ba6;
+}
+.so-pick .pl-cs-btn {
+  width: clamp(110px, 24vmin, 260px);
+  padding: clamp(12px, 2.8vmin, 30px) clamp(8px, 1.8vmin, 20px);
+  border: clamp(3px, 0.7vmin, 7px) solid #2f7ba6;
+  border-radius: clamp(16px, 3vmin, 34px);
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-14px, -1.8vmin, -7px) 0 rgba(30, 90, 130, 0.12),
+    0 clamp(5px, 1vmin, 10px) 0 rgba(25, 75, 110, 0.4);
+}
+.so-pick .pl-cs-preview {
+  font-size: clamp(30px, 7vmin, 74px);
+  line-height: 1;
+  color: #1d4f6e;
+}
+.so-pick .pl-cs-label {
+  font-size: clamp(14px, 2.8vmin, 30px);
+  color: #2f7ba6;
+}
+/* one colour per rule, so the two plates are told apart before they are read */
+.so-pick .pl-cs-btn--size {
+  background: #fff1c9;
+  border-color: #c98a1e;
+}
+.so-pick .pl-cs-btn--size .pl-cs-preview,
+.so-pick .pl-cs-btn--size .pl-cs-label {
+  color: #8a5a10;
+}
+.so-pick .pl-cs-btn--home {
+  background: #d8f3e2;
+  border-color: #2f8f5f;
+}
+.so-pick .pl-cs-btn--home .pl-cs-preview,
+.so-pick .pl-cs-btn--home .pl-cs-label {
+  color: #226b45;
+}
+
+/* ── The pal between the boards ──────────────────────────────────────────── */
+
+.so-pal {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* he is the presenter, not a sticker: as tall as the boards he stands
+     between. The trimmed photo is 285×344, so this width gives him the full
+     height of the row. */
+  width: clamp(120px, 34vmin, 340px);
+  pointer-events: none;
+}
+.so-pal-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+.so-splash-pal {
+  position: relative;
+  z-index: 2;
+  width: clamp(130px, 28vmin, 300px);
+  pointer-events: none;
+}
+.so-splash-pal .so-pal-photo {
+  height: auto;
+}
+/* On the picker he stands in the corner. As a sibling AFTER the full-screen
+   picker he was laid out below the bottom of the screen and never seen. */
+.so-pick .so-splash-pal {
+  position: absolute;
+  right: 2%;
+  bottom: 0;
+  z-index: 1;
+  width: clamp(80px, 22vmin, 220px);
+}
+
+.so-leave,
+.so-leave-btn {
+  padding: 0.5em 1.2em;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: clamp(11px, 1.7vmin, 16px);
+  line-height: 1;
+  color: #235d7e;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(20, 60, 90, 0.2);
+}
+/* pinned top-right by the shared `.pl-exit-pill` */
+.so-leave-btn {
+  min-height: 44px;
+}
+
+/* ── The way in, and the end ─────────────────────────────────────────────── */
+
+.so-splash-head {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.so-title {
+  font-size: clamp(30px, 8vmin, 84px);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0 3px 0 #3d87ad,
+    0 10px 20px rgba(20, 60, 90, 0.35);
+}
+.so-subtitle {
+  margin-top: 0.3em;
+  font-size: clamp(12px, 2.2vmin, 22px);
+  color: #235d7e;
+}
+/** The home page's demonstration: two labelled boards with the pal between
+ *  them, and a thing flying from the pile into the big board on a loop. */
+.so-splash-show {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(8px, 2vw, 26px);
+  width: min(88vw, 780px);
+}
+.so-splash-board {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(90px, 22vmin, 220px);
+  padding: clamp(20px, 4vmin, 44px) clamp(8px, 2vmin, 22px) clamp(8px, 2vmin, 22px);
+  border: clamp(3px, 0.7vmin, 7px) solid #2f7ba6;
+  border-radius: clamp(14px, 2.8vmin, 32px);
+  background: #ffffff;
+  box-shadow:
+    inset 0 clamp(-14px, -1.8vmin, -7px) 0 rgba(30, 90, 130, 0.12),
+    0 clamp(5px, 1vmin, 10px) 0 rgba(25, 75, 110, 0.35);
+}
+/** The word on the rim, the same plate the real boards wear. */
+.so-splash-tag {
+  position: absolute;
+  left: 50%;
+  top: clamp(-16px, -2.4vmin, -8px);
+  padding: 0.3em 1.1em;
+  translate: -50% 0;
+  white-space: nowrap;
+  border: clamp(3px, 0.6vmin, 6px) solid #2f7ba6;
+  border-radius: 999px;
+  background: #ffd977;
+  font-size: clamp(12px, 2.4vmin, 26px);
+  line-height: 1;
+  color: #1d4f6e;
+  box-shadow: inset 0 -0.25em 0 rgba(0, 0, 0, 0.14);
+}
+/** The thing that flies into the big board, starting from the pile. */
+.so-splash-fly {
+  position: absolute;
+  right: 6%;
+  bottom: clamp(-52px, -11vmin, -22px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.so-play-btn {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.5em;
+  padding: clamp(10px, 2vmin, 20px) clamp(28px, 6vmin, 64px);
+  border: 0;
+  border-radius: 999px;
+  background: #2f6fd0;
+  font-size: clamp(16px, 3.2vmin, 32px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -5px 0 rgba(0, 0, 0, 0.2),
+    0 10px 20px rgba(20, 50, 90, 0.3);
+}
+.so-play-glyph {
+  font-size: 0.75em;
+}
+
+.so-done-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2vmin, 22px);
+  padding: clamp(18px, 4vmin, 46px) clamp(24px, 6vmin, 70px);
+  border-radius: clamp(14px, 2.6vmin, 30px);
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(20, 60, 90, 0.3);
+}
+.so-done-title {
+  font-size: clamp(24px, 5.4vmin, 56px);
+  line-height: 1;
+  color: #2f8f4f;
+}
+.so-done-line {
+  margin-top: calc(clamp(10px, 2vmin, 22px) * -0.5);
+  font-size: clamp(12px, 2.1vmin, 20px);
+  color: #46688a;
+}
+.so-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(8px, 1.6vmin, 16px);
+}
+
+/* ── Narrow screens ──────────────────────────────────────────────────────
+   Two boards side by side IS the comparison, so the columns never stack; the
+   teacher steps out instead, since at this width he would stand on the pile
+   of things waiting to be sorted. */
+@media (max-width: 720px), (orientation: portrait) {
+  .so-pal {
+    width: clamp(52px, 16vw, 110px);
+  }
+  /* on a phone the big/small pair has to fit ACROSS, so both shrink against
+     the viewport width rather than the short side */
+  /* never under 44px: at 13vw a 320px phone got 42px things to pick up */
+  .so-item {
+    width: max(44px, min(clamp(46px, 10vmin, 104px), 13vw));
+    height: max(44px, min(clamp(46px, 10vmin, 104px), 13vw));
+  }
+  .so-item--big {
+    width: min(clamp(86px, 19vmin, 196px), 24vw);
+    height: min(clamp(86px, 19vmin, 196px), 24vw);
+  }
+  .so-boardcard {
+    min-height: clamp(104px, 26vw, 200px);
+    padding: clamp(20px, 5vw, 44px) clamp(6px, 1.6vw, 18px) clamp(8px, 2vw, 20px);
+  }
+  .so-tray-slot {
+    min-height: min(clamp(86px, 19vmin, 196px), 26vw);
+  }
+  .so-board-label {
+    font-size: clamp(11px, 3vmin, 16px);
+  }
+}

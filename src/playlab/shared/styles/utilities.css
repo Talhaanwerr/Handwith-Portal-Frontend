@@ -147,6 +147,60 @@
   top: var(--pl-y, auto);
 }
 
+/** The thing under a dragging finger (see useDragDrop). Moved by a TRANSFORM
+ *  from two custom properties the hook writes straight onto the element,
+ *  never by left/top through a React render: a finger reports 60–120 moves a
+ *  second, and re-rendering a whole board for each one is what made dragging
+ *  stutter on phones. Its content still centres itself on the point by
+ *  margin. */
+.pl-drag-ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transform: translate3d(var(--pl-x, 0px), var(--pl-y, 0px), 0);
+  will-change: transform;
+}
+
+/** FigureBreak: the dimmed board and the figure rising over it. The figure's
+ *  box is square and sized off the screen's short side, so a phone held
+ *  upright still gets a big cheer; the game sizes what is inside it. */
+.pl-break {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  background: rgba(20, 24, 40, 0.45);
+  pointer-events: none;
+}
+.pl-break-figure {
+  --pl-break-w: clamp(160px, 46vmin, 380px);
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: var(--pl-break-w);
+  height: var(--pl-break-w);
+  margin-left: calc(var(--pl-break-w) / -2);
+}
+
+/** The "Back to Games" pill a game pins top-right, the twin of the pinned
+ *  NavPillButton top-left: the same 16px inset and the same 44px minimum
+ *  height, so the two corners match and both are a finger-sized target. The
+ *  paint (border, colour, font size) stays the game's own. */
+.pl-exit-pill {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+
 /** Edge-anchored decorative sprite (left OR right anchor, layered). */
 .pl-pos {
   left: var(--pl-left, auto);
@@ -211,8 +265,11 @@
   grid-template-columns: repeat(auto-fill, minmax(var(--pl-min, 50px), 1fr));
 }
 
-/** The gold burst ring behind a star the moment it is earned. */
+/** The gold burst ring behind a star the moment it is earned. It fades out
+ *  at 2.4x the star's size and STAYS mounted, so it must never take a tap —
+ *  invisible, it was covering the buttons beside the stars. */
 .pl-star-burst {
+  pointer-events: none;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 217, 61, 0.55), transparent 70%);
 }
@@ -542,8 +599,9 @@
    Pieces for shared/components/game/Confetti.tsx. The six colours are the
    portal's celebration palette (the same family the sparkle canvas uses); a
    game can repaint pl-cf-0..5 under its own root if its world needs to. The
-   element is positioned by pl-at (left from --pl-x) and animated by Framer
-   (top/x/rotate), so nothing here may rely on `transform`. */
+   element is parked by pl-at (--pl-x, and --pl-y just above the top edge)
+   and falls by Framer's transform (y/x/rotate), so nothing here may set
+   `transform`. */
 
 .pl-cf {
   position: absolute;

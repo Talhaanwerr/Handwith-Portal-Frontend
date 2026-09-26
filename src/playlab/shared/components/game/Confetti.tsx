@@ -64,10 +64,13 @@ export function Confetti({ count = 32 }: ConfettiProps) {
         <motion.span
           key={i}
           className={`pl-cf pl-cf-${p.cls} ${p.tall ? "pl-cf--tall" : ""} pl-at`}
-          style={cssVars({ "--pl-x": p.x })}
-          initial={{ top: "-4%", x: 0, rotate: 0, opacity: 1 }}
+          // parked just above the top edge, and dropped by a TRANSFORM: it used
+          // to animate `top`, which re-laid-out the page on every frame for
+          // every piece — 40 to 56 of them — in every celebration in the portal
+          style={cssVars({ "--pl-x": p.x, "--pl-y": "-4%" })}
+          initial={{ y: "0vh", x: 0, rotate: 0, opacity: 1 }}
           animate={{
-            top: "104%",
+            y: "108vh",
             x: [0, p.drift, -p.drift * 0.5, p.drift * 0.25],
             rotate: p.rot,
             opacity: [1, 1, 1, 0.9, 0],
