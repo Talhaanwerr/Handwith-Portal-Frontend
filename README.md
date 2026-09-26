@@ -1,4 +1,4 @@
-# SaaS Boilerplate — Next.js Frontend
+## SaaS Boilerplate — Next.js Frontend
 
 Production-ready multi-tenant SaaS frontend built with Next.js 15 App Router, Tailwind CSS, and TypeScript.
 
