@@ -1,0 +1,539 @@
+/**
+ * Blend & Seek — Levels 1-5 Phonics.
+ *
+ * Fluid clamp()/vmin sizing throughout, no fixed breakpoints beyond the one
+ * the portal already shares for portrait phones (see .rotate-prompt in
+ * shared/styles/utilities.css) — the same convention as Letter Treats and
+ * Feed the Shark rather than Key Quest's `--u` container-query rig, because
+ * nothing on this screen needs a pixel-exact flight path: the classroom is
+ * one full-bleed SVG and everything else is an ordinary centred column.
+ */
+
+.br-root {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #fbe9d6;
+}
+
+.br-screen-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.br-screen {
+  background: #fbe9d6;
+}
+
+.br-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Title screen ─────────────────────────────────────────────────────────── */
+
+.br-title-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.94);
+  border: 3px solid #f0dcc2;
+  border-radius: 28px;
+  padding: clamp(14px, 3vmin, 26px) clamp(28px, 6vmin, 52px);
+  box-shadow:
+    0 6px 0 rgba(122, 34, 48, 0.12),
+    0 14px 28px rgba(90, 60, 20, 0.18);
+}
+
+.br-title {
+  font-size: clamp(28px, 6.4vmin, 54px);
+  color: #7a2230;
+}
+
+.br-subtitle {
+  margin-top: 4px;
+  border-radius: 999px;
+  background: #fbe9d6;
+  padding: 4px 18px;
+  font-size: clamp(13px, 2.2vmin, 18px);
+  color: #2b6c55;
+}
+
+/* The splash is automatic (see TitleScreen.tsx) — these dots are the only
+ *  hint it gives that something is about to happen, the same "loading" cue
+ *  Letter Tracing's splash uses. */
+.br-title-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(122, 34, 48, 0.4);
+}
+
+/* ── Instructions / Well-Done modal shell (shared) ───────────────────────── */
+
+.br-modal-tint {
+  background: rgba(20, 26, 40, 0.58);
+}
+
+.br-modal-close {
+  position: absolute;
+  top: clamp(10px, 2.4vmin, 20px);
+  right: clamp(10px, 2.4vmin, 20px);
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 6vmin, 48px);
+  height: clamp(44px, 6vmin, 48px);
+  border-radius: 50%;
+  background: #b8323f;
+}
+.br-modal-close svg {
+  width: 46%;
+  height: 46%;
+}
+
+.br-modal-card {
+  max-width: min(90vw, 560px);
+  border-radius: 22px;
+  background: #f6f3ee;
+  padding: clamp(18px, 4vmin, 34px);
+  text-align: center;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25);
+}
+
+.br-modal-title {
+  font-size: clamp(22px, 4.4vmin, 34px);
+  color: #7a2230;
+  margin-bottom: 10px;
+}
+
+.br-modal-text {
+  font-size: clamp(14px, 2.6vmin, 19px);
+  color: #3d3d5c;
+  line-height: 1.45;
+}
+
+.br-modal-hint {
+  margin-top: 12px;
+  font-size: clamp(13px, 2.3vmin, 17px);
+  color: #6b4a1e;
+}
+
+.br-modal-card--done .br-modal-actions {
+  margin-top: 18px;
+  gap: clamp(14px, 3vmin, 26px);
+}
+
+.br-round-btn {
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 10vmin, 76px);
+  height: clamp(56px, 10vmin, 76px);
+  border-radius: 50%;
+  background: #b8323f;
+  box-shadow: 0 4px 0 #8a2530;
+}
+.br-round-btn svg {
+  width: 52%;
+  height: 52%;
+}
+
+/* ── Level menu ───────────────────────────────────────────────────────────── */
+
+.br-menu-title {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  padding: clamp(4px, 1dvh, 6px) 22px;
+  font-size: clamp(16px, 3.4dvh, 30px);
+  color: #6b4a1e;
+}
+
+/* Five big square tiles that WRAP — flex-wrap centres a short last row on
+   its own (three tiles, then two centred beneath) with no manual grid
+   spanning. Tile size answers to whichever of height or width is tighter
+   (`min(dvh, vw)` inside the clamp), same reasoning as the picture grid:
+   it must still fit a short landscape phone (~340px tall) without scrolling
+   AND a narrow portrait phone without shrinking to illegible. */
+.br-menu-grid {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: clamp(10px, 2.2dvh, 22px);
+  width: min(94vw, 640px);
+}
+
+.br-menu-tile {
+  --br-tile: clamp(80px, min(17dvh, 24vw), 152px);
+  position: relative;
+  width: var(--br-tile);
+  height: var(--br-tile);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 22px;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+/* One accent per level, easiest to hardest — colour doubles as a difficulty
+   cue, the way a Level 1 tile should look friendlier than a Level 5 one. */
+.br-menu-tile[data-n="1"] {
+  background: linear-gradient(155deg, #6fbf6f, #3d8a28);
+  box-shadow: 0 5px 0 #2c661d;
+}
+.br-menu-tile[data-n="2"] {
+  background: linear-gradient(155deg, #5fc2c9, #2b8a91);
+  box-shadow: 0 5px 0 #1f666b;
+}
+.br-menu-tile[data-n="3"] {
+  background: linear-gradient(155deg, #8e7fd6, #6350b0);
+  box-shadow: 0 5px 0 #493a85;
+}
+.br-menu-tile[data-n="4"] {
+  background: linear-gradient(155deg, #f0a848, #d4861a);
+  box-shadow: 0 5px 0 #a8680f;
+}
+.br-menu-tile[data-n="5"] {
+  background: linear-gradient(155deg, #e0546e, #b8323f);
+  box-shadow: 0 5px 0 #8a2530;
+}
+
+.br-menu-tile-num {
+  font-size: clamp(26px, 6dvh, 50px);
+  line-height: 1;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.br-menu-tile-label {
+  font-size: clamp(10px, 2dvh, 15px);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.92;
+}
+
+/* A corner chip, like a notification badge on an app icon — sitting ON the
+   tile's edge rather than inside its centred number, so it never crowds the
+   big numeral next to it. */
+.br-menu-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #d4861a;
+  font-size: clamp(11px, 1.8dvh, 14px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+.br-menu-badge--partial {
+  color: #6b4a1e;
+}
+
+/* ── Play screen chrome ───────────────────────────────────────────────────── */
+
+/* Top-RIGHT, the twin of the pinned Back pill top-left and the same height.
+   Centred at the top it sat on the word card on a phone held sideways. */
+.br-progress {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 15;
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 16px;
+  font-size: clamp(11px, 2vmin, 15px);
+  color: #6b4a1e;
+}
+
+/* Key Quest's teacher, standing beside the question. Its own classes
+   (`.dc-teacher*`) are Key Quest's and use ITS `--u` unit, which this game
+   never declares, so every dimension is re-stated here, scoped under this
+   game's own wrapper — never redeclared bare, which would also repaint the
+   teacher inside Key Quest itself (class names are global). Landscape only:
+   a portrait phone or tablet keeps the 4-column grid edge-to-edge, where a
+   figure this size would swallow the whole board, so he stays hidden there. */
+/* Actual life size: a square box at 44vmin, the SAME proportion Key Quest
+   itself renders him at (its own `--u` is ~1% of a 16:9-fit height, and he is
+   44 * that there too) — so he is not a shrunk mascot here, he is exactly the
+   scale he already stands at in his own game. At that size he is wider than
+   the picture grid's side gutter on anything but a very wide screen, so
+   `z-index` puts him BEHIND the question column on purpose: the word card,
+   phoneme row and picture cards all have an opaque background and sit above
+   him, so wherever he overlaps them he is simply covered rather than
+   covering the art a child needs to read — he reads as standing behind the
+   grid, not on top of it. `pointer-events: none` (below) means that overlap
+   was never a tap-target problem even before this. */
+.br-teacher-slot {
+  position: absolute;
+  left: clamp(4px, 2.5vw, 44px);
+  bottom: 0;
+  width: clamp(140px, 44vmin, 480px);
+  height: clamp(140px, 44vmin, 480px);
+  z-index: 0;
+  pointer-events: none;
+}
+.br-teacher-slot .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.br-teacher-slot .dc-teacher-shadow {
+  position: absolute;
+  left: 16%;
+  bottom: 2%;
+  width: 56%;
+  height: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 60, 20, 0.38), transparent 70%);
+}
+@media (orientation: portrait), (max-width: 560px) {
+  .br-teacher-slot {
+    display: none;
+  }
+}
+
+/* ── The question ─────────────────────────────────────────────────────────── */
+
+.br-question {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2.4vmin, 20px);
+  width: 100%;
+}
+
+.br-word-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.br-word-card {
+  border-radius: 16px;
+  background: #f6f3ee;
+  border: 3px solid #d8d0c0;
+  padding: clamp(6px, 1.6vmin, 14px) clamp(22px, 5vmin, 44px);
+  font-size: clamp(26px, 6vmin, 52px);
+  color: #2b2b3a;
+  text-transform: lowercase;
+}
+
+.br-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 6px;
+}
+.br-dot {
+  width: clamp(6px, 1.1vmin, 10px);
+  height: clamp(6px, 1.1vmin, 10px);
+  border-radius: 50%;
+  background: hsl(calc(var(--br-i, 0) * 47deg) 65% 62%);
+}
+
+.br-phoneme-row {
+  display: flex;
+  gap: clamp(6px, 1.6vmin, 16px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Each sound is its OWN card — same visual family as the word card and the
+   picture cards (light fill, warm border) — so the letter and its dot/bar
+   read as a self-contained "sound button" rather than bare text floating on
+   the classroom, which used to look like the word repeating itself. */
+.br-phoneme {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: clamp(6px, 1.4vmin, 12px) clamp(8px, 1.8vmin, 14px);
+  background: #f6f3ee;
+  border: 2.5px solid #d8d0c0;
+  border-radius: 12px;
+  box-shadow: 0 3px 0 #d8d0c0;
+}
+.br-phoneme:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #d8d0c0;
+}
+
+.br-phoneme-letters {
+  font-size: clamp(15px, 3.2vmin, 26px);
+  color: #2b2b3a;
+}
+
+.br-phoneme-dot {
+  width: clamp(8px, 1.6vmin, 13px);
+  height: clamp(8px, 1.6vmin, 13px);
+  border-radius: 50%;
+  background: #b8323f;
+}
+
+.br-phoneme-bar {
+  width: clamp(26px, 5.6vmin, 46px);
+  height: clamp(5px, 1vmin, 8px);
+  border-radius: 999px;
+  background: #b8323f;
+}
+
+/* ── The picture grid ───────────────────────────────────────────────────────
+   Every card is square, so a grid sized only from WIDTH can grow taller than
+   the screen has room for once the word card and phoneme row above it are
+   accounted for — the eight cards must all be visible without scrolling, so
+   `--br-card` is the smaller of a width-derived and a height-derived size,
+   not just the width share. The height budgets below (52dvh / 56dvh) are the
+   space left after the word card, phoneme row, and this column's own gaps —
+   tuned against a static harness across common phone/tablet/desktop sizes;
+   see the game's own verification notes for the sizes actually checked. */
+
+/* The burst on a correct pick (see PhonicsQuestion.tsx) is centred on
+   whatever positioned box it sits inside — this wrapper, not the grid
+   itself, because `.br-card` clips its own overflow and would cut the
+   pieces off at the winning card's edge. */
+.br-grid-wrap {
+  position: relative;
+}
+
+.br-grid {
+  --br-gap: clamp(6px, 1.6vmin, 14px);
+  --br-card: min((92vw - 3 * var(--br-gap)) / 4, (44dvh - var(--br-gap)) / 2);
+  display: grid;
+  grid-template-columns: repeat(4, var(--br-card));
+  gap: var(--br-gap);
+  justify-content: center;
+}
+
+/* A phone held sideways: the grid gets the height that is really left after
+   the word card, the sounds and the column's padding (~185px at the type's
+   smallest), rather than a flat 44% of the screen. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .br-grid {
+    --br-card: min((92vw - 3 * var(--br-gap)) / 4, (100dvh - 185px - var(--br-gap)) / 2);
+  }
+}
+
+/* A phone held upright: two columns, sized off what is left below the pinned
+   Back pill (the column starts under it) and the word and its sounds. Half
+   the screen used to go unused under a grid of thumbnails. */
+@media (orientation: portrait) and (max-width: 767px) {
+  .br-grid {
+    --br-card: min((88vw - var(--br-gap)) / 2, (100dvh - 250px - 3 * var(--br-gap)) / 4);
+    grid-template-columns: repeat(2, var(--br-card));
+  }
+  .br-play-column.pl-screen-scroll {
+    padding-top: 68px;
+  }
+  /* six sounds ("u n i c or n") on ONE line across a 320px phone, each still
+     a 44px target */
+  .br-phoneme-row {
+    gap: 4px;
+  }
+  .br-phoneme {
+    min-width: 44px;
+    min-height: 44px;
+    padding-inline: 4px;
+  }
+}
+
+.br-card {
+  position: relative;
+  width: var(--br-card);
+  height: var(--br-card);
+  border-radius: 14px;
+  background: #e9d9b8;
+  border: 3px solid #8a6a3e;
+  overflow: hidden;
+}
+.br-card:disabled {
+  cursor: default;
+}
+.br-card[data-state="wrong"] {
+  opacity: 0.55;
+}
+
+.br-card-art {
+  position: absolute;
+  inset: 10%;
+  display: block;
+}
+.br-card-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Twemoji <img> icons (see PictureArt.tsx) — same box as the inline-svg
+   fallback above, an <img> instead of an <svg>. */
+.br-pic-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+
+/* "mice": the one mouse-face icon, three times, so the plural still reads as
+   a group rather than a single mouse. */
+.br-pic-group {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.br-pic-group-item {
+  position: absolute;
+  width: 52%;
+  height: 52%;
+  object-fit: contain;
+  user-select: none;
+}
+.br-pic-group-item:nth-child(1) {
+  left: 0;
+  bottom: 0;
+}
+.br-pic-group-item:nth-child(2) {
+  right: 0;
+  bottom: 4%;
+}
+.br-pic-group-item:nth-child(3) {
+  left: 22%;
+  top: 0;
+}
+
+.br-card-mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.35);
+}
+.br-card-mark svg {
+  width: 62%;
+  height: 62%;
+}

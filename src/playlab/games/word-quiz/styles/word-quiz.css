@@ -1,0 +1,734 @@
+/**
+ * Snow Words — ten pictures on the ice, three words each.
+ *
+ * The reference activity is a pale web quiz: grey hairline rows, a small blue
+ * button, white everywhere. Followed literally it reads as a FORM, and this is
+ * for three-to-six-year-olds — so the STRUCTURE is the reference's and the
+ * SURFACE is the portal's. Fat coloured tiles with a rim and a lip they press
+ * onto, the instruction on a ribbon, the picture on its own plate.
+ *
+ * The world is the shared ARCTIC theme: sky, aurora, cliff, bergs, snow
+ * ground, and on the home screen an igloo with a penguin and a bear. This file
+ * places those pieces and owns nothing else about them.
+ *
+ * LAYOUT RULE that drives most of the sizes below: the two pinned pills (Back,
+ * Back to Games) live in the top corners, so every screen keeps its content
+ * BELOW them. The progress bar used to sit up there beside them and ran
+ * straight through both on a phone.
+ */
+
+.wq-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── The ice ─────────────────────────────────────────────────────────────── */
+
+.wq-ice {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.wq-ice-sky {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.wq-ice-aurora {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 46%;
+  opacity: 0.75;
+}
+.wq-ice-cloud {
+  position: absolute;
+  width: clamp(70px, 18vw, 230px);
+}
+.wq-ice-cloud--a {
+  left: 6%;
+  top: 9%;
+}
+.wq-ice-cloud--b {
+  right: 8%;
+  top: 17%;
+  opacity: 0.8;
+}
+.wq-ice-cliff {
+  position: absolute;
+  left: 0;
+  bottom: 26%;
+  width: clamp(120px, 30vw, 420px);
+  opacity: 0.9;
+}
+.wq-ice-berg {
+  position: absolute;
+  bottom: 27%;
+}
+.wq-ice-berg--a {
+  right: 4%;
+  width: clamp(80px, 20vw, 280px);
+}
+.wq-ice-berg--b {
+  right: 26%;
+  width: clamp(56px, 13vw, 180px);
+  opacity: 0.85;
+}
+.wq-ice-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 30%;
+}
+.wq-ice-igloo {
+  position: absolute;
+  left: 4%;
+  bottom: 4%;
+  width: clamp(90px, 21vw, 300px);
+}
+.wq-ice-pine {
+  position: absolute;
+  right: 20%;
+  bottom: 20%;
+  width: clamp(40px, 9vw, 120px);
+}
+.wq-ice-penguin {
+  position: absolute;
+  left: 27%;
+  bottom: 3%;
+  width: clamp(44px, 10vw, 140px);
+}
+.wq-ice-bear {
+  position: absolute;
+  right: 3%;
+  bottom: 3%;
+  width: clamp(80px, 19vw, 260px);
+}
+
+/* ── The room every screen sits in ───────────────────────────────────────── */
+
+.wq-screen,
+.wq-splash,
+.wq-review {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.8vmin, 22px);
+  overflow: hidden;
+  /* the top padding clears the two pinned pills at EVERY size */
+  padding: clamp(64px, 9vmin, 96px) clamp(10px, 2.4vw, 34px) clamp(12px, 2.6vmin, 30px);
+}
+
+/** The way out, top-right — the twin of the pinned Back pill. Placed and
+ *  sized by the shared `.pl-exit-pill`; this is only its paint. */
+.wq-leave {
+  padding: 0.5em 1.2em;
+  border: clamp(2px, 0.4vmin, 4px) solid #2f6f96;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: clamp(11px, 1.7vmin, 16px);
+  line-height: 1;
+  color: #17465f;
+  cursor: pointer;
+  box-shadow: 0 clamp(2px, 0.5vmin, 5px) 0 rgba(20, 70, 100, 0.3);
+}
+
+/* ── The bar, on its own row under the pills ─────────────────────────────── */
+
+.wq-topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(92vw, 1000px);
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 18px);
+}
+.wq-progress {
+  display: flex;
+  flex: 1;
+  gap: clamp(2px, 0.5vw, 6px);
+}
+.wq-progress-seg {
+  flex: 1;
+  height: clamp(10px, 2vmin, 22px);
+  border: clamp(2px, 0.35vmin, 4px) solid #7fa8c4;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+.wq-progress-seg--done {
+  border-color: #1c7a45;
+  background: linear-gradient(#7fe0a0, #34a95a);
+  box-shadow: inset 0 clamp(-5px, -0.7vmin, -3px) 0 rgba(0, 0, 0, 0.14);
+}
+.wq-count {
+  flex: none;
+  padding: 0.25em 0.8em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: clamp(11px, 1.8vmin, 17px);
+  color: #17465f;
+}
+
+/* ── The question card ───────────────────────────────────────────────────── */
+
+.wq-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2.2vmin, 26px);
+  width: min(92vw, 1000px);
+  padding: clamp(18px, 3.6vmin, 42px) clamp(14px, 3vmin, 40px) clamp(14px, 3vmin, 34px);
+  border: clamp(4px, 0.8vmin, 8px) solid #2f6f96;
+  border-radius: clamp(22px, 4vmin, 46px);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    inset 0 clamp(-18px, -2.2vmin, -9px) 0 rgba(30, 90, 130, 0.08),
+    0 clamp(7px, 1.3vmin, 13px) 0 rgba(20, 70, 100, 0.34);
+}
+
+/** The instruction rides a ribbon that overlaps the card's rim. */
+.wq-instruction {
+  margin-top: clamp(-32px, -5.4vmin, -16px);
+  padding: clamp(6px, 1.3vmin, 14px) clamp(14px, 3vw, 40px);
+  border: clamp(3px, 0.6vmin, 6px) solid #2f6f96;
+  border-radius: 999px;
+  background: linear-gradient(#bfe8fb, #7fc9ec);
+  font-size: clamp(13px, 2.5vmin, 27px);
+  line-height: 1.2;
+  text-align: center;
+  color: #10405a;
+  box-shadow: 0 clamp(3px, 0.6vmin, 6px) 0 rgba(20, 70, 100, 0.3);
+}
+
+/** Picture first, then the words — the child looks before reading. */
+.wq-body {
+  display: grid;
+  width: 100%;
+  min-height: 0;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(12px, 3vw, 44px);
+}
+
+/** The picture on its own plate. */
+.wq-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  max-height: 46vh;
+  padding: clamp(8px, 2vmin, 22px);
+  border: clamp(3px, 0.65vmin, 7px) solid #7fc9ec;
+  border-radius: clamp(18px, 3.2vmin, 34px);
+  background: radial-gradient(70% 70% at 50% 40%, #ffffff 0 62%, #e8f6fd 100%);
+  box-shadow: 0 clamp(4px, 0.8vmin, 8px) 0 rgba(60, 130, 170, 0.28);
+}
+/** Every drawing is inline SVG — there is not a bitmap in this game. */
+.wq-picture svg,
+.wq-art,
+.wq-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.wq-options {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.8vmin, 20px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/**
+ * An answer tile: fat, coloured, and it presses like a button on a toy.
+ *
+ * Tapping one IS the answer, so the tile has to be the most obviously pressable
+ * thing on the screen. Colour comes from POSITION, so no component carries a
+ * palette and a fourth word would simply restart the cycle.
+ */
+.wq-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(12px, 2.6vmin, 28px) clamp(14px, 2.6vmin, 30px);
+  border: clamp(3px, 0.65vmin, 7px) solid var(--wq-rim, #2b6d9e);
+  border-radius: clamp(16px, 2.8vmin, 30px);
+  background: var(--wq-tile, #8fd0f5);
+  font-size: clamp(19px, 4vmin, 42px);
+  line-height: 1;
+  color: #1f3550;
+  text-align: left;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-12px, -1.5vmin, -6px) 0 rgba(0, 0, 0, 0.14),
+    inset 0 clamp(4px, 0.7vmin, 7px) 0 rgba(255, 255, 255, 0.5),
+    0 clamp(4px, 0.8vmin, 8px) 0 rgba(30, 50, 80, 0.3);
+  transition:
+    translate 0.12s ease,
+    box-shadow 0.12s ease,
+    filter 0.15s ease;
+}
+.wq-options li:nth-child(3n + 1) .wq-option {
+  --wq-tile: #8fd0f5;
+  --wq-rim: #2b6d9e;
+}
+.wq-options li:nth-child(3n + 2) .wq-option {
+  --wq-tile: #a8e08a;
+  --wq-rim: #4b8a34;
+}
+.wq-options li:nth-child(3n + 3) .wq-option {
+  --wq-tile: #f7c46b;
+  --wq-rim: #b3821f;
+}
+.wq-option:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+/** Pressed down onto its own lip. */
+.wq-option:active:not(:disabled) {
+  translate: 0 clamp(3px, 0.6vmin, 6px);
+  box-shadow: inset 0 clamp(-12px, -1.5vmin, -6px) 0 rgba(0, 0, 0, 0.14);
+}
+/** The one just tapped, lit while the question turns over. */
+.wq-option--chosen {
+  translate: 0 clamp(-3px, -0.6vmin, -2px);
+  box-shadow:
+    inset 0 clamp(-12px, -1.5vmin, -6px) 0 rgba(0, 0, 0, 0.14),
+    inset 0 clamp(4px, 0.7vmin, 7px) 0 rgba(255, 255, 255, 0.5),
+    0 0 0 clamp(4px, 0.8vmin, 8px) #ffc93c,
+    0 clamp(6px, 1.1vmin, 11px) 0 rgba(30, 50, 80, 0.34);
+}
+/** The other two, while the chosen one is still lit. */
+.wq-option:disabled {
+  cursor: default;
+}
+.wq-option:disabled:not(.wq-option--chosen) {
+  filter: saturate(0.5) brightness(1.06);
+}
+
+.wq-option-tick {
+  flex: none;
+  width: clamp(20px, 3.4vmin, 36px);
+  height: clamp(20px, 3.4vmin, 36px);
+  border: clamp(3px, 0.5vmin, 5px) solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+}
+/**
+ * A white tick on a green disc, drawn as two BORDERS of a rotated box. Two
+ * crossed gradients were tried first and render a slash, so the chosen answer
+ * wore a "no entry" sign.
+ */
+.wq-option--chosen .wq-option-tick {
+  position: relative;
+  border-color: #ffffff;
+  background: #3fae68;
+}
+.wq-option--chosen .wq-option-tick::after {
+  content: "";
+  position: absolute;
+  left: 52%;
+  top: 44%;
+  width: 26%;
+  height: 48%;
+  border-right: clamp(2px, 0.34vmin, 4px) solid #ffffff;
+  border-bottom: clamp(2px, 0.34vmin, 4px) solid #ffffff;
+  translate: -50% -50%;
+  rotate: 45deg;
+}
+
+/* ── The way in ──────────────────────────────────────────────────────────── */
+
+.wq-splash-head {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.wq-title {
+  font-size: clamp(30px, 8vmin, 84px);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0 clamp(3px, 0.6vmin, 6px) 0 #2f6f96,
+    0 clamp(8px, 1.8vmin, 20px) clamp(8px, 1.8vmin, 20px) rgba(15, 60, 85, 0.4);
+}
+.wq-subtitle {
+  display: inline-block;
+  margin-top: 0.4em;
+  padding: 0.35em 1.2em;
+  border: clamp(2px, 0.4vmin, 4px) solid #2f6f96;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: clamp(12px, 2.1vmin, 21px);
+  color: #17465f;
+  box-shadow: 0 clamp(2px, 0.5vmin, 5px) 0 rgba(20, 70, 100, 0.28);
+}
+.wq-splash-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: clamp(10px, 2.4vw, 32px);
+}
+/** Snow tiles: a picture with its word under it, the game in miniature. */
+.wq-splash-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.2vmin, 14px);
+  width: clamp(76px, 17vmin, 190px);
+  padding: clamp(10px, 2vmin, 22px);
+  border: clamp(3px, 0.6vmin, 6px) solid #2f6f96;
+  border-radius: clamp(14px, 2.6vmin, 30px);
+  background: linear-gradient(#ffffff, #e8f6fd);
+  box-shadow: 0 clamp(4px, 0.9vmin, 9px) 0 rgba(20, 70, 100, 0.32);
+}
+.wq-splash-pic {
+  width: 74%;
+  aspect-ratio: 1;
+}
+.wq-splash-word {
+  font-size: clamp(13px, 2.4vmin, 26px);
+  color: #1f3550;
+}
+.wq-best {
+  position: relative;
+  z-index: 2;
+  padding: 0.3em 1.1em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: clamp(11px, 1.8vmin, 17px);
+  color: #2f6f96;
+}
+.wq-play {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: clamp(11px, 2.2vmin, 22px) clamp(28px, 6vmin, 70px);
+  border: clamp(3px, 0.6vmin, 7px) solid #1c7a45;
+  border-radius: 999px;
+  background: linear-gradient(#5fd083, #34a95a);
+  font-size: clamp(17px, 3.6vmin, 38px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-12px, -1.6vmin, -6px) 0 rgba(0, 0, 0, 0.18),
+    0 clamp(5px, 1vmin, 10px) 0 rgba(15, 80, 45, 0.5);
+}
+.wq-play-glyph {
+  font-size: 0.72em;
+}
+
+/* ── The review ──────────────────────────────────────────────────────────
+   The answers scroll; the score does not. */
+
+.wq-review {
+  justify-content: flex-start;
+}
+.wq-review-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) clamp(140px, 24vmin, 280px);
+  gap: clamp(10px, 2vw, 26px);
+  width: min(96vw, 1100px);
+}
+
+.wq-answers {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  padding: clamp(10px, 2vmin, 22px);
+  border: clamp(3px, 0.6vmin, 7px) solid #2f6f96;
+  border-radius: clamp(16px, 3vmin, 34px);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 clamp(5px, 1vmin, 10px) 0 rgba(20, 70, 100, 0.3);
+}
+.wq-answers-title {
+  flex: none;
+  margin-bottom: clamp(6px, 1.4vmin, 16px);
+  font-size: clamp(15px, 2.8vmin, 28px);
+  color: #17465f;
+}
+.wq-answer-list {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: clamp(6px, 1.2vmin, 14px);
+  margin: 0;
+  padding: 0 clamp(4px, 1vmin, 10px) 0 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.wq-answer {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto clamp(28px, 5.4vmin, 58px) minmax(0, 1fr) auto;
+  gap: clamp(8px, 1.6vw, 20px);
+  padding: clamp(6px, 1.2vmin, 14px) clamp(8px, 1.6vmin, 18px);
+  border: clamp(2px, 0.4vmin, 4px) solid #dbe4ec;
+  border-radius: clamp(10px, 2vmin, 22px);
+  background: #fbfcfe;
+}
+.wq-answer--right {
+  border-color: #9ed9b2;
+  background: #f1fbf5;
+}
+.wq-answer--wrong {
+  border-color: #f0c4a8;
+  background: #fff7f1;
+}
+.wq-answer-num {
+  font-size: clamp(11px, 1.8vmin, 18px);
+  color: #7a8d9e;
+}
+.wq-answer-pic {
+  aspect-ratio: 1;
+}
+.wq-answer-pic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wq-answer-words {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: clamp(6px, 1.2vw, 14px);
+}
+.wq-answer-chosen {
+  font-size: clamp(14px, 2.6vmin, 26px);
+  color: #1f3550;
+}
+/** On a wrong answer the right word sits BESIDE the chosen one: the pair is
+ *  the lesson, and a lone cross teaches nothing. */
+.wq-answer--wrong .wq-answer-chosen {
+  color: #b4653a;
+  text-decoration: line-through;
+}
+.wq-answer-right {
+  font-size: clamp(12px, 2.2vmin, 22px);
+  color: #2f8f4f;
+}
+.wq-answer-mark {
+  width: clamp(16px, 3vmin, 30px);
+  height: clamp(16px, 3vmin, 30px);
+  border-radius: 50%;
+}
+.wq-answer--right .wq-answer-mark {
+  position: relative;
+  background: #3fae68;
+}
+.wq-answer--right .wq-answer-mark::after {
+  content: "";
+  position: absolute;
+  left: 52%;
+  top: 44%;
+  width: 26%;
+  height: 48%;
+  border-right: clamp(2px, 0.3vmin, 3px) solid #ffffff;
+  border-bottom: clamp(2px, 0.3vmin, 3px) solid #ffffff;
+  translate: -50% -50%;
+  rotate: 45deg;
+}
+.wq-answer--wrong .wq-answer-mark {
+  background:
+    linear-gradient(45deg, transparent 44%, #ffffff 44% 56%, transparent 56%) center / 56% 56%
+      no-repeat,
+    linear-gradient(-45deg, transparent 44%, #ffffff 44% 56%, transparent 56%) center / 56% 56%
+      no-repeat,
+    #e0885a;
+}
+
+.wq-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: start;
+  gap: clamp(8px, 1.8vmin, 20px);
+  padding: clamp(12px, 2.4vmin, 28px) clamp(10px, 2vmin, 22px);
+  border: clamp(3px, 0.6vmin, 7px) solid #2f6f96;
+  border-radius: clamp(16px, 3vmin, 34px);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 clamp(5px, 1vmin, 10px) 0 rgba(20, 70, 100, 0.3);
+}
+.wq-score-title {
+  font-size: clamp(13px, 2.4vmin, 24px);
+  color: #17465f;
+}
+.wq-donut {
+  display: block;
+  width: clamp(88px, 17vmin, 190px);
+  height: auto;
+}
+.wq-donut-track {
+  fill: none;
+  stroke: #e3ebf2;
+  stroke-width: 12;
+}
+.wq-donut-fill {
+  fill: none;
+  stroke: #34a95a;
+  stroke-width: 12;
+  stroke-linecap: round;
+  /* start the ring at twelve o'clock rather than three */
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+.wq-donut-score {
+  font-size: 26px;
+  font-weight: 900;
+  fill: #17465f;
+}
+.wq-again {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.5em;
+  padding: clamp(8px, 1.6vmin, 16px) clamp(14px, 2.8vmin, 30px);
+  border: clamp(2px, 0.5vmin, 5px) solid #1c7a45;
+  border-radius: 999px;
+  background: linear-gradient(#5fd083, #34a95a);
+  font-size: clamp(12px, 2.1vmin, 21px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-8px, -1.1vmin, -4px) 0 rgba(0, 0, 0, 0.18),
+    0 clamp(3px, 0.7vmin, 7px) 0 rgba(15, 80, 45, 0.45);
+}
+
+/* ── Phones held sideways ────────────────────────────────────────────────
+   A landscape phone is WIDE and SHORT (320–430px tall once the browser bars
+   are counted), so the picture stays BESIDE the words — stacking them, which
+   this file used to do for any screen under 720px wide, pushed the last
+   answer tile off the bottom of a 667x375 phone. What has to give here is
+   height: the progress bar moves up into the gap between the two pinned
+   pills, and every vertical padding is sized off the screen's HEIGHT. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .wq-screen,
+  .wq-splash,
+  .wq-review {
+    gap: clamp(6px, 2vh, 12px);
+    padding-top: 66px;
+    padding-bottom: clamp(8px, 2.4vh, 14px);
+  }
+  /* between the pills, level with them, instead of a row of its own */
+  .wq-topbar {
+    position: absolute;
+    left: 50%;
+    top: 16px;
+    width: min(calc(100% - 340px), 640px);
+    height: 44px;
+    translate: -50% 0;
+  }
+  .wq-card {
+    gap: clamp(6px, 2vh, 12px);
+    padding: clamp(14px, 4.4vh, 22px) clamp(12px, 2.4vw, 26px) clamp(10px, 3vh, 16px);
+  }
+  .wq-instruction {
+    font-size: clamp(13px, 4.2vh, 18px);
+  }
+  .wq-picture {
+    max-height: 52vh;
+    padding: clamp(6px, 2vh, 12px);
+  }
+  .wq-options {
+    gap: clamp(6px, 2.2vh, 12px);
+  }
+  .wq-option {
+    padding: clamp(8px, 2.8vh, 14px) clamp(12px, 2.4vw, 22px);
+    font-size: clamp(18px, 7vh, 30px);
+  }
+  .wq-option-tick {
+    width: clamp(20px, 7vh, 30px);
+    height: clamp(20px, 7vh, 30px);
+  }
+  .wq-title {
+    font-size: clamp(28px, 11vh, 52px);
+  }
+  .wq-subtitle {
+    margin-top: 0.3em;
+  }
+  .wq-splash-card {
+    width: clamp(64px, 24vh, 120px);
+    padding: clamp(6px, 2vh, 12px);
+    gap: 4px;
+  }
+  .wq-play {
+    padding: clamp(10px, 3vh, 16px) clamp(26px, 8vh, 44px);
+    font-size: clamp(17px, 6vh, 26px);
+  }
+  .wq-answer {
+    padding-block: clamp(4px, 1.4vh, 8px);
+  }
+}
+
+/* ── Phones and portrait ─────────────────────────────────────────────────
+   The picture goes ON TOP of the words rather than beside them, the ice keeps
+   only its sky and ground so nothing crowds the card, and the review becomes
+   one column with the score above the list. */
+@media (orientation: portrait) {
+  .wq-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(8px, 2vmin, 16px);
+  }
+  .wq-picture {
+    max-height: 26vh;
+    aspect-ratio: 16 / 10;
+  }
+  .wq-option {
+    padding: clamp(10px, 2vmin, 18px) clamp(12px, 2.2vmin, 20px);
+    font-size: clamp(17px, 5vw, 30px);
+  }
+  .wq-ice-cliff,
+  .wq-ice-berg,
+  .wq-ice-igloo,
+  .wq-ice-pine,
+  .wq-ice-bear,
+  .wq-ice-cloud {
+    display: none;
+  }
+  .wq-ice-penguin {
+    left: auto;
+    right: 4%;
+    width: clamp(40px, 13vw, 90px);
+  }
+  .wq-splash-card {
+    width: clamp(64px, 24vw, 120px);
+  }
+  .wq-review-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .wq-score {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .wq-donut {
+    width: clamp(64px, 20vw, 110px);
+  }
+}

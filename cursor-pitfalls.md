@@ -36,22 +36,24 @@ Copy this file into new projects so the same mistakes are not repeated.
 
 11. `next/dynamic(..., { ssr: false })` is not allowed in Server Components (Next.js 16). Put the dynamic imports in a Client Component (`"use client"`) and render that from the page.
 
-12. A CSS `@container` query can only style elements INSIDE the container it asks about. A game's chrome (the `NavPillButton`, and Shapes & Pictures' red help button) is rendered next to the canvas, not inside it, so container-query rules for it silently never apply — the button stayed in the corner it was supposed to leave on a tall screen. Query the viewport with `@media (max-aspect-ratio: 1 / 1)` for chrome, and keep `@container` for what is drawn inside the canvas.
+12. A blend clip aliased by LETTER is not the same sound in every word. `a` in cake, `i` in mice, `c` in juice and `ch` in chef are long vowels, a soft c and "sh", so aliasing them to `phonics-a`, `phonics-i`, `phonics-c` or the `ch` recording teaches the wrong sound. Check the word, not just the letter, before aliasing a `blend-sound-*` clip.
 
-13. `UserMenu` must route by role. Super Admin My Profile and Settings must go to `/super-admin/profile` and `/super-admin/settings`. Never hardcode `/profile` or `/settings` for Super Admin or the tenant layout/sidebar will load.
+13. A CSS `@container` query can only style elements INSIDE the container it asks about. A game's chrome (the `NavPillButton`, and Shapes & Pictures' red help button) is rendered next to the canvas, not inside it, so container-query rules for it silently never apply — the button stayed in the corner it was supposed to leave on a tall screen. Query the viewport with `@media (max-aspect-ratio: 1 / 1)` for chrome, and keep `@container` for what is drawn inside the canvas.
 
-14. Login form: do not show required asterisks on email/password. Password fields should include a show/hide eye toggle.
+14. `UserMenu` must route by role. Super Admin My Profile and Settings must go to `/super-admin/profile` and `/super-admin/settings`. Never hardcode `/profile` or `/settings` for Super Admin or the tenant layout/sidebar will load.
 
-15. Tenant create/edit: require currency PKR or USD on create; show slug and currency read-only on edit; timezone dropdown is Pakistan only (`Asia/Karachi`) and preselected; custom domain must be a real hostname (reject values like `abc`); tenant `name` must be unique like slug (trimmed; backend `findFirst`); subdomain is optional on create. Local `.env.local` must set `API_PROXY_TARGET=http://localhost:4601` so create hits local Nest — Railway production ignores local uniqueness fixes and was allowing duplicate names like `abc`.
+15. Login form: do not show required asterisks on email/password. Password fields should include a show/hide eye toggle.
 
-16. Super Admin dashboard must not use fake placeholder stats or fake recent logs. Use `GET /tenants/stats` and real `GET /audit-logs`. Show `0` when empty, never blank dashes for counts that exist in the DB.
+16. Tenant create/edit: require currency PKR or USD on create; show slug and currency read-only on edit; timezone dropdown is Pakistan only (`Asia/Karachi`) and preselected; custom domain must be a real hostname (reject values like `abc`); tenant `name` must be unique like slug (trimmed; backend `findFirst`); subdomain is optional on create. Local `.env.local` must set `API_PROXY_TARGET=http://localhost:4601` so create hits local Nest — Railway production ignores local uniqueness fixes and was allowing duplicate names like `abc`.
 
-17. Status filter chips that waste horizontal space on list pages should be a compact dropdown instead.
+17. Super Admin dashboard must not use fake placeholder stats or fake recent logs. Use `GET /tenants/stats` and real `GET /audit-logs`. Show `0` when empty, never blank dashes for counts that exist in the DB.
 
-18. Table page size is a shared preference (`useTablePageSize`, min 3 max 20) controlled from Settings. List tables must use that page size with FE+BE pagination, not hardcoded limits.
+18. Status filter chips that waste horizontal space on list pages should be a compact dropdown instead.
 
-19. Super Admin Feature Flags / Users / Profile: do not call tenant-scoped APIs that need `X-Tenant-ID`. Profile save uses `PATCH /users/me`. Feature Flags UI has no Create Flag — pick a tenant and enable/disable product flags. Tenant Feature Flags page is read-only.
+19. Table page size is a shared preference (`useTablePageSize`, min 3 max 20) controlled from Settings. List tables must use that page size with FE+BE pagination, not hardcoded limits.
 
-20. Create Tenant form must collect owner name + email. After create, owner gets invite email; until SA Activates the tenant, owner login must land on `/account-pending` (session cookie `tenantStatus=PENDING`). Tenant detail needs Delete (soft-delete) plus Activate.
+20. Super Admin Feature Flags / Users / Profile: do not call tenant-scoped APIs that need `X-Tenant-ID`. Profile save uses `PATCH /users/me`. Feature Flags UI has no Create Flag — pick a tenant and enable/disable product flags. Tenant Feature Flags page is read-only.
 
-21. Super Admin Users table shows Tenants & Roles (not just SUPER ADMIN / Tenant User) and supports soft-delete. Audit Logs / Activity Logs use mapped actorName + eye detail dialog; SA audit is platform-scoped only.
+21. Create Tenant form must collect owner name + email. After create, owner gets invite email; until SA Activates the tenant, owner login must land on `/account-pending` (session cookie `tenantStatus=PENDING`). Tenant detail needs Delete (soft-delete) plus Activate.
+
+22. Super Admin Users table shows Tenants & Roles (not just SUPER ADMIN / Tenant User) and supports soft-delete. Audit Logs / Activity Logs use mapped actorName + eye detail dialog; SA audit is platform-scoped only.

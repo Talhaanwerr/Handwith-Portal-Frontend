@@ -1,0 +1,824 @@
+/**
+ * Sorting Food — five sorting tables in the shape of the reference: a crisp
+ * game panel in the middle, the scene's colour washed out either side of it,
+ * big friendly food, black silhouettes where something is still to come.
+ *
+ * ONE SIZE UNIT, `--sf-item`, set on the play screen and sized off the
+ * screen's short side: every thing, place and gap is a multiple of it, so a
+ * table keeps its proportions from a 568 x 320 phone to a desktop. The size
+ * round draws a thing at 1.45x (big) or 0.7x (small) of that unit — the same
+ * picture, visibly different, never a different picture.
+ *
+ * The pinned Back pill and the Back to Games pill own the top corners; the
+ * round counter and the bar sit BETWEEN them, and nothing tappable goes
+ * under either.
+ */
+
+/* The backdrop is Magnet Match's kitchen (`KitchenBackdrop`, full-bleed and
+   decorative); this colour only shows for the moment before it paints. */
+.sf-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fbe7a2;
+}
+/* ── The pictures ────────────────────────────────────────────────────────── */
+
+/** A thing: its box is the unit (or 1.45x / 0.7x of it in the size round). */
+.sf-thing {
+  --sf-size: var(--sf-item, 64px);
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sf-size);
+  height: var(--sf-size);
+}
+.sf-thing--big {
+  --sf-size: calc(var(--sf-item, 64px) * 1.45);
+}
+.sf-thing--small {
+  --sf-size: calc(var(--sf-item, 64px) * 0.7);
+}
+.sf-thing-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.sf-thing-art svg,
+.sf-art-stack svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/** A cookie: Leo's shape, with chips laid over it in the same box. */
+.sf-art-stack {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.sf-art-stack .sf-art-chips {
+  position: absolute;
+  inset: 0;
+}
+/** A place still to fill: the same drawing with its colour taken out. */
+.sf-silhouette {
+  filter: brightness(0);
+  opacity: 0.78;
+}
+.sf-puff {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.sf-confetti {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--pl-color, #f6c544);
+}
+
+/* ── Choosing a module: the shared picker, our paint ────────────────────── */
+
+.sf-pick {
+  position: absolute;
+  inset: 0;
+}
+.sf-pick .pl-cs-title {
+  font-size: clamp(24px, 6vmin, 56px);
+  color: #ffffff;
+  text-shadow: 0 clamp(2px, 0.5vmin, 4px) 0 #b0467e;
+}
+.sf-pick .pl-cs-subtitle {
+  display: inline-block;
+  padding: 0.3em 1em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: clamp(12px, 2.3vmin, 20px);
+  color: #7a2d58;
+}
+.sf-pick .pl-cs-btn {
+  width: clamp(104px, 22vmin, 220px);
+  padding: clamp(12px, 2.6vmin, 26px) clamp(8px, 1.6vmin, 16px);
+  border: clamp(3px, 0.6vmin, 6px) solid #b0467e;
+  border-radius: clamp(16px, 3vmin, 32px);
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-12px, -1.6vmin, -6px) 0 rgba(0, 0, 0, 0.08),
+    0 clamp(5px, 1vmin, 10px) 0 rgba(110, 30, 80, 0.35);
+}
+.sf-pick .pl-cs-preview {
+  font-size: clamp(22px, 5.4vmin, 48px);
+  line-height: 1.1;
+  color: #7a2d58;
+}
+.sf-pick .pl-cs-label {
+  font-size: clamp(12px, 2.3vmin, 20px);
+  color: #7a2d58;
+}
+.sf-pick .pl-cs-btn--colours {
+  background: #fff4c6;
+}
+.sf-pick .pl-cs-btn--shapes {
+  background: #e3efff;
+}
+.sf-pick .pl-cs-btn--sizes {
+  background: #e6f6dc;
+}
+.sf-pick .pl-cs-btn--kitchen {
+  background: #fde3ee;
+}
+
+/* ── The way in ──────────────────────────────────────────────────────────── */
+
+.sf-splash,
+.sf-done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2.4vmin, 22px);
+  overflow: hidden;
+  padding: 68px 16px 16px;
+}
+/*
+ * The home screen: the reference's pink-and-purple title card, the first
+ * table in miniature with the guide hand on it, and Play. Side by side on a
+ * wide screen, stacked on a tall one. The miniature is drawn with the board's
+ * own plate and thing classes, so `--sf-item` sizes it exactly as it sizes a
+ * real table; here it is set so the whole table fits the room it is given.
+ */
+.sf-home {
+  /* 8.2 units wide and 3.9 high: two plates, the chef, the tray, the cloth */
+  --sf-item: min((100dvh - 100px) / 3.9, 58vw / 8.2, 80px);
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas:
+    "sign stage"
+    "play stage";
+  align-items: center;
+  justify-items: center;
+  column-gap: clamp(16px, 4vw, 56px);
+  row-gap: clamp(12px, 3.4vmin, 30px);
+  max-width: 100%;
+  max-height: 100%;
+}
+/** The reference's rounded pink-and-purple title card. */
+.sf-home-sign {
+  display: flex;
+  grid-area: sign;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.4vmin, 14px);
+  max-width: min(36vw, 480px);
+  padding: clamp(12px, 2.8vmin, 28px) clamp(16px, 3.6vmin, 36px);
+  border: clamp(3px, 0.7vmin, 7px) solid #ffffff;
+  border-radius: clamp(20px, 4vmin, 40px);
+  background: linear-gradient(135deg, #ff9ec4, #b788e8);
+  box-shadow: 0 clamp(8px, 1.6vmin, 16px) clamp(18px, 3.6vmin, 36px) rgba(120, 40, 110, 0.3);
+  text-align: center;
+}
+.sf-home-sign .sf-title {
+  font-size: clamp(28px, 7.4vmin, 72px);
+}
+.sf-home-tag {
+  margin: 0;
+  padding: 0.35em 1em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: clamp(12px, 2.3vmin, 20px);
+  line-height: 1.2;
+  color: #7a2d58;
+}
+.sf-home-stage {
+  grid-area: stage;
+}
+/** The table: a cream top inside the shapes round's pink gingham cloth. */
+.sf-home-table {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--sf-item) * 0.2);
+  padding: calc(var(--sf-item) * 0.24) calc(var(--sf-item) * 0.3);
+  border: calc(var(--sf-item) * 0.2) solid transparent;
+  border-radius: clamp(18px, 3.4vmin, 36px);
+  background:
+    linear-gradient(#fff8ec, #fff8ec) padding-box,
+    repeating-conic-gradient(#f06a86 0 25%, #ffffff 0 50%) 0 0 / calc(var(--sf-item) * 0.4)
+      calc(var(--sf-item) * 0.4) border-box;
+  box-shadow: 0 clamp(6px, 1.4vmin, 14px) clamp(16px, 3vmin, 32px) rgba(30, 60, 90, 0.22);
+  pointer-events: none;
+}
+.sf-home-bins {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: calc(var(--sf-item) * 0.25);
+}
+/* two things to a plate here, not the board's three */
+.sf-bin--plate.sf-home-plate {
+  min-width: calc(var(--sf-item) * 2.5);
+}
+.sf-home-chef {
+  flex: none;
+  align-self: center;
+  width: calc(var(--sf-item) * 1.7);
+}
+.sf-home-tray {
+  display: flex;
+  min-height: calc(var(--sf-item) * 1.1);
+  align-items: center;
+  justify-content: center;
+}
+/* the last apple bobs, waiting to be picked up — the picture inside moves,
+   never the box the hand is measured from */
+.sf-home-loose .sf-thing-art {
+  animation: sf-home-bob 1.8s ease-in-out infinite;
+}
+.sf-home-play {
+  position: relative;
+  grid-area: play;
+}
+/* Play breathes a green glow outwards, on a ring of its own */
+.sf-home-play::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 3px solid rgba(125, 220, 90, 0.9);
+  border-radius: 999px;
+  pointer-events: none;
+  animation: sf-home-glow 2.2s ease-out infinite;
+}
+@keyframes sf-home-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9%);
+  }
+}
+@keyframes sf-home-glow {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70%,
+  100% {
+    transform: scale(1.12, 1.3);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sf-home-loose .sf-thing-art,
+  .sf-home-play::after {
+    animation: none;
+  }
+}
+
+.sf-title {
+  font-size: clamp(30px, 8vmin, 78px);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0 clamp(3px, 0.6vmin, 6px) 0 #b0467e,
+    0 clamp(8px, 1.6vmin, 16px) clamp(10px, 2vmin, 20px) rgba(110, 30, 80, 0.35);
+}
+.sf-play-btn {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.5em;
+  padding: clamp(10px, 2.2vmin, 20px) clamp(28px, 6vmin, 64px);
+  border: clamp(3px, 0.6vmin, 6px) solid #3f8a24;
+  border-radius: 999px;
+  background: linear-gradient(#7ddc5a, #4cb33a);
+  font-size: clamp(17px, 3.6vmin, 34px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-10px, -1.4vmin, -5px) 0 rgba(0, 0, 0, 0.16),
+    0 clamp(4px, 0.9vmin, 9px) 0 rgba(40, 90, 20, 0.45);
+}
+.sf-play-glyph {
+  font-size: 0.72em;
+}
+
+/* ── A table ─────────────────────────────────────────────────────────────── */
+
+.sf-play {
+  --sf-item: clamp(44px, min(14vmin, 10vw), 104px);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 68px clamp(10px, 2.4vw, 32px) 14px;
+  touch-action: none;
+}
+.sf-leave,
+.sf-leave-btn {
+  padding: 0.5em 1.2em;
+  border: clamp(2px, 0.4vmin, 3px) solid #b0467e;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: clamp(11px, 1.7vmin, 15px);
+  line-height: 1;
+  color: #7a2d58;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(110, 30, 80, 0.22);
+}
+.sf-leave-btn {
+  min-height: 44px;
+}
+
+/** The counter and the bar, between the two pinned pills. */
+.sf-topbar {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  z-index: 3;
+  display: flex;
+  height: 44px;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 16px);
+  width: min(calc(100% - 340px), 640px);
+  translate: -50% 0;
+}
+.sf-round {
+  flex: none;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: clamp(11px, 1.8vmin, 16px);
+  color: #7a2d58;
+}
+.sf-progress-bar {
+  flex: 1;
+  height: clamp(12px, 2.4vmin, 20px);
+  overflow: hidden;
+  border: clamp(2px, 0.4vmin, 3px) solid #ffffff;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+}
+.sf-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7ddc5a, #34b04a);
+}
+
+/** The crisp game panel — the part of the screen the reference keeps sharp. */
+.sf-board {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  /* hugs what is on it — a wide empty panel read as a form, not a table */
+  width: auto;
+  max-width: min(100%, 1100px);
+  max-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--sf-item) * 0.22);
+  padding: calc(var(--sf-item) * 0.2) calc(var(--sf-item) * 0.3);
+  border: clamp(3px, 0.6vmin, 6px) solid #ffffff;
+  border-radius: clamp(18px, 3.4vmin, 36px);
+  background: #e9f6fd;
+  box-shadow: 0 clamp(6px, 1.4vmin, 14px) clamp(16px, 3vmin, 32px) rgba(30, 60, 90, 0.22);
+}
+/** The apple table: the plates stand on a wooden strip. */
+.sf-scene--apples .sf-board {
+  background:
+    linear-gradient(#c98a4e, #a86b35) bottom / 100% 42% no-repeat,
+    #dff1fb;
+}
+/** The shapes round's pink-and-white checked tablecloth, as a border. */
+.sf-scene--shapes .sf-board {
+  border: calc(var(--sf-item) * 0.2) solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    repeating-conic-gradient(#f06a86 0 25%, #ffffff 0 50%) 0 0 / calc(var(--sf-item) * 0.4)
+      calc(var(--sf-item) * 0.4) border-box;
+}
+.sf-scene--colours .sf-board {
+  background: #ffffff;
+}
+/** The kitchen tables: a warm cream board in front of the kitchen. */
+.sf-scene--kitchen .sf-board {
+  background: #fff8ec;
+}
+
+/* More places mean smaller things: four rows, or three cards side by side,
+   must still fit a phone held sideways. The unit is set again on the board
+   (a custom property cannot refer to itself, so these are fresh values). */
+.sf-board--rows.sf-board--n4 {
+  --sf-item: clamp(38px, min(10vmin, 8vw), 84px);
+}
+.sf-board--pair.sf-board--n3 {
+  --sf-item: clamp(40px, min(11vmin, 8vw), 88px);
+}
+
+/* Two places side by side, the helper standing between them. */
+.sf-bins {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--sf-item) * 0.3);
+}
+.sf-helper-slot {
+  flex: none;
+  width: calc(var(--sf-item) * 1.7);
+}
+
+.sf-bin {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: calc(var(--sf-item) * 0.16);
+  border-radius: calc(var(--sf-item) * 0.3);
+  transition:
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+/** A thing is over this place: it glows, so the child knows it will catch. */
+.sf-bin--lit {
+  box-shadow: 0 0 0 clamp(3px, 0.6vmin, 6px) #a6d43f;
+}
+.sf-slots {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: calc(var(--sf-item) * 0.08);
+}
+.sf-bin--plate {
+  min-width: calc(var(--sf-item) * 3.6);
+  padding-bottom: calc(var(--sf-item) * 0.34);
+}
+.sf-plate {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  bottom: 0;
+  display: block;
+}
+.sf-bin--tray {
+  min-width: calc(var(--sf-item) * 2.6);
+  min-height: calc(var(--sf-item) * 1.5);
+  align-items: center;
+  border: clamp(3px, 0.6vmin, 6px) solid #7a4fc4;
+  background: #a77fe0;
+  box-shadow: inset 0 calc(var(--sf-item) * -0.1) 0 rgba(60, 20, 120, 0.25);
+}
+.sf-bin--card,
+.sf-bin--panel {
+  align-items: center;
+  border: clamp(3px, 0.6vmin, 6px) solid #d6e4ee;
+  background: #ffffff;
+  box-shadow: 0 calc(var(--sf-item) * 0.06) 0 rgba(30, 60, 90, 0.18);
+}
+.sf-bin--card {
+  min-width: calc(var(--sf-item) * 3.4);
+  min-height: calc(var(--sf-item) * 1.9);
+}
+/** Four on a panel sit two by two. */
+.sf-bin--panel .sf-slots {
+  display: grid;
+  grid-template-columns: repeat(2, var(--sf-item));
+  gap: calc(var(--sf-item) * 0.16);
+}
+
+/* The loose things, in fixed places that never close up. */
+.sf-tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: calc(var(--sf-item) * 0.34);
+  min-height: calc(var(--sf-item) * 1.1);
+}
+.sf-loose-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sf-loose.sf-thing {
+  /* a small thing is still a finger-sized target */
+  width: max(48px, var(--sf-size));
+  height: max(48px, var(--sf-size));
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+}
+.sf-loose .sf-thing-art {
+  width: var(--sf-size);
+  height: var(--sf-size);
+}
+.sf-loose--used {
+  visibility: hidden;
+}
+.sf-loose--dragging {
+  opacity: 0.25;
+}
+.sf-loose:focus-visible {
+  outline: 3px solid #7a2d58;
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+/* ── The colours board: three rows and a bank of cards ───────────────────── */
+
+.sf-board--rows {
+  flex-direction: row;
+  align-items: stretch;
+  gap: calc(var(--sf-item) * 0.5);
+}
+.sf-rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--sf-item) * 0.16);
+}
+.sf-bin--row-yellow,
+.sf-bin--row-green,
+.sf-bin--row-red,
+.sf-bin--row-orange {
+  min-width: calc(var(--sf-item) * 3.2);
+  align-items: center;
+  border: clamp(3px, 0.6vmin, 6px) solid rgba(0, 0, 0, 0.12);
+}
+.sf-bin--row-yellow {
+  background: #ffd93d;
+}
+.sf-bin--row-green {
+  background: #7ccb8f;
+}
+.sf-bin--row-red {
+  background: #f25c6e;
+}
+.sf-bin--row-orange {
+  background: #ffa868;
+}
+.sf-bin--row-yellow .sf-slots,
+.sf-bin--row-green .sf-slots,
+.sf-bin--row-red .sf-slots,
+.sf-bin--row-orange .sf-slots {
+  gap: calc(var(--sf-item) * 0.3);
+}
+.sf-bank {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  align-content: center;
+  gap: calc(var(--sf-item) * 0.16);
+}
+/** A fruit card: white, rounded, a thin border in its row's colour. */
+.sf-bank .sf-loose-slot {
+  padding: calc(var(--sf-item) * 0.1);
+  border: clamp(2px, 0.4vmin, 4px) solid #d6e4ee;
+  border-radius: calc(var(--sf-item) * 0.22);
+  background: #ffffff;
+}
+.sf-bank .sf-card--yellow {
+  border-color: #f2c200;
+}
+.sf-bank .sf-card--green {
+  border-color: #3fae5a;
+}
+.sf-bank .sf-card--red {
+  border-color: #e0414f;
+}
+
+/* ── The helper ──────────────────────────────────────────────────────────── */
+
+.sf-helper {
+  position: relative;
+  width: 100%;
+}
+.sf-helper-body {
+  aspect-ratio: 1;
+}
+.sf-helper-body img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/** The chef's taste of an apple, parked at his mouth and flown in from
+ *  above his head. */
+.sf-helper-snack {
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  width: 28%;
+  height: 28%;
+  margin-left: -14%;
+  margin-top: -14%;
+  pointer-events: none;
+}
+.sf-helper-corner {
+  position: absolute;
+  right: 2%;
+  bottom: 0;
+  z-index: 1;
+  width: clamp(56px, 16vmin, 150px);
+  pointer-events: none;
+}
+
+/* ── Carrying, and the end of a table ────────────────────────────────────── */
+
+.sf-thing--carry {
+  margin-left: calc(var(--sf-size) / -2);
+  margin-top: calc(var(--sf-size) / -2);
+}
+.sf-next-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  z-index: 35;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.sf-next {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1.6em;
+  border: clamp(3px, 0.6vmin, 6px) solid #1c4a94;
+  border-radius: 999px;
+  background: #3f86e0;
+  font-size: clamp(16px, 3vmin, 28px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow:
+    inset 0 clamp(-9px, -1.3vmin, -5px) 0 rgba(0, 0, 0, 0.2),
+    0 clamp(4px, 0.9vmin, 9px) 0 rgba(15, 45, 95, 0.5);
+}
+/* the chef in the big cheer fills FigureBreak's square */
+.sf-chef-big {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.sf-chef-big img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sf-done-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vmin, 18px);
+  padding: clamp(16px, 3.6vmin, 40px) clamp(20px, 5vmin, 56px);
+  border-radius: clamp(18px, 3.4vmin, 34px);
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(110, 30, 80, 0.28);
+}
+.sf-done-title {
+  font-size: clamp(24px, 5.4vmin, 52px);
+  line-height: 1;
+  color: #43a92f;
+}
+.sf-done-line {
+  font-size: clamp(12px, 2.2vmin, 20px);
+  color: #7a2d58;
+}
+.sf-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.6vmin, 16px);
+}
+.sf-done-helper {
+  position: absolute;
+  left: 3%;
+  bottom: 0;
+  z-index: 1;
+  width: clamp(60px, 18vmin, 170px);
+  pointer-events: none;
+}
+
+/* ── Phones held sideways: a little less of everything vertical ──────────── */
+@media (orientation: landscape) and (max-height: 500px) {
+  .sf-play {
+    --sf-item: clamp(40px, 15.5vh, 76px);
+    padding-bottom: 8px;
+  }
+  .sf-board--rows.sf-board--n4 {
+    --sf-item: clamp(32px, 10.5vh, 56px);
+  }
+  .sf-board--pair.sf-board--n3 {
+    --sf-item: clamp(34px, 12vh, 64px);
+  }
+  .sf-topbar {
+    width: min(calc(100% - 340px), 520px);
+  }
+  /* the corner chef shrinks so he stands beside the table, not on it */
+  .sf-helper-corner {
+    width: clamp(36px, 11vmin, 64px);
+    right: 1%;
+  }
+}
+
+/* ── Tall screens: the places stack, the helper stands on top ────────────── */
+@media (orientation: portrait) {
+  .sf-board--rows.sf-board--n4 {
+    --sf-item: clamp(40px, 13vw, 76px);
+  }
+  .sf-board--pair.sf-board--n3 {
+    --sf-item: clamp(40px, 14vw, 80px);
+  }
+  .sf-play {
+    --sf-item: clamp(44px, 16vw, 90px);
+    justify-content: flex-start;
+    padding-top: 116px;
+  }
+  /* the bar drops under the pills instead of squeezing between them */
+  .sf-topbar {
+    top: 68px;
+    width: calc(100% - 32px);
+  }
+  .sf-bins {
+    flex-direction: column;
+  }
+  .sf-helper-slot {
+    order: -1;
+    width: calc(var(--sf-item) * 1.5);
+  }
+  .sf-board--rows {
+    flex-direction: column;
+    align-items: center;
+  }
+  .sf-bank {
+    grid-template-columns: repeat(3, auto);
+  }
+  /* home, upright: the card, the table, Play — and on the table the chef
+     stands above the two plates, which stay side by side */
+  .sf-home {
+    --sf-item: min((100vw - 40px) / 6.8, (100dvh - 84px - 260px) / 4.8, 76px);
+    grid-template-columns: auto;
+    grid-template-areas:
+      "sign"
+      "stage"
+      "play";
+  }
+  .sf-home-sign {
+    max-width: min(100vw - 32px, 480px);
+  }
+  .sf-home-bins {
+    flex-wrap: wrap;
+    max-width: calc(var(--sf-item) * 6.2);
+  }
+  .sf-home-chef {
+    display: flex;
+    flex-basis: 100%;
+    order: -1;
+    justify-content: center;
+  }
+  .sf-home-chef .sf-helper {
+    width: calc(var(--sf-item) * 1.5);
+  }
+}
+
+/* ── The smallest upright phones (320 wide, ~570 tall) ───────────────────── */
+@media (orientation: portrait) and (max-height: 620px) {
+  /* four rows plus the card bank must fit under the bar */
+  .sf-board--rows.sf-board--n4 {
+    --sf-item: 32px;
+    gap: 8px;
+  }
+  .sf-board--rows.sf-board--n4 .sf-bank {
+    grid-template-columns: repeat(4, auto);
+  }
+  .sf-helper-corner {
+    width: 40px;
+  }
+}

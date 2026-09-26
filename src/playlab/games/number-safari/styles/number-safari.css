@@ -1,0 +1,1074 @@
+/**
+ * Number Safari — a counting game in the shape of a children's TV activity.
+ *
+ * ONE WIDESCREEN CANVAS in the middle of the stage with the scene's colour
+ * blurred either side of it, and everything inside sized in HEIGHT container
+ * units (cqh). The canvas is 16:9, so a thing sized off the width is nearly
+ * twice as big against the height — that is what ran the first cut of the
+ * ant line off the bottom of the screen. 1cqh is 1% of the canvas height, and
+ * every stack below has been added up against the 100cqh it has to fit in.
+ *
+ * Nothing here paints the ants, the pictures or the teacher: those come from
+ * three other games. What this file owns is the STAGE they stand on and the
+ * sizing that makes three different sources look like one game.
+ */
+
+/* ── The stage ───────────────────────────────────────────────────────────── */
+
+.ns-root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  container-type: size;
+  background: var(--ns-side-a, #b9cf2e);
+}
+.ns-side {
+  position: absolute;
+  top: -12%;
+  bottom: -12%;
+  width: 34%;
+  pointer-events: none;
+  filter: blur(22px);
+  background:
+    radial-gradient(60% 50% at 50% 30%, var(--ns-side-b, #d7e85a), transparent 72%),
+    radial-gradient(70% 60% at 50% 82%, var(--ns-side-c, #8fae22), transparent 72%);
+}
+.ns-side--l {
+  left: -6%;
+}
+.ns-side--r {
+  right: -6%;
+}
+.ns-root[data-scene="leaf"] {
+  --ns-side-a: #96c21f;
+  --ns-side-b: #c4e85a;
+  --ns-side-c: #6f9c14;
+}
+.ns-root[data-scene="meadow"] {
+  --ns-side-a: #6fb043;
+  --ns-side-b: #9ad06a;
+  --ns-side-c: #3c6e9c;
+}
+.ns-root[data-scene="shelf"] {
+  --ns-side-a: #e0c39a;
+  --ns-side-b: #f6e8d2;
+  --ns-side-c: #b08a58;
+}
+.ns-root[data-scene="sky"] {
+  --ns-side-a: #6fa8dc;
+  --ns-side-b: #b9d9f4;
+  --ns-side-c: #3f6fbf;
+}
+
+/** The canvas keeps its own 16:9 whatever the screen — as wide as the stage on
+ *  a phone, as tall as it on a desktop. (`cqw`/`cqh` here are the STAGE's; an
+ *  element's own container units never refer to itself.) */
+.ns-canvas {
+  position: relative;
+  z-index: 1;
+  width: min(100cqw, calc(100cqh * 16 / 9));
+  /* 16:9 is the shape this game was drawn for and it keeps it wherever the
+     stage is wide enough. On a phone that shape is a letterboxed strip with
+     the game squeezed into a third of the screen, so below the breakpoint at
+     the bottom of this file the canvas takes the whole stage instead. */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  container-type: size;
+  background: #ffffff;
+  user-select: none;
+  -webkit-user-select: none;
+  /* the number circle — every layout below is built around it */
+  --ns-bubble: 14cqh;
+}
+.ns-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── The scenes ──────────────────────────────────────────────────────────── */
+
+.ns-level {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/** The leaf: a big dark-green leaf blade across the top-left, a sun in the
+ *  far corner, and the lighter blade below with its veins running across. */
+.ns-scene--leaf {
+  background:
+    radial-gradient(circle at 90% 12%, #ffe36a 0 6.5cqh, transparent calc(6.5cqh + 1px)),
+    radial-gradient(52% 44% at 22% 14%, #7fa81c 0 62%, transparent 63%),
+    radial-gradient(64% 26% at 16% 104%, #9ec624 0 60%, transparent 61%),
+    radial-gradient(72% 30% at 82% 108%, #a8d229 0 60%, transparent 61%),
+    repeating-linear-gradient(108deg, transparent 0 9cqw, rgba(105, 140, 24, 0.14) 9cqw 9.5cqw),
+    #b4dc2e;
+}
+/** The meadow: sky over grass, a path, and a sun. */
+.ns-scene--meadow {
+  background:
+    radial-gradient(circle at 14% 16%, #ffe36a 0 6cqh, transparent calc(6cqh + 1px)),
+    radial-gradient(ellipse 9cqh 5cqh at 42% 18%, #ffffff 0 99%, transparent 100%),
+    radial-gradient(ellipse 7cqh 4cqh at 48% 13%, #ffffff 0 99%, transparent 100%),
+    radial-gradient(ellipse 8cqh 4.5cqh at 68% 24%, #ffffff 0 99%, transparent 100%),
+    linear-gradient(#a9d8f5 0 38%, #7fc24f 38% 100%);
+}
+/** The shelf: a warm room with a wooden ledge the things sit along. */
+.ns-scene--shelf {
+  background:
+    linear-gradient(#c08a4e, #a3703c) bottom / 100% 16cqh no-repeat,
+    radial-gradient(70% 56% at 50% 34%, #fff6e4 0 52%, #f6e6cc 100%);
+}
+/** The sky: deep blue at the top fading down, for the stars. */
+.ns-scene--sky {
+  background:
+    radial-gradient(
+      circle at 84% 18%,
+      rgba(255, 255, 255, 0.5) 0 4cqh,
+      transparent calc(4cqh + 1px)
+    ),
+    linear-gradient(#4f86c6 0 42%, #8fbde6 76%, #cfe6f7 100%);
+}
+
+/* ── The numbers ─────────────────────────────────────────────────────────── */
+
+/** The black circle a missing number belongs in. Declared BEFORE the bubble so
+ *  a filled gap, which wears the bubble's classes too, takes its colour. */
+.ns-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ns-bubble);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #2b2b2b;
+  box-shadow: inset 0 0.6cqh 1.2cqh rgba(0, 0, 0, 0.45);
+}
+.ns-slot--filled {
+  box-shadow:
+    inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.18),
+    0 0.8cqh 1.6cqh rgba(0, 0, 0, 0.18);
+}
+
+.ns-bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ns-bubble);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: none;
+  /* a lift and a rim of light, so the circles read as buttons */
+  box-shadow:
+    inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.18),
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.28),
+    0 0.8cqh 1.6cqh rgba(0, 0, 0, 0.18);
+}
+.ns-bubble-glyph {
+  font-size: calc(var(--ns-bubble) * 0.62);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.3cqh 0 rgba(0, 0, 0, 0.18);
+}
+.ns-bubble--blue {
+  background: #2e7fd6;
+}
+.ns-bubble--purple {
+  background: #8e44c4;
+}
+.ns-bubble--cyan {
+  background: #35b4d8;
+}
+.ns-bubble--cyan .ns-bubble-glyph {
+  color: #11304f;
+  text-shadow: none;
+}
+.ns-bubble--white {
+  background: #ffffff;
+}
+.ns-bubble--white .ns-bubble-glyph {
+  color: #e8912e;
+  text-shadow: none;
+}
+/** Picked up, waiting for its circle. */
+.ns-bubble--selected {
+  box-shadow:
+    0 0 0 0.7cqh rgba(255, 255, 255, 0.95),
+    0 1.6cqh 3cqh rgba(0, 0, 0, 0.28);
+}
+/** The right answer on a count screen. */
+.ns-bubble--lit {
+  box-shadow:
+    0 0 0 0.9cqh #2fc48f,
+    0 0 0 1.8cqh rgba(47, 196, 143, 0.35),
+    0 0.8cqh 1.6cqh rgba(0, 0, 0, 0.18);
+}
+/** Placed somewhere else — the space stays, the number is gone. */
+.ns-bubble--used {
+  opacity: 0;
+  pointer-events: none;
+}
+/** Under the finger: the ghost is the one that moves. */
+.ns-bubble--dragging {
+  opacity: 0.25;
+}
+/** The flying copy, centred on its point by margin — never by a transform,
+ *  because Framer is already using the transform to move it. */
+.ns-flight {
+  width: 0;
+  height: 0;
+}
+.ns-bubble--flying {
+  margin-left: calc(var(--ns-bubble) / -2);
+  margin-top: calc(var(--ns-bubble) / -2);
+  box-shadow: 0 2cqh 4cqh rgba(0, 0, 0, 0.3);
+}
+
+/** Ten and up: two digits in the same circle, so the glyph steps down rather
+ *  than the circle growing and moving every layout built around it. */
+.ns-bubble-glyph {
+  font-size: calc(var(--ns-bubble) * 0.62);
+}
+.ns-bubble--wide .ns-bubble-glyph,
+.ns-station-number--wide {
+  font-size: calc(var(--ns-bubble) * 0.44);
+}
+
+/* ── The things ──────────────────────────────────────────────────────────── */
+
+/** Two different elements arrive here — an `<svg>` from Numbers 1 – 5 and an
+ *  `<img>` from Blend & Seek — wearing THEIR games' class names. Sizing them
+ *  on this wrapper is what makes them the same size as each other, and keeps
+ *  this game working if either of those files ever changes its mind. */
+.ns-thing {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ns-thing :is(svg, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ns-spark {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ns-confetti {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--pl-color, #f6c544);
+}
+/** A zero-size point in the middle of the screen — where the stars burst
+ *  from when a level is solved. */
+.ns-centre {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 20;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ── The bar along the top ───────────────────────────────────────────────── */
+
+.ns-progress {
+  position: absolute;
+  left: 50%;
+  top: 2.5cqh;
+  z-index: 6;
+  width: 34%;
+  translate: -50% 0;
+  pointer-events: none;
+}
+.ns-progress-bar {
+  width: 100%;
+  height: 2.4cqh;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 0.3cqh 0.6cqh rgba(0, 0, 0, 0.18);
+}
+.ns-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #5fc46b, #2fa84f);
+}
+
+/* ── SEQUENCE: a line of things, one number missing ──────────────────────── */
+
+.ns-line {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 50%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3cqw;
+  translate: 0 -46%;
+}
+.ns-station {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: center;
+  /* the number rides ON the creature's back, the way the ants carry theirs */
+  margin-bottom: 0;
+}
+.ns-station-thing {
+  width: 22cqh;
+  aspect-ratio: 1;
+  margin-top: -5cqh;
+}
+/** A number in its circle, above the thing carrying it. */
+.ns-station-number {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ns-bubble);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #8e44c4;
+  box-shadow:
+    inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.18),
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.28);
+  font-size: calc(var(--ns-bubble) * 0.62);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.3cqh 0 rgba(0, 0, 0, 0.18);
+}
+.ns-station-number--blue {
+  background: #2e7fd6;
+}
+.ns-station-number--cyan {
+  background: #35b4d8;
+  color: #11304f;
+  text-shadow: none;
+}
+.ns-station-number--white {
+  background: #ffffff;
+  color: #e8912e;
+  text-shadow: none;
+}
+/** The gap sits exactly where a number would, so nothing shifts when it
+ *  fills. */
+.ns-station .ns-slot {
+  position: relative;
+  z-index: 1;
+}
+
+/* three or four in a line have room to be bigger than five */
+.ns-line--3 .ns-station-thing,
+.ns-line--4 .ns-station-thing {
+  width: 26cqh;
+}
+
+/* where the choices sit — always clear of the line */
+.ns-choices {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  gap: 5cqh;
+}
+.ns-choices--top-left {
+  left: 6%;
+  top: 8cqh;
+}
+.ns-choices--bottom-right {
+  right: 5%;
+  bottom: 6cqh;
+}
+
+/* ── COUNT: a picture, and a panel of numbers ────────────────────────────── */
+
+.ns-count-things {
+  position: absolute;
+  left: 26%;
+  top: 12cqh;
+  width: 46%;
+  height: 74cqh;
+}
+.ns-count-thing {
+  position: absolute;
+  width: 20cqh;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+/* one arrangement per count, as percentages of the picture area: 2 and 3 run
+   on a diagonal, 4 is a diamond, 5 is an X — the reference's own shapes */
+.ns-cluster-1-of-1 {
+  left: 50%;
+  top: 50%;
+}
+.ns-cluster-1-of-2 {
+  left: 30%;
+  top: 64%;
+}
+.ns-cluster-2-of-2 {
+  left: 70%;
+  top: 34%;
+}
+.ns-cluster-1-of-3 {
+  left: 22%;
+  top: 75%;
+}
+.ns-cluster-2-of-3 {
+  left: 50%;
+  top: 48%;
+}
+.ns-cluster-3-of-3 {
+  left: 78%;
+  top: 25%;
+}
+.ns-cluster-1-of-4 {
+  left: 50%;
+  top: 22%;
+}
+.ns-cluster-2-of-4 {
+  left: 22%;
+  top: 52%;
+}
+.ns-cluster-3-of-4 {
+  left: 78%;
+  top: 52%;
+}
+.ns-cluster-4-of-4 {
+  left: 50%;
+  top: 80%;
+}
+.ns-cluster-1-of-5 {
+  left: 24%;
+  top: 24%;
+}
+.ns-cluster-2-of-5 {
+  left: 74%;
+  top: 22%;
+}
+.ns-cluster-3-of-5 {
+  left: 50%;
+  top: 50%;
+}
+.ns-cluster-4-of-5 {
+  left: 24%;
+  top: 78%;
+}
+.ns-cluster-5-of-5 {
+  left: 76%;
+  top: 78%;
+}
+
+/** Past five things, the picture lines them up in rows instead of scattering
+ *  them: twenty ants have nowhere to scatter TO, and rows are how a child is
+ *  taught to count a big group anyway. One rule, any count. */
+.ns-count-things--rows {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqh 1.6cqw;
+}
+.ns-count-things--rows .ns-count-thing {
+  position: relative;
+  width: 11cqh;
+  translate: none;
+}
+
+/** The strangers in the picture, tucked into the corners the counted things
+ *  never use, so they are unmistakably separate and never overlap. */
+.ns-decoy-1 {
+  left: 4%;
+  top: 50%;
+  width: 16cqh;
+}
+.ns-decoy-2 {
+  left: 96%;
+  top: 50%;
+  width: 16cqh;
+}
+
+/** In the ROWS layout the counted things are in the flow, and the decoys
+ *  must not be: as flow items their `left` became a relative OFFSET, which
+ *  pushed the second stranger clean off the picture (0% of it visible, at
+ *  every size) and dropped the first into the rows it is meant to stand
+ *  apart from. They go back to being placed, below the rows, one each side. */
+.ns-count-things--rows .ns-decoy-1,
+.ns-count-things--rows .ns-decoy-2 {
+  position: absolute;
+  top: 92%;
+  width: 14cqh;
+  translate: -50% -50%;
+}
+.ns-count-things--rows .ns-decoy-1 {
+  left: 14%;
+}
+.ns-count-things--rows .ns-decoy-2 {
+  left: 86%;
+}
+
+/** The panel of choices, curving in from one side the way the reference's
+ *  does. */
+.ns-panel {
+  position: absolute;
+  top: -6cqh;
+  bottom: -6cqh;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  width: 26%;
+  background: #f0c419;
+}
+.ns-panel--right {
+  right: -6%;
+  padding-right: 6%;
+  justify-content: center;
+  border-radius: 60% 0 0 60%;
+}
+.ns-panel--left {
+  left: -6%;
+  padding-left: 6%;
+  justify-content: center;
+  border-radius: 0 60% 60% 0;
+}
+.ns-panel-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 4cqh;
+}
+
+/* ── The teacher ─────────────────────────────────────────────────────────── */
+
+/* He is Key Quest's, and his classes (`.dc-teacher*`) are Key Quest's too —
+   sized there in ITS `--u` unit, which this game never declares. So every
+   dimension is restated here, scoped under this game's own slot: never bare,
+   which would repaint him inside Key Quest as well, since class names are
+   global. He stands on the side the panel is not on, behind the numbers, so
+   wherever he overlaps them he is the one who is covered. */
+.ns-teacher-slot {
+  position: absolute;
+  left: 1%;
+  bottom: 0;
+  z-index: 1;
+  width: 30cqh;
+  height: 52cqh;
+  pointer-events: none;
+}
+.ns-panel--left ~ .ns-teacher-slot {
+  left: auto;
+  right: 1%;
+}
+.ns-teacher-slot .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.ns-teacher-slot .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 1%;
+  width: 54%;
+  height: 2.4cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(60, 70, 20, 0.4), transparent 70%);
+}
+.ns-teacher-slot .dc-teacher-says {
+  position: absolute;
+  left: 50%;
+  bottom: 92%;
+  z-index: 1;
+  padding: 0.8cqh 2cqh;
+  translate: -50% 0;
+  white-space: nowrap;
+  border-radius: 2cqh;
+  background: #ffffff;
+  font-size: 4.4cqh;
+  line-height: 1.1;
+  color: #2f8f4f;
+  box-shadow: 0 0.8cqh 1.6cqh rgba(40, 50, 10, 0.25);
+}
+.ns-teacher-slot .dc-teacher-says::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1.4cqh;
+  width: 0;
+  height: 0;
+  margin-left: -1.2cqh;
+  border-left: 1.2cqh solid transparent;
+  border-right: 1.2cqh solid transparent;
+  border-top: 1.6cqh solid #ffffff;
+}
+
+/* ── The title screen ────────────────────────────────────────────────────── */
+
+.ns-splash {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 14%, #ffe36a 0 7cqh, transparent calc(7cqh + 1px)),
+    radial-gradient(58% 46% at 26% 16%, #7fa81c 0 62%, transparent 63%),
+    radial-gradient(74% 30% at 50% 112%, #9ec624 0 60%, transparent 61%), #b4dc2e;
+}
+.ns-splash-head {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.ns-title {
+  font-size: 13cqh;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0 0.6cqh 0 #4d7a0e,
+    0 1.4cqh 2.4cqh rgba(40, 60, 10, 0.35);
+}
+.ns-subtitle {
+  margin-top: 1cqh;
+  font-size: 4.4cqh;
+  color: #35560a;
+}
+.ns-splash-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 3cqw;
+}
+.ns-splash-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ns-splash-thing {
+  width: 16cqh;
+  aspect-ratio: 1;
+  margin-top: -4cqh;
+}
+.ns-splash-teacher {
+  position: absolute;
+  /* far enough in from the edge that his speech bubble, which is wider than
+     he is, stays on screen (at 2% it was cut off on the right) */
+  right: 6%;
+  bottom: 0;
+  z-index: 1;
+  width: 28cqh;
+  height: 50cqh;
+  pointer-events: none;
+}
+.ns-splash-teacher .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.ns-splash-teacher .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 1%;
+  width: 54%;
+  height: 2.4cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(60, 70, 20, 0.4), transparent 70%);
+}
+.ns-splash-teacher .dc-teacher-says {
+  position: absolute;
+  left: 50%;
+  bottom: 92%;
+  padding: 0.8cqh 2cqh;
+  translate: -50% 0;
+  white-space: nowrap;
+  border-radius: 2cqh;
+  background: #ffffff;
+  font-size: 4.2cqh;
+  color: #2f8f4f;
+  box-shadow: 0 0.8cqh 1.6cqh rgba(40, 50, 10, 0.25);
+}
+.ns-play {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 1.6cqh;
+  padding: 2.2cqh 7cqh;
+  border: 0;
+  border-radius: 999px;
+  background: #2f6fd0;
+  font-size: 5.6cqh;
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -1cqh 0 rgba(0, 0, 0, 0.2),
+    0 1.4cqh 2.8cqh rgba(20, 40, 80, 0.3);
+}
+.ns-play-glyph {
+  font-size: 4.2cqh;
+}
+
+/* ── Choosing a run ──────────────────────────────────────────────────────── */
+
+/* The picker is the portal's shared ChoiceScreen; only the paint is ours. */
+.ns-pick {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 50% 18%, #cfe86a 0 55%, transparent 56%),
+    linear-gradient(#b4dc2e, #8fb81f);
+}
+.ns-pick .pl-cs-title {
+  font-size: 8cqh;
+  color: #2f4a08;
+}
+.ns-pick .pl-cs-subtitle {
+  font-size: 3.6cqh;
+  color: #43610f;
+}
+.ns-pick .pl-cs-btn {
+  width: 34cqh;
+  padding: 4cqh 2cqh;
+  border: 0;
+  border-radius: 4cqh;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -1.2cqh 0 rgba(0, 0, 0, 0.12),
+    0 1.4cqh 2.8cqh rgba(40, 60, 10, 0.26);
+}
+.ns-pick .pl-cs-preview {
+  font-size: 8cqh;
+  line-height: 1;
+  color: #2f4a08;
+}
+.ns-pick .pl-cs-label {
+  font-size: 4.4cqh;
+  color: #5b7a1e;
+}
+.ns-pick .pl-cs-btn--easy {
+  background: #dff3b4;
+}
+.ns-pick .pl-cs-btn--medium {
+  background: #ffe9a8;
+}
+.ns-pick .pl-cs-btn--hard {
+  background: #ffcfb0;
+}
+
+/** The way out, top-right: a plain pill, the twin of the Back pill the shared
+ *  NavPillButton pins top-left. Placed and sized by `.pl-exit-pill`. */
+.ns-leave {
+  padding: 0.55em 1.1em;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: clamp(11px, 1.5vmin, 15px);
+  line-height: 1;
+  color: #42610e;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30, 50, 10, 0.25);
+}
+
+/* ── The end of a run ────────────────────────────────────────────────────── */
+
+.ns-done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 60% at 50% 30%, #ffd97a 0 50%, transparent 51%),
+    linear-gradient(#f6b93b, #e58e26);
+}
+.ns-done-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4cqh;
+  padding: 5cqh 8cqh;
+  border-radius: 5cqh;
+  background: #ffffff;
+  box-shadow: 0 2cqh 5cqh rgba(90, 50, 10, 0.3);
+}
+.ns-done-title {
+  font-size: 9cqh;
+  line-height: 1;
+  color: #e07a1f;
+}
+.ns-done-line {
+  margin-top: -1.2cqh;
+  font-size: 3.6cqh;
+  color: #8a6a3a;
+}
+.ns-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2cqh;
+}
+.ns-done-btn {
+  min-height: 44px;
+  padding: 1.8cqh 4cqh;
+  border: 0;
+  border-radius: 999px;
+  background: #f1e4cf;
+  font-size: 3.6cqh;
+  line-height: 1;
+  color: #7a5520;
+  cursor: pointer;
+  box-shadow: inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.1);
+}
+.ns-done-btn--go {
+  background: #2f6fd0;
+  color: #ffffff;
+}
+.ns-done-teacher {
+  position: absolute;
+  left: 2%;
+  bottom: 0;
+  z-index: 1;
+  width: 26cqh;
+  height: 48cqh;
+  pointer-events: none;
+}
+.ns-done-teacher .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.ns-done-teacher .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 1%;
+  width: 54%;
+  height: 2.4cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120, 70, 10, 0.4), transparent 70%);
+}
+.ns-done-teacher .dc-teacher-says {
+  position: absolute;
+  left: 50%;
+  bottom: 92%;
+  padding: 0.8cqh 2cqh;
+  translate: -50% 0;
+  white-space: nowrap;
+  border-radius: 2cqh;
+  background: #ffffff;
+  font-size: 4.2cqh;
+  color: #2f8f4f;
+  box-shadow: 0 0.8cqh 1.6cqh rgba(90, 60, 10, 0.25);
+}
+
+/* ── On narrow screens, deliberately nothing ─────────────────────────────
+   Blend & Seek hides this same teacher in portrait, and copying that here was
+   a mistake worth recording: ITS layout reflows with the viewport, so a figure
+   sized in viewport units really can swallow the board. This game's canvas is
+   locked to 16:9 at every size, so everything inside it — the teacher, the
+   line of ants, the type — is the same FRACTION of the picture on a phone as
+   on a desktop, and a portrait rule can only take away something that fits.
+   A portrait phone gets the shared rotate prompt from GameStage instead, which
+   is the portal's answer to a short canvas everywhere else too. */
+
+/* ── Phones and portrait ─────────────────────────────────────────────────
+   A 16:9 canvas on a tall screen is a strip with two dead bands around it.
+   Here the canvas takes the WHOLE stage, and because every size inside it is
+   in `cqh`, the entire game rescales to the new shape on its own — the line of
+   creatures, the bubbles, the panel and the type all follow. Only the things
+   that were placed for a wide picture need moving. */
+@media (max-width: 760px), (orientation: portrait) {
+  .ns-canvas {
+    width: 100cqw;
+    height: 100cqh;
+    aspect-ratio: auto;
+    /* the circle is sized off the SHORT side here, or it swells on a tall
+       screen and the line of five runs off both edges. 17cqw is what five
+       stations and their gaps leave each one; 20cqw ran the first and last
+       creature off the screen on every phone held upright */
+    --ns-bubble: min(14cqh, 17cqw);
+  }
+  .ns-side {
+    display: none;
+  }
+
+  /* the bar drops below the two pinned pills instead of running under them */
+  .ns-progress {
+    top: auto;
+    bottom: 3cqh;
+    width: 76%;
+  }
+
+  /* the line of creatures gets the middle of the screen and wraps its numbers
+     closer, and the choices sit where the line is not */
+  .ns-line {
+    left: 2%;
+    right: 2%;
+    gap: 1.5cqw;
+    translate: 0 -52%;
+  }
+  /* one width per line length, each what the screen's WIDTH can hold: 96cqw
+     less the gaps, shared between the stations. The number rides the same
+     share of the creature's back as it does on the wide canvas (5 in 22). */
+  .ns-line {
+    --ns-thing: min(22cqh, 17cqw);
+  }
+  .ns-line--4 {
+    --ns-thing: min(26cqh, 21cqw);
+  }
+  .ns-line--3 {
+    --ns-thing: min(26cqh, 28cqw);
+  }
+  .ns-station-thing,
+  .ns-line--3 .ns-station-thing,
+  .ns-line--4 .ns-station-thing {
+    width: var(--ns-thing);
+    margin-top: calc(var(--ns-thing) * -0.23);
+  }
+  .ns-choices {
+    gap: 3cqw;
+  }
+  .ns-choices--top-left {
+    left: 50%;
+    /* below the two pinned pills (16px + 44px), never between them */
+    top: max(9cqh, 72px);
+    translate: -50% 0;
+  }
+  .ns-choices--bottom-right {
+    right: auto;
+    left: 50%;
+    bottom: 10cqh;
+    translate: -50% 0;
+  }
+
+  /* the picture area and its panel stack: things above, numbers in a row
+     along the bottom, instead of a column crammed against one edge */
+  .ns-count-things {
+    left: 8%;
+    top: 16cqh;
+    width: 84%;
+    height: 46cqh;
+  }
+  .ns-count-thing {
+    width: min(20cqh, 20cqw);
+  }
+  .ns-count-things--rows .ns-count-thing {
+    width: min(11cqh, 13cqw);
+  }
+  .ns-panel {
+    top: auto;
+    right: -6%;
+    left: -6%;
+    bottom: -4cqh;
+    width: auto;
+    height: 30cqh;
+    padding: 0 0 4cqh;
+    border-radius: 50% 50% 0 0;
+  }
+  .ns-panel--left {
+    left: -6%;
+    padding: 0 0 4cqh;
+    border-radius: 50% 50% 0 0;
+  }
+  .ns-panel-choices {
+    flex-direction: row;
+    gap: 4cqw;
+  }
+
+  /* the teacher would stand on the numbers at this width */
+  .ns-teacher-slot {
+    display: none;
+  }
+
+  /* the picker: a smaller title, and room above it for the Back pill it was
+     sitting on top of */
+  .ns-pick .pl-screen-shell .pl-screen-scroll {
+    padding-top: clamp(56px, 11vh, 84px);
+    gap: 2cqh;
+  }
+  .ns-pick .pl-cs-title {
+    font-size: min(8cqh, 7cqw);
+  }
+  .ns-pick .pl-cs-subtitle {
+    font-size: min(3.6cqh, 3.2cqw);
+  }
+  .ns-pick .pl-cs-btn {
+    width: min(28cqh, 26cqw);
+    padding: 2.4cqh 1.6cqw;
+  }
+  .ns-pick .pl-cs-preview {
+    font-size: min(8cqh, 7cqw);
+  }
+  .ns-pick .pl-cs-label {
+    font-size: min(4.4cqh, 3.6cqw);
+  }
+
+  /* the title screen stacks from the top, so the teacher has the bottom of
+     a tall screen to himself instead of standing on the ants and the Play
+     button; the title is capped by the WIDTH, or "Number" alone is wider than
+     a phone held upright */
+  .ns-splash {
+    justify-content: flex-start;
+    padding-top: max(11cqh, 76px);
+  }
+  .ns-title {
+    font-size: min(13cqh, 15cqw);
+  }
+  .ns-subtitle {
+    font-size: min(4.4cqh, 4.6cqw);
+  }
+  .ns-splash-row {
+    gap: 2cqw;
+  }
+  .ns-splash-thing {
+    width: min(16cqh, 14cqw);
+  }
+  .ns-splash-teacher {
+    width: min(22cqh, 34cqw);
+    height: min(40cqh, 62cqw);
+    opacity: 0.9;
+  }
+  .ns-splash-teacher .dc-teacher-says,
+  .ns-done-teacher .dc-teacher-says {
+    font-size: min(4.2cqh, 4.6cqw);
+  }
+  /* the end card is the middle of the screen; he stands under it */
+  .ns-done-teacher {
+    width: min(26cqh, 30cqw);
+    height: min(48cqh, 55cqw);
+  }
+}

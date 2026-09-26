@@ -1,0 +1,679 @@
+/**
+ * Word Site — CVC word and picture matching, on a building site.
+ *
+ * The look is Number Safari's: BUBBLY AND THICK. Fat rounded corners, a solid
+ * dark rim on every surface, an inset shade under each one so it reads as a
+ * physical object, and type big enough that a child reads the word from across
+ * a table. Nothing here is a thin card with a soft shadow; that is the
+ * portal's grown-up style and it disappears against a busy site.
+ *
+ * Sized in `vmin` clamps (the screen IS the board here — there is no fixed
+ * canvas like Numbers 1 – 5 has), and four cards and four word tiles share ONE
+ * column width, which is what makes the word obviously belong to the picture
+ * above it.
+ *
+ * Every illustration on screen comes from the shared construction theme via
+ * `SiteScene`; this file owns the LAYOUT, the drop-zone states, and the one
+ * thing the theme has no piece for — a flat city skyline.
+ */
+
+.cv-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── The site behind everything ──────────────────────────────────────────
+   Laid out to the reference: blue sky, a grey city on the horizon, a
+   half-built frame with scaffolding, a crane STANDING ON THE GROUND with its
+   jib across the frame, a big tracked digger in front, and the bricklayer at
+   his wall on the right. The dirt takes the bottom third, and every machine
+   is anchored to the top of it so nothing floats. */
+
+.cv-site {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* the sky is painted here rather than by the shared SiteSky, whose big
+     yellow sun the reference does not have */
+  background: linear-gradient(#2f8fd0 0%, #6fc0e8 38%, #b9e2f4 70%, #dcf0fa 100%);
+  /* where the dirt starts — every machine below is anchored to it */
+  --cv-ground: 33%;
+}
+
+/** The city: flat towers with window grids along the horizon, the one thing
+ *  the construction theme has no piece for. Rectangles, because that is all
+ *  they are. */
+.cv-skyline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--cv-ground);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(4px, 1vw, 14px);
+  height: 46%;
+  opacity: 0.55;
+}
+.cv-tower {
+  display: block;
+  width: clamp(30px, 7vw, 110px);
+  border-radius: 3px 3px 0 0;
+  /* two repeating gradients make the window grid: rows across, columns down */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 22%,
+      rgba(255, 255, 255, 0.55) 22% 44%,
+      transparent 44% 100%
+    ),
+    repeating-linear-gradient(180deg, transparent 0 9%, rgba(255, 255, 255, 0.4) 9% 15%), #8fa6b8;
+}
+.cv-tower--a {
+  height: 52%;
+}
+.cv-tower--b {
+  height: 74%;
+  background-color: #7f97ab;
+}
+.cv-tower--c {
+  height: 40%;
+}
+.cv-tower--d {
+  height: 88%;
+  background-color: #869eb1;
+}
+.cv-tower--e {
+  height: 58%;
+}
+.cv-tower--f {
+  height: 70%;
+  background-color: #7a92a6;
+}
+
+.cv-site-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--cv-ground);
+}
+
+/** The crane STANDS. Its foot is on the dirt and its mast runs most of the
+ *  screen, the way a tower crane actually works — the first cut of this had
+ *  it pinned to the top corner with nothing underneath. */
+.cv-site-crane {
+  position: absolute;
+  left: 1%;
+  bottom: calc(var(--cv-ground) - 3%);
+  width: clamp(150px, 34vmin, 420px);
+}
+.cv-site-frame {
+  position: absolute;
+  left: 26%;
+  bottom: calc(var(--cv-ground) - 2%);
+  width: clamp(130px, 30vmin, 380px);
+}
+.cv-site-scaffold {
+  position: absolute;
+  left: 22%;
+  bottom: calc(var(--cv-ground) - 2%);
+  width: clamp(110px, 25vmin, 320px);
+  opacity: 0.95;
+}
+
+/** The digger is the biggest thing on the site, as it is in the reference. */
+.cv-site-digger {
+  position: absolute;
+  left: 4%;
+  bottom: 2%;
+  width: clamp(190px, 44vmin, 560px);
+}
+.cv-site-cone {
+  position: absolute;
+  bottom: 1%;
+  width: clamp(26px, 5.5vmin, 68px);
+}
+.cv-site-cone--l {
+  left: 40%;
+}
+.cv-site-cone--r {
+  left: 50%;
+}
+
+/**
+ * The engineer, big, down the right-hand side with his wall.
+ *
+ * He is the one figure on this screen who DOES anything — he carries a brick
+ * while the child works and throws a thumbs-up when a word lands — so he is
+ * sized to be watched rather than tucked into a corner. The board keeps the
+ * middle; he gets the side, standing on the dirt.
+ */
+.cv-site-crew {
+  position: absolute;
+  right: 0.5%;
+  bottom: 1%;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(2px, 0.5vw, 8px);
+}
+.cv-site-worker {
+  width: clamp(120px, 30vmin, 380px);
+}
+.cv-site-wall {
+  width: clamp(80px, 19vmin, 240px);
+}
+
+/* ── The board ───────────────────────────────────────────────────────────── */
+
+.cv-board,
+.cv-splash,
+.cv-done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.8vmin, 20px);
+  overflow: hidden;
+  padding: clamp(50px, 8vmin, 80px) clamp(8px, 2vw, 28px) clamp(46px, 8vmin, 78px);
+  touch-action: none;
+}
+
+.cv-topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 18px);
+  width: min(94vw, 1060px);
+}
+.cv-round {
+  flex: none;
+  padding: 0.35em 1em;
+  border: clamp(2px, 0.4vmin, 4px) solid #8a5a1e;
+  border-radius: 999px;
+  background: #ffd977;
+  font-size: clamp(12px, 2vmin, 19px);
+  color: #6b4212;
+  box-shadow: inset 0 -0.3em 0 rgba(0, 0, 0, 0.14);
+}
+.cv-progress-bar {
+  flex: 1;
+  height: clamp(12px, 2.2vmin, 20px);
+  overflow: hidden;
+  border: clamp(2px, 0.4vmin, 4px) solid #8a5a1e;
+  border-radius: 999px;
+  /* opaque, not tinted: the crane stands right behind this corner, and a
+     see-through track turns the progress bar into a window onto a machine */
+  background: #f6efe2;
+}
+.cv-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffc93c, #f08a24);
+}
+
+/* ── Four pictures over four drop zones ──────────────────────────────────── */
+
+.cv-cards,
+.cv-words {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(6px, 1.4vw, 20px);
+  width: min(94vw, 1060px);
+}
+
+/** A fat rounded plate with a dark rim — the bubbly surface this whole game
+ *  is built from. */
+.cv-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: 58% 42%;
+  aspect-ratio: 1 / 1.24;
+  overflow: hidden;
+  border: clamp(3px, 0.7vmin, 7px) solid #8a5a1e;
+  border-radius: clamp(14px, 2.6vmin, 30px);
+  background: #fffaf0;
+  box-shadow:
+    inset 0 clamp(-10px, -1.4vmin, -5px) 0 rgba(120, 80, 20, 0.12),
+    0 clamp(4px, 0.9vmin, 9px) 0 rgba(90, 58, 14, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.cv-card--done {
+  transform: translateY(-3%);
+  border-color: #2f8f4f;
+  box-shadow:
+    inset 0 clamp(-10px, -1.4vmin, -5px) 0 rgba(30, 120, 70, 0.14),
+    0 clamp(4px, 0.9vmin, 9px) 0 rgba(20, 90, 50, 0.4);
+}
+.cv-card-pic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(6px, 1.4vmin, 18px);
+}
+/* the picture breathes: contained, never cropped, never on its own plate.
+   Both sources land here — Blend & Seek's `Picture` and this game's own
+   `cv-pic-img` — so they are the same size as each other. */
+.cv-card-pic :is(svg, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/** The drop zone: pale while it waits, bright green under a word on its way
+ *  in, and the word itself once it has landed. */
+.cv-drop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: clamp(3px, 0.6vmin, 6px) solid #d9c49c;
+  background: #e8e4f6;
+  transition: background 0.15s ease;
+}
+.cv-drop--lit {
+  border-top-color: #7fb52a;
+  background: #ddf288;
+  box-shadow: inset 0 0 0 clamp(3px, 0.6vmin, 6px) #a6d43f;
+}
+.cv-drop--done {
+  border-top-color: #2f8f4f;
+  background: #d8f5e2;
+}
+.cv-drop-hint {
+  font-size: clamp(11px, 2vmin, 19px);
+  color: #6a6a80;
+}
+.cv-drop-word {
+  font-size: clamp(20px, 4.2vmin, 44px);
+  line-height: 1;
+  color: #23703f;
+}
+/** Where a correct drop bursts. */
+.cv-puff {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.cv-confetti {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--pl-color, #f6c544);
+}
+
+/* ── The words, in slots that never move ─────────────────────────────────── */
+
+.cv-word-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* the slot keeps its height when the tile inside it goes — the remaining
+     words must not slide along, or a child reaches for one word and finds
+     another under their finger */
+  min-height: clamp(44px, 8.4vmin, 86px);
+}
+/** Big, fat and coloured. The word is the thing being learned, so it is the
+ *  largest type on the screen. */
+.cv-word {
+  width: 100%;
+  /* a finger-sized target even where the type is at its smallest */
+  min-height: 48px;
+  padding: clamp(8px, 1.8vmin, 18px) clamp(4px, 1vw, 14px);
+  border: clamp(3px, 0.7vmin, 7px) solid var(--cv-tile-rim, #2b5d8a);
+  border-radius: clamp(12px, 2.4vmin, 26px);
+  background: var(--cv-tile, #7ec4f2);
+  font-size: clamp(20px, 4.4vmin, 46px);
+  line-height: 1;
+  color: #1f3550;
+  cursor: grab;
+  touch-action: none;
+  box-shadow:
+    inset 0 clamp(-10px, -1.4vmin, -5px) 0 rgba(0, 0, 0, 0.16),
+    inset 0 clamp(3px, 0.6vmin, 6px) 0 rgba(255, 255, 255, 0.45),
+    0 clamp(4px, 0.9vmin, 9px) 0 rgba(30, 50, 80, 0.32);
+}
+/* four tiles, four colours — set by position so no component has to carry a
+   palette, and a fifth word would simply start the cycle again */
+.cv-word-slot:nth-child(4n + 1) .cv-word {
+  --cv-tile: #8fd0f5;
+  --cv-tile-rim: #2b6d9e;
+}
+.cv-word-slot:nth-child(4n + 2) .cv-word {
+  --cv-tile: #ffd06b;
+  --cv-tile-rim: #b37614;
+}
+.cv-word-slot:nth-child(4n + 3) .cv-word {
+  --cv-tile: #a8e08a;
+  --cv-tile-rim: #4b8a34;
+}
+.cv-word-slot:nth-child(4n + 4) .cv-word {
+  --cv-tile: #f7a9c0;
+  --cv-tile-rim: #b35274;
+}
+.cv-word--used {
+  visibility: hidden;
+}
+.cv-word--dragging {
+  opacity: 0.25;
+}
+/** The tile under the finger, centred on the point by margin — never fixed,
+ *  because a fixed element inside a transformed Framer ancestor drifts. */
+.cv-ghost {
+  width: 0;
+  height: 0;
+}
+.cv-word--ghost {
+  display: inline-block;
+  width: max-content;
+  min-width: clamp(96px, 18vmin, 210px);
+  margin-left: calc(clamp(96px, 18vmin, 210px) / -2);
+  margin-top: calc(clamp(44px, 8.4vmin, 86px) / -2);
+  text-align: center;
+  --cv-tile: #ffe9a8;
+  --cv-tile-rim: #b37614;
+}
+
+/* ── The strip along the bottom ──────────────────────────────────────────── */
+
+.cv-howto {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(6px, 1.4vmin, 16px);
+  z-index: 3;
+  padding: clamp(6px, 1.2vmin, 14px) clamp(14px, 3vw, 34px);
+  translate: -50% 0;
+  border: clamp(2px, 0.4vmin, 4px) solid #8a5a1e;
+  border-radius: 999px;
+  background: rgba(255, 252, 245, 0.95);
+}
+.cv-howto-text {
+  font-size: clamp(11px, 1.9vmin, 18px);
+  color: #4a3a1c;
+}
+/** "Back to Games". Pinned top-right on the board by `.pl-exit-pill`; in the
+ *  end-of-set panel it sits in the button row, so the position is never set
+ *  here — it used to be, and pinned that one to the panel's own corner. */
+.cv-exit {
+  min-height: 44px;
+  padding: 0.5em 1.2em;
+  border: clamp(2px, 0.4vmin, 4px) solid #8a5a1e;
+  border-radius: 999px;
+  background: #ffd977;
+  font-size: clamp(11px, 1.8vmin, 16px);
+  line-height: 1;
+  color: #6b4212;
+  cursor: pointer;
+}
+
+/* ── Choosing a sound ────────────────────────────────────────────────────
+   Same story as every picker in the portal: `ChoiceScreen` brings the layout,
+   this game brings the paint. Each vowel gets its own plate colour so a child
+   comes back to "the orange one" without reading anything. */
+
+.cv-pick {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+/**
+ * The shared picker centres with `justify-content: safe center`, and SAFE
+ * centring falls back to flex-start the moment the content is taller than the
+ * box — which is why five plates plus a title sat jammed against the top
+ * instead of in the middle. Nothing is wrong with the centring; the content
+ * simply has to fit. These three rules make it fit: a shorter column, tighter
+ * gaps, and plates small enough that all five stay on ONE row.
+ */
+/* qualified through the shell so it outranks the `pt-16 py-8` utilities
+   ChoiceScreen sets inline on the same element — balanced padding is what
+   makes the centred column actually look centred */
+.cv-pick .pl-screen-shell .pl-screen-scroll {
+  gap: clamp(10px, 2.2vmin, 24px);
+  padding-top: clamp(46px, 8vh, 76px);
+  padding-bottom: clamp(46px, 8vh, 76px);
+}
+.cv-pick .flex-wrap {
+  gap: clamp(6px, 1.4vmin, 18px);
+}
+.cv-pick .pl-cs-title {
+  font-size: clamp(22px, 5vmin, 52px);
+  color: #ffffff;
+  text-shadow:
+    0 clamp(2px, 0.5vmin, 5px) 0 #8a5a1e,
+    0 clamp(6px, 1.4vmin, 16px) clamp(8px, 1.6vmin, 18px) rgba(60, 40, 10, 0.4);
+}
+.cv-pick .pl-cs-subtitle {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: clamp(2px, 0.4vmin, 4px) solid #8a5a1e;
+  border-radius: 999px;
+  background: rgba(255, 252, 245, 0.95);
+  font-size: clamp(12px, 2.1vmin, 20px);
+  color: #6b4212;
+}
+.cv-pick .pl-cs-btn {
+  width: clamp(58px, 13vmin, 150px);
+  padding: clamp(10px, 2.2vmin, 24px) clamp(6px, 1.2vmin, 14px);
+  border: clamp(3px, 0.7vmin, 7px) solid var(--cv-plate-rim, #8a5a1e);
+  border-radius: clamp(16px, 3vmin, 34px);
+  background: var(--cv-plate, #ffd977);
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-14px, -1.8vmin, -7px) 0 rgba(0, 0, 0, 0.14),
+    inset 0 clamp(4px, 0.8vmin, 8px) 0 rgba(255, 255, 255, 0.5),
+    0 clamp(5px, 1vmin, 10px) 0 rgba(90, 58, 14, 0.42);
+}
+.cv-pick .pl-cs-preview {
+  font-size: clamp(26px, 6vmin, 66px);
+  line-height: 1;
+  color: #46300e;
+}
+.cv-pick .pl-cs-label {
+  font-size: clamp(10px, 1.8vmin, 18px);
+  color: #6b4212;
+}
+.cv-pick .pl-cs-btn--a {
+  --cv-plate: #ffd06b;
+  --cv-plate-rim: #b37614;
+}
+.cv-pick .pl-cs-btn--e {
+  --cv-plate: #a8e08a;
+  --cv-plate-rim: #4b8a34;
+}
+.cv-pick .pl-cs-btn--i {
+  --cv-plate: #8fd0f5;
+  --cv-plate-rim: #2b6d9e;
+}
+.cv-pick .pl-cs-btn--o {
+  --cv-plate: #f7a9c0;
+  --cv-plate-rim: #b35274;
+}
+.cv-pick .pl-cs-btn--u {
+  --cv-plate: #d3b8f0;
+  --cv-plate-rim: #7a52b3;
+}
+
+/* ── The lit panel over a dark site ──────────────────────────────────────── */
+
+.cv-modal-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 18, 26, 0.72);
+}
+.cv-modal {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2vmin, 24px);
+  padding: clamp(20px, 4.4vmin, 50px) clamp(26px, 6vmin, 78px);
+  border: clamp(4px, 0.8vmin, 8px) solid #4f9fe0;
+  border-radius: clamp(18px, 3.4vmin, 38px);
+  background: #eaf6fd;
+  box-shadow:
+    inset 0 clamp(-14px, -1.8vmin, -7px) 0 rgba(40, 90, 140, 0.12),
+    0 clamp(6px, 1.2vmin, 12px) 0 rgba(20, 60, 110, 0.45),
+    0 20px 44px rgba(10, 20, 40, 0.5);
+}
+.cv-modal-title {
+  font-size: clamp(26px, 5.6vmin, 60px);
+  line-height: 1;
+  color: #16324f;
+}
+.cv-modal-line {
+  margin-top: calc(clamp(10px, 2vmin, 24px) * -0.5);
+  font-size: clamp(13px, 2.2vmin, 22px);
+  color: #46688a;
+}
+.cv-next {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.5em;
+  padding: clamp(10px, 1.9vmin, 20px) clamp(24px, 4.6vmin, 52px);
+  border: clamp(3px, 0.6vmin, 6px) solid #1c4a94;
+  border-radius: 999px;
+  background: #3f86e0;
+  font-size: clamp(16px, 3vmin, 32px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-10px, -1.4vmin, -5px) 0 rgba(0, 0, 0, 0.2),
+    0 clamp(4px, 0.9vmin, 9px) 0 rgba(15, 45, 95, 0.5);
+}
+.cv-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(8px, 1.6vmin, 18px);
+}
+
+/* ── The way in ──────────────────────────────────────────────────────────── */
+
+.cv-splash-head {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.cv-title {
+  font-size: clamp(34px, 9vmin, 96px);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0 clamp(3px, 0.7vmin, 7px) 0 #8a5a1e,
+    0 clamp(10px, 2vmin, 22px) clamp(10px, 2vmin, 24px) rgba(60, 40, 10, 0.4);
+}
+.cv-subtitle {
+  margin-top: 0.35em;
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: clamp(2px, 0.4vmin, 4px) solid #8a5a1e;
+  border-radius: 999px;
+  background: rgba(255, 252, 245, 0.95);
+  font-size: clamp(12px, 2.3vmin, 24px);
+  color: #6b4212;
+}
+.cv-play {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: clamp(12px, 2.3vmin, 24px) clamp(30px, 6.4vmin, 74px);
+  border: clamp(3px, 0.7vmin, 7px) solid #1c4a94;
+  border-radius: 999px;
+  background: #3f86e0;
+  font-size: clamp(18px, 3.8vmin, 40px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 clamp(-12px, -1.6vmin, -6px) 0 rgba(0, 0, 0, 0.2),
+    0 clamp(5px, 1vmin, 10px) 0 rgba(15, 45, 95, 0.5);
+}
+.cv-play-glyph {
+  font-size: 0.75em;
+}
+
+/* ── Phones held sideways ────────────────────────────────────────────────
+   320–430px of height has to hold four picture cards, four word tiles and the
+   how-to strip. Sized off the width alone, a card was 1.24x taller than a
+   quarter of the screen is wide, so the word tiles slid under the how-to
+   strip and the round counter ran under the Back pill. Here the counter and
+   bar move up BETWEEN the two pinned pills, and the four columns are as wide
+   as the height left over allows — cards and tiles still share one width. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .cv-board {
+    /* 68 = the pill row; 52 = the how-to strip; 48 = the word row; 2 gaps */
+    --cv-card-h: calc(100dvh - 68px - 52px - 48px - 2 * clamp(6px, 2vh, 12px));
+    gap: clamp(6px, 2vh, 12px);
+    padding-top: 68px;
+    padding-bottom: 52px;
+  }
+  .cv-topbar {
+    position: absolute;
+    left: 50%;
+    top: 16px;
+    width: min(calc(100% - 340px), 560px);
+    height: 44px;
+    translate: -50% 0;
+  }
+  .cv-cards,
+  .cv-words {
+    width: min(94vw, 1060px, calc(var(--cv-card-h) / 1.24 * 4 + 3 * clamp(6px, 1.4vw, 20px)));
+  }
+  .cv-word-slot {
+    min-height: 48px;
+  }
+  .cv-word {
+    padding-block: 6px;
+    font-size: clamp(20px, 7vh, 30px);
+  }
+  .cv-drop-word {
+    font-size: clamp(18px, 6.4vh, 30px);
+  }
+  .cv-howto {
+    padding-block: 5px;
+  }
+}
+
+/* ── Narrow screens ──────────────────────────────────────────────────────
+   Four columns is the composition — a picture with its word under it only
+   reads if both are the same width — so the columns stay and the machines,
+   which are scenery, step out of the way instead. */
+@media (max-width: 560px), (orientation: portrait) {
+  .cv-site-crane,
+  .cv-site-digger,
+  .cv-site-scaffold,
+  .cv-site-frame,
+  .cv-site-cone {
+    display: none;
+  }
+  .cv-site-worker {
+    width: clamp(70px, 22vmin, 140px);
+  }
+  .cv-site-wall {
+    width: clamp(50px, 15vmin, 110px);
+  }
+}

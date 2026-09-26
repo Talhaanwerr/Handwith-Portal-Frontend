@@ -55,6 +55,27 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "shape-match": lazy(() =>
     import("@games/shape-match/ShapeMatchGame").then((m) => ({ default: m.ShapeMatchGame }))
   ),
+  "blend-read": lazy(() =>
+    import("@games/blend-read/BlendReadGame").then((m) => ({ default: m.BlendReadGame }))
+  ),
+  "number-safari": lazy(() =>
+    import("@games/number-safari/NumberSafariGame").then((m) => ({ default: m.NumberSafariGame }))
+  ),
+  "cvc-match": lazy(() =>
+    import("@games/cvc-match/CvcMatchGame").then((m) => ({ default: m.CvcMatchGame }))
+  ),
+  "sort-it": lazy(() =>
+    import("@games/sort-it/SortItGame").then((m) => ({ default: m.SortItGame }))
+  ),
+  "word-quiz": lazy(() =>
+    import("@games/word-quiz/WordQuizGame").then((m) => ({ default: m.WordQuizGame }))
+  ),
+  "math-maze": lazy(() =>
+    import("@games/math-maze/MathMazeGame").then((m) => ({ default: m.MathMazeGame }))
+  ),
+  "food-sort": lazy(() =>
+    import("@games/food-sort/FoodSortGame").then((m) => ({ default: m.FoodSortGame }))
+  ),
 };
 
 interface GamePlayerProps {

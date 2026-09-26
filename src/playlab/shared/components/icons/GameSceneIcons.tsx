@@ -32,6 +32,9 @@ import { DoorLeaf, Item, Key } from "@games/door-count/components/DoorArt";
 import { ThingArt } from "@games/number-match/components/MatchArt";
 import { ShapeGlyph, ShapeHole } from "@games/shape-match/components/ShapeArt";
 import { LeoFigure } from "@games/shape-match/components/Leo";
+import { Picture } from "@games/blend-read/components/PictureArt";
+import { QuizPicture } from "@games/word-quiz/components/QuizArt";
+import { Thing as CountingThing, Plate } from "@games/counting-numbers/components/CountingArt";
 import { cssVars } from "@shared/styles/cssVars";
 
 /* ── shared scaffolding ── */
@@ -744,6 +747,499 @@ export function ShapeMatchIcon() {
   );
 }
 
+/**
+ * Art borrowed from a game, forced to fill its slot.
+ *
+ * The four newest cards reuse art whose OWN sizing lives in its game's
+ * stylesheet (`cn-thing-svg`, `br-pic-img`, `pl-art`) — and the Library page
+ * does not load playlab.css, so none of those rules exist here. Sizing on the
+ * wrapper with utilities that DO exist is what keeps these cards correct off
+ * the play route.
+ */
+function Art({ children }: { children: ReactNode }) {
+  return (
+    <span className="block [&>img]:block [&>img]:h-full [&>img]:w-full [&>img]:object-contain [&>svg]:block [&>svg]:h-auto [&>svg]:w-full">
+      {children}
+    </span>
+  );
+}
+
+/** A number in a coloured circle — the counting games' one control. */
+function NumberPip({ n, fill = "#2E7FD6" }: { n: string; fill?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className="block h-auto w-full drop-shadow-md">
+      <circle cx="50" cy="50" r="46" fill={fill} />
+      <circle cx="50" cy="38" r="38" fill="#FFFFFF" opacity="0.18" />
+      <text
+        x="50"
+        y="50"
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontSize="58"
+        fontWeight="900"
+        fontFamily="Nunito, system-ui, sans-serif"
+        fill="#FFFFFF"
+      >
+        {n}
+      </text>
+    </svg>
+  );
+}
+
+/**
+ * NUMBER SAFARI — the ants' line with one number missing and the answer in a
+ * hand: how many, and which one is gone, in one picture.
+ */
+export function NumberSafariIcon() {
+  return (
+    <Diorama className="bg-[#B4DC2E]">
+      <span className="absolute -top-[18%] -left-[10%] h-[62%] w-[78%] rounded-[50%] bg-[#7FA81C]" />
+      <span className="absolute top-[8%] right-[8%] h-[16%] w-[16%] rounded-full bg-[#FFE36A]" />
+
+      <At x={4} y={44} w={22} z={2}>
+        <NumberPip n="1" />
+      </At>
+      <At x={4} y={62} w={26} z={2}>
+        <Art>
+          <CountingThing theme="ant" index={0} />
+        </Art>
+      </At>
+
+      <At x={33} y={44} w={22} z={2}>
+        <NumberPip n="2" />
+      </At>
+      <At x={33} y={62} w={26} z={2}>
+        <Art>
+          <CountingThing theme="ant" index={1} />
+        </Art>
+      </At>
+
+      {/* the gap — the whole mechanic */}
+      <At x={62} y={44} w={22} z={2}>
+        <svg viewBox="0 0 100 100" className="block h-auto w-full">
+          <circle cx="50" cy="50" r="46" fill="#2B2B2B" />
+        </svg>
+      </At>
+      <At x={62} y={62} w={26} z={2}>
+        <Art>
+          <CountingThing theme="ant" index={2} />
+        </Art>
+      </At>
+
+      {/* the answer, on its way */}
+      <At x={70} y={12} w={26} z={4}>
+        <NumberPip n="3" />
+      </At>
+      <At x={84} y={26} w={22} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * WORD SITE — a picture card on the building site with its word being dropped
+ * into place: the game is that drag, and nothing else.
+ */
+export function CvcMatchIcon() {
+  return (
+    <Diorama className="bg-[#7EC8EE]">
+      <span className="absolute inset-x-0 top-0 h-[64%] bg-[linear-gradient(#2F8FD0,#B9E2F4)]" />
+      <span className="absolute inset-x-0 bottom-0 h-[38%] bg-[linear-gradient(#B0793F,#8F5F2E)]" />
+      {/* the city, three flat towers */}
+      <span className="absolute bottom-[38%] left-[6%] h-[26%] w-[14%] bg-[#8FA6B8] opacity-60" />
+      <span className="absolute bottom-[38%] left-[22%] h-[36%] w-[12%] bg-[#7F97AB] opacity-60" />
+      <span className="absolute bottom-[38%] left-[36%] h-[22%] w-[13%] bg-[#8FA6B8] opacity-60" />
+
+      {/* the card: a picture over its drop zone */}
+      <At x={8} y={16} w={44} z={3}>
+        <span className="block overflow-hidden rounded-[18%] border-[6px] border-[#8A5A1E] bg-[#FFFAF0] shadow-md">
+          <span className="block p-[10%]">
+            <Art>
+              <Picture id="cat" />
+            </Art>
+          </span>
+          <span className="block h-[22%] border-t-[5px] border-[#D9C49C] bg-[#DDF288]" />
+        </span>
+      </At>
+
+      {/* the word tile, mid-drag */}
+      <At x={54} y={52} w={40} z={4}>
+        <span className="font-rounded flex items-center justify-center rounded-[26%] border-[6px] border-[#2B6D9E] bg-[#8FD0F5] py-[10%] text-[clamp(8px,2.6vw,22px)] font-black text-[#1F3550] shadow-md">
+          cat
+        </span>
+      </At>
+      <At x={78} y={66} w={22} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * SORT IT — two labelled boards with the presenter between them and a thing
+ * being carried to the big one. The rule is shown, never written.
+ */
+export function SortItIcon() {
+  return (
+    <Diorama className="bg-[#B4DDF0]">
+      <span className="absolute top-[8%] left-[10%] h-[14%] w-[26%] rounded-full bg-white/70" />
+      <span className="absolute top-[14%] right-[12%] h-[10%] w-[20%] rounded-full bg-white/60" />
+
+      {/* BIG */}
+      <At x={4} y={30} w={36} z={2}>
+        <span className="flex aspect-square items-center justify-center rounded-[20%] border-[6px] border-[#2F7BA6] bg-white p-[12%] shadow-md">
+          <Art>
+            <Picture id="apple" />
+          </Art>
+        </span>
+      </At>
+      {/* SMALL */}
+      <At x={60} y={30} w={36} z={2}>
+        <span className="flex aspect-square items-center justify-center rounded-[20%] border-[6px] border-[#2F7BA6] bg-white p-[26%] shadow-md">
+          <Art>
+            <Picture id="apple" />
+          </Art>
+        </span>
+      </At>
+
+      {/* the presenter, between the two — the position IS the idea */}
+      <At x={41} y={34} w={18} z={4}>
+        <Art>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/games/asset/bigsmall-trimmed.png" alt="" />
+        </Art>
+      </At>
+
+      {/* one more thing still to be sorted, under a hand */}
+      <At x={30} y={72} w={22} z={4}>
+        <Art>
+          <Picture id="ball" />
+        </Art>
+      </At>
+      <At x={44} y={78} w={22} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * BLEND & SEEK — three letters sounded out into a word, and the picture they
+ * name: the blend, then the match.
+ */
+export function BlendReadIcon() {
+  return (
+    <Diorama className="bg-[#DCEEFF]">
+      <span className="absolute inset-x-0 bottom-0 h-[34%] bg-[#BFDCF5]" />
+      <span className="absolute top-[6%] left-[8%] h-[12%] w-[22%] rounded-full bg-white/70" />
+
+      <At x={28} y={8} w={44} z={2}>
+        <Art>
+          <Picture id="cat" />
+        </Art>
+      </At>
+
+      <At x={6} y={56} w={26} z={3}>
+        <LetterTile ch="c" border="#5FA8D6" />
+      </At>
+      <At x={37} y={56} w={26} z={3}>
+        <LetterTile ch="a" border="#5FA8D6" />
+      </At>
+      <At x={68} y={56} w={26} z={3}>
+        <LetterTile ch="t" border="#5FA8D6" />
+      </At>
+
+      <At x={56} y={70} w={22} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * SNOW WORDS — the bus on the ice with three words beside it, the right one
+ * already tapped. The mechanic is the picture.
+ */
+export function WordQuizIcon() {
+  return (
+    <Diorama className="bg-[#CBE8F7]">
+      <span className="absolute inset-x-0 bottom-0 h-[34%] bg-[#EAF6FD]" />
+      <span className="absolute inset-x-[6%] top-[8%] bottom-[8%] rounded-[12%] border-[5px] border-[#2F6F96] bg-white/95" />
+
+      {/* the three answer rows */}
+      <At x={11} y={22} w={44} z={2}>
+        <span className="block rounded-[22%] border-[4px] border-[#CFDAE4] bg-[#FBFCFE] py-[12%]" />
+      </At>
+      <At x={11} y={43} w={44} z={2}>
+        <span className="font-rounded flex items-center rounded-[22%] border-[4px] border-[#4B8A34] bg-[#A8E08A] px-[8%] py-[6%] text-[clamp(6px,2vw,17px)] font-black text-[#1F3550]">
+          bus
+        </span>
+      </At>
+      <At x={11} y={64} w={44} z={2}>
+        <span className="block rounded-[22%] border-[4px] border-[#CFDAE4] bg-[#FBFCFE] py-[12%]" />
+      </At>
+
+      {/* the picture being read against */}
+      <At x={58} y={30} w={34} z={2}>
+        <Art>
+          <QuizPicture word="bus" />
+        </Art>
+      </At>
+
+      {/* the segmented progress along the bottom */}
+      <At x={11} y={83} w={78} z={3}>
+        <span className="flex gap-[3%]">
+          <span className="h-[6px] flex-1 rounded-full bg-[#3FAE68]" />
+          <span className="h-[6px] flex-1 rounded-full bg-[#3FAE68]" />
+          <span className="h-[6px] flex-1 rounded-full bg-[#3FAE68]" />
+          <span className="h-[6px] flex-1 rounded-full border border-[#B9CBDB] bg-white" />
+          <span className="h-[6px] flex-1 rounded-full border border-[#B9CBDB] bg-white" />
+        </span>
+      </At>
+
+      <At x={44} y={48} w={20} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/* Math Maze's tile grid, in the icon's 100 x 100 space: three columns and
+   three rows of 22-unit tiles on a cream board. */
+const MZ_COL = [15, 39, 63] as const;
+const MZ_ROW = [17, 41, 65] as const;
+const MZ_TILE = 22;
+
+function MazeIconTile({
+  c,
+  r,
+  fill,
+  stroke,
+  dashed = false,
+}: {
+  c: 0 | 1 | 2;
+  r: 0 | 1 | 2;
+  fill: string;
+  stroke: string;
+  dashed?: boolean;
+}) {
+  return (
+    <rect
+      x={MZ_COL[c]}
+      y={MZ_ROW[r]}
+      width={MZ_TILE}
+      height={MZ_TILE}
+      rx="5"
+      fill={fill}
+      stroke={stroke}
+      strokeWidth="1.6"
+      strokeDasharray={dashed ? "2.6 2" : undefined}
+    />
+  );
+}
+
+function MazeIconNumber({
+  c,
+  r,
+  n,
+  faded = false,
+}: {
+  c: 0 | 1 | 2;
+  r: 0 | 1 | 2;
+  n: string;
+  faded?: boolean;
+}) {
+  return (
+    <text
+      x={MZ_COL[c] + MZ_TILE / 2}
+      y={MZ_ROW[r] + MZ_TILE / 2}
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize="15"
+      fontWeight="900"
+      fontFamily="Nunito, system-ui, sans-serif"
+      fill="#F07A1E"
+      opacity={faded ? 0.45 : 1}
+    >
+      {n}
+    </text>
+  );
+}
+
+/**
+ * MATH MAZE — the maze itself on the building site's sky: start flag, 1 and
+ * 2 lit on the trail, a wrong 2 crossed out in red, the hand on the 3 that
+ * comes next, and the trophy waiting in the corner. Tiles in the game's own
+ * colours.
+ */
+export function MathMazeIcon() {
+  return (
+    <Diorama className="bg-[#7EC8EE]">
+      <span className="absolute inset-x-0 top-0 h-[64%] bg-[linear-gradient(#2F8FD0,#B9E2F4)]" />
+      <span className="absolute inset-x-0 bottom-0 h-[38%] bg-[linear-gradient(#B0793F,#8F5F2E)]" />
+
+      <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" style={{ zIndex: 2 }}>
+        {/* the board and its shadow */}
+        <rect x="11" y="15.5" width="78" height="78" rx="10" fill="rgba(60,30,120,0.28)" />
+        <rect
+          x="11"
+          y="13"
+          width="78"
+          height="78"
+          rx="10"
+          fill="#FFF8EC"
+          stroke="#FFFFFF"
+          strokeWidth="2.5"
+        />
+
+        {/* the start */}
+        <MazeIconTile c={0} r={0} fill="#ECE6F4" stroke="#ECE6F4" />
+
+        {/* 1 and 2 on the trail: pale green, a dashed ring */}
+        <MazeIconTile c={1} r={0} fill="#E6F8D8" stroke="#7CC95A" />
+        <circle
+          cx="50"
+          cy="28"
+          r="8"
+          fill="none"
+          stroke="#43A92F"
+          strokeWidth="1.3"
+          strokeDasharray="2 1.8"
+        />
+        <MazeIconNumber c={1} r={0} n="1" />
+        <MazeIconTile c={1} r={1} fill="#E6F8D8" stroke="#7CC95A" />
+        <circle
+          cx="50"
+          cy="52"
+          r="8"
+          fill="none"
+          stroke="#43A92F"
+          strokeWidth="1.3"
+          strokeDasharray="2 1.8"
+        />
+        <MazeIconNumber c={1} r={1} n="2" />
+
+        {/* the rest of the maze */}
+        <MazeIconTile c={2} r={0} fill="#FFFFFF" stroke="#F1DCC0" />
+        <MazeIconNumber c={2} r={0} n="5" />
+        <MazeIconTile c={0} r={1} fill="#FFFFFF" stroke="#F1DCC0" />
+        <MazeIconNumber c={0} r={1} n="4" />
+        <MazeIconTile c={2} r={1} fill="#FFFFFF" stroke="#F1DCC0" />
+        <MazeIconNumber c={2} r={1} n="6" />
+
+        {/* the next number, warm — on the bottom row, so the hand's body
+            falls off the board and the trophy stays in view */}
+        <MazeIconTile c={1} r={2} fill="#FFF7E0" stroke="#F0B43C" />
+        <MazeIconNumber c={1} r={2} n="3" />
+
+        {/* a wrong 2, already tried: faded, a red cross on it */}
+        <MazeIconTile c={0} r={2} fill="#FDECEB" stroke="#F2B8B4" />
+        <MazeIconNumber c={0} r={2} n="2" faded />
+        <path
+          d="M20 70 L32 82 M32 70 L20 82"
+          stroke="#E0413F"
+          strokeWidth="3.2"
+          strokeLinecap="round"
+        />
+
+        {/* the prize corner */}
+        <MazeIconTile c={2} r={2} fill="#FFE9A6" stroke="#F0B43C" dashed />
+      </svg>
+
+      <At x={18} y={20} w={16} z={3}>
+        <Art>
+          <Picture id="flag" />
+        </Art>
+      </At>
+      <At x={66} y={68} w={16} z={3}>
+        <Art>
+          <Picture id="trophy" />
+        </Art>
+      </At>
+
+      <At x={44} y={78} w={20} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * SORTING FOOD — the first table in the kitchen: the chef, a red apple on
+ * one plate, a green apple's shadow on the other, and the green apple on its
+ * way there in the hand. The rule is shown, never written.
+ */
+export function FoodSortIcon() {
+  return (
+    <Diorama>
+      {/* the kitchen: the warm wall, a tiled splashback, the counter's lip,
+          the counter */}
+      <span className="absolute inset-0" style={{ background: "#FBE7A2" }} />
+      <span
+        className="absolute inset-x-0"
+        style={{
+          top: "50%",
+          height: "22%",
+          background: "repeating-linear-gradient(90deg, #FFF6D8 0 11%, #EBD9A0 11% 12%)",
+        }}
+      />
+      <span
+        className="absolute inset-x-0 bottom-0"
+        style={{ height: "30%", background: "linear-gradient(#C98A4E, #A86B35)" }}
+      />
+      <span
+        className="absolute inset-x-0"
+        style={{ bottom: "28%", height: "4%", background: "#E0A56A" }}
+      />
+
+      {/* the chef, behind the counter */}
+      <At x={-6} y={22} w={46} z={2}>
+        <Art>
+          <Picture id="chef" />
+        </Art>
+      </At>
+
+      {/* the red plate: done */}
+      <At x={34} y={62} w={32} z={3}>
+        <Art>
+          <Plate />
+        </Art>
+      </At>
+      <At x={39} y={44} w={22} z={4}>
+        <Art>
+          <Picture id="apple" />
+        </Art>
+      </At>
+
+      {/* the green plate: one shadow still to fill */}
+      <At x={66} y={62} w={32} z={3}>
+        <Art>
+          <Plate />
+        </Art>
+      </At>
+      <At x={71} y={44} w={22} z={4}>
+        <span className="block" style={{ filter: "brightness(0)", opacity: 0.75 }}>
+          <Art>
+            <CountingThing theme="apple" />
+          </Art>
+        </span>
+      </At>
+
+      {/* the green apple, on its way */}
+      <At x={46} y={6} w={24} z={5}>
+        <Art>
+          <CountingThing theme="apple" />
+        </Art>
+      </At>
+      <DottedRoute d="M71 20 Q82 23 83 37" color="#E0457B" head={[83, 39, 175]} />
+      <At x={51} y={19} w={20} z={6}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
 /** id → scene, for the portal card. */
 export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "letter-tracing": LetterTracingIcon,
@@ -760,4 +1256,11 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "door-count": DoorCountIcon,
   "number-match": NumberMatchIcon,
   "shape-match": ShapeMatchIcon,
+  "blend-read": BlendReadIcon,
+  "number-safari": NumberSafariIcon,
+  "cvc-match": CvcMatchIcon,
+  "sort-it": SortItIcon,
+  "word-quiz": WordQuizIcon,
+  "math-maze": MathMazeIcon,
+  "food-sort": FoodSortIcon,
 };
