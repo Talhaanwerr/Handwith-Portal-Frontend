@@ -1,0 +1,1209 @@
+/**
+ * Rainbow Shapes — all game-specific CSS, prefix `csf-` (grepped
+ * src/playlab first: unused by any other game).
+ *
+ * One playroom behind every screen (components/Playroom.tsx), a HUD plate
+ * on top, and each activity's props standing on the floor in one flex row.
+ * Everything is sized from the SHORTER side (vmin) so the 568 x 320 phone
+ * gets the same composition as a desktop, just smaller.
+ */
+
+.csf-root {
+  /* the floor band, and how far up it things stand (a little perspective) */
+  --csf-floor-h: clamp(62px, 27vh, 250px);
+  --csf-stand: calc(var(--csf-floor-h) * 0.34);
+  --csf-wainscot-h: clamp(24px, 12vh, 110px);
+  /* where the props start: under the HUD plate */
+  --csf-top: 72px;
+  /* big interactive pieces, from the shorter side */
+  --csf-tile: clamp(52px, 26vmin, 164px);
+  --csf-block: clamp(50px, 21vmin, 140px);
+  --csf-guide-h: clamp(96px, 40vmin, 340px);
+  --csf-gap: clamp(12px, 3.6vw, 56px);
+
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #ffe9b5;
+  /* the tall-screen and upright layouts size from this box (cqw / cqh) */
+  container-type: size;
+}
+.csf-root[data-screen="home"] {
+  --csf-top: 80px;
+}
+
+.csf-screen-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── The playroom ───────────────────────────────────────────────────────── */
+
+.csf-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* painted wall: warm butter yellow, soft white polka dots, light from above */
+.csf-wall {
+  position: absolute;
+  inset: 0;
+  background-color: #ffe7ad;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 45%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 15%, transparent 16%),
+    radial-gradient(circle, rgba(255, 176, 110, 0.28) 0 11%, transparent 12%);
+  background-size:
+    100% 100%,
+    9vmin 9vmin,
+    9vmin 9vmin;
+  background-position:
+    0 0,
+    0 0,
+    4.5vmin 4.5vmin;
+}
+.csf-bunting {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(24px, 8vmin, 60px);
+}
+.csf-bunting svg,
+.csf-window svg,
+.csf-artshelf svg,
+.csf-rug svg,
+.csf-easel-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* beadboard wainscot with a white chair rail */
+.csf-wainscot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--csf-floor-h);
+  height: var(--csf-wainscot-h);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0) 30%),
+    repeating-linear-gradient(
+      90deg,
+      #92d9c3 0 calc(4.6vmin - 2px),
+      #79c5ae calc(4.6vmin - 2px) 4.6vmin
+    );
+  border-top: clamp(5px, 1.3vmin, 11px) solid #ffffff;
+  box-shadow: 0 -2px 0 rgba(160, 110, 40, 0.18);
+}
+/* honey wood floor, planks in rows, a white skirting board along the top */
+.csf-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--csf-floor-h);
+  border-top: clamp(5px, 1.4vmin, 12px) solid #fffaf0;
+  background:
+    linear-gradient(180deg, rgba(90, 45, 10, 0.2), rgba(90, 45, 10, 0) 28%, rgba(90, 45, 10, 0.12)),
+    repeating-linear-gradient(
+      180deg,
+      #edb877 0 calc(var(--csf-floor-h) / 4 - 2px),
+      #c98b4e calc(var(--csf-floor-h) / 4 - 2px) calc(var(--csf-floor-h) / 4)
+    );
+}
+.csf-rug {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--csf-floor-h) * 0.04);
+  width: min(78vw, calc(var(--csf-floor-h) * 4.4));
+  aspect-ratio: 304 / 64;
+  transform: translateX(-50%);
+}
+.csf-window,
+.csf-artshelf {
+  position: absolute;
+  bottom: calc(var(--csf-floor-h) + var(--csf-wainscot-h) + 2.5vh);
+  transition: opacity 0.4s ease;
+}
+.csf-window {
+  right: 3.5%;
+  width: clamp(84px, 27vmin, 250px);
+  aspect-ratio: 150 / 140;
+}
+.csf-artshelf {
+  left: 2.5%;
+  width: clamp(92px, 29vmin, 270px);
+  aspect-ratio: 170 / 150;
+}
+/* the toy box stands where the window is; the finish card wants a calm wall */
+.csf-root[data-screen="play"][data-module="sorter"] .csf-window,
+.csf-root[data-screen="complete"] .csf-artshelf {
+  opacity: 0;
+}
+
+/* ── HUD: the title / instruction plate ─────────────────────────────────── */
+
+.csf-hud {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  display: flex;
+  justify-content: center;
+  /* keep clear of the Back pill (left) and Back to Games pill (right) */
+  padding: 0 150px;
+  pointer-events: none;
+}
+.csf-hud--title {
+  padding: 0 136px;
+}
+.csf-plate {
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(3px, 0.9vmin, 8px);
+  padding: clamp(5px, 1.4vmin, 12px) clamp(14px, 3.4vmin, 34px) clamp(6px, 1.6vmin, 14px);
+  border: clamp(2px, 0.5vmin, 4px) solid #ffd27a;
+  border-radius: clamp(14px, 3vmin, 28px);
+  background: #ffffff;
+  box-shadow:
+    0 clamp(3px, 0.8vmin, 7px) 0 #eaa84c,
+    0 10px 22px rgba(120, 60, 10, 0.18);
+}
+.csf-plate-title {
+  margin: 0;
+  font-size: clamp(19px, 6.4vmin, 54px);
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 clamp(1px, 0.35vmin, 3px) 0 rgba(90, 40, 10, 0.14);
+}
+.csf-title-letter--0 {
+  color: #f4553d;
+}
+.csf-title-letter--1 {
+  color: #ff8a3d;
+}
+.csf-title-letter--2 {
+  color: #e8a40e;
+}
+.csf-title-letter--3 {
+  color: #38982f;
+}
+.csf-title-letter--4 {
+  color: #1476c0;
+}
+.csf-title-letter--5 {
+  color: #4b4fc8;
+}
+.csf-title-letter--6 {
+  color: #9a45d1;
+}
+.csf-title-rest {
+  color: #6f35bc;
+}
+.csf-plate-prompt {
+  margin: 0;
+  font-size: clamp(15px, 5.2vmin, 40px);
+  line-height: 1.1;
+  color: #7a3b12;
+  text-align: center;
+}
+.csf-hud--title .csf-plate-prompt {
+  padding: 0.18em 0.9em 0.24em;
+  border-radius: 999px;
+  background: #f4553d;
+  font-size: clamp(12px, 3.6vmin, 28px);
+  color: #ffffff;
+  box-shadow: inset 0 -0.2em 0 rgba(0, 0, 0, 0.16);
+}
+.csf-progress {
+  width: clamp(110px, 32vmin, 300px);
+  height: clamp(6px, 1.4vmin, 12px);
+  border-radius: 999px;
+  background: #f5e7cf;
+  box-shadow: inset 0 1px 2px rgba(120, 70, 20, 0.2);
+}
+.csf-progress-fill {
+  background: linear-gradient(90deg, #7ddc5a, #3fb24f);
+}
+
+/* ── The stage: every activity's props, standing on the floor ───────────── */
+
+.csf-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--csf-top);
+  bottom: var(--csf-stand);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--csf-gap);
+  padding: 0 clamp(12px, 3vw, 40px);
+}
+
+/* Berry, big, on the floor */
+.csf-guide {
+  position: relative;
+  flex: none;
+  height: var(--csf-guide-h);
+  aspect-ratio: 100 / 130;
+  margin-bottom: calc(var(--csf-guide-h) * -0.025);
+}
+.csf-friend-figure {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* fixed shoulder pivots for the swinging arms (components/Friends.tsx).
+   !important because Framer writes its own inline default (fill-box,
+   50% 50%) onto an animated SVG group, which would spin each arm about its
+   own middle instead of the shoulder. */
+.csf-arm {
+  transform-box: view-box !important;
+}
+.csf-arm--left {
+  transform-origin: 24px 82px !important;
+}
+.csf-arm--right {
+  transform-origin: 76px 82px !important;
+}
+.csf-arm--splash {
+  transform-origin: 66px 70px !important;
+}
+/* the card Berry holds up in his raised right hand */
+.csf-held {
+  position: absolute;
+  left: 76%;
+  top: 22%;
+  z-index: 2;
+  width: 32%;
+  pointer-events: none;
+}
+.csf-held-card {
+  display: block;
+  aspect-ratio: 1;
+  padding: 12%;
+  border-radius: 20%;
+  background: #ffffff;
+  box-shadow:
+    0 clamp(2px, 0.7vmin, 5px) 0 #d9b98c,
+    0 6px 12px rgba(80, 40, 10, 0.22);
+  transform: rotate(9deg);
+}
+.csf-held-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── Berry's shelf-table (Colors) ────────────────────────────────────── */
+
+.csf-table {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.csf-table-items {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 2.6vmin, 26px);
+  padding: 0 clamp(14px, 3.4vmin, 34px);
+  margin-bottom: calc(var(--csf-tile) * -0.03);
+}
+.csf-table-top {
+  position: relative;
+  height: clamp(10px, 2.8vmin, 24px);
+  border-radius: clamp(5px, 1.2vmin, 10px);
+  background: linear-gradient(180deg, #f5bd7e 0%, #dc9a5c 55%, #c07a3e 100%);
+  box-shadow:
+    0 clamp(3px, 0.8vmin, 6px) 0 #8f5424,
+    0 12px 18px rgba(80, 40, 10, 0.22);
+}
+/* the apron board under the table top */
+.csf-table-top::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 100%;
+  height: clamp(6px, 1.8vmin, 16px);
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, #a8662f, #c07a3e);
+}
+.csf-table-legs {
+  display: flex;
+  justify-content: space-between;
+  height: clamp(14px, 6vmin, 56px);
+  padding: 0 clamp(14px, 7%, 44px);
+}
+.csf-table-legs span {
+  width: clamp(9px, 2.2vmin, 18px);
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(90deg, #c07a3e, #8f5424);
+}
+
+/* ── The big shape tiles ───────────────────────────────────────────────── */
+
+.csf-tile {
+  position: relative;
+  display: block;
+  width: var(--csf-tile);
+  height: var(--csf-tile);
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 24%;
+  background: linear-gradient(180deg, #ffffff 0%, #fff4e2 100%);
+  box-shadow:
+    inset 0 calc(var(--csf-tile) * -0.05) 0 rgba(214, 178, 128, 0.35),
+    0 calc(var(--csf-tile) * 0.07) 0 #d9b98c,
+    0 calc(var(--csf-tile) * 0.1) calc(var(--csf-tile) * 0.14) rgba(90, 50, 10, 0.26);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.csf-tile:focus-visible {
+  outline: 4px solid #6f35bc;
+  outline-offset: 3px;
+}
+.csf-tile-glyph {
+  position: absolute;
+  inset: 15%;
+}
+.csf-tile--wrong {
+  background: #f1e9dc;
+  cursor: default;
+}
+.csf-tile--wrong .csf-tile-glyph {
+  opacity: 0.32;
+}
+.csf-tile-cross {
+  position: absolute;
+  inset: 14%;
+  pointer-events: none;
+}
+.csf-tile-cross svg,
+.csf-tile-tick svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.csf-tile--found {
+  cursor: default;
+  box-shadow:
+    0 0 0 clamp(3px, 0.8vmin, 6px) #5fcb52,
+    0 calc(var(--csf-tile) * 0.07) 0 #3e9e35,
+    0 calc(var(--csf-tile) * 0.1) calc(var(--csf-tile) * 0.14) rgba(40, 110, 30, 0.3);
+}
+.csf-tile-tick {
+  position: absolute;
+  top: -14%;
+  right: -14%;
+  z-index: 2;
+  width: 40%;
+  height: 40%;
+}
+/* a painter's canvas on an easel: squarer corners, a stretched-linen edge */
+.csf-tile--canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 7%;
+  background: #fffdf6;
+  box-shadow:
+    inset 0 0 0 clamp(3px, 0.8vmin, 6px) #f1e2c6,
+    0 clamp(3px, 0.8vmin, 6px) 0 #c79f6c,
+    0 8px 14px rgba(80, 40, 10, 0.22);
+}
+.csf-tile--canvas.csf-tile--wrong {
+  background: #efe8dc;
+}
+.csf-tile--canvas.csf-tile--found {
+  box-shadow:
+    inset 0 0 0 clamp(3px, 0.8vmin, 6px) #5fcb52,
+    0 clamp(3px, 0.8vmin, 6px) 0 #3e9e35,
+    0 8px 14px rgba(40, 110, 30, 0.3);
+}
+
+/* ── Easels (Shapes) ─────────────────────────────────────────────────────── */
+
+.csf-easels {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  gap: clamp(8px, 3vw, 44px);
+}
+.csf-easel {
+  position: relative;
+  flex: none;
+  width: calc(var(--csf-tile) * 1.18);
+  aspect-ratio: 100 / 170;
+}
+.csf-easel-art {
+  position: absolute;
+  inset: 0;
+}
+/* sits on the ledge drawn at y = 103 of 170 (SceneDecor's EaselArt) */
+.csf-easel-canvas {
+  position: absolute;
+  left: 7%;
+  top: 10%;
+  width: 86%;
+  height: 50.6%;
+}
+
+/* ── The colour sorter and the toy box (Sorter) ──────────────────────────── */
+
+.csf-sorter {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.csf-sorter-face {
+  position: relative;
+  padding: calc(var(--csf-block) * 0.26);
+  border-radius: calc(var(--csf-block) * 0.28);
+  background:
+    repeating-linear-gradient(
+      98deg,
+      rgba(150, 85, 30, 0) 0 calc(var(--csf-block) * 0.22),
+      rgba(150, 85, 30, 0.16) calc(var(--csf-block) * 0.22) calc(var(--csf-block) * 0.25)
+    ),
+    linear-gradient(180deg, #f3bd7f 0%, #d9975a 100%);
+  box-shadow:
+    inset 0 calc(var(--csf-block) * 0.05) 0 rgba(255, 255, 255, 0.35),
+    inset 0 calc(var(--csf-block) * -0.07) 0 rgba(0, 0, 0, 0.14),
+    0 calc(var(--csf-block) * 0.09) 0 #8f5424,
+    0 14px 24px rgba(80, 40, 10, 0.28);
+}
+.csf-screw {
+  position: absolute;
+  width: calc(var(--csf-block) * 0.1);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0 18%, #c9ced6 20%, #7d8594 100%);
+}
+.csf-screw--tl {
+  top: calc(var(--csf-block) * 0.08);
+  left: calc(var(--csf-block) * 0.08);
+}
+.csf-screw--tr {
+  top: calc(var(--csf-block) * 0.08);
+  right: calc(var(--csf-block) * 0.08);
+}
+.csf-screw--bl {
+  bottom: calc(var(--csf-block) * 0.08);
+  left: calc(var(--csf-block) * 0.08);
+}
+.csf-screw--br {
+  bottom: calc(var(--csf-block) * 0.08);
+  right: calc(var(--csf-block) * 0.08);
+}
+.csf-sorter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, var(--csf-block));
+  gap: calc(var(--csf-block) * 0.22);
+}
+.csf-sorter-feet {
+  display: flex;
+  width: 72%;
+  height: clamp(8px, 3vmin, 26px);
+  justify-content: space-between;
+}
+.csf-sorter-feet span {
+  width: 16%;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(90deg, #b8733c, #7d4519);
+}
+/* a slot: a ring of paint around a dark cut-out hole */
+.csf-slot {
+  position: relative;
+  width: var(--csf-block);
+  height: var(--csf-block);
+  padding: 0;
+  border: 0;
+  border-radius: 24%;
+  background: var(--csf-fill);
+  box-shadow:
+    inset 0 calc(var(--csf-block) * 0.04) 0 rgba(255, 255, 255, 0.35),
+    0 calc(var(--csf-block) * 0.03) 0 var(--csf-edge);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.csf-slot-hole {
+  position: absolute;
+  inset: 13%;
+  border-radius: 18%;
+  background: #3a2418;
+  box-shadow:
+    inset 0 calc(var(--csf-block) * 0.12) 0 rgba(0, 0, 0, 0.5),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.35);
+}
+.csf-slot-block {
+  position: absolute;
+  inset: 10%;
+  display: block;
+}
+.csf-slot--full {
+  cursor: default;
+}
+/* a block is lifted: every empty slot glows, "put it in one of these" */
+.csf-slot::after {
+  content: "";
+  position: absolute;
+  inset: -7%;
+  border: clamp(2px, 0.6vmin, 5px) solid #ffffff;
+  border-radius: 28%;
+  opacity: 0;
+  pointer-events: none;
+}
+.csf-sorter--armed .csf-slot:not(.csf-slot--full)::after {
+  animation: csf-glow 0.9s ease-in-out infinite alternate;
+}
+@keyframes csf-glow {
+  from {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 0.95;
+  }
+}
+
+.csf-toybox {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+/* the lid, standing open behind the box */
+.csf-toybox-lid {
+  height: calc(var(--csf-block) * 0.28);
+  margin: 0 5%;
+  border-radius: calc(var(--csf-block) * 0.16) calc(var(--csf-block) * 0.16) 4px 4px;
+  background: linear-gradient(180deg, #ff8f76, #f4553d);
+  box-shadow: inset 0 calc(var(--csf-block) * -0.05) 0 rgba(0, 0, 0, 0.16);
+}
+.csf-toybox-inside {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, var(--csf-block));
+  gap: calc(var(--csf-block) * 0.2);
+  padding: calc(var(--csf-block) * 0.18) calc(var(--csf-block) * 0.22) calc(var(--csf-block) * 0.1);
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, #8e2415, #c8402a);
+  box-shadow: inset 0 10px 14px rgba(0, 0, 0, 0.32);
+}
+.csf-toybox-front {
+  position: relative;
+  height: calc(var(--csf-block) * 0.42);
+  border-top: clamp(3px, 0.8vmin, 6px) solid #fff3c4;
+  border-radius: 0 0 calc(var(--csf-block) * 0.16) calc(var(--csf-block) * 0.16);
+  background: linear-gradient(180deg, #ffd35a, #f2a91c);
+  box-shadow:
+    0 calc(var(--csf-block) * 0.07) 0 #c27d0a,
+    0 12px 20px rgba(80, 40, 10, 0.26);
+}
+.csf-toybox-star {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--csf-block) * 0.34);
+  aspect-ratio: 1;
+  background: #f4553d;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  transform: translate(-50%, -50%);
+}
+
+/* a painted wooden cube: face, bevel, shine and an embossed dot, all CSS */
+.csf-cube {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 20%;
+  background: var(--csf-fill);
+  box-shadow:
+    inset 0 calc(var(--csf-block) * -0.1) 0 rgba(0, 0, 0, 0.18),
+    inset 0 calc(var(--csf-block) * 0.06) 0 rgba(255, 255, 255, 0.3),
+    0 calc(var(--csf-block) * 0.06) 0 var(--csf-edge);
+}
+.csf-cube::before {
+  content: "";
+  position: absolute;
+  inset: 30% 30% 34%;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 calc(var(--csf-block) * 0.03) 0 rgba(0, 0, 0, 0.16),
+    0 calc(var(--csf-block) * 0.02) 0 rgba(255, 255, 255, 0.35);
+}
+.csf-cube::after {
+  content: "";
+  position: absolute;
+  top: 11%;
+  left: 13%;
+  width: 30%;
+  height: 14%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+}
+.csf-block {
+  position: relative;
+  width: var(--csf-block);
+  height: var(--csf-block);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.csf-block:focus-visible {
+  outline: 4px solid #ffffff;
+  outline-offset: 3px;
+}
+.csf-block--selected {
+  z-index: 2;
+  transform: translateY(calc(var(--csf-block) * -0.26)) scale(1.06);
+}
+.csf-block--selected .csf-cube {
+  box-shadow:
+    inset 0 calc(var(--csf-block) * -0.1) 0 rgba(0, 0, 0, 0.18),
+    inset 0 calc(var(--csf-block) * 0.06) 0 rgba(255, 255, 255, 0.3),
+    0 calc(var(--csf-block) * 0.06) 0 var(--csf-edge),
+    0 0 0 clamp(3px, 0.8vmin, 6px) #ffffff,
+    0 calc(var(--csf-block) * 0.3) calc(var(--csf-block) * 0.2) rgba(0, 0, 0, 0.3);
+}
+.csf-block--used {
+  visibility: hidden;
+}
+
+/* ── The title screen: three big module cards ──────────────────────────── */
+
+/* as big as the height allows, but three cards and Berry must fit across */
+.csf-stage--home {
+  --csf-card-w: max(
+    104px,
+    min(
+      calc((100cqh - var(--csf-top) - var(--csf-stand) - 16px) / 1.38),
+      calc(
+        (100cqw - 2 * clamp(12px, 3vw, 40px) - var(--csf-guide-h) * 0.77 - 3 * var(--csf-gap)) / 3
+      )
+    )
+  );
+}
+.csf-cards {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  gap: clamp(10px, 2.6vw, 32px);
+}
+.csf-card {
+  display: flex;
+  width: var(--csf-card-w);
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: calc(var(--csf-card-w) * 0.14);
+  background: #ffffff;
+  text-align: center;
+  cursor: pointer;
+  box-shadow:
+    0 calc(var(--csf-card-w) * 0.04) 0 #e3c69a,
+    0 10px 22px rgba(90, 50, 10, 0.22);
+  -webkit-tap-highlight-color: transparent;
+}
+.csf-card:focus-visible {
+  outline: 4px solid #6f35bc;
+  outline-offset: 3px;
+}
+.csf-card-picture {
+  display: flex;
+  height: calc(var(--csf-card-w) * 0.72);
+  align-items: center;
+  justify-content: center;
+  background: #ffe3ec;
+}
+.csf-card--shapes .csf-card-picture {
+  background: #dcefff;
+}
+.csf-card--sorter .csf-card-picture {
+  background: #e1f6d9;
+}
+.csf-card-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: calc(var(--csf-card-w) * 0.06) 8px calc(var(--csf-card-w) * 0.08);
+}
+.csf-card-name {
+  font-size: calc(var(--csf-card-w) * 0.15);
+  line-height: 1;
+  color: #e0412a;
+}
+.csf-card--shapes .csf-card-name {
+  color: #1476c0;
+}
+.csf-card--sorter .csf-card-name {
+  color: #2f8a27;
+}
+.csf-card-tag {
+  font-size: max(11px, calc(var(--csf-card-w) * 0.085));
+  line-height: 1.15;
+  color: #7a3b12;
+}
+.csf-card-stars {
+  margin-top: 2px;
+}
+
+/* the miniatures, built from the modules' own pieces */
+.csf-mini {
+  display: block;
+}
+.csf-mini--colors {
+  display: grid;
+  width: 60%;
+  aspect-ratio: 1;
+  grid-template-columns: 1fr 1fr;
+  gap: 8%;
+}
+.csf-mini--shapes {
+  display: flex;
+  height: 92%;
+  align-items: flex-end;
+  justify-content: center;
+}
+.csf-mini-easel {
+  position: relative;
+  display: block;
+  height: 100%;
+  aspect-ratio: 100 / 170;
+}
+.csf-mini-canvas {
+  position: absolute;
+  left: 7%;
+  top: 10%;
+  display: block;
+  box-sizing: border-box;
+  width: 86%;
+  height: 50.6%;
+  padding: 12%;
+  border-radius: 7%;
+  background: #fffdf6;
+  box-shadow: inset 0 0 0 2px #f1e2c6;
+}
+.csf-mini--sorter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.csf-mini-board {
+  --csf-block: calc(var(--csf-card-w) * 0.2);
+  display: grid;
+  grid-template-columns: repeat(2, var(--csf-block));
+  gap: calc(var(--csf-block) * 0.2);
+  padding: calc(var(--csf-block) * 0.22);
+  border-radius: calc(var(--csf-block) * 0.28);
+  background: linear-gradient(180deg, #f3bd7f 0%, #d9975a 100%);
+  box-shadow: 0 calc(var(--csf-block) * 0.09) 0 #8f5424;
+}
+.csf-mini-hole {
+  position: relative;
+  width: var(--csf-block);
+  height: var(--csf-block);
+  border-radius: 24%;
+  background: var(--csf-fill);
+}
+.csf-mini-hole::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 18%;
+  background: #3a2418;
+}
+.csf-mini-hole .csf-cube {
+  position: absolute;
+  inset: 10%;
+  width: auto;
+  height: auto;
+}
+
+/* ── Celebration: the star card ────────────────────────────────────────── */
+
+.csf-done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+}
+.csf-done-tint {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(255, 250, 235, 0.65),
+    rgba(255, 210, 140, 0.35)
+  );
+}
+.csf-done-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  max-width: min(92vw, 560px);
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 2vmin, 18px);
+  padding: clamp(14px, 3.6vmin, 40px) clamp(20px, 5vmin, 56px);
+  border-radius: clamp(18px, 3.4vmin, 34px);
+  background: #ffffff;
+  box-shadow:
+    0 clamp(5px, 1.2vmin, 10px) 0 #f2c46b,
+    0 18px 38px rgba(120, 60, 10, 0.3);
+}
+.csf-done-title {
+  margin: 0;
+  font-size: clamp(24px, 7.4vmin, 60px);
+  line-height: 1;
+  color: #f4553d;
+  text-align: center;
+}
+.csf-done-sub {
+  margin: 0;
+  font-size: clamp(13px, 3vmin, 22px);
+  color: #7a3b12;
+  text-align: center;
+}
+.csf-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(8px, 1.8vmin, 16px);
+}
+.csf-done-btn {
+  min-height: 48px;
+  padding: 0.55em 1.4em;
+  border: 0;
+  border-radius: 999px;
+  background: #fff0d2;
+  font-size: clamp(14px, 2.8vmin, 22px);
+  line-height: 1;
+  color: #7a3b12;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -0.28em 0 rgba(0, 0, 0, 0.08),
+    0 0.16em 0 #e5c48d;
+}
+.csf-done-btn--go {
+  background: #4cb33a;
+  color: #ffffff;
+  box-shadow:
+    inset 0 -0.28em 0 rgba(0, 0, 0, 0.18),
+    0 0.16em 0 #2f7f22;
+}
+.csf-done-btn:focus-visible {
+  outline: 4px solid #6f35bc;
+  outline-offset: 3px;
+}
+.csf-done-friend {
+  position: absolute;
+  z-index: 1;
+  bottom: var(--csf-stand);
+  pointer-events: none;
+}
+.csf-done-friend--berry {
+  left: clamp(8px, 4vw, 64px);
+  height: var(--csf-guide-h);
+  aspect-ratio: 100 / 130;
+}
+.csf-done-friend--splash {
+  right: clamp(8px, 4vw, 64px);
+  height: calc(var(--csf-guide-h) * 0.74);
+  aspect-ratio: 90 / 100;
+}
+
+/* ── Tall landscape: tablets and desktops ───────────────────────────────
+   The phone sizes above are width- or vmin-bound and cap out, which left
+   the top half of a desktop as bare wall. Here every activity sizes from
+   the height it actually has (--csf-avail) AND from the width (cqw), and
+   takes whichever is smaller — so the group fills the room without ever
+   running off the sides. The four Colors tiles go 2 x 2 on a two-tier
+   shelf, which is what lets them grow on a 16:9 screen. */
+@media (orientation: landscape) and (min-height: 560px) {
+  .csf-root {
+    --csf-floor-h: 28cqh;
+    --csf-top: 124px;
+    --csf-gap: clamp(12px, 2.4vw, 48px);
+    --csf-avail: calc(100cqh - var(--csf-top) - var(--csf-stand));
+  }
+  .csf-root[data-screen="home"] {
+    --csf-top: 152px;
+  }
+  .csf-stage--home {
+    --csf-card-w: min(calc((var(--csf-avail) - 20px) / 1.35), 20.5cqw);
+    --csf-guide-h: min(calc(var(--csf-avail) * 0.86), 28cqw);
+  }
+  .csf-stage--colors {
+    --csf-tile: min(calc((var(--csf-avail) - 40px) / 2.6), 17cqw);
+    --csf-guide-h: min(calc(var(--csf-avail) * 0.86), 44cqw);
+  }
+  .csf-stage--sorter {
+    --csf-block: min(calc((var(--csf-avail) - 30px) / 3.25), 12cqw);
+    --csf-guide-h: min(calc(var(--csf-avail) * 0.8), 28cqw);
+  }
+  .csf-stage--shapes {
+    --csf-tile: min(calc((var(--csf-avail) - 24px) / 2.1), 16.5cqw);
+    --csf-guide-h: min(calc(var(--csf-avail) * 0.8), 32cqw);
+  }
+  .csf-done {
+    --csf-guide-h: min(calc(var(--csf-avail) * 0.75), 26cqw);
+  }
+  .csf-done-card {
+    max-width: min(60cqw, 820px);
+    gap: 2.4cqh;
+    padding: 4.4cqh 6cqh;
+  }
+  .csf-done-title {
+    font-size: min(9cqh, 84px);
+  }
+  .csf-done-sub {
+    font-size: min(3.6cqh, 32px);
+  }
+  .csf-done-stars {
+    zoom: 1.5;
+  }
+  .csf-done-btn {
+    min-height: 60px;
+    font-size: min(3.4cqh, 30px);
+  }
+  .csf-stage--colors .csf-table-items {
+    display: grid;
+    grid-template-columns: repeat(2, var(--csf-tile));
+    column-gap: calc(var(--csf-tile) * 0.14);
+    row-gap: calc(var(--csf-tile) * 0.24);
+    padding: 0 calc(var(--csf-tile) * 0.18);
+  }
+  /* the middle shelf the top row sits on, and the two side posts */
+  .csf-stage--colors .csf-table-items::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    top: calc(var(--csf-tile) * 1.03);
+    height: calc(var(--csf-tile) * 0.1);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #f5bd7e 0%, #dc9a5c 55%, #c07a3e 100%);
+    box-shadow: 0 calc(var(--csf-tile) * 0.03) 0 #8f5424;
+  }
+  .csf-stage--colors .csf-table-items::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    left: 1%;
+    right: 1%;
+    top: calc(var(--csf-tile) * 0.35);
+    bottom: 0;
+    border-left: calc(var(--csf-tile) * 0.07) solid #b8733c;
+    border-right: calc(var(--csf-tile) * 0.07) solid #b8733c;
+    border-radius: 6px 6px 0 0;
+  }
+}
+
+/* ── Short landscape phones: keep the easels clear of the window ────────── */
+@media (orientation: landscape) and (max-height: 360px) {
+  .csf-stage--shapes {
+    justify-content: flex-start;
+    padding-left: 5vw;
+  }
+  .csf-stage--shapes .csf-easels {
+    gap: clamp(8px, 2vw, 20px);
+  }
+  /* the three buttons wrap to two rows so Berry and Splash stay in view */
+  .csf-done-card {
+    max-width: 60vw;
+  }
+  .csf-root[data-module="shapes"] .csf-window {
+    right: 2%;
+    width: 24vmin;
+  }
+}
+
+/* ── Upright phones: a composition of their own ────────────────────────
+   The floor comes a long way up the screen, so the activity stands at the
+   back of the room filling the middle band, and Berry stands big in front
+   of it at the bottom-left. The plate drops below the two pills. */
+@media (orientation: portrait) {
+  .csf-root {
+    --csf-floor-h: 44cqh;
+    --csf-wainscot-h: 5cqh;
+    --csf-stand: 1.5cqh;
+    --csf-top: 140px;
+    --csf-gap: 12px;
+    --csf-guide-h: min(34cqh, 70cqw);
+  }
+  .csf-root[data-screen="home"] {
+    --csf-top: 158px;
+  }
+  .csf-hud,
+  .csf-hud--title {
+    top: 68px;
+    padding: 0 12px;
+  }
+  .csf-window,
+  .csf-artshelf {
+    width: 44cqw;
+  }
+  .csf-window {
+    right: 3cqw;
+  }
+  .csf-artshelf {
+    left: 3cqw;
+  }
+  /* how far above Berry's feet the activity stands (a per-screen share of
+     his height, so his head never covers a tile), and the band it gets */
+  .csf-stage,
+  .csf-done {
+    --csf-back: calc(var(--csf-guide-h) * var(--csf-back-k, 0.86));
+    --csf-band: calc(100cqh - var(--csf-top) - var(--csf-stand) - var(--csf-back));
+  }
+  .csf-stage {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--csf-gap);
+    padding: 0 12px var(--csf-back);
+  }
+  .csf-stage .csf-guide {
+    position: absolute;
+    left: 3cqw;
+    bottom: 0;
+    z-index: 3;
+  }
+
+  /* home: the three cards stacked as wide rows above Berry */
+  .csf-stage--home {
+    --csf-back-k: 0.96;
+    --csf-card-w: min(46cqw, calc((var(--csf-band) - 40px) / 2.05));
+  }
+  .csf-stage--home .csf-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .csf-stage--home .csf-card {
+    width: 86cqw;
+    flex-direction: row;
+    text-align: left;
+  }
+  .csf-stage--home .csf-card-picture {
+    width: calc(var(--csf-card-w) * 0.8);
+    height: calc(var(--csf-card-w) * 0.62);
+    flex: none;
+  }
+  .csf-stage--home .csf-card-text {
+    flex: 1;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 8px 14px;
+  }
+
+  /* colors: 2 x 2 tiles on a two-tier shelf */
+  .csf-stage--colors {
+    --csf-guide-h: min(30cqh, 64cqw);
+    --csf-tile: min(calc((var(--csf-band) - 50px) / 2.6), 33cqw);
+  }
+  .csf-stage--colors .csf-table-items {
+    display: grid;
+    grid-template-columns: repeat(2, var(--csf-tile));
+    column-gap: calc(var(--csf-tile) * 0.14);
+    row-gap: calc(var(--csf-tile) * 0.24);
+    padding: 0 calc(var(--csf-tile) * 0.18);
+  }
+  .csf-stage--colors .csf-table-items::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    top: calc(var(--csf-tile) * 1.03);
+    height: calc(var(--csf-tile) * 0.1);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #f5bd7e 0%, #dc9a5c 55%, #c07a3e 100%);
+    box-shadow: 0 calc(var(--csf-tile) * 0.03) 0 #8f5424;
+  }
+  .csf-stage--colors .csf-table-items::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    left: 1%;
+    right: 1%;
+    top: calc(var(--csf-tile) * 0.35);
+    bottom: 0;
+    border-left: calc(var(--csf-tile) * 0.07) solid #b8733c;
+    border-right: calc(var(--csf-tile) * 0.07) solid #b8733c;
+    border-radius: 6px 6px 0 0;
+  }
+
+  /* sorter: the sorter board above the toy box, both big */
+  .csf-stage--sorter {
+    --csf-guide-h: min(27cqh, 60cqw);
+    --csf-back-k: 0.96;
+    --csf-gap: 8px;
+    --csf-block: min(calc((var(--csf-band) - 16px) / 5.12), 30cqw);
+  }
+  .csf-stage--sorter .csf-sorter-face {
+    padding: calc(var(--csf-block) * 0.14);
+  }
+  .csf-stage--sorter .csf-sorter-feet {
+    display: none;
+  }
+  .csf-stage--sorter .csf-toybox-inside {
+    padding: calc(var(--csf-block) * 0.12) calc(var(--csf-block) * 0.2)
+      calc(var(--csf-block) * 0.06);
+  }
+  .csf-stage--sorter .csf-toybox-lid {
+    display: none;
+  }
+  .csf-stage--sorter .csf-toybox-front {
+    height: calc(var(--csf-block) * 0.24);
+  }
+
+  /* shapes: three easels across */
+  .csf-stage--shapes {
+    --csf-guide-h: min(34cqh, 70cqw);
+    --csf-back-k: 0.76;
+    --csf-tile: min(calc((var(--csf-band) - 30px) / 2.1), 25cqw);
+  }
+  .csf-stage--shapes .csf-easels {
+    gap: 8px;
+  }
+}

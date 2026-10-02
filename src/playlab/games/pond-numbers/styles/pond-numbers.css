@@ -1,0 +1,962 @@
+/**
+ * Pond Numbers — class prefix `pn-` (grepped clear across src/playlab; every
+ * game's CSS loads on every play page, so nothing here is bare).
+ *
+ * One calm scene for the whole game: a sunny pond with the teacher on the
+ * bank, the round's picture over the water, and the number tiles on a wooden
+ * dock. Sized in container units of `.pn-root`; portrait at the bottom.
+ */
+
+.pn-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  container-name: pn;
+}
+.pn-layer,
+.pn-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.pn-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.pn-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ─── The pond ─────────────────────────────────────────────────────────── */
+.pn-world {
+  position: absolute;
+  inset: 0;
+}
+.pn-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #8fd3ff 0%, #bfe7ff 45%, #e3f6ff 60%);
+}
+.pn-sun {
+  position: absolute;
+  right: 14cqw;
+  top: 17cqh;
+  width: 13cqh;
+  height: 13cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #fff6b8, #ffd93d 60%, #ffc21a);
+  box-shadow: 0 0 0 2.4cqh rgba(255, 217, 61, 0.22);
+}
+.pn-hill {
+  position: absolute;
+  border-radius: 50% 50% 0 0;
+}
+.pn-hill--far {
+  left: -10cqw;
+  right: 30cqw;
+  top: 38cqh;
+  height: 30cqh;
+  background: #9ed98b;
+}
+.pn-hill--near {
+  left: 40cqw;
+  right: -12cqw;
+  top: 42cqh;
+  height: 26cqh;
+  background: #8fcf7c;
+}
+.pn-bank {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 52cqh;
+  bottom: 0;
+  background: linear-gradient(180deg, #7cc86b, #5fb455);
+}
+.pn-pond {
+  position: absolute;
+  left: 20cqw;
+  right: -6cqw;
+  top: 56cqh;
+  bottom: 12cqh;
+  border-radius: 50% 50% 46% 46% / 42% 42% 58% 58%;
+  background: linear-gradient(180deg, #6cc6ef 0%, #3fa6dc 100%);
+  box-shadow:
+    inset 0 1.4cqh 0 rgba(255, 255, 255, 0.35),
+    0 0 0 1.2cqh #4ea34a;
+}
+.pn-ripple {
+  position: absolute;
+  height: 1cqh;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.pn-ripple--a {
+  left: 16%;
+  top: 34%;
+  width: 11%;
+}
+.pn-ripple--b {
+  left: 62%;
+  top: 70%;
+  width: 8%;
+}
+.pn-pad-decor {
+  position: absolute;
+  display: block;
+}
+.pn-pad-decor--a {
+  left: 24cqw;
+  bottom: 13cqh;
+  width: 10cqw;
+  height: 6cqw;
+}
+.pn-pad-decor--b {
+  right: 3cqw;
+  top: 58cqh;
+  width: 7cqw;
+  height: 4.2cqw;
+  opacity: 0.9;
+}
+.pn-reeds {
+  position: absolute;
+  bottom: 18cqh;
+  display: block;
+  width: 7cqh;
+  height: 22cqh;
+}
+.pn-reeds--l {
+  left: 18cqw;
+}
+.pn-reeds--r {
+  right: 1cqw;
+  bottom: 30cqh;
+}
+.pn-dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22cqh;
+  border-top: 1.4cqh solid #e2b27a;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 9.6cqw, rgba(90, 50, 15, 0.3) 9.6cqw 10cqw),
+    linear-gradient(180deg, #c89056, #a8703a);
+  box-shadow: 0 -0.6cqh 1.2cqh rgba(40, 60, 20, 0.25);
+}
+
+/* ─── The teacher (Key Quest's; his classes are global, so every rule is
+   restated under this game's slot and never written bare) ──────────────── */
+.pn-teacher-slot {
+  position: absolute;
+  left: 0.5cqw;
+  bottom: 7cqh;
+  z-index: 4;
+  width: min(30cqh, 21cqw);
+  height: min(62cqh, 44cqw);
+  pointer-events: none;
+}
+.pn-teacher-slot--home {
+  height: min(66cqh, 44cqw);
+}
+.pn-teacher-slot .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.pn-teacher-slot .dc-teacher-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  mix-blend-mode: multiply;
+}
+.pn-teacher-slot .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 0;
+  width: 58%;
+  height: 2.8cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(60, 50, 20, 0.42), transparent 70%);
+}
+.pn-teacher-slot .dc-teacher-says {
+  position: absolute;
+  left: 6%;
+  bottom: 97%;
+  z-index: 1;
+  translate: none;
+  padding: 1.1cqh 2.4cqh;
+  white-space: nowrap;
+  border-radius: 2.6cqh;
+  background: #ffffff;
+  font-size: clamp(13px, 5.2cqh, 30px);
+  line-height: 1.1;
+  color: #237a4b;
+  box-shadow: 0 0.8cqh 1.8cqh rgba(20, 60, 40, 0.25);
+}
+.pn-teacher-slot .dc-teacher-says::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  bottom: -1.4cqh;
+  width: 0;
+  height: 0;
+  border-left: 1.3cqh solid transparent;
+  border-right: 1.3cqh solid transparent;
+  border-top: 1.6cqh solid #ffffff;
+}
+
+/* ─── Chrome ───────────────────────────────────────────────────────────── */
+.pn-leave {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #237a4b;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(20, 60, 40, 0.16);
+  cursor: pointer;
+}
+.pn-trail {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1cqh;
+  min-height: 44px;
+  padding: 0.6cqh 1.8cqh;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 0.6cqh 1.4cqh rgba(20, 60, 60, 0.18);
+}
+.pn-trail-item {
+  display: block;
+  width: clamp(20px, 6.4cqh, 40px);
+  height: clamp(20px, 6.4cqh, 40px);
+  opacity: 0.22;
+}
+.pn-trail-item.is-done {
+  opacity: 1;
+}
+.pn-trail-item.is-now {
+  opacity: 0.6;
+  animation: pn-now 1.4s ease-in-out infinite;
+}
+@keyframes pn-now {
+  50% {
+    transform: translateY(-14%) scale(1.1);
+  }
+}
+
+/* ─── The round's picture area ─────────────────────────────────────────── */
+.pn-main {
+  position: absolute;
+  z-index: 3;
+  left: 24cqw;
+  right: 3cqw;
+  top: 17cqh;
+  bottom: 25cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Quick Look: the card on its post */
+.pn-card-stand {
+  --card: min(54cqh, 34cqw);
+  position: relative;
+  width: var(--card);
+  height: var(--card);
+  perspective: 1000px;
+}
+.pn-card {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform-style: preserve-3d;
+}
+.pn-card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 13%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.pn-card-face--dots {
+  background: #ffffff;
+  border: 1.2cqh solid #ffd466;
+  box-shadow:
+    0 1.4cqh 0 #e0a93a,
+    0 2.4cqh 3cqh rgba(20, 60, 60, 0.25);
+}
+.pn-card-face--back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateY(180deg);
+  border: 1.2cqh solid #ffffff;
+  background-color: #4fb35a;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.18) 0 12%, transparent 13%),
+    radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.18) 0 16%, transparent 17%);
+  box-shadow:
+    0 1.4cqh 0 #2f8a3e,
+    0 2.4cqh 3cqh rgba(20, 60, 60, 0.25);
+}
+.pn-card-q {
+  font-size: calc(var(--card, 30cqh) * 0.5);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.8cqh 0 rgba(0, 0, 0, 0.15);
+}
+.pn-dot {
+  position: absolute;
+  left: var(--pl-x);
+  top: var(--pl-y);
+  width: 18%;
+  height: 18%;
+  margin-left: -9%;
+  margin-top: -9%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.65) 0 14%, transparent 16%), var(--dot);
+  box-shadow: inset 0 -0.6cqh 0 rgba(0, 0, 0, 0.18);
+}
+.pn-card-post {
+  position: absolute;
+  left: 50%;
+  top: 92%;
+  width: 7%;
+  height: 28%;
+  margin-left: -3.5%;
+  border-radius: 0 0 1cqh 1cqh;
+  background: linear-gradient(90deg, #a8703a, #c89056, #a8703a);
+}
+.pn-card-count {
+  position: absolute;
+  right: -8%;
+  top: -8%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+  height: 30%;
+  border: 0.7cqh solid #ffffff;
+  border-radius: 50%;
+  background: #2f8f4f;
+  color: #ffffff;
+  font-size: calc(var(--card) * 0.2);
+  line-height: 1;
+  box-shadow: 0 0.6cqh 1.2cqh rgba(0, 0, 0, 0.25);
+}
+.pn-burst-anchor {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.pn-burst-piece {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--pl-color);
+}
+
+/* One More: frogs on a log, a lily pad off its end */
+.pn-log-wrap {
+  --f: min(21cqh, 10.4cqw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.pn-frogs {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--f) * 0.16);
+  padding: 0 calc(var(--f) * 0.3);
+  /* room underneath for the lily pad the new frog waits on */
+  margin-bottom: calc(var(--f) * 1.3);
+}
+.pn-log {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--f) * -0.34);
+  height: calc(var(--f) * 0.52);
+  border-radius: 9999px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 calc(var(--f) * 0.9),
+      rgba(70, 40, 10, 0.25) calc(var(--f) * 0.9) calc(var(--f) * 0.94)
+    ),
+    linear-gradient(180deg, #b77a42, #8a5428);
+  box-shadow:
+    inset 0 0.5cqh 0 rgba(255, 220, 170, 0.4),
+    0 1cqh 1.4cqh rgba(20, 50, 70, 0.3);
+}
+.pn-log::after {
+  content: "";
+  position: absolute;
+  right: calc(var(--f) * -0.06);
+  top: 8%;
+  width: calc(var(--f) * 0.4);
+  height: 84%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e7b77e 0 22%, #c68a50 24% 48%, #e7b77e 50% 70%, #a86a34 72%);
+}
+.pn-frog-slot {
+  position: relative;
+  z-index: 1;
+  width: var(--f);
+  height: var(--f);
+}
+.pn-frog-slot.is-empty::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border: 0.5cqh dashed rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+}
+.pn-frog {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+}
+.pn-frog-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pn-hop-pad {
+  position: absolute;
+  left: 10%;
+  top: 150%;
+  z-index: 0;
+  display: block;
+  width: 190%;
+  height: 114%;
+}
+.pn-frog-badge {
+  position: absolute;
+  right: -14%;
+  top: -18%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46%;
+  height: 46%;
+  min-width: 20px;
+  min-height: 20px;
+  border: 0.45cqh solid #ffffff;
+  border-radius: 50%;
+  background: #2f8f4f;
+  color: #ffffff;
+  font-size: max(11px, calc(var(--f) * 0.28));
+  line-height: 1;
+}
+
+/* ─── Number tiles on the dock ─────────────────────────────────────────── */
+.pn-tiles {
+  position: absolute;
+  z-index: 6;
+  left: 24cqw;
+  right: 3cqw;
+  bottom: 3.4cqh;
+  display: flex;
+  justify-content: center;
+  gap: 2cqh;
+}
+.pn-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max(46px, min(16cqh, 10cqw));
+  height: max(46px, min(16cqh, 10cqw));
+  padding: 0;
+  border: 0.6cqh solid #7cc86b;
+  border-radius: 26%;
+  background: linear-gradient(180deg, #ffffff, #effbe9);
+  color: #237a4b;
+  font-size: max(22px, min(9.4cqh, 6cqw));
+  line-height: 1;
+  box-shadow:
+    0 1cqh 0 #4e9f45,
+    0 1.8cqh 2.4cqh rgba(30, 50, 10, 0.3);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.pn-tile:active:not(:disabled) {
+  translate: 0 0.7cqh;
+  box-shadow:
+    0 0.3cqh 0 #4e9f45,
+    0 0.8cqh 1.4cqh rgba(30, 50, 10, 0.3);
+}
+.pn-tile:disabled {
+  cursor: default;
+}
+.pn-tile--lit {
+  border-color: #ffd93d;
+  background: linear-gradient(180deg, #fffbe0, #ffeaa0);
+  color: #b8620d;
+  box-shadow:
+    0 1cqh 0 #e0a93a,
+    0 0 0 1cqh rgba(255, 217, 61, 0.45);
+}
+.pn-tile--wrong .pn-tile-glyph {
+  opacity: 0.3;
+}
+.pn-tile-cross {
+  position: absolute;
+  inset: 16%;
+  pointer-events: none;
+}
+.pn-tile-cross svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The title screen ─────────────────────────────────────────────────── */
+.pn-home-col {
+  position: absolute;
+  left: 22cqw;
+  right: 2cqw;
+  top: 0;
+  bottom: 18cqh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 4cqh;
+  padding-top: 56px;
+}
+.pn-title-plate {
+  display: flex;
+  align-items: center;
+  gap: 2cqh;
+  max-width: 100%;
+  padding: 1.4cqh 3.2cqh;
+  border-radius: 5cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.1cqh 0 #7cc86b,
+    0 2.4cqh 3.4cqh rgba(20, 70, 60, 0.2);
+}
+.pn-title {
+  margin: 0;
+  font-size: clamp(22px, min(8.6cqh, 5.4cqw), 66px);
+  line-height: 1.05;
+  color: #237a4b;
+  white-space: nowrap;
+}
+.pn-title-icon {
+  display: block;
+  flex: none;
+  width: 9cqh;
+  height: 9cqh;
+}
+.pn-modes {
+  display: flex;
+  gap: 4cqw;
+}
+.pn-mode {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2cqh;
+  width: min(31cqw, 60cqh);
+  height: min(46cqh, 40cqw);
+  padding: 2cqh 2cqh 2.4cqh;
+  border: 0.9cqh solid #e5484d;
+  border-radius: 4.4cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.3cqh 0 #b8363a,
+    0 2.6cqh 3.6cqh rgba(20, 60, 60, 0.2);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.pn-mode--more {
+  border-color: #3dab72;
+  box-shadow:
+    0 1.3cqh 0 #2b8a57,
+    0 2.6cqh 3.6cqh rgba(20, 60, 60, 0.2);
+}
+.pn-mode-name {
+  font-size: clamp(15px, min(6cqh, 3.3cqw), 38px);
+  line-height: 1.05;
+  white-space: nowrap;
+  color: #c0393d;
+}
+.pn-mode--more .pn-mode-name {
+  color: #237a4b;
+}
+.pn-mode-tag {
+  font-size: clamp(10px, min(3.4cqh, 2cqw), 20px);
+  line-height: 1.1;
+  color: #5a6a5a;
+}
+.pn-mode-go {
+  position: absolute;
+  top: -2.4cqh;
+  right: -2.4cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8cqh;
+  height: 8cqh;
+  min-width: 26px;
+  min-height: 26px;
+  padding-left: 0.4cqh;
+  border: 0.5cqh solid #ffffff;
+  border-radius: 50%;
+  background: #e5484d;
+  color: #ffffff;
+  font-size: clamp(10px, 3.4cqh, 20px);
+  box-shadow: 0 0.6cqh 1cqh rgba(0, 0, 0, 0.2);
+}
+.pn-mode--more .pn-mode-go {
+  background: #3dab72;
+}
+.pn-mini {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92%;
+  flex: 1;
+  min-height: 0;
+  border-radius: 2.6cqh;
+  background: linear-gradient(180deg, #8fd3ff, #6cc6ef 55%, #3fa6dc);
+  box-shadow: inset 0 -0.9cqh 0 rgba(20, 90, 140, 0.35);
+}
+.pn-mini-card {
+  position: relative;
+  display: block;
+  height: 78%;
+  aspect-ratio: 1;
+}
+.pn-mini-card .pn-card-face--dots {
+  border-width: 0.6cqh;
+  box-shadow: 0 0.6cqh 0 #e0a93a;
+}
+.pn-mini-log {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 4%;
+  width: 70%;
+  padding: 0 6%;
+}
+.pn-mini-log::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -18%;
+  height: 34%;
+  z-index: -1;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #b77a42, #8a5428);
+}
+.pn-mini-frog {
+  display: block;
+  flex: 1;
+  aspect-ratio: 1;
+}
+.pn-mini-frog--hop {
+  animation: pn-mini-hop 1.8s ease-in-out infinite;
+}
+@keyframes pn-mini-hop {
+  0%,
+  55%,
+  100% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-40%);
+  }
+}
+.pn-mini-plus {
+  position: absolute;
+  right: 5%;
+  top: 8%;
+  padding: 0.4cqh 1.2cqh;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #237a4b;
+  font-size: clamp(11px, 4cqh, 24px);
+  line-height: 1.1;
+}
+
+/* ─── The finish ───────────────────────────────────────────────────────── */
+.pn-done-center {
+  position: absolute;
+  left: 22cqw;
+  right: 2cqw;
+  top: 0;
+  bottom: 18cqh;
+  z-index: 5;
+  display: flex;
+  align-items: safe center;
+  justify-content: center;
+  padding-top: 8cqh;
+}
+.pn-done-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8cqh;
+  width: min(66cqw, 120cqh);
+  padding: 6cqh 4cqh 4cqh;
+  border-radius: 4.6cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 #7cc86b,
+    0 3cqh 4cqh rgba(20, 60, 60, 0.22);
+  text-align: center;
+}
+.pn-done-frogs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -8.5cqh;
+  display: flex;
+  justify-content: center;
+  gap: 4cqh;
+  pointer-events: none;
+}
+.pn-done-frog {
+  display: block;
+  width: 13cqh;
+  height: 13cqh;
+}
+.pn-done-title {
+  margin: 0;
+  font-size: clamp(20px, 8.4cqh, 54px);
+  line-height: 1.05;
+  color: #237a4b;
+}
+.pn-done-sub {
+  margin: 0;
+  font-size: clamp(11px, 3.6cqh, 22px);
+  color: #5a6a5a;
+}
+.pn-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.6cqh;
+  margin-top: 0.6cqh;
+}
+.pn-done-btn {
+  min-height: 44px;
+  padding: 1.2cqh 3cqh;
+  border: 0;
+  border-radius: 9999px;
+  background: #eaf5e4;
+  color: #2f6a3e;
+  font-size: clamp(13px, 4.2cqh, 24px);
+  box-shadow: 0 0.7cqh 0 #cfe6c4;
+  cursor: pointer;
+}
+.pn-done-btn--go {
+  background: #3dab72;
+  color: #ffffff;
+  box-shadow: 0 0.7cqh 0 #2b8a57;
+}
+
+/* ─── Portrait: picture on top, tiles under it, teacher bottom-left ────── */
+@media (orientation: portrait) {
+  .pn-trail {
+    top: 68px;
+  }
+  .pn-sun {
+    right: 6cqw;
+    top: 22cqh;
+    width: 9cqh;
+    height: 9cqh;
+  }
+  .pn-bank {
+    top: 34cqh;
+  }
+  .pn-hill--far,
+  .pn-hill--near {
+    top: 24cqh;
+    height: 16cqh;
+  }
+  .pn-pond {
+    left: -10cqw;
+    right: -10cqw;
+    top: 36cqh;
+    bottom: 32cqh;
+  }
+  .pn-pad-decor--a {
+    left: 4cqw;
+    bottom: 34cqh;
+    width: 16cqw;
+    height: 10cqw;
+  }
+  .pn-pad-decor--b {
+    right: 4cqw;
+    top: 37cqh;
+    width: 12cqw;
+    height: 7cqw;
+  }
+  .pn-reeds--l {
+    left: 1cqw;
+    bottom: 32cqh;
+  }
+  .pn-reeds--r {
+    bottom: 62cqh;
+  }
+  .pn-dock {
+    height: 30cqh;
+  }
+  .pn-teacher-slot {
+    left: 1cqw;
+    bottom: 2cqh;
+    width: min(20cqh, 34cqw);
+    height: min(27cqh, 46cqw);
+  }
+  .pn-teacher-slot .dc-teacher-says {
+    font-size: clamp(13px, 5cqw, 24px);
+  }
+
+  /* a round: the picture over the pond, the tiles as a 3 × 2 grid on a deep
+     dock, the teacher on the dock with his bubble BESIDE him, not above */
+  .pn-play .pn-bank {
+    top: 30cqh;
+  }
+  .pn-play .pn-pond {
+    top: 32cqh;
+    bottom: 44cqh;
+  }
+  .pn-play .pn-pad-decor--a {
+    bottom: 46cqh;
+  }
+  .pn-play .pn-reeds--l {
+    bottom: 44cqh;
+  }
+  .pn-play .pn-dock {
+    height: 46cqh;
+  }
+  .pn-main {
+    left: 3cqw;
+    right: 3cqw;
+    top: 15cqh;
+    bottom: 48cqh;
+  }
+  .pn-card-stand {
+    --card: min(31cqh, 74cqw);
+  }
+  .pn-log-wrap {
+    --f: min(11cqh, 12.5cqw);
+  }
+  .pn-tiles {
+    left: 3cqw;
+    right: 3cqw;
+    top: 58cqh;
+    bottom: auto;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    gap: 2cqh 5cqw;
+  }
+  .pn-tile {
+    width: max(46px, min(10cqh, 22cqw));
+    height: max(46px, min(10cqh, 22cqw));
+    font-size: max(24px, min(6cqh, 13cqw));
+  }
+  .pn-play .pn-teacher-slot {
+    height: min(18cqh, 40cqw);
+  }
+  .pn-play .pn-teacher-slot .dc-teacher-says {
+    left: 92%;
+    bottom: 48%;
+  }
+  .pn-play .pn-teacher-slot .dc-teacher-says::after {
+    left: -1.2cqh;
+    bottom: 30%;
+    border-top: 1.3cqh solid transparent;
+    border-bottom: 1.3cqh solid transparent;
+    border-right: 1.6cqh solid #ffffff;
+    border-left: 0;
+  }
+
+  .pn-home-col,
+  .pn-done-center {
+    left: 4cqw;
+    right: 4cqw;
+    bottom: 30cqh;
+    padding-top: 64px;
+  }
+  .pn-title {
+    font-size: clamp(20px, 8.6cqw, 40px);
+  }
+  .pn-title-icon {
+    width: 11cqw;
+    height: 11cqw;
+  }
+  .pn-modes {
+    flex-direction: column;
+    gap: 3cqh;
+  }
+  .pn-mode {
+    width: min(84cqw, 60cqh);
+    height: min(19cqh, 46cqw);
+  }
+  .pn-mode-name {
+    font-size: clamp(16px, 6.4cqw, 32px);
+  }
+  .pn-mode-tag {
+    font-size: clamp(11px, 3.6cqw, 18px);
+  }
+  .pn-teacher-slot--home .dc-teacher-says {
+    display: none;
+  }
+  .pn-done-card {
+    width: 92cqw;
+  }
+  .pn-done-title {
+    font-size: clamp(20px, 8cqw, 40px);
+  }
+  .pn-done-frog {
+    width: 16cqw;
+    height: 16cqw;
+  }
+  .pn-done-frogs {
+    top: -10cqw;
+  }
+}

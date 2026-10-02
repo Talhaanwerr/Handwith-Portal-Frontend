@@ -9,6 +9,7 @@ import type { GameMeta } from "@/types/games";
 export const GAMES: readonly GameMeta[] = [
   {
     id: "letter-tracing",
+    category: "literacy",
     title: "ABC",
     description: "Trace letters & numbers",
     glyph: "✏️",
@@ -17,6 +18,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "jungle-spy",
+    category: "literacy",
     title: "Jungle Spy",
     description: "Find the hiding letters",
     glyph: "🔍",
@@ -25,6 +27,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "letter-hunt",
+    category: "literacy",
     title: "Letter Hunt",
     description: "Find the matching letters",
     glyph: "🅰️",
@@ -33,6 +36,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "magnet-match",
+    category: "literacy",
     title: "Magnet Match",
     description: "Alphabet soup with the chef",
     glyph: "🍲",
@@ -41,6 +45,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "dino-dig",
+    category: "literacy",
     title: "Dino Dig",
     description: "Feed dinos & bridge the river",
     glyph: "🦕",
@@ -49,6 +54,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "letter-treats",
+    category: "literacy",
     title: "Letter Treats",
     description: "Phonics in Candy World",
     glyph: "🧁",
@@ -57,6 +63,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "feed-the-shark",
+    category: "literacy",
     title: "Feed the Shark",
     description: "Match big & small letters",
     glyph: "🦈",
@@ -65,6 +72,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "space-letters",
+    category: "literacy",
     title: "Space ABC",
     description: "Discover letters among the stars",
     glyph: "🚀",
@@ -73,6 +81,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "ocean-abc",
+    category: "literacy",
     title: "Ocean ABC",
     description: "Build, pop & write letters",
     glyph: "🫧",
@@ -81,6 +90,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "ocean-hunt",
+    category: "literacy",
     title: "Ocean Hunt",
     description: "Find the missing letter",
     glyph: "\u{1F50E}",
@@ -89,6 +99,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "pirate-match",
+    category: "literacy",
     title: "Pirate Match",
     description: "Match letters to treasures",
     glyph: "\u{1F99C}",
@@ -97,6 +108,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "color-paint",
+    category: "cognitive",
     title: "Color & Paint",
     description: "Pick the colour, paint the picture",
     glyph: "🖍️",
@@ -107,6 +119,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "counting-numbers",
+    category: "numbers",
     title: "Numbers 1 - 5",
     description: "Count and find the missing numbers",
     glyph: "🔢",
@@ -118,6 +131,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "door-count",
+    category: "numbers",
     title: "Count the Doors",
     description: "Count doors, compare, collect keys",
     glyph: "🚪",
@@ -126,6 +140,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "number-match",
+    category: "numbers",
     title: "Number Match",
     description: "Count the cards, fill the sticker book",
     glyph: "🔟",
@@ -134,6 +149,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "shape-match",
+    category: "cognitive",
     title: "Shapes & Pictures",
     description: "Fit the shapes, finish the picture",
     glyph: "🔺",
@@ -142,6 +158,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "blend-read",
+    category: "literacy",
     title: "Blend & Seek",
     description: "Sound out the word, match the picture",
     glyph: "🔤",
@@ -150,6 +167,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "number-safari",
+    category: "numbers",
     title: "Number Safari",
     description: "Count the creatures, find the missing number",
     glyph: "🐜",
@@ -158,6 +176,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "cvc-match",
+    category: "literacy",
     title: "Word Site",
     description: "Drag each word onto its picture",
     glyph: "🦺",
@@ -166,6 +185,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "sort-it",
+    category: "cognitive",
     title: "Sort It",
     description: "Put each thing where it belongs",
     glyph: "🧺",
@@ -174,6 +194,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "word-quiz",
+    category: "literacy",
     title: "Snow Words",
     description: "Tap the word that names the picture",
     glyph: "❄️",
@@ -182,6 +203,7 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "math-maze",
+    category: "numbers",
     title: "Math Maze",
     description: "Tap the numbers in order to reach the prize",
     glyph: "🧭",
@@ -190,10 +212,101 @@ export const GAMES: readonly GameMeta[] = [
   },
   {
     id: "food-sort",
+    category: "cognitive",
     title: "Sorting Food",
     description: "Put each food where its shadow is",
     glyph: "🍎",
     route: "/play/food-sort",
     colors: { bg: "#FDE3EE", border: "#E27AAE", text: "#7A2D58" },
+  },
+  {
+    id: "find-the-mouse",
+    category: "cognitive",
+    title: "Where Is the Mouse?",
+    description: "Find the little mouse hiding",
+    glyph: "🐭",
+    route: "/play/find-the-mouse",
+    colors: { bg: "#FFE1B0", border: "#F09A3E", text: "#9A4E12" },
+  },
+  {
+    id: "sesame-activities",
+    category: "cognitive",
+    title: "Play Street Pals",
+    description: "Colours and snack time with Percy, Ruby and Bo",
+    glyph: "🐤",
+    route: "/play/sesame-activities",
+    colors: { bg: "#CFE8FF", border: "#7FB2E8", text: "#3A5A8A" },
+  },
+  {
+    id: "color-shape-friends",
+    category: "cognitive",
+    title: "Rainbow Shapes",
+    description: "Colours, shapes and a block sorter with Berry",
+    glyph: "🔺",
+    route: "/play/color-shape-friends",
+    colors: { bg: "#E7F6D8", border: "#A8D46A", text: "#4F7A1E" },
+  },
+  {
+    id: "pond-numbers",
+    category: "numbers",
+    title: "Pond Numbers",
+    description: "Quick looks and one more frog",
+    glyph: "🐸",
+    route: "/play/pond-numbers",
+    colors: { bg: "#D8F1FB", border: "#5FB455", text: "#237A4B" },
+  },
+  {
+    id: "jigsaw-fun",
+    category: "cognitive",
+    title: "Jigsaw Fun",
+    description: "Pick a picture, fit the pieces",
+    glyph: "🧩",
+    route: "/play/jigsaw-fun",
+    colors: { bg: "#FFF1DC", border: "#E8912A", text: "#8A5A2E" },
+  },
+  {
+    id: "tangram-town",
+    category: "cognitive",
+    title: "Tangram Town",
+    description: "Seven shapes make a picture",
+    glyph: "🔷",
+    route: "/play/tangram-town",
+    colors: { bg: "#E6EEF8", border: "#6F9BD6", text: "#2E5E9E" },
+  },
+  {
+    id: "on-off",
+    category: "cognitive",
+    title: "On & Off",
+    description: "Put things on, take things off",
+    glyph: "🛏️",
+    route: "/play/on-off",
+    colors: { bg: "#FDEBD3", border: "#E59A4B", text: "#8A4B14" },
+  },
+  {
+    id: "sort-two-ways",
+    category: "cognitive",
+    title: "Sort Two Ways",
+    description: "Sort the same things one way, then another",
+    glyph: "🔀",
+    route: "/play/sort-two-ways",
+    colors: { bg: "#E9E3FB", border: "#8D74DB", text: "#4A2F9A" },
+  },
+  {
+    id: "number-groups",
+    category: "numbers",
+    title: "Count & Match",
+    description: "Count the groups, match the numbers",
+    glyph: "🍉",
+    route: "/play/number-groups",
+    colors: { bg: "#FFF3C4", border: "#E8B321", text: "#7A5A06" },
+  },
+  {
+    id: "number-hunt",
+    category: "numbers",
+    title: "Number Hunt",
+    description: "Spot the numbers and fill the number boxes",
+    glyph: "🔎",
+    route: "/play/number-hunt",
+    colors: { bg: "#E6F1FF", border: "#4F8FE0", text: "#1F4F8F" },
   },
 ] as const;

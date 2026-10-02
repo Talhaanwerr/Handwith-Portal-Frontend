@@ -46,6 +46,22 @@
 @import "./games/math-maze/styles/math-maze.css";
 /* Sorting Food */
 @import "./games/food-sort/styles/food-sort.css";
+/* Rainbow Shapes */
+@import "./games/color-shape-friends/styles/color-shape-friends.css";
+/* Play Street Pals */
+@import "./games/sesame-activities/styles/sesame-activities.css";
+/* Where Is the Mouse? */
+@import "./games/find-the-mouse/styles/find-the-mouse.css";
+/* Pond Numbers */
+@import "./games/pond-numbers/styles/pond-numbers.css";
+/* Jigsaw Fun (its celebration classes are shared with Tangram Town) */
+@import "./games/jigsaw-fun/styles/jigsaw-fun.css";
+/* Tangram Town */
+@import "./games/tangram-town/styles/tangram-town.css";
+@import "./games/on-off/styles/on-off.css";
+@import "./games/sort-two-ways/styles/sort-two-ways.css";
+@import "./games/number-groups/styles/number-groups.css";
+@import "./games/number-hunt/styles/number-hunt.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

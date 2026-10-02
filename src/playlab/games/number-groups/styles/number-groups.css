@@ -1,0 +1,981 @@
+/**
+ * Count & Match — class prefix `ng-` (grepped clear across src/playlab;
+ * every game's CSS loads on every play page, so nothing here is bare).
+ *
+ * Also the stylesheet of everything Number Hunt borrows from this folder: the
+ * root and screens, the chrome (Pond Numbers': teacher bottom-left with the
+ * prompt in his bubble, a trail of stars along the top, pill navigation), the
+ * carried pieces and tray, GroupFace, the title screen and the star card.
+ * Number Hunt's own modules are styled in number-hunt.css under `nh-`.
+ *
+ * The worlds are other games' backdrops reused as they are (see NgWorlds.tsx)
+ * — where their rules belong to another game's set, the paint is restated
+ * here under `ng-`. Sized in container units of `.ng-root`; portrait at the
+ * bottom.
+ */
+
+.ng-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  container-name: ng;
+  background: #fff3e2;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ng-layer,
+.ng-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.ng-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.ng-root svg {
+  overflow: visible;
+}
+.ng-cast,
+.ng-cast svg,
+.ng-cast img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The park (Play Street Pals' park paint, restated) ────────────────── */
+.ng-park {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #6cc3f5 0%, #a6dcfb 45%, #dff4ff 100%);
+}
+.ng-park-sun {
+  position: absolute;
+  top: max(64px, 14cqh);
+  right: 20cqw;
+  width: clamp(38px, 13cqh, 110px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #fff7c2 0 30%, #ffd84d 62%, #ffc22e 100%);
+  box-shadow:
+    0 0 0 clamp(6px, 2cqh, 16px) rgba(255, 226, 110, 0.35),
+    0 0 0 clamp(12px, 4cqh, 34px) rgba(255, 226, 110, 0.18);
+}
+.ng-park-hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(46cqh - 2px);
+  height: 22cqh;
+  background:
+    radial-gradient(38% 100% at 18% 100%, #8fd07e 98%, transparent 100%),
+    radial-gradient(44% 86% at 70% 100%, #a3dc8f 98%, transparent 100%),
+    radial-gradient(30% 70% at 100% 100%, #8fd07e 98%, transparent 100%);
+}
+.ng-park-grass {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46cqh;
+  background:
+    repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.07) 0 26px, transparent 26px 60px),
+    linear-gradient(180deg, #74c96b 0%, #5db55a 55%, #4fa54f 100%);
+  box-shadow: inset 0 6px 0 rgba(255, 255, 255, 0.22);
+}
+.ng-park-tree {
+  position: absolute;
+  right: -7cqw;
+  bottom: 40cqh;
+  width: 30cqh;
+  height: 42cqh;
+  transform: scaleX(-1);
+}
+.ng-park-tree svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The teacher (Key Quest's; his classes are global, so every rule is
+   restated under this game's slot and never written bare) ──────────────── */
+.ng-teacher-slot {
+  position: absolute;
+  left: 0.5cqw;
+  bottom: 4cqh;
+  z-index: 4;
+  width: min(46cqh, 22cqw);
+  /* the photo is square: his head is the top of the slot, so the bubble sits
+     just over it, in his own column, clear of the board */
+  height: min(46cqh, 22cqw);
+  pointer-events: none;
+}
+.ng-teacher-slot .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.ng-teacher-slot .dc-teacher-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  mix-blend-mode: multiply;
+}
+.ng-teacher-slot .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 0;
+  width: 58%;
+  height: 2.8cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(60, 50, 20, 0.42), transparent 70%);
+}
+.ng-teacher-slot .dc-teacher-says {
+  position: absolute;
+  left: 0;
+  bottom: 96%;
+  z-index: 1;
+  translate: none;
+  width: max-content;
+  max-width: 23cqw;
+  white-space: normal;
+  text-wrap: balance;
+  padding: 1.1cqh 2.4cqh;
+  border-radius: 2.6cqh;
+  background: #ffffff;
+  font-size: clamp(14px, 5.6cqh, 32px);
+  line-height: 1.1;
+  color: #237a4b;
+  box-shadow: 0 0.8cqh 1.8cqh rgba(20, 60, 40, 0.25);
+}
+.ng-teacher-slot .dc-teacher-says::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  bottom: -1.4cqh;
+  width: 0;
+  height: 0;
+  border-left: 1.3cqh solid transparent;
+  border-right: 1.3cqh solid transparent;
+  border-top: 1.6cqh solid #ffffff;
+}
+
+/* ─── Chrome ───────────────────────────────────────────────────────────── */
+.ng-leave {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #237a4b;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(20, 60, 40, 0.16);
+  cursor: pointer;
+}
+.ng-trail {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1cqh;
+  min-height: 44px;
+  padding: 0.6cqh 1.8cqh;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0.6cqh 1.4cqh rgba(20, 60, 60, 0.18);
+}
+.ng-trail-item {
+  display: block;
+  width: clamp(20px, 6.4cqh, 40px);
+  height: clamp(20px, 6.4cqh, 40px);
+  opacity: 0.22;
+}
+.ng-trail-item.is-done {
+  opacity: 1;
+}
+.ng-trail-item.is-now {
+  opacity: 0.6;
+}
+
+/* the board: everything right of the teacher, under the pills */
+.ng-main {
+  position: absolute;
+  z-index: 3;
+  left: 23cqw;
+  right: 2cqw;
+  top: max(66px, 15cqh);
+  bottom: 3cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* a wrong answer: Math Maze's red cross over it */
+.ng-cross {
+  position: absolute;
+  inset: 16%;
+  z-index: 4;
+  pointer-events: none;
+}
+.ng-cross svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Pieces that are carried (the numerals; Number Hunt's quantity cards) */
+.ng-piece {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ng-piece.is-away {
+  visibility: hidden;
+}
+.ng-flight {
+  position: absolute;
+  z-index: 40;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.ng-carried {
+  position: absolute;
+  display: block;
+}
+.ng-carried--lifted {
+  filter: drop-shadow(0 1.4cqh 1.2cqh rgba(40, 30, 60, 0.3));
+}
+
+/* ─── Count the Plates: the picnic ─────────────────────────────────────── */
+.ng-play--plates {
+  --ng-plate: min(24cqw, 52cqh);
+}
+.ng-picnic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+/* Play Street Pals' dining table, restated: a wooden top, a red-check
+   cloth, two legs */
+.ng-table {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+}
+.ng-table > span {
+  position: absolute;
+  display: block;
+}
+.ng-table-top {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 22%;
+  border-radius: 2cqh 2cqh 0.8cqh 0.8cqh;
+  background: linear-gradient(180deg, #e6b07a 0%, #d69a62 70%, #b7794a 100%);
+  box-shadow: 0 0.8cqh 0 #9b6238;
+}
+.ng-table-cloth {
+  left: 3%;
+  right: 3%;
+  top: 18%;
+  height: 42%;
+  border-radius: 0 0 1.6cqh 1.6cqh;
+  background:
+    repeating-linear-gradient(90deg, rgba(232, 87, 79, 0.55) 0 2.4cqh, transparent 2.4cqh 4.8cqh),
+    repeating-linear-gradient(180deg, rgba(232, 87, 79, 0.55) 0 2.4cqh, transparent 2.4cqh 4.8cqh),
+    #ffffff;
+  box-shadow: inset 0 -0.8cqh 0 rgba(160, 40, 30, 0.35);
+}
+.ng-table-leg {
+  top: 56%;
+  bottom: 0;
+  width: 2.4cqw;
+  border-radius: 0 0 0.8cqh 0.8cqh;
+  background: linear-gradient(90deg, #b7794a, #9b6238);
+}
+.ng-table-leg--l {
+  left: 8%;
+}
+.ng-table-leg--r {
+  right: 8%;
+}
+.ng-plates {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(42% * 0.86);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+}
+.ng-plate {
+  position: relative;
+  display: block;
+  width: var(--ng-plate);
+  height: calc(var(--ng-plate) * 0.9);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ng-plate:disabled {
+  cursor: default;
+}
+.ng-plate-dish {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 43%;
+  filter: drop-shadow(0 0.8cqh 0.6cqh rgba(60, 40, 20, 0.25));
+}
+.ng-plate-dish svg,
+.ng-mini-dish svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ng-plate.is-found .ng-plate-dish {
+  filter: drop-shadow(0 0 1.2cqh rgba(255, 217, 61, 0.95));
+}
+.ng-plate.is-wrong .ng-pile,
+.ng-plate.is-wrong .ng-plate-dish {
+  opacity: 0.45;
+}
+.ng-plate:active:not(:disabled) .ng-pile {
+  translate: 0 0.6cqh;
+}
+
+/* the fruit piled on a plate: the count laid out as a shape, the front
+   row sitting on the dish, the back row behind it */
+.ng-pile {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 0;
+  bottom: 10%;
+}
+.ng-fruit {
+  --ng-f: 40%;
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: var(--ng-f);
+  aspect-ratio: 1;
+  margin-left: calc(var(--ng-f) * -0.5);
+  margin-top: calc(var(--ng-f) * -0.5);
+}
+.ng-fruit svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ng-pile[data-n="1"] .ng-fruit {
+  --ng-f: 66%;
+}
+.ng-fruit[data-at="1-of-1"] {
+  left: 50%;
+  top: 66%;
+}
+.ng-pile[data-n="2"] .ng-fruit {
+  --ng-f: 54%;
+}
+.ng-fruit[data-at="1-of-2"] {
+  left: 30%;
+  top: 72%;
+}
+.ng-fruit[data-at="2-of-2"] {
+  left: 70%;
+  top: 72%;
+}
+.ng-pile[data-n="3"] .ng-fruit {
+  --ng-f: 48%;
+}
+.ng-fruit[data-at="1-of-3"] {
+  left: 27%;
+  top: 74%;
+}
+.ng-fruit[data-at="2-of-3"] {
+  left: 73%;
+  top: 74%;
+}
+.ng-fruit[data-at="3-of-3"] {
+  left: 50%;
+  top: 44%;
+  z-index: 0;
+}
+.ng-pile[data-n="4"] .ng-fruit {
+  --ng-f: 44%;
+}
+.ng-fruit[data-at="1-of-4"] {
+  left: 29%;
+  top: 76%;
+}
+.ng-fruit[data-at="2-of-4"] {
+  left: 71%;
+  top: 76%;
+}
+.ng-fruit[data-at="3-of-4"] {
+  left: 33%;
+  top: 44%;
+  z-index: 0;
+}
+.ng-fruit[data-at="4-of-4"] {
+  left: 67%;
+  top: 44%;
+  z-index: 0;
+}
+.ng-pile[data-n="5"] .ng-fruit {
+  --ng-f: 38%;
+}
+.ng-fruit[data-at="1-of-5"] {
+  left: 18%;
+  top: 78%;
+}
+.ng-fruit[data-at="2-of-5"] {
+  left: 50%;
+  top: 80%;
+}
+.ng-fruit[data-at="3-of-5"] {
+  left: 82%;
+  top: 78%;
+}
+.ng-fruit[data-at="4-of-5"] {
+  left: 34%;
+  top: 48%;
+  z-index: 0;
+}
+.ng-fruit[data-at="5-of-5"] {
+  left: 66%;
+  top: 48%;
+  z-index: 0;
+}
+/* the number a found plate wears (Pond Numbers' count badge) */
+.ng-plate-count {
+  position: absolute;
+  right: -6%;
+  top: -10%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34%;
+  aspect-ratio: 1;
+  border: 0.7cqh solid #ffffff;
+  border-radius: 50%;
+  background: #2f8f4f;
+  color: #ffffff;
+  font-size: calc(var(--ng-plate) * 0.2);
+  line-height: 1;
+  box-shadow: 0 0.6cqh 1.2cqh rgba(0, 0, 0, 0.25);
+}
+
+/* ─── Number Cards ─────────────────────────────────────────────────────── */
+.ng-play--cards {
+  --ng-cw: min(34cqh, 21cqw);
+  --ng-chip: max(48px, min(15cqh, 9cqw));
+}
+.ng-cards-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4cqh;
+  width: 100%;
+  height: 100%;
+}
+.ng-cards-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3.6cqw;
+}
+.ng-ncard {
+  --u: calc(var(--ng-cw) / 30);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--ng-cw);
+  padding: calc(var(--ng-cw) * 0.07) calc(var(--ng-cw) * 0.07) calc(var(--ng-cw) * 0.09);
+  border: 0.6cqh solid #e4dcf3;
+  border-radius: calc(var(--ng-cw) * 0.12);
+  background: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 #c9b8f2,
+    0 2.2cqh 2.8cqh rgba(70, 50, 30, 0.22);
+}
+.ng-ncard-group {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.ng-ncard.is-solved {
+  border-color: #8fd07e;
+  box-shadow:
+    0 1.2cqh 0 #5faf3a,
+    0 2.2cqh 2.8cqh rgba(70, 50, 30, 0.22);
+}
+
+/* A group to count (GroupFace): big things, clearly apart */
+.ng-gface {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.ng-gthing {
+  --ng-g: 44%;
+  position: absolute;
+  left: var(--pl-x);
+  top: var(--pl-y);
+  width: var(--ng-g);
+  height: var(--ng-g);
+  margin-left: calc(var(--ng-g) * -0.5);
+  margin-top: calc(var(--ng-g) * -0.5);
+}
+.ng-gthing svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ng-gface[data-n="1"] .ng-gthing {
+  --ng-g: 72%;
+}
+.ng-gface[data-n="2"] .ng-gthing {
+  --ng-g: 48%;
+}
+.ng-gface[data-n="5"] .ng-gthing {
+  --ng-g: 36%;
+}
+/* the empty slot: Number Pals' socket, as a soft dashed well on white paper */
+.ng-ncard-slot .nm-socket-hole {
+  border: 0.6cqh dashed #b9a5e3;
+  background: #f4effc;
+  box-shadow: inset 0 0.6cqh 1cqh rgba(80, 50, 140, 0.18);
+}
+.ng-ncard-rule {
+  display: block;
+  width: 92%;
+  height: 0.6cqh;
+  margin: calc(var(--ng-cw) * 0.04) 0 calc(var(--ng-cw) * 0.06);
+  border-radius: 9999px;
+  background: #e4dcf3;
+}
+.ng-ncard-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--ng-cw) * 0.44);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.ng-ncard-slot.is-lit {
+  box-shadow: 0 0 0 1cqh rgba(255, 217, 61, 0.7);
+}
+.ng-ncard-chip {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ng-tray {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqw;
+  padding: 1.2cqh 3cqw;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0.8cqh 0 rgba(120, 80, 30, 0.18);
+}
+.ng-tray.is-empty {
+  visibility: hidden;
+}
+.ng-piece--chip {
+  --u: calc(var(--ng-chip) / 14);
+  width: var(--ng-chip);
+  height: var(--ng-chip);
+}
+.ng-carried.ng-piece--chip {
+  left: calc(var(--ng-chip) * -0.5);
+  top: calc(var(--ng-chip) * -0.5);
+}
+
+/* ─── The title screen ─────────────────────────────────────────────────── */
+.ng-home-col {
+  position: absolute;
+  left: 22cqw;
+  right: 2cqw;
+  top: 0;
+  bottom: 3cqh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 3cqh;
+  padding-top: 58px;
+}
+.ng-title-plate {
+  max-width: 100%;
+  padding: 1.2cqh 4cqh;
+  border-radius: 5cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1cqh 0 #e8b77e,
+    0 2.2cqh 3cqh rgba(90, 50, 20, 0.2);
+}
+.ng-title {
+  margin: 0;
+  font-size: clamp(20px, min(8cqh, 5cqw), 60px);
+  line-height: 1.05;
+  color: #b8620d;
+  white-space: nowrap;
+}
+/* the game's two modules: two big cards side by side */
+.ng-modes {
+  --ng-mode-w: min(32cqw, 56cqh);
+  --ng-mode-h: min(58cqh, calc(var(--ng-mode-w) * 1.1));
+  display: flex;
+  justify-content: center;
+  gap: 4cqw;
+}
+.ng-mode {
+  --u: calc(var(--ng-mode-h) / 60);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2cqh;
+  width: var(--ng-mode-w);
+  height: var(--ng-mode-h);
+  padding: 1.8cqh 1.8cqh 2cqh;
+  border: 0.9cqh solid var(--ng-accent);
+  border-radius: 4.6cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.4cqh 0 var(--ng-edge),
+    0 2.6cqh 3.4cqh rgba(60, 40, 20, 0.22);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ng-mode-pic {
+  position: relative;
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  border-radius: 3cqh;
+  background: color-mix(in srgb, var(--ng-accent) 14%, #ffffff);
+  overflow: hidden;
+  container-type: size;
+}
+.ng-mode-name {
+  font-size: clamp(15px, min(6.6cqh, 3.2cqw), 44px);
+  line-height: 1.05;
+  white-space: nowrap;
+  color: var(--ng-edge);
+}
+.ng-mode-stars {
+  display: flex;
+  line-height: 0;
+}
+/* StarRow draws in px; on a big card its stars grow with the card */
+.ng-mode-stars svg {
+  width: clamp(20px, min(6.6cqh, 3.4cqw), 46px);
+  height: clamp(20px, min(6.6cqh, 3.4cqw), 46px);
+}
+
+/* each module in miniature (home card, finish card): a box of one shape,
+   as big as the picture area allows, sized in that area's own units */
+.ng-mini {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: min(100cqw, 160cqh);
+  height: min(100cqh, 62.5cqw);
+  margin: auto;
+}
+.ng-mini--plates .ng-mini-dish {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 8%;
+  height: 32%;
+}
+.ng-mini--plates .ng-pile {
+  left: 24%;
+  right: 24%;
+  top: 6%;
+  bottom: 18%;
+}
+.ng-mini--plates .ng-fruit {
+  --ng-f: 40%;
+}
+.ng-mini-ncard {
+  position: absolute;
+  top: 4%;
+  bottom: 6%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  aspect-ratio: 0.62;
+  translate: -50% 0;
+  padding: 4%;
+  border-radius: 12%;
+  background: #ffffff;
+  box-shadow: 0 2.4cqh 0 #c9b8f2;
+}
+.ng-mini-ncard-group {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.ng-mini-ncard-chip {
+  /* Number Pals' chip draws in --u; one fourteenth of the chip, as in play */
+  --u: min(2cqh, 1.25cqw);
+  display: block;
+  width: 50%;
+  aspect-ratio: 1;
+  margin-top: 8%;
+}
+/* ─── The finish ───────────────────────────────────────────────────────── */
+.ng-done-center {
+  position: absolute;
+  left: 22cqw;
+  right: 2cqw;
+  top: 0;
+  bottom: 3cqh;
+  z-index: 5;
+  display: flex;
+  align-items: safe center;
+  justify-content: center;
+  padding-top: 20px;
+}
+.ng-done-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6cqh;
+  width: min(66cqw, 120cqh);
+  padding: 3cqh 4cqh 4cqh;
+  border: 0.8cqh solid var(--ng-accent);
+  border-radius: 4.6cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 var(--ng-edge),
+    0 3cqh 4cqh rgba(60, 40, 20, 0.22);
+  text-align: center;
+}
+.ng-done-pic {
+  --u: calc(22cqh / 60);
+  position: relative;
+  display: block;
+  width: min(34cqh, 40cqw);
+  height: 22cqh;
+  border-radius: 2.4cqh;
+  background: color-mix(in srgb, var(--ng-accent) 14%, #ffffff);
+  overflow: hidden;
+  container-type: size;
+}
+.ng-done-title {
+  margin: 0;
+  font-size: clamp(20px, 8cqh, 54px);
+  line-height: 1.05;
+  color: var(--ng-edge);
+}
+.ng-done-sub {
+  margin: 0;
+  font-size: clamp(11px, 3.6cqh, 22px);
+  color: #6a5a4a;
+}
+.ng-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.6cqh;
+  margin-top: 0.6cqh;
+}
+.ng-done-btn {
+  min-height: 44px;
+  padding: 1.2cqh 3cqh;
+  border: 0;
+  border-radius: 9999px;
+  background: #fbeedd;
+  color: #8a5a2e;
+  font-size: clamp(13px, 4.2cqh, 24px);
+  box-shadow: 0 0.7cqh 0 #ecd6b8;
+  cursor: pointer;
+}
+.ng-done-btn--go {
+  background: #3dab72;
+  color: #ffffff;
+  box-shadow: 0 0.7cqh 0 #2b8a57;
+}
+
+/* ─── Short landscape phones: the home cards need the room ─────────────── */
+@media (orientation: landscape) and (max-height: 420px) {
+  .ng-home-col {
+    gap: 2cqh;
+    padding-top: 12px;
+  }
+  .ng-title-plate {
+    padding: 0.8cqh 3cqh;
+  }
+}
+
+/* ─── Portrait: board on top, the teacher at the bottom-left with his bubble
+   beside him ──────────────────────────────────────────────────────────── */
+@media (orientation: portrait) {
+  .ng-trail {
+    top: 68px;
+  }
+  .ng-teacher-slot {
+    left: 1cqw;
+    bottom: 1.5cqh;
+    width: min(20cqh, 34cqw);
+    height: min(22cqh, 44cqw);
+  }
+  .ng-teacher-slot .dc-teacher-says {
+    left: 92%;
+    bottom: 48%;
+    max-width: 58cqw;
+    font-size: clamp(14px, 5.4cqw, 26px);
+  }
+  .ng-teacher-slot .dc-teacher-says::after {
+    left: -1.2cqh;
+    bottom: 30%;
+    border-top: 1.3cqh solid transparent;
+    border-bottom: 1.3cqh solid transparent;
+    border-right: 1.6cqh solid #ffffff;
+    border-left: 0;
+  }
+  .ng-main {
+    left: 3cqw;
+    right: 3cqw;
+    top: 124px;
+    bottom: 25cqh;
+  }
+
+  /* the park: a taller sky, the grass under the board */
+  .ng-park-hills {
+    bottom: calc(52cqh - 2px);
+    height: 12cqh;
+  }
+  .ng-park-grass {
+    height: 52cqh;
+  }
+  .ng-park-tree {
+    right: -12cqw;
+    bottom: 46cqh;
+    width: 22cqh;
+    height: 30cqh;
+  }
+  .ng-park-sun {
+    top: 130px;
+    right: 8cqw;
+    width: 15cqw;
+  }
+
+  /* the picnic upright: a deep table top seen from above, the plates two
+     at the back and one at the front, big */
+  .ng-play--plates {
+    --ng-plate: min(44cqw, 20cqh);
+  }
+  .ng-picnic .ng-table {
+    height: 80%;
+  }
+  .ng-table-top {
+    height: 70%;
+  }
+  .ng-table-cloth {
+    top: 67%;
+    height: 22%;
+  }
+  .ng-table-leg {
+    top: 86%;
+  }
+  .ng-plates {
+    top: 6%;
+    bottom: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 4cqw;
+  }
+
+  .ng-play--cards {
+    --ng-cw: min(29cqw, 26cqh);
+    --ng-chip: max(52px, min(9cqh, 18cqw));
+  }
+  .ng-cards-row {
+    gap: 3cqw;
+  }
+  .ng-cards-board {
+    gap: 5cqh;
+  }
+
+  .ng-home-col,
+  .ng-done-center {
+    left: 4cqw;
+    right: 4cqw;
+    bottom: 22cqh;
+    padding-top: 64px;
+  }
+  .ng-title {
+    font-size: clamp(20px, 8cqw, 40px);
+  }
+  /* upright: the two cards stacked, wide */
+  .ng-modes {
+    --ng-mode-w: min(84cqw, 40cqh);
+    --ng-mode-h: min(26cqh, 70cqw);
+    /* a grid, not a column flexbox: a card flexed in a column leaves its
+       picture area an indefinite height, and the mini inside (sized in that
+       area's cqh) collapses to nothing */
+    display: grid;
+    gap: 3.4cqh;
+  }
+  .ng-mode-name {
+    font-size: clamp(16px, 6.4cqw, 34px);
+  }
+  .ng-teacher-slot--home .dc-teacher-says {
+    display: none;
+  }
+  .ng-done-card {
+    width: 92cqw;
+  }
+  .ng-done-title {
+    font-size: clamp(20px, 8cqw, 40px);
+  }
+  .ng-done-pic {
+    --u: calc(16cqh / 60);
+    width: 60cqw;
+    height: 16cqh;
+  }
+}
