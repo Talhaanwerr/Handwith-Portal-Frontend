@@ -76,6 +76,40 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "food-sort": lazy(() =>
     import("@games/food-sort/FoodSortGame").then((m) => ({ default: m.FoodSortGame }))
   ),
+  "find-the-mouse": lazy(() =>
+    import("@games/find-the-mouse/FindTheMouseGame").then((m) => ({
+      default: m.FindTheMouseGame,
+    }))
+  ),
+  "sesame-activities": lazy(() =>
+    import("@games/sesame-activities/SesameActivitiesGame").then((m) => ({
+      default: m.SesameActivitiesGame,
+    }))
+  ),
+  "color-shape-friends": lazy(() =>
+    import("@games/color-shape-friends/ColorShapeFriendsGame").then((m) => ({
+      default: m.ColorShapeFriendsGame,
+    }))
+  ),
+  "pond-numbers": lazy(() =>
+    import("@games/pond-numbers/PondNumbersGame").then((m) => ({ default: m.PondNumbersGame }))
+  ),
+  "jigsaw-fun": lazy(() =>
+    import("@games/jigsaw-fun/JigsawFunGame").then((m) => ({ default: m.JigsawFunGame }))
+  ),
+  "tangram-town": lazy(() =>
+    import("@games/tangram-town/TangramTownGame").then((m) => ({ default: m.TangramTownGame }))
+  ),
+  "on-off": lazy(() => import("@games/on-off/OnOffGame").then((m) => ({ default: m.OnOffGame }))),
+  "sort-two-ways": lazy(() =>
+    import("@games/sort-two-ways/SortTwoWaysGame").then((m) => ({ default: m.SortTwoWaysGame }))
+  ),
+  "number-groups": lazy(() =>
+    import("@games/number-groups/NumberGroupsGame").then((m) => ({ default: m.NumberGroupsGame }))
+  ),
+  "number-hunt": lazy(() =>
+    import("@games/number-hunt/NumberHuntGame").then((m) => ({ default: m.NumberHuntGame }))
+  ),
 };
 
 interface GamePlayerProps {

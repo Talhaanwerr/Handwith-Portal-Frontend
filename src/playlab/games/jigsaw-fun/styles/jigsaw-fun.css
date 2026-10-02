@@ -1,0 +1,863 @@
+/**
+ * Jigsaw Fun — class prefix `jf-` (grepped clear across src/playlab). The
+ * puzzle games share the celebration and motion classes here (`jf-burst`,
+ * `jf-bit`, `jf-cheer`, `jf-stamp`, `jf-cast`, `jf-glide`) — Tangram Town,
+ * Sort Two Ways, On & Off and Count & Match and Number Hunt import the components.
+ *
+ * A calm playroom: a warm wall papered with faint puzzle pieces, a wooden
+ * table, the puzzle on a framed wooden board, the pieces in a puzzle box the
+ * picture's colour. Nothing behind the puzzle moves. Sized in container units
+ * of `.jf-root`; portrait at the bottom.
+ */
+
+.jf-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  container-name: jf;
+}
+.jf-layer,
+.jf-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ─── The playroom ─────────────────────────────────────────────────────── */
+.jf-world {
+  position: absolute;
+  inset: 0;
+}
+.jf-wall {
+  position: absolute;
+  inset: 0;
+  background-color: #fff3e2;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cpath d='M22 22h12a7 7 0 1 1 14 0h12v12a7 7 0 1 0 0 14v12H48a7 7 0 1 1-14 0H22V48a7 7 0 1 0 0-14z' fill='%23E8912A' fill-opacity='0.09'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cpath d='M22 22h12a7 7 0 1 1 14 0h12v12a7 7 0 1 0 0 14v12H48a7 7 0 1 1-14 0H22V48a7 7 0 1 0 0-14z' fill='%232E7FD6' fill-opacity='0.07'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #fff8ec 0%, #ffe9cf 100%);
+  background-size:
+    18cqh 18cqh,
+    18cqh 18cqh,
+    100% 100%;
+  background-position:
+    0 0,
+    9cqh 9cqh,
+    0 0;
+}
+.jf-table {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 24cqh;
+  border-top: 1.4cqh solid #e8b77e;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 12cqw, rgba(110, 60, 20, 0.14) 12cqw 12.25cqw),
+    linear-gradient(180deg, #d09a5f, #ad7038);
+  box-shadow: 0 -0.6cqh 1.6cqh rgba(90, 50, 20, 0.18);
+}
+
+/* the window and the shelf — only where there is wall to see them */
+.jf-window {
+  position: absolute;
+  left: 4cqw;
+  top: 20cqh;
+  width: 16cqw;
+  height: 34cqh;
+  border: 1.1cqh solid #ffffff;
+  border-radius: 1.4cqh;
+  overflow: hidden;
+  background: linear-gradient(180deg, #8fd3ff, #d8f1ff);
+  box-shadow: 0 1cqh 2cqh rgba(90, 60, 20, 0.18);
+}
+.jf-window-sun {
+  position: absolute;
+  right: 12%;
+  top: 12%;
+  width: 26%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffd93d;
+}
+.jf-window-hill {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: -30%;
+  height: 60%;
+  border-radius: 50%;
+  background: #7cc86b;
+}
+.jf-window-bars {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 0.5cqh),
+      #ffffff calc(50% - 0.5cqh) calc(50% + 0.5cqh),
+      transparent calc(50% + 0.5cqh)
+    ),
+    linear-gradient(
+      180deg,
+      transparent calc(50% - 0.5cqh),
+      #ffffff calc(50% - 0.5cqh) calc(50% + 0.5cqh),
+      transparent calc(50% + 0.5cqh)
+    );
+}
+.jf-curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  background: repeating-linear-gradient(90deg, #ff9ebc 0 1.2cqh, #ff86ab 1.2cqh 2.4cqh);
+}
+.jf-curtain--l {
+  left: 0;
+  border-radius: 0 0 60% 0;
+}
+.jf-curtain--r {
+  right: 0;
+  border-radius: 0 0 0 60%;
+}
+.jf-shelf {
+  position: absolute;
+  right: 4cqw;
+  top: 44cqh;
+  width: 17cqw;
+  height: 1.8cqh;
+  border-radius: 0.6cqh;
+  background: linear-gradient(#d9a066, #b97b40);
+  box-shadow: 0 0.8cqh 1.4cqh rgba(80, 50, 20, 0.22);
+}
+.jf-shelf-block {
+  position: absolute;
+  bottom: 100%;
+  width: 7cqh;
+  height: 7cqh;
+  border-radius: 0.8cqh;
+  box-shadow: inset 0 -0.6cqh 0 rgba(0, 0, 0, 0.15);
+}
+.jf-shelf-block--a {
+  left: 6%;
+  background: #e5484d;
+}
+.jf-shelf-block--b {
+  left: calc(6% + 7.6cqh);
+  background: #2e7fd6;
+}
+.jf-shelf-block--c {
+  left: calc(6% + 3.8cqh);
+  bottom: calc(100% + 7cqh);
+  background: #ffd93d;
+}
+.jf-shelf-pic {
+  position: absolute;
+  right: 6%;
+  bottom: 100%;
+  width: 12cqh;
+  height: 12cqh;
+}
+
+/* ─── Chrome ───────────────────────────────────────────────────────────── */
+.jf-leave {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #8a5a2e;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(80, 50, 20, 0.16);
+  cursor: pointer;
+}
+.jf-plate {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2cqh;
+  max-width: calc(100% - 300px);
+  min-height: 48px;
+  padding: 0.8cqh 2.8cqh;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 0.8cqh 2cqh rgba(80, 50, 20, 0.14);
+  transition: background-color 0.3s;
+}
+.jf-plate--done {
+  background: #e9f8ef;
+}
+.jf-plate-text {
+  margin: 0;
+  font-size: clamp(14px, 4.6cqh, 28px);
+  line-height: 1.1;
+  color: #8a5a2e;
+  white-space: nowrap;
+}
+.jf-plate--done .jf-plate-text {
+  color: #237a4b;
+}
+/* one dot per piece, filled as each one goes in */
+.jf-dots {
+  display: flex;
+  gap: 4px;
+}
+.jf-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #eadcc8;
+  transition: background-color 0.2s;
+}
+.jf-dot.is-done {
+  background: #3dab72;
+}
+
+/* ─── The board and the box ────────────────────────────────────────────── */
+.jf-mat,
+.jf-box {
+  position: absolute;
+  top: max(70px, 19cqh);
+  bottom: 6cqh;
+  border-radius: 2.6cqh;
+}
+.jf-mat {
+  left: 3cqw;
+  right: 40cqw;
+  z-index: 2;
+  padding: 1.6cqh;
+  background: linear-gradient(160deg, #deaa70, #b97b40);
+  box-shadow:
+    0 1.4cqh 2.8cqh rgba(80, 50, 20, 0.3),
+    inset 0 0.5cqh 0 rgba(255, 232, 196, 0.55);
+}
+.jf-mat-face {
+  width: 100%;
+  height: 100%;
+  padding: 2cqh;
+  border-radius: 1.4cqh;
+  background: #f6eedc;
+  box-shadow: inset 0 0.6cqh 1.4cqh rgba(80, 50, 20, 0.3);
+}
+/* the picture and, stacked exactly over it (same viewBox, same letterbox),
+   the cut lines — a layer of their own so they can fade out as one */
+.jf-board {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.jf-board > svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.jf-seams {
+  pointer-events: none;
+  transition: opacity 0.8s ease 0.2s;
+}
+.jf-seams.is-gone {
+  opacity: 0;
+}
+/* the light that sweeps across a finished puzzle */
+.jf-shine {
+  position: absolute;
+  inset: 1.6cqh;
+  overflow: hidden;
+  border-radius: 1.4cqh;
+  pointer-events: none;
+}
+.jf-shine::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 30%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0)
+  );
+  transform: translateX(-160%) skewX(-18deg);
+}
+.jf-mat.is-solved .jf-shine::before {
+  animation: jf-sweep 1.3s ease-out 0.35s both;
+}
+@keyframes jf-sweep {
+  to {
+    transform: translateX(420%) skewX(-18deg);
+  }
+}
+
+.jf-box {
+  left: 62cqw;
+  right: 3cqw;
+  z-index: 3;
+  padding: 1.4cqh 1.4cqh 6.6cqh;
+  background: var(--jf-accent, #e8912a);
+  box-shadow:
+    0 1.4cqh 2.8cqh rgba(80, 50, 20, 0.28),
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.3);
+}
+.jf-box-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 1.6cqh;
+  background: #fffdf7;
+  box-shadow: inset 0 0.6cqh 1.4cqh rgba(80, 50, 20, 0.2);
+}
+.jf-box-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.2cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1cqh;
+  color: #ffffff;
+  font-size: clamp(12px, 4.2cqh, 24px);
+  line-height: 1;
+  text-transform: capitalize;
+  text-shadow: 0 0.3cqh 0 rgba(0, 0, 0, 0.18);
+}
+.jf-box-label-pic {
+  display: block;
+  width: 4.4cqh;
+  height: 4.4cqh;
+}
+
+/* pieces in the box */
+.jf-tray {
+  --jp: min(26cqh, 13.5cqw);
+  --cols: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--jp));
+  grid-auto-rows: var(--jp);
+  align-content: center;
+  justify-content: center;
+  gap: 1.4cqh;
+  width: 100%;
+  height: 100%;
+}
+.jf-tray--6 {
+  --jp: min(24cqh, 9.8cqw);
+  --cols: 3;
+}
+.jf-tray--9 {
+  --jp: min(19cqh, 9.6cqw);
+  --cols: 3;
+}
+.jf-tpiece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--jp);
+  height: var(--jp);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  touch-action: none;
+  cursor: grab;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s;
+  /* each piece (a whole picture clipped to its outline) is drawn once into a
+     layer of its own: taking one out of the box must not repaint the rest on
+     the frame its confetti starts — measured 299 → 117 ms at 4× CPU */
+  will-change: transform;
+}
+.jf-tpiece.is-lifted {
+  opacity: 0.2;
+}
+.jf-tpiece.is-used {
+  visibility: hidden;
+}
+.jf-piece-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.jf-ghost-art {
+  display: block;
+}
+/* a dropped piece easing the last little way into its place */
+.jf-glide {
+  position: absolute;
+  z-index: 20;
+  display: block;
+  pointer-events: none;
+  animation-name: jf-glide;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+@keyframes jf-glide {
+  from {
+    transform: translate(var(--jf-gx), var(--jf-gy)) scale(1.06);
+  }
+  to {
+    transform: none;
+  }
+}
+.jf-glide > svg,
+.jf-ghost-art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ─── Celebrations (shared with Tangram Town) ──────────────────────────── */
+.jf-burst {
+  position: absolute;
+  z-index: 30;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.jf-burst-ring {
+  position: absolute;
+  left: -7cqh;
+  top: -7cqh;
+  width: 14cqh;
+  height: 14cqh;
+  border: 0.7cqh solid #ffffff;
+  border-radius: 50%;
+  animation: jf-ring 0.6s ease-out both;
+}
+@keyframes jf-ring {
+  from {
+    opacity: 1;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+/* one CSS animation per bit (transform and opacity only): its flight and
+   timing come in as --jf-dx/--jf-dy/--jf-spin/--jf-scale/--jf-delay/--jf-dur */
+.jf-bit {
+  --jf-bit: clamp(7px, 2.2cqh, 14px);
+  position: absolute;
+  left: calc(var(--jf-bit) * -0.5);
+  top: calc(var(--jf-bit) * -0.3);
+  width: var(--jf-bit);
+  height: calc(var(--jf-bit) * 0.6);
+  border-radius: 2px;
+  background: var(--pl-color);
+  opacity: 0;
+  animation: jf-bit-fly var(--jf-dur) linear var(--jf-delay) both;
+}
+.jf-bit--long {
+  left: calc(var(--jf-bit) * -0.225);
+  top: calc(var(--jf-bit) * -0.5);
+  width: calc(var(--jf-bit) * 0.45);
+  height: var(--jf-bit);
+}
+@keyframes jf-bit-fly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(0.35);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(calc(var(--jf-dx) * 0.62), calc(var(--jf-dy) * 0.62))
+      rotate(calc(var(--jf-spin) * 0.4)) scale(var(--jf-scale));
+  }
+  70% {
+    opacity: 1;
+    transform: translate(calc(var(--jf-dx) * 0.94), calc(var(--jf-dy) * 0.94))
+      rotate(calc(var(--jf-spin) * 0.8)) scale(calc(var(--jf-scale) * 0.8));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--jf-dx), var(--jf-dy)) rotate(var(--jf-spin))
+      scale(calc(var(--jf-scale) * 0.6));
+  }
+}
+.jf-cheer {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+}
+.jf-stamp-at {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.jf-stamp {
+  position: absolute;
+  left: -9cqh;
+  top: -9cqh;
+  display: block;
+  width: 18cqh;
+  height: 18cqh;
+  padding: 2.6cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 62%, rgba(255, 255, 255, 0) 64%);
+}
+.jf-stamp svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.jf-cast {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The picker ───────────────────────────────────────────────────────── */
+.jf-home-col {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 2.6cqh;
+  padding: 10px 4cqw 3cqh;
+}
+.jf-title-plate {
+  display: flex;
+  align-items: baseline;
+  gap: 2cqh;
+  min-height: 48px;
+  padding: 0.8cqh 3.2cqh;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 0.8cqh 2cqh rgba(80, 50, 20, 0.14);
+}
+.jf-title {
+  margin: 0;
+  font-size: clamp(20px, 6.4cqh, 44px);
+  line-height: 1.1;
+  color: #c0620b;
+}
+.jf-subtitle {
+  margin: 0;
+  font-size: clamp(12px, 3.6cqh, 22px);
+  color: #8a6a4a;
+}
+.jf-cards {
+  --cw: min(31cqh, 17cqw);
+  display: grid;
+  grid-template-columns: repeat(3, var(--cw));
+  gap: 2.6cqh 3cqh;
+}
+.jf-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqh;
+  width: var(--cw);
+  height: calc(var(--cw) * 1.2);
+  padding: calc(var(--cw) * 0.07);
+  border: 0.7cqh solid var(--jf-accent);
+  border-radius: 3cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1cqh 0 color-mix(in srgb, var(--jf-accent) 70%, #000000),
+    0 2cqh 3cqh rgba(80, 50, 20, 0.16);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.jf-card-pic {
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 1.6cqh;
+}
+.jf-card-name {
+  font-size: clamp(12px, calc(var(--cw) * 0.13), 26px);
+  line-height: 1;
+  color: #5a4632;
+  text-transform: capitalize;
+}
+.jf-card-stars {
+  display: block;
+  line-height: 0;
+}
+
+/* ─── How many pieces? (the shared ChoiceScreen, painted) ──────────────
+   Each plate draws its level's sample in ::before: the picture (scene colours
+   + its Twemoji) under its real cut lines, all handed in as custom properties
+   by JfLevels. */
+.jf-pick {
+  position: absolute;
+  inset: 0;
+}
+.jf-pick .pl-screen-scroll {
+  z-index: 3;
+  gap: 2.4cqh;
+  padding: max(60px, 13cqh) 4cqw 4cqh;
+}
+.jf-pick .pl-cs-title {
+  margin: 0;
+  padding: 0.6cqh 3.2cqh;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 0.8cqh 2cqh rgba(80, 50, 20, 0.14);
+  color: #c0620b;
+  font-size: clamp(20px, 6.4cqh, 44px);
+  line-height: 1.15;
+  text-transform: capitalize;
+}
+.jf-pick .pl-cs-subtitle {
+  margin: 0.6cqh 0 0;
+  padding: 0;
+  color: #8a6a4a;
+  font-size: clamp(12px, 3.8cqh, 22px);
+}
+.jf-pick div:has(> .pl-cs-btn) {
+  gap: 3cqw;
+}
+.jf-pick .pl-cs-btn {
+  --pw: min(42cqh, 27cqw);
+  width: var(--pw);
+  min-height: 0;
+  gap: 0.8cqh;
+  padding: calc(var(--pw) * 0.07);
+  border: 0.7cqh solid var(--jf-accent);
+  border-radius: 3cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1cqh 0 color-mix(in srgb, var(--jf-accent) 70%, #000000),
+    0 2cqh 3cqh rgba(80, 50, 20, 0.16);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.jf-pick .pl-cs-btn::before {
+  content: "";
+  display: block;
+  flex: none;
+  height: calc(var(--pw) * 0.56);
+  aspect-ratio: var(--jf-aspect);
+  border-radius: 1.4cqh;
+  background:
+    var(--jf-cut) 0 0 / 100% 100% no-repeat,
+    var(--jf-pic) center bottom 12% / auto 66% no-repeat,
+    linear-gradient(180deg, var(--jf-sky0) 0 38%, var(--jf-sky1) 38% 80%, var(--jf-ground) 80%);
+  box-shadow: inset 0 0 0 0.3cqh rgba(0, 0, 0, 0.08);
+}
+.jf-pick .pl-cs-btn--easy {
+  --jf-cut: var(--jf-cut-easy);
+  --jf-aspect: 1;
+}
+.jf-pick .pl-cs-btn--medium {
+  --jf-cut: var(--jf-cut-medium);
+  --jf-aspect: 1.5;
+}
+.jf-pick .pl-cs-btn--hard {
+  --jf-cut: var(--jf-cut-hard);
+  --jf-aspect: 1;
+}
+.jf-pick .pl-cs-preview {
+  color: var(--jf-accent);
+  font-size: clamp(18px, calc(var(--pw) * 0.2), 44px);
+  line-height: 1;
+}
+.jf-pick .pl-cs-label {
+  color: #5a4632;
+  font-size: clamp(12px, calc(var(--pw) * 0.11), 24px);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+/* ─── The finale ───────────────────────────────────────────────────────── */
+.jf-done-row {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: safe center;
+  justify-content: center;
+  gap: 5cqw;
+  padding: 12cqh 4cqw 3cqh;
+}
+.jf-frame {
+  position: relative;
+  flex: none;
+  width: min(48cqh, 30cqw);
+  aspect-ratio: 1;
+  padding: 2.4cqh;
+  border-radius: 1.8cqh;
+  background: linear-gradient(135deg, #f7d76a, #d99a1e 45%, #f5c84c 70%, #c98a14);
+  box-shadow:
+    0 2cqh 4cqh rgba(80, 50, 0, 0.35),
+    inset 0 0 0 0.6cqh rgba(255, 255, 255, 0.35);
+}
+.jf-frame-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0.8cqh;
+  background: #ffffff;
+}
+.jf-frame-hero {
+  position: absolute;
+  left: 50%;
+  top: -17cqh;
+  display: block;
+  width: 22cqh;
+  height: 22cqh;
+  margin-left: -11cqh;
+}
+.jf-done-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6cqh;
+  width: min(56cqw, 100cqh);
+  padding: 3.2cqh 3.6cqh;
+  border-radius: 4cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 var(--jf-accent),
+    0 3cqh 4cqh rgba(80, 50, 20, 0.2);
+  text-align: center;
+}
+.jf-done-title {
+  margin: 0;
+  font-size: clamp(20px, 8cqh, 50px);
+  line-height: 1.05;
+  color: #c0620b;
+}
+.jf-done-sub {
+  margin: 0;
+  font-size: clamp(12px, 3.6cqh, 20px);
+  color: #8a6a4a;
+}
+.jf-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4cqh;
+}
+.jf-done-btn {
+  min-height: 44px;
+  padding: 1.2cqh 3cqh;
+  border: 0;
+  border-radius: 9999px;
+  background: #fbefe0;
+  color: #8a5a2e;
+  font-size: clamp(13px, 4cqh, 22px);
+  box-shadow: 0 0.7cqh 0 #ecd6b8;
+  cursor: pointer;
+}
+.jf-done-btn--go {
+  background: #3dab72;
+  color: #ffffff;
+  box-shadow: 0 0.7cqh 0 #2b8a57;
+}
+.jf-done-btn--up {
+  background: var(--jf-accent);
+  color: #ffffff;
+  box-shadow: 0 0.7cqh 0 color-mix(in srgb, var(--jf-accent) 70%, #000000);
+}
+
+/* ─── Portrait: board on top, box below; picker 2 × 3 ──────────────────── */
+@media (orientation: portrait) {
+  .jf-plate {
+    top: 68px;
+    max-width: 94cqw;
+  }
+  .jf-mat,
+  .jf-box {
+    left: 3cqw;
+    right: 3cqw;
+  }
+  .jf-mat {
+    top: calc(68px + 64px);
+    bottom: 44cqh;
+  }
+  .jf-box {
+    top: 58cqh;
+    bottom: 3cqh;
+  }
+  .jf-tray {
+    --jp: min(15cqh, 34cqw);
+  }
+  .jf-tray--6 {
+    --jp: min(14cqh, 27cqw);
+  }
+  .jf-tray--9 {
+    --jp: min(10.5cqh, 25cqw);
+  }
+  .jf-table {
+    height: 18cqh;
+  }
+  .jf-home-col {
+    padding-top: 64px;
+  }
+  .jf-title-plate {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    border-radius: 3cqh;
+  }
+  .jf-cards {
+    --cw: min(22cqh, 42cqw);
+    grid-template-columns: repeat(2, var(--cw));
+  }
+  /* the three plates stacked, each a wide row: sample, number, name */
+  .jf-pick .pl-cs-title {
+    font-size: min(6.4cqh, 8.4cqw);
+  }
+  .jf-pick .pl-cs-btn {
+    --pw: 22cqh;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 5cqw;
+    width: min(88cqw, 60cqh);
+    padding: 1.6cqh 5cqw;
+  }
+  .jf-pick .pl-cs-btn::before {
+    height: 12cqh;
+  }
+  .jf-done-row {
+    flex-direction: column;
+    gap: 2.4cqh;
+    padding-top: 15cqh;
+  }
+  .jf-frame {
+    width: min(28cqh, 56cqw);
+  }
+  .jf-frame-hero {
+    top: -12cqh;
+    width: 16cqh;
+    height: 16cqh;
+    margin-left: -8cqh;
+  }
+  .jf-done-card {
+    width: 92cqw;
+    gap: 1.4cqh;
+    padding: 2.4cqh 4cqw;
+  }
+  .jf-done-title {
+    font-size: min(6cqh, 11cqw);
+  }
+  .jf-done-btn {
+    padding: 1cqh 3.4cqw;
+    font-size: clamp(13px, 4cqw, 18px);
+  }
+}

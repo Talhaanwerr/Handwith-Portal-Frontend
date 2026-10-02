@@ -1,0 +1,1002 @@
+/**
+ * Play Street Pals — game-specific visual identity.
+ * Class prefix `sa-` (grepped `src/playlab` first — free; see GAME_DEV.md's
+ * "class prefixes are global" warning).
+ *
+ * THE LAYOUT MODEL. `.sa-root` is a size container. Every screen is a
+ * full-bleed `.sa-world` (sky or wallpaper, ground or floor, drawn edge to
+ * edge), and each module's props and tap targets live on one `.sa-set`: a
+ * 2:1 stage anchored to the floor, as wide as fits under the HUD (upright,
+ * a tall 0.56:1 stage — see the block at the end). Everything on the set is
+ * placed in % of the set and sized in `--sa-s` (1% of the set's width), so a
+ * scene scales as one picture: on the 568×320 phone s ≈ 4.6px, so a 12s tile
+ * is 56px. The backdrop's floor line is computed from the same numbers
+ * (`--sa-floor`), so furniture always stands on the floor.
+ */
+.sa-root {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  container: sa-root / size;
+  background: #bfe8ff;
+}
+
+.sa-world {
+  --sa-hud: clamp(72px, 13cqh, 110px);
+  --sa-aspect: 2;
+  --sa-w: min(96cqw, calc((100cqh - var(--sa-hud) - 6px) * var(--sa-aspect)), 1180px);
+  --sa-h: calc(var(--sa-w) / var(--sa-aspect));
+  --sa-s: calc(var(--sa-w) / 100);
+  --sa-bottom: max(4px, 1.4cqh);
+  --sa-floor: calc(var(--sa-bottom) + var(--sa-h) * var(--sa-floor-frac, 0.22));
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.sa-set {
+  position: absolute;
+  left: 50%;
+  bottom: var(--sa-bottom);
+  width: var(--sa-w);
+  height: var(--sa-h);
+  margin-left: calc(var(--sa-w) / -2);
+}
+.sa-set > * {
+  position: absolute;
+}
+
+button.sa-ball,
+button.sa-plate {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sa-set svg,
+.sa-cast svg,
+.sa-card svg {
+  display: block;
+  overflow: visible;
+}
+
+/* ─── Backdrops ──────────────────────────────────────────────────────────── */
+
+.sa-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--sa-floor);
+}
+
+.sa-sun {
+  position: absolute;
+  top: max(64px, 14cqh);
+  right: 7cqw;
+  width: clamp(38px, 13cqh, 110px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #fff7c2 0 30%, #ffd84d 62%, #ffc22e 100%);
+  box-shadow:
+    0 0 0 clamp(6px, 2cqh, 16px) rgba(255, 226, 110, 0.35),
+    0 0 0 clamp(12px, 4cqh, 34px) rgba(255, 226, 110, 0.18);
+}
+
+/* the park and the street: sky, rolling hills, grass */
+.sa-world--park,
+.sa-world--street {
+  background: linear-gradient(180deg, #6cc3f5 0%, #a6dcfb 45%, #dff4ff 100%);
+}
+.sa-hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--sa-floor) - 2px);
+  height: clamp(40px, 20cqh, 180px);
+  background:
+    radial-gradient(38% 100% at 18% 100%, #8fd07e 98%, transparent 100%),
+    radial-gradient(44% 86% at 70% 100%, #a3dc8f 98%, transparent 100%),
+    radial-gradient(30% 70% at 100% 100%, #8fd07e 98%, transparent 100%);
+}
+.sa-ground--grass {
+  background:
+    repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.07) 0 26px, transparent 26px 60px),
+    linear-gradient(180deg, #74c96b 0%, #5db55a 55%, #4fa54f 100%);
+  box-shadow: inset 0 6px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* the street: houses, then pavement and road */
+.sa-world--street {
+  --sa-floor-frac: 0.1;
+  --sa-hud: 40cqh;
+}
+.sa-street {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--sa-floor) + clamp(22px, 9cqh, 70px) - 2px);
+  height: min(46cqh, 34cqw);
+}
+.sa-ground--street {
+  height: calc(var(--sa-floor) + clamp(22px, 9cqh, 70px));
+  background:
+    linear-gradient(180deg, transparent 0 62%, #d8cfc2 62% 66%, #8c93a8 66% 100%),
+    repeating-linear-gradient(90deg, rgba(120, 100, 80, 0.16) 0 2px, transparent 2px 64px),
+    linear-gradient(180deg, #efe7da 0%, #e6dccd 62%);
+}
+
+/* dining room: mint wallpaper, a wainscot rail, a checked tile floor */
+.sa-world--dining {
+  --sa-floor-frac: 0.16;
+  background-color: #cdeedd;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.35) 0 16px,
+    transparent 16px 40px
+  );
+}
+.sa-ground--tiles {
+  background: conic-gradient(#fbf1e4 25%, #e8cfb1 0 50%, #fbf1e4 0 75%, #e8cfb1 0) 0 0 /
+    clamp(28px, 8cqh, 60px) clamp(28px, 8cqh, 60px);
+}
+.sa-ground--tiles::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: clamp(8px, 2.2cqh, 18px);
+  background: #fff4e6;
+  box-shadow: inset 0 -3px 0 rgba(120, 80, 40, 0.18);
+}
+.sa-ground--tiles::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + clamp(8px, 2.2cqh, 18px));
+  height: clamp(30px, 14cqh, 130px);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 58px, rgba(30, 90, 70, 0.18) 58px 61px),
+    linear-gradient(180deg, #4fa889 0 8%, #8fd0b4 8%);
+}
+
+/* ─── HUD: one instruction plate and a six-step progress bar ────────────── */
+
+.sa-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  display: flex;
+  justify-content: center;
+  padding: clamp(6px, 1.4cqh, 12px) clamp(110px, 16cqw, 200px) 0;
+  pointer-events: none;
+}
+.sa-hud-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 1cqh, 9px);
+  max-width: 100%;
+  padding: clamp(6px, 1.3cqh, 12px) clamp(14px, 2.6cqw, 28px) clamp(8px, 1.6cqh, 14px);
+  border-radius: clamp(16px, 3cqh, 28px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 4px 0 rgba(124, 92, 191, 0.25),
+    0 10px 24px rgba(40, 20, 80, 0.16);
+}
+.sa-hud-line {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.2cqw, 12px);
+  max-width: 100%;
+}
+.sa-hud-pic {
+  display: block;
+  flex-shrink: 0;
+  width: clamp(24px, 6cqh, 46px);
+  aspect-ratio: 1;
+}
+.sa-hud-pic > svg {
+  width: 100%;
+  height: 100%;
+}
+.sa-hud-textstack {
+  display: grid;
+  min-width: 0;
+}
+.sa-hud-text {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-size: clamp(15px, 3.8cqh, 30px);
+  line-height: 1.1;
+  color: #5a3a9a;
+  text-align: center;
+  white-space: nowrap;
+}
+.sa-progress-track {
+  width: clamp(120px, 24cqw, 260px);
+  height: clamp(8px, 1.6cqh, 13px);
+  border-radius: 999px;
+  background: #ece6f7;
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.06);
+}
+.sa-progress-fill {
+  background: linear-gradient(90deg, #6dd05a, #43a92f);
+}
+
+/* the top-right "Back to Games" pill: the twin of the NavPillButton the
+   root pins top-left. Placed and sized by the shared `.pl-exit-pill`. */
+.sa-leave {
+  padding: 0.55em 1.1em;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  line-height: 1;
+  color: #7c5cbf;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── Feedback shared by every module ─────────────────────────────────────── */
+
+.sa-cheer-wrap {
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.sa-cheer-pop {
+  margin: 0;
+  padding: 0.25em 0.8em;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: clamp(22px, 7cqh, 56px);
+  line-height: 1.1;
+  color: #43a92f;
+  box-shadow:
+    0 0.12em 0 #c8e8bd,
+    0 12px 30px rgba(20, 60, 10, 0.25);
+  white-space: nowrap;
+}
+
+.sa-spark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: radial-gradient(circle, #fff6c9 0%, #ffd84d 55%, transparent 72%);
+}
+
+.sa-cross {
+  position: absolute;
+  inset: 18%;
+  pointer-events: none;
+}
+
+@keyframes sa-shake-kf {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-7px) rotate(-2deg);
+  }
+  75% {
+    transform: translateX(7px) rotate(2deg);
+  }
+}
+.sa-shake {
+  animation: sa-shake-kf 0.38s ease-in-out;
+}
+
+@keyframes sa-hop-kf {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(-12%) scale(1.03);
+  }
+  70% {
+    transform: translateY(0) scale(0.98, 1.02);
+  }
+}
+.sa-hop {
+  animation: sa-hop-kf 0.7s ease-in-out 2;
+}
+
+/* Speech / thought bubble: white, rounded, a little tail on the left. */
+.sa-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30%;
+  background: #ffffff;
+  box-shadow:
+    0 0.5cqh 0 rgba(90, 60, 140, 0.18),
+    0 8px 18px rgba(30, 20, 60, 0.15);
+}
+.sa-bubble::after {
+  content: "";
+  position: absolute;
+  left: -6%;
+  bottom: 8%;
+  width: 22%;
+  aspect-ratio: 1;
+  background: #ffffff;
+  border-radius: 0 0 0 100%;
+}
+
+/* ─── Home: title plate + two module cards ───────────────────────────────── */
+
+.sa-home-col {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: max(56px, 7cqh);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2.6cqh, 26px);
+  padding: 0 16px;
+}
+.sa-title-plate {
+  --sa-title: clamp(26px, 9cqh, 72px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2px, 0.6cqh, 6px);
+  padding: clamp(6px, 1.6cqh, 18px) clamp(20px, 4cqw, 48px) clamp(8px, 1.8cqh, 20px);
+  border-radius: clamp(18px, 4cqh, 36px);
+  background: #ffffff;
+  box-shadow:
+    0 clamp(4px, 1cqh, 9px) 0 #d6c6f2,
+    0 14px 30px rgba(40, 30, 90, 0.2);
+}
+.sa-title {
+  margin: 0;
+  font-size: var(--sa-title);
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.sa-title-word--a {
+  color: #e8574f;
+}
+.sa-title-word--b {
+  color: #3a86d9;
+}
+.sa-title-word--c {
+  color: #43a92f;
+}
+.sa-title-tag {
+  margin: 0;
+  font-size: clamp(12px, 2.8cqh, 22px);
+  color: #7a6a9a;
+}
+.sa-title-percy {
+  position: absolute;
+  right: calc(var(--sa-title) * -0.55);
+  top: calc(var(--sa-title) * -0.95);
+  width: calc(var(--sa-title) * 1.4);
+}
+
+.sa-cards {
+  display: flex;
+  justify-content: center;
+  gap: clamp(14px, 3cqw, 36px);
+}
+.sa-card {
+  --sa-card: clamp(128px, min(30cqw, 44cqh), 290px);
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  flex-direction: column;
+  width: var(--sa-card);
+  border-radius: calc(var(--sa-card) * 0.12);
+  background: #ffffff;
+  box-shadow:
+    0 calc(var(--sa-card) * 0.035) 0 #d6c6f2,
+    0 12px 26px rgba(40, 30, 90, 0.2);
+  overflow: hidden;
+  text-align: center;
+}
+.sa-card-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.sa-card-art > span {
+  position: absolute;
+  display: block;
+}
+.sa-card-art--colours {
+  background: linear-gradient(180deg, #8fd3fb 0 70%, #74c96b 70%);
+}
+.sa-card-art--snack {
+  background: linear-gradient(180deg, #cdeedd 0 60%, #e6b07a 60%);
+}
+
+.sa-card-percy {
+  left: 8%;
+  bottom: 8%;
+  width: 40%;
+}
+.sa-card-ball {
+  width: 22%;
+}
+.sa-card-ball--a {
+  left: 54%;
+  bottom: 10%;
+}
+.sa-card-ball--b {
+  left: 74%;
+  bottom: 22%;
+}
+.sa-card-pal {
+  left: 6%;
+  bottom: -12%;
+  width: 42%;
+}
+.sa-card-plate {
+  left: 50%;
+  bottom: 12%;
+  width: 44%;
+}
+.sa-card-food {
+  left: 59%;
+  bottom: 24%;
+  width: 26%;
+}
+
+.sa-card-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1px, 0.5cqh, 5px);
+  padding: calc(var(--sa-card) * 0.05) calc(var(--sa-card) * 0.06) calc(var(--sa-card) * 0.06);
+}
+.sa-card-name {
+  font-size: calc(var(--sa-card) * 0.115);
+  line-height: 1.05;
+  color: #5a3a9a;
+}
+.sa-card-tag {
+  font-size: max(10px, calc(var(--sa-card) * 0.068));
+  line-height: 1.2;
+  color: #7a6a9a;
+}
+.sa-card-stars {
+  margin-top: 1px;
+}
+
+/* the pals on the pavement, sized from the shorter side */
+.sa-cast {
+  position: absolute;
+  bottom: calc(var(--sa-bottom) + 1cqh);
+  z-index: 2;
+  width: min(30cqh, 22cqw);
+}
+.sa-cast--left {
+  left: max(10px, 4cqw);
+}
+.sa-cast--right {
+  right: max(10px, 4cqw);
+}
+@container sa-root (max-width: 720px) and (orientation: landscape) {
+  .sa-cast {
+    display: none;
+  }
+}
+
+/* ─── Colour Match: Percy in the park ────────────────────────────────────── */
+
+.sa-world--park {
+  --sa-floor-frac: 0.2;
+}
+.sa-perch-tree {
+  left: 0;
+  bottom: 0;
+  width: calc(36 * var(--sa-s));
+  height: 100%;
+}
+.sa-percy {
+  left: calc(20 * var(--sa-s));
+  bottom: 51.5%;
+  width: calc(15 * var(--sa-s));
+}
+.sa-bubble--percy {
+  left: 37%;
+  bottom: 58%;
+  width: calc(15 * var(--sa-s));
+  height: calc(13 * var(--sa-s));
+}
+.sa-bubble-ball {
+  position: relative;
+  z-index: 1;
+  width: 70%;
+  aspect-ratio: 1;
+}
+.sa-ledge--back {
+  display: none;
+}
+.sa-ledge {
+  left: 40%;
+  bottom: 3%;
+  width: calc(58 * var(--sa-s));
+  height: calc(12 * var(--sa-s));
+}
+.sa-balls {
+  left: 42%;
+  bottom: 18%;
+  width: calc(54 * var(--sa-s));
+  display: flex;
+  justify-content: space-between;
+}
+.sa-ball {
+  position: relative;
+  width: calc(12.5 * var(--sa-s));
+  aspect-ratio: 1;
+}
+.sa-ball-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.sa-ball:not(:disabled):active .sa-ball-art {
+  transform: scale(0.94);
+}
+.sa-ball--out {
+  cursor: default;
+}
+.sa-ball--out .sa-ball-art {
+  opacity: 0.4;
+}
+.sa-ball--win .sa-ball-art {
+  animation: sa-hop-kf 0.6s ease-in-out 2;
+}
+
+/* ─── Snack Time: the dining table ───────────────────────────────────────── */
+
+.sa-dining-window {
+  left: 6%;
+  bottom: 50%;
+  width: calc(18 * var(--sa-s));
+  aspect-ratio: 200 / 220;
+}
+.sa-diner {
+  left: 38%;
+  bottom: 38%;
+  width: calc(24 * var(--sa-s));
+}
+.sa-bubble--snack {
+  left: 64%;
+  bottom: 58%;
+  width: calc(14 * var(--sa-s));
+  height: calc(13 * var(--sa-s));
+}
+.sa-bubble-food {
+  position: relative;
+  z-index: 1;
+  width: 66%;
+  aspect-ratio: 1;
+}
+.sa-dining-table {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+}
+.sa-dining-table > span {
+  position: absolute;
+  display: block;
+}
+.sa-dining-top {
+  left: 1%;
+  right: 1%;
+  top: 0;
+  height: 26%;
+  border-radius: calc(2 * var(--sa-s)) calc(2 * var(--sa-s)) calc(0.8 * var(--sa-s))
+    calc(0.8 * var(--sa-s));
+  background: linear-gradient(180deg, #e6b07a 0%, #d69a62 70%, #b7794a 100%);
+  box-shadow: 0 calc(0.6 * var(--sa-s)) 0 #9b6238;
+}
+.sa-dining-cloth {
+  left: 4%;
+  right: 4%;
+  top: 22%;
+  height: 40%;
+  border-radius: 0 0 calc(1.4 * var(--sa-s)) calc(1.4 * var(--sa-s));
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(232, 87, 79, 0.55) 0 calc(2 * var(--sa-s)),
+      transparent calc(2 * var(--sa-s)) calc(4 * var(--sa-s))
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(232, 87, 79, 0.55) 0 calc(2 * var(--sa-s)),
+      transparent calc(2 * var(--sa-s)) calc(4 * var(--sa-s))
+    ),
+    #ffffff;
+  box-shadow: inset 0 calc(-0.8 * var(--sa-s)) 0 rgba(160, 40, 30, 0.35);
+}
+.sa-dining-leg {
+  top: 60%;
+  bottom: 0;
+  width: calc(3 * var(--sa-s));
+  border-radius: 0 0 calc(0.8 * var(--sa-s)) calc(0.8 * var(--sa-s));
+  background: linear-gradient(90deg, #b7794a, #9b6238);
+}
+.sa-dining-leg--l {
+  left: 8%;
+}
+.sa-dining-leg--r {
+  right: 8%;
+}
+.sa-plate {
+  left: var(--sa-x, 0);
+  bottom: 31%;
+  width: calc(12 * var(--sa-s));
+  height: calc(12 * var(--sa-s));
+}
+.sa-plate-dish {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(5.2 * var(--sa-s));
+}
+.sa-plate-food {
+  position: absolute;
+  left: calc(1.5 * var(--sa-s));
+  bottom: calc(2.2 * var(--sa-s));
+  width: calc(9 * var(--sa-s));
+  height: calc(9 * var(--sa-s));
+  display: block;
+}
+/* the food's trip into the hungry pal's mouth — transform only */
+.sa-plate-food--fly {
+  --sa-tx: var(--sa-fx, 0);
+  --sa-ty: var(--sa-fy, 0);
+  transform: translate(var(--sa-tx), var(--sa-ty)) scale(0.35);
+  transition: transform 0.6s ease-in-out;
+  z-index: 6;
+}
+.sa-plate:not(:disabled):active .sa-plate-dish {
+  transform: translateY(2px);
+}
+.sa-plate--out {
+  cursor: default;
+}
+.sa-plate--out .sa-plate-food {
+  opacity: 0.4;
+}
+.sa-mouth-burst {
+  left: calc(48 * var(--sa-s));
+  bottom: calc(26.8 * var(--sa-s));
+  width: calc(4 * var(--sa-s));
+  height: calc(4 * var(--sa-s));
+  pointer-events: none;
+}
+
+/* ─── The star card ──────────────────────────────────────────────────────── */
+
+.sa-done-center {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 58px 16px 12px;
+}
+.sa-done-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.8cqh, 16px);
+  padding: clamp(14px, 3.4cqh, 36px) clamp(22px, 5cqh, 56px) clamp(14px, 3cqh, 32px);
+  border-radius: clamp(20px, 4cqh, 36px);
+  background: #ffffff;
+  box-shadow:
+    0 clamp(5px, 1.2cqh, 10px) 0 #d6c6f2,
+    0 18px 40px rgba(40, 30, 90, 0.28);
+}
+.sa-done-percy {
+  position: absolute;
+  top: calc(clamp(40px, 13cqh, 110px) * -0.72);
+  right: calc(clamp(40px, 13cqh, 110px) * -0.2);
+  width: clamp(40px, 13cqh, 110px);
+}
+.sa-done-title {
+  margin: 0;
+  font-size: clamp(24px, 9cqh, 84px);
+  line-height: 1;
+  color: #43a92f;
+}
+.sa-done-sub {
+  margin: 0;
+  font-size: clamp(12px, 3cqh, 26px);
+  color: #7a6a9a;
+}
+.sa-done-stars svg {
+  width: clamp(28px, 8cqh, 64px);
+  height: auto;
+}
+.sa-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(8px, 1.6cqh, 16px);
+}
+.sa-done-btn {
+  min-height: 44px;
+  padding: 0.45em 1.2em;
+  border: 0;
+  border-radius: 999px;
+  background: #efe7fb;
+  font-size: clamp(14px, 3.4cqh, 26px);
+  line-height: 1;
+  color: #5a3a9a;
+  cursor: pointer;
+  box-shadow: inset 0 -0.28em 0 rgba(0, 0, 0, 0.08);
+}
+.sa-done-btn--go {
+  background: #4cb33a;
+  color: #ffffff;
+  box-shadow: inset 0 -0.28em 0 #2c7a22;
+}
+
+/* ─── Upright phones ──────────────────────────────────────────────────────
+   Upright, every module gets its own composition on a tall stage (0.56:1,
+   filling the screen under the HUD; 1s = 1% of its width, height 178.6s):
+   the guide character large, the four choices in a 2×2 grid, no blank
+   bands. The HUD drops below the pills and may wrap. */
+@container sa-root (max-aspect-ratio: 1/1) {
+  .sa-world {
+    --sa-hud: 150px;
+    --sa-aspect: 0.56;
+    --sa-bottom: max(4px, 1cqh);
+    --sa-w: min(100cqw, calc((100cqh - var(--sa-hud) - var(--sa-bottom)) * var(--sa-aspect)));
+  }
+  .sa-world--street {
+    --sa-bottom: 1.4cqh;
+  }
+  .sa-hud {
+    padding: 68px 12px 0;
+  }
+  .sa-hud-text {
+    white-space: normal;
+    font-size: clamp(16px, 5.4cqw, 28px);
+  }
+  .sa-hud-pic {
+    width: clamp(30px, 10cqw, 52px);
+  }
+  .sa-progress-track {
+    width: clamp(140px, 56cqw, 320px);
+  }
+  .sa-sun {
+    top: 19cqh;
+    right: 6cqw;
+    width: clamp(38px, 9cqh, 90px);
+  }
+
+  /* home: the title, then the three cards as wide rows */
+  .sa-home-col {
+    top: 11cqh;
+  }
+  .sa-title-plate {
+    --sa-title: clamp(26px, 11cqw, 64px);
+  }
+  .sa-title {
+    white-space: normal;
+    text-align: center;
+  }
+  .sa-title-percy {
+    right: calc(var(--sa-title) * -0.2);
+  }
+  .sa-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .sa-card {
+    --sa-card: clamp(150px, 42cqw, 260px);
+    flex-direction: row;
+    align-items: center;
+    width: min(88cqw, 520px);
+  }
+  .sa-card-art {
+    width: 42%;
+    flex-shrink: 0;
+    aspect-ratio: 1;
+  }
+  .sa-card-text {
+    flex: 1;
+  }
+  /* the cards fill the upright home; the pals would only crowd them */
+  .sa-cast {
+    display: none;
+  }
+  .sa-done-center {
+    padding-top: 12cqh;
+    align-items: flex-start;
+  }
+  .sa-done-title {
+    font-size: clamp(24px, 10cqw, 60px);
+  }
+  .sa-done-sub {
+    font-size: clamp(12px, 3.8cqw, 22px);
+  }
+  .sa-done-stars svg {
+    width: clamp(30px, 12cqw, 60px);
+  }
+  .sa-done-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .sa-done-btn {
+    font-size: clamp(15px, 4.8cqw, 24px);
+  }
+  .sa-done-percy {
+    width: clamp(40px, 16cqw, 90px);
+    top: calc(clamp(40px, 16cqw, 90px) * -0.72);
+  }
+  .sa-cheer-pop {
+    font-size: clamp(20px, 8cqw, 44px);
+  }
+
+  /* colour match: the tree and Percy above, the balls 2×2 on two ledges */
+  .sa-world--park {
+    --sa-floor-frac: 0.3;
+  }
+  .sa-hills {
+    height: 14cqh;
+  }
+  .sa-perch-tree {
+    left: 0;
+    bottom: calc(30 * var(--sa-s));
+    width: calc(80 * var(--sa-s));
+    height: calc(111 * var(--sa-s));
+  }
+  .sa-percy {
+    left: calc(44 * var(--sa-s));
+    bottom: calc(87 * var(--sa-s));
+    width: calc(33 * var(--sa-s));
+  }
+  .sa-bubble--percy {
+    left: calc(69 * var(--sa-s));
+    bottom: calc(120 * var(--sa-s));
+    width: calc(29 * var(--sa-s));
+    height: calc(26 * var(--sa-s));
+  }
+  .sa-ledge {
+    left: calc(12 * var(--sa-s));
+    bottom: 0;
+    width: calc(88 * var(--sa-s));
+    height: calc(15 * var(--sa-s));
+  }
+  .sa-ledge.sa-ledge--back {
+    display: block;
+    left: calc(16 * var(--sa-s));
+    bottom: calc(33 * var(--sa-s));
+    width: calc(82 * var(--sa-s));
+    height: calc(14 * var(--sa-s));
+  }
+  .sa-balls {
+    left: calc(20 * var(--sa-s));
+    bottom: calc(6 * var(--sa-s));
+    width: calc(74 * var(--sa-s));
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    row-gap: calc(9 * var(--sa-s));
+  }
+  .sa-ball {
+    width: calc(28 * var(--sa-s));
+  }
+
+  /* snack time: one big pal behind a deep table, the plates 2×2 on it */
+  .sa-world--dining {
+    --sa-floor-frac: 0.2;
+  }
+  .sa-dining-window {
+    left: calc(4 * var(--sa-s));
+    bottom: calc(146 * var(--sa-s));
+    width: calc(26 * var(--sa-s));
+  }
+  .sa-diner {
+    left: calc(16 * var(--sa-s));
+    bottom: calc(88 * var(--sa-s));
+    width: calc(54 * var(--sa-s));
+  }
+  .sa-bubble--snack {
+    left: calc(68 * var(--sa-s));
+    bottom: calc(128 * var(--sa-s));
+    width: calc(29 * var(--sa-s));
+    height: calc(27 * var(--sa-s));
+  }
+  .sa-dining-table {
+    height: calc(98 * var(--sa-s));
+  }
+  .sa-dining-top {
+    height: 64%;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0 calc(7 * var(--sa-s)),
+        rgba(140, 80, 40, 0.12) calc(7 * var(--sa-s)) calc(7.4 * var(--sa-s))
+      ),
+      linear-gradient(180deg, #ecbd8a 0%, #dfa66d 60%, #c98a55 100%);
+    border-radius: calc(3 * var(--sa-s)) calc(3 * var(--sa-s)) calc(1 * var(--sa-s))
+      calc(1 * var(--sa-s));
+  }
+  .sa-dining-cloth {
+    top: 60%;
+    height: 28%;
+  }
+  .sa-dining-leg {
+    top: 86%;
+    width: calc(5 * var(--sa-s));
+  }
+  .sa-plate {
+    width: calc(26 * var(--sa-s));
+    height: calc(26 * var(--sa-s));
+  }
+  .sa-plate--0,
+  .sa-plate--2 {
+    left: calc(16 * var(--sa-s));
+  }
+  .sa-plate--1,
+  .sa-plate--3 {
+    left: calc(58 * var(--sa-s));
+  }
+  .sa-plate--0,
+  .sa-plate--1 {
+    bottom: calc(66 * var(--sa-s));
+  }
+  .sa-plate--2,
+  .sa-plate--3 {
+    bottom: calc(40 * var(--sa-s));
+  }
+  .sa-plate-dish {
+    height: calc(11 * var(--sa-s));
+  }
+  .sa-plate-food {
+    left: calc(3.5 * var(--sa-s));
+    bottom: calc(4.6 * var(--sa-s));
+    width: calc(19 * var(--sa-s));
+    height: calc(19 * var(--sa-s));
+  }
+  .sa-plate-food--fly {
+    --sa-tx: var(--sa-pfx, 0);
+    --sa-ty: var(--sa-pfy, 0);
+  }
+  .sa-mouth-burst {
+    left: calc(41 * var(--sa-s));
+    bottom: calc(108 * var(--sa-s));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-hop,
+  .sa-ball--win .sa-ball-art {
+    animation: none;
+  }
+}

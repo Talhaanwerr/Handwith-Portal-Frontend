@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Library } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState } from "@/components/ui/empty-state";
-import { GameCard } from "@/features/super-admin/library/GameCard";
+import { LibraryShelf } from "@/features/super-admin/library/LibraryShelf";
 import { GAMES } from "@/constants/games";
 
 export const metadata: Metadata = { title: "Library" };
@@ -26,11 +26,7 @@ export default function LibraryPage() {
           description="Games will appear here once they are added to the registry."
         />
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-          {shelf.map((game) => (
-            <GameCard key={game.id} game={game} />
-          ))}
-        </div>
+        <LibraryShelf games={shelf} />
       )}
     </div>
   );
