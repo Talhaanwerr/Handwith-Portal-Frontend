@@ -5963,6 +5963,1051 @@
       "file": "/audio/blend/well-done.mp3",
       "text": "Great work! You matched up all the words and pictures correctly. Would you like to play again?",
       "speak": "Great work! You matched up all the words and pictures correctly. Would you like to play again?"
+    },
+    "mouse-welcome": {
+      "file": "/audio/mouse/welcome.mp3",
+      "text": "Where is the mouse? Let's find it!",
+      "speak": "Where is the mouse? Let's find it!"
+    },
+    "mouse-pick-one": {
+      "file": "/audio/mouse/pick-one.mp3",
+      "text": "Pick one!",
+      "speak": "Pick one!"
+    },
+    "mouse-mode-peek": {
+      "file": "/audio/mouse/mode-peek.mp3",
+      "text": "Peek-a-Mouse! Watch where it hides.",
+      "speak": "Peek-a-Mouse! Watch where it hides."
+    },
+    "mouse-mode-count": {
+      "file": "/audio/mouse/mode-count.mp3",
+      "text": "Count the Mice! How many can you see?",
+      "speak": "Count the Mice! How many can you see?"
+    },
+    "mouse-watch": {
+      "file": "/audio/mouse/watch.mp3",
+      "text": "Watch the mouse!",
+      "speak": "Watch the mouse!"
+    },
+    "mouse-where": {
+      "file": "/audio/mouse/where.mp3",
+      "text": "Where did it hide?",
+      "speak": "Where did it hide?"
+    },
+    "mouse-wrong-hole": {
+      "file": "/audio/mouse/wrong-hole.mp3",
+      "text": "Not that hole. Try another one!",
+      "speak": "Not that hole. Try another one!"
+    },
+    "mouse-found-me": {
+      "file": "/audio/mouse/found-me.mp3",
+      "text": "Squeak! You found me!",
+      "speak": "Squeak! You found me!"
+    },
+    "mouse-idle-peek": {
+      "file": "/audio/mouse/idle-peek.mp3",
+      "text": "Tap the hole where the mouse was.",
+      "speak": "Tap the hole where the mouse was."
+    },
+    "mouse-how-many": {
+      "file": "/audio/mouse/how-many.mp3",
+      "text": "How many mice?",
+      "speak": "How many mice?"
+    },
+    "mouse-tap-each": {
+      "file": "/audio/mouse/tap-each.mp3",
+      "text": "Tap each mouse to count it.",
+      "speak": "Tap each mouse to count it."
+    },
+    "mouse-tap-number": {
+      "file": "/audio/mouse/tap-number.mp3",
+      "text": "Now tap the number!",
+      "speak": "Now tap the number!"
+    },
+    "mouse-count-again": {
+      "file": "/audio/mouse/count-again.mp3",
+      "text": "Let's count them again.",
+      "speak": "Let's count them again."
+    },
+    "mouse-total-1": {
+      "file": "/audio/mouse/total-1.mp3",
+      "text": "One mouse!",
+      "speak": "One mouse!"
+    },
+    "mouse-total-2": {
+      "file": "/audio/mouse/total-2.mp3",
+      "text": "Two mice!",
+      "speak": "Two mice!"
+    },
+    "mouse-total-3": {
+      "file": "/audio/mouse/total-3.mp3",
+      "text": "Three mice!",
+      "speak": "Three mice!"
+    },
+    "mouse-total-4": {
+      "file": "/audio/mouse/total-4.mp3",
+      "text": "Four mice!",
+      "speak": "Four mice!"
+    },
+    "mouse-total-5": {
+      "file": "/audio/mouse/total-5.mp3",
+      "text": "Five mice!",
+      "speak": "Five mice!"
+    },
+    "mouse-done-peek": {
+      "file": "/audio/mouse/done-peek.mp3",
+      "text": "You found the mouse!",
+      "speak": "You found the mouse!"
+    },
+    "mouse-done-count": {
+      "file": "/audio/mouse/done-count.mp3",
+      "text": "You counted the mice!",
+      "speak": "You counted the mice!"
+    },
+    "mouse-done-next": {
+      "file": "/audio/mouse/done-next.mp3",
+      "text": "Play again, or try the other game!",
+      "speak": "Play again, or try the other game!"
+    },
+    "pond-welcome": {
+      "file": "/audio/pond/welcome.mp3",
+      "text": "Welcome to the pond! Let's play with numbers.",
+      "speak": "Welcome to the pond! Let's play with numbers."
+    },
+    "pond-mode-quick": {
+      "file": "/audio/pond/mode-quick.mp3",
+      "text": "Quick Look! How many dots did you see?",
+      "speak": "Quick Look! How many dots did you see?"
+    },
+    "pond-mode-more": {
+      "file": "/audio/pond/mode-more.mp3",
+      "text": "One More! One more frog hops on!",
+      "speak": "One More! One more frog hops on!"
+    },
+    "pond-get-ready": {
+      "file": "/audio/pond/get-ready.mp3",
+      "text": "Get ready...",
+      "speak": "Get ready..."
+    },
+    "pond-quick-look": {
+      "file": "/audio/pond/quick-look.mp3",
+      "text": "Quick, look!",
+      "speak": "Quick, look!"
+    },
+    "pond-how-many-dots": {
+      "file": "/audio/pond/how-many-dots.mp3",
+      "text": "How many dots?",
+      "speak": "How many dots?"
+    },
+    "pond-look-again": {
+      "file": "/audio/pond/look-again.mp3",
+      "text": "Look again!",
+      "speak": "Look again!"
+    },
+    "pond-dots-1": {
+      "file": "/audio/pond/dots-1.mp3",
+      "text": "One dot!",
+      "speak": "One dot!"
+    },
+    "pond-dots-2": {
+      "file": "/audio/pond/dots-2.mp3",
+      "text": "Two dots!",
+      "speak": "Two dots!"
+    },
+    "pond-dots-3": {
+      "file": "/audio/pond/dots-3.mp3",
+      "text": "Three dots!",
+      "speak": "Three dots!"
+    },
+    "pond-dots-4": {
+      "file": "/audio/pond/dots-4.mp3",
+      "text": "Four dots!",
+      "speak": "Four dots!"
+    },
+    "pond-dots-5": {
+      "file": "/audio/pond/dots-5.mp3",
+      "text": "Five dots!",
+      "speak": "Five dots!"
+    },
+    "pond-dots-6": {
+      "file": "/audio/pond/dots-6.mp3",
+      "text": "Six dots!",
+      "speak": "Six dots!"
+    },
+    "pond-tap-number": {
+      "file": "/audio/pond/tap-number.mp3",
+      "text": "Tap a number!",
+      "speak": "Tap a number!"
+    },
+    "pond-look-log": {
+      "file": "/audio/pond/look-log.mp3",
+      "text": "Look at the log!",
+      "speak": "Look at the log!"
+    },
+    "pond-start-1": {
+      "file": "/audio/pond/start-1.mp3",
+      "text": "One frog on the log.",
+      "speak": "One frog on the log."
+    },
+    "pond-start-2": {
+      "file": "/audio/pond/start-2.mp3",
+      "text": "Two frogs on the log.",
+      "speak": "Two frogs on the log."
+    },
+    "pond-start-3": {
+      "file": "/audio/pond/start-3.mp3",
+      "text": "Three frogs on the log.",
+      "speak": "Three frogs on the log."
+    },
+    "pond-start-4": {
+      "file": "/audio/pond/start-4.mp3",
+      "text": "Four frogs on the log.",
+      "speak": "Four frogs on the log."
+    },
+    "pond-start-5": {
+      "file": "/audio/pond/start-5.mp3",
+      "text": "Five frogs on the log.",
+      "speak": "Five frogs on the log."
+    },
+    "pond-one-more": {
+      "file": "/audio/pond/one-more.mp3",
+      "text": "One more!",
+      "speak": "One more!"
+    },
+    "pond-ribbit": {
+      "file": "/audio/pond/ribbit.mp3",
+      "text": "Ribbit!",
+      "speak": "Ribbit!"
+    },
+    "pond-how-many-now": {
+      "file": "/audio/pond/how-many-now.mp3",
+      "text": "How many now?",
+      "speak": "How many now?"
+    },
+    "pond-total-2": {
+      "file": "/audio/pond/total-2.mp3",
+      "text": "Now there are two frogs!",
+      "speak": "Now there are two frogs!"
+    },
+    "pond-total-3": {
+      "file": "/audio/pond/total-3.mp3",
+      "text": "Now there are three frogs!",
+      "speak": "Now there are three frogs!"
+    },
+    "pond-total-4": {
+      "file": "/audio/pond/total-4.mp3",
+      "text": "Now there are four frogs!",
+      "speak": "Now there are four frogs!"
+    },
+    "pond-total-5": {
+      "file": "/audio/pond/total-5.mp3",
+      "text": "Now there are five frogs!",
+      "speak": "Now there are five frogs!"
+    },
+    "pond-total-6": {
+      "file": "/audio/pond/total-6.mp3",
+      "text": "Now there are six frogs!",
+      "speak": "Now there are six frogs!"
+    },
+    "pond-count-again": {
+      "file": "/audio/pond/count-again.mp3",
+      "text": "Let's count the frogs again.",
+      "speak": "Let's count the frogs again."
+    },
+    "pond-done-quick": {
+      "file": "/audio/pond/done-quick.mp3",
+      "text": "Super quick eyes!",
+      "speak": "Super quick eyes!"
+    },
+    "pond-done-more": {
+      "file": "/audio/pond/done-more.mp3",
+      "text": "You counted on!",
+      "speak": "You counted on!"
+    },
+    "friends-welcome": {
+      "file": "/audio/friends/welcome.mp3",
+      "text": "Hi! I'm Berry. Welcome to Rainbow Shapes!",
+      "speak": "Hi! I'm Berry. Welcome to Rainbow Shapes!"
+    },
+    "friends-pick-a-game": {
+      "file": "/audio/friends/pick-a-game.mp3",
+      "text": "Pick a game!",
+      "speak": "Pick a game!"
+    },
+    "friends-mode-colors": {
+      "file": "/audio/friends/mode-colors.mp3",
+      "text": "Colors! Find the color.",
+      "speak": "Colors! Find the color."
+    },
+    "friends-mode-shapes": {
+      "file": "/audio/friends/mode-shapes.mp3",
+      "text": "Shapes! Tap the shape.",
+      "speak": "Shapes! Tap the shape."
+    },
+    "friends-mode-sorter": {
+      "file": "/audio/friends/mode-sorter.mp3",
+      "text": "Sorter! Put each block in its hole.",
+      "speak": "Sorter! Put each block in its hole."
+    },
+    "friends-find-red": {
+      "file": "/audio/friends/find-red.mp3",
+      "text": "Find the red one!",
+      "speak": "Find the red one!"
+    },
+    "friends-find-blue": {
+      "file": "/audio/friends/find-blue.mp3",
+      "text": "Find the blue one!",
+      "speak": "Find the blue one!"
+    },
+    "friends-find-yellow": {
+      "file": "/audio/friends/find-yellow.mp3",
+      "text": "Find the yellow one!",
+      "speak": "Find the yellow one!"
+    },
+    "friends-find-green": {
+      "file": "/audio/friends/find-green.mp3",
+      "text": "Find the green one!",
+      "speak": "Find the green one!"
+    },
+    "friends-find-purple": {
+      "file": "/audio/friends/find-purple.mp3",
+      "text": "Find the purple one!",
+      "speak": "Find the purple one!"
+    },
+    "friends-find-orange": {
+      "file": "/audio/friends/find-orange.mp3",
+      "text": "Find the orange one!",
+      "speak": "Find the orange one!"
+    },
+    "friends-is-red": {
+      "file": "/audio/friends/is-red.mp3",
+      "text": "That one is red.",
+      "speak": "That one is red."
+    },
+    "friends-is-orange": {
+      "file": "/audio/friends/is-orange.mp3",
+      "text": "That one is orange.",
+      "speak": "That one is orange."
+    },
+    "friends-is-yellow": {
+      "file": "/audio/friends/is-yellow.mp3",
+      "text": "That one is yellow.",
+      "speak": "That one is yellow."
+    },
+    "friends-is-green": {
+      "file": "/audio/friends/is-green.mp3",
+      "text": "That one is green.",
+      "speak": "That one is green."
+    },
+    "friends-is-blue": {
+      "file": "/audio/friends/is-blue.mp3",
+      "text": "That one is blue.",
+      "speak": "That one is blue."
+    },
+    "friends-is-purple": {
+      "file": "/audio/friends/is-purple.mp3",
+      "text": "That one is purple.",
+      "speak": "That one is purple."
+    },
+    "friends-is-pink": {
+      "file": "/audio/friends/is-pink.mp3",
+      "text": "That one is pink.",
+      "speak": "That one is pink."
+    },
+    "friends-tap-triangle": {
+      "file": "/audio/friends/tap-triangle.mp3",
+      "text": "Tap the triangle!",
+      "speak": "Tap the triangle!"
+    },
+    "friends-tap-circle": {
+      "file": "/audio/friends/tap-circle.mp3",
+      "text": "Tap the circle!",
+      "speak": "Tap the circle!"
+    },
+    "friends-tap-square": {
+      "file": "/audio/friends/tap-square.mp3",
+      "text": "Tap the square!",
+      "speak": "Tap the square!"
+    },
+    "friends-tap-star": {
+      "file": "/audio/friends/tap-star.mp3",
+      "text": "Tap the star!",
+      "speak": "Tap the star!"
+    },
+    "friends-tap-heart": {
+      "file": "/audio/friends/tap-heart.mp3",
+      "text": "Tap the heart!",
+      "speak": "Tap the heart!"
+    },
+    "friends-tap-rectangle": {
+      "file": "/audio/friends/tap-rectangle.mp3",
+      "text": "Tap the rectangle!",
+      "speak": "Tap the rectangle!"
+    },
+    "friends-is-circle": {
+      "file": "/audio/friends/is-circle.mp3",
+      "text": "That one is a circle.",
+      "speak": "That one is a circle."
+    },
+    "friends-is-triangle": {
+      "file": "/audio/friends/is-triangle.mp3",
+      "text": "That one is a triangle.",
+      "speak": "That one is a triangle."
+    },
+    "friends-is-square": {
+      "file": "/audio/friends/is-square.mp3",
+      "text": "That one is a square.",
+      "speak": "That one is a square."
+    },
+    "friends-is-star": {
+      "file": "/audio/friends/is-star.mp3",
+      "text": "That one is a star.",
+      "speak": "That one is a star."
+    },
+    "friends-is-heart": {
+      "file": "/audio/friends/is-heart.mp3",
+      "text": "That one is a heart.",
+      "speak": "That one is a heart."
+    },
+    "friends-is-rectangle": {
+      "file": "/audio/friends/is-rectangle.mp3",
+      "text": "That one is a rectangle.",
+      "speak": "That one is a rectangle."
+    },
+    "friends-is-diamond": {
+      "file": "/audio/friends/is-diamond.mp3",
+      "text": "That one is a diamond.",
+      "speak": "That one is a diamond."
+    },
+    "friends-sorter-prompt": {
+      "file": "/audio/friends/sorter-prompt.mp3",
+      "text": "Put each block in its hole!",
+      "speak": "Put each block in its hole!"
+    },
+    "friends-sorter-how": {
+      "file": "/audio/friends/sorter-how.mp3",
+      "text": "Tap a block, then tap its hole.",
+      "speak": "Tap a block, then tap its hole."
+    },
+    "friends-sorter-fits": {
+      "file": "/audio/friends/sorter-fits.mp3",
+      "text": "It fits!",
+      "speak": "It fits!"
+    },
+    "friends-sorter-wrong": {
+      "file": "/audio/friends/sorter-wrong.mp3",
+      "text": "Oops, not that hole. Try another one!",
+      "speak": "Oops, not that hole. Try another one!"
+    },
+    "friends-block-red": {
+      "file": "/audio/friends/block-red.mp3",
+      "text": "Red block!",
+      "speak": "Red block!"
+    },
+    "friends-block-orange": {
+      "file": "/audio/friends/block-orange.mp3",
+      "text": "Orange block!",
+      "speak": "Orange block!"
+    },
+    "friends-block-yellow": {
+      "file": "/audio/friends/block-yellow.mp3",
+      "text": "Yellow block!",
+      "speak": "Yellow block!"
+    },
+    "friends-block-green": {
+      "file": "/audio/friends/block-green.mp3",
+      "text": "Green block!",
+      "speak": "Green block!"
+    },
+    "friends-block-teal": {
+      "file": "/audio/friends/block-teal.mp3",
+      "text": "Teal block!",
+      "speak": "Teal block!"
+    },
+    "friends-block-blue": {
+      "file": "/audio/friends/block-blue.mp3",
+      "text": "Blue block!",
+      "speak": "Blue block!"
+    },
+    "friends-block-purple": {
+      "file": "/audio/friends/block-purple.mp3",
+      "text": "Purple block!",
+      "speak": "Purple block!"
+    },
+    "friends-block-pink": {
+      "file": "/audio/friends/block-pink.mp3",
+      "text": "Pink block!",
+      "speak": "Pink block!"
+    },
+    "friends-done-colors": {
+      "file": "/audio/friends/done-colors.mp3",
+      "text": "You know your colors!",
+      "speak": "You know your colors!"
+    },
+    "friends-done-shapes": {
+      "file": "/audio/friends/done-shapes.mp3",
+      "text": "You know your shapes!",
+      "speak": "You know your shapes!"
+    },
+    "friends-done-sorter": {
+      "file": "/audio/friends/done-sorter.mp3",
+      "text": "All the blocks are in!",
+      "speak": "All the blocks are in!"
+    },
+    "street-welcome": {
+      "file": "/audio/street/welcome.mp3",
+      "text": "Hi, pals! Pick a game to play.",
+      "speak": "Hi, pals! Pick a game to play."
+    },
+    "street-mode-colours": {
+      "file": "/audio/street/mode-colours.mp3",
+      "text": "Colour Match! Find the ball Percy is holding.",
+      "speak": "Colour Match! Find the ball Percy is holding."
+    },
+    "street-mode-snack": {
+      "file": "/audio/street/mode-snack.mp3",
+      "text": "Snack Time! Give the hungry pal their snack.",
+      "speak": "Snack Time! Give the hungry pal their snack."
+    },
+    "street-ball-red": {
+      "file": "/audio/street/ball-red.mp3",
+      "text": "Percy has a red ball. Find the red ball!",
+      "speak": "Percy has a red ball. Find the red ball!"
+    },
+    "street-ball-blue": {
+      "file": "/audio/street/ball-blue.mp3",
+      "text": "Percy has a blue ball. Find the blue ball!",
+      "speak": "Percy has a blue ball. Find the blue ball!"
+    },
+    "street-ball-yellow": {
+      "file": "/audio/street/ball-yellow.mp3",
+      "text": "Percy has a yellow ball. Find the yellow ball!",
+      "speak": "Percy has a yellow ball. Find the yellow ball!"
+    },
+    "street-ball-green": {
+      "file": "/audio/street/ball-green.mp3",
+      "text": "Percy has a green ball. Find the green ball!",
+      "speak": "Percy has a green ball. Find the green ball!"
+    },
+    "street-ball-purple": {
+      "file": "/audio/street/ball-purple.mp3",
+      "text": "Percy has a purple ball. Find the purple ball!",
+      "speak": "Percy has a purple ball. Find the purple ball!"
+    },
+    "street-ball-orange": {
+      "file": "/audio/street/ball-orange.mp3",
+      "text": "Percy has an orange ball. Find the orange ball!",
+      "speak": "Percy has an orange ball. Find the orange ball!"
+    },
+    "street-snack-ruby-apple": {
+      "file": "/audio/street/snack-ruby-apple.mp3",
+      "text": "Ruby is hungry! Ruby wants an apple.",
+      "speak": "Ruby is hungry! Ruby wants an apple."
+    },
+    "street-snack-bo-cupcake": {
+      "file": "/audio/street/snack-bo-cupcake.mp3",
+      "text": "Bo is hungry! Bo wants a cupcake.",
+      "speak": "Bo is hungry! Bo wants a cupcake."
+    },
+    "street-snack-ruby-cheese": {
+      "file": "/audio/street/snack-ruby-cheese.mp3",
+      "text": "Ruby is hungry! Ruby wants some cheese.",
+      "speak": "Ruby is hungry! Ruby wants some cheese."
+    },
+    "street-snack-bo-juice": {
+      "file": "/audio/street/snack-bo-juice.mp3",
+      "text": "Bo is hungry! Bo wants some juice.",
+      "speak": "Bo is hungry! Bo wants some juice."
+    },
+    "street-snack-ruby-cake": {
+      "file": "/audio/street/snack-ruby-cake.mp3",
+      "text": "Ruby is hungry! Ruby wants some cake.",
+      "speak": "Ruby is hungry! Ruby wants some cake."
+    },
+    "street-snack-bo-plum": {
+      "file": "/audio/street/snack-bo-plum.mp3",
+      "text": "Bo is hungry! Bo wants a plum.",
+      "speak": "Bo is hungry! Bo wants a plum."
+    },
+    "street-wrong-ruby": {
+      "file": "/audio/street/wrong-ruby.mp3",
+      "text": "Not that one. What does Ruby want?",
+      "speak": "Not that one. What does Ruby want?"
+    },
+    "street-wrong-bo": {
+      "file": "/audio/street/wrong-bo.mp3",
+      "text": "Not that one. What does Bo want?",
+      "speak": "Not that one. What does Bo want?"
+    },
+    "street-yum-ruby": {
+      "file": "/audio/street/yum-ruby.mp3",
+      "text": "Yum! Thank you!",
+      "speak": "Yum! Thank you!"
+    },
+    "street-yum-bo": {
+      "file": "/audio/street/yum-bo.mp3",
+      "text": "Yum yum! Thank you!",
+      "speak": "Yum yum! Thank you!"
+    },
+    "street-done-colours": {
+      "file": "/audio/street/done-colours.mp3",
+      "text": "You matched all the balls!",
+      "speak": "You matched all the balls!"
+    },
+    "street-done-snack": {
+      "file": "/audio/street/done-snack.mp3",
+      "text": "All the pals are full!",
+      "speak": "All the pals are full!"
+    },
+    "jigsaw-welcome": {
+      "file": "/audio/jigsaw/welcome.mp3",
+      "text": "Welcome to Jigsaw Fun! Pick a picture.",
+      "speak": "Welcome to Jigsaw Fun! Pick a picture."
+    },
+    "jigsaw-start-lion": {
+      "file": "/audio/jigsaw/start-lion.mp3",
+      "text": "Let's make the lion!",
+      "speak": "Let's make the lion!"
+    },
+    "jigsaw-start-whale": {
+      "file": "/audio/jigsaw/start-whale.mp3",
+      "text": "Let's make the whale!",
+      "speak": "Let's make the whale!"
+    },
+    "jigsaw-start-unicorn": {
+      "file": "/audio/jigsaw/start-unicorn.mp3",
+      "text": "Let's make the unicorn!",
+      "speak": "Let's make the unicorn!"
+    },
+    "jigsaw-start-train": {
+      "file": "/audio/jigsaw/start-train.mp3",
+      "text": "Let's make the train!",
+      "speak": "Let's make the train!"
+    },
+    "jigsaw-start-cake": {
+      "file": "/audio/jigsaw/start-cake.mp3",
+      "text": "Let's make the cake!",
+      "speak": "Let's make the cake!"
+    },
+    "jigsaw-start-planet": {
+      "file": "/audio/jigsaw/start-planet.mp3",
+      "text": "Let's make the planet!",
+      "speak": "Let's make the planet!"
+    },
+    "jigsaw-how-many": {
+      "file": "/audio/jigsaw/how-many.mp3",
+      "text": "How many pieces?",
+      "speak": "How many pieces?"
+    },
+    "jigsaw-level-easy": {
+      "file": "/audio/jigsaw/level-easy.mp3",
+      "text": "Easy! Four pieces.",
+      "speak": "Easy! Four pieces."
+    },
+    "jigsaw-level-medium": {
+      "file": "/audio/jigsaw/level-medium.mp3",
+      "text": "Medium! Six pieces.",
+      "speak": "Medium! Six pieces."
+    },
+    "jigsaw-level-hard": {
+      "file": "/audio/jigsaw/level-hard.mp3",
+      "text": "Hard! Nine pieces.",
+      "speak": "Hard! Nine pieces."
+    },
+    "jigsaw-pieces-4": {
+      "file": "/audio/jigsaw/pieces-4.mp3",
+      "text": "Put the four pieces together!",
+      "speak": "Put the four pieces together!"
+    },
+    "jigsaw-pieces-6": {
+      "file": "/audio/jigsaw/pieces-6.mp3",
+      "text": "Put the six pieces together!",
+      "speak": "Put the six pieces together!"
+    },
+    "jigsaw-pieces-9": {
+      "file": "/audio/jigsaw/pieces-9.mp3",
+      "text": "Put the nine pieces together!",
+      "speak": "Put the nine pieces together!"
+    },
+    "jigsaw-idle": {
+      "file": "/audio/jigsaw/idle.mp3",
+      "text": "Drag a piece onto the picture.",
+      "speak": "Drag a piece onto the picture."
+    },
+    "jigsaw-wrong": {
+      "file": "/audio/jigsaw/wrong.mp3",
+      "text": "Hmm, that piece goes somewhere else.",
+      "speak": "Hmm, that piece goes somewhere else."
+    },
+    "jigsaw-made-lion": {
+      "file": "/audio/jigsaw/made-lion.mp3",
+      "text": "You made the lion!",
+      "speak": "You made the lion!"
+    },
+    "jigsaw-made-whale": {
+      "file": "/audio/jigsaw/made-whale.mp3",
+      "text": "You made the whale!",
+      "speak": "You made the whale!"
+    },
+    "jigsaw-made-train": {
+      "file": "/audio/jigsaw/made-train.mp3",
+      "text": "You made the train!",
+      "speak": "You made the train!"
+    },
+    "jigsaw-done-more": {
+      "file": "/audio/jigsaw/done-more.mp3",
+      "text": "Ready for more pieces?",
+      "speak": "Ready for more pieces?"
+    },
+    "jigsaw-done-hard": {
+      "file": "/audio/jigsaw/done-hard.mp3",
+      "text": "You did the hard one! Super puzzler!",
+      "speak": "You did the hard one! Super puzzler!"
+    },
+    "tangram-welcome": {
+      "file": "/audio/tangram/welcome.mp3",
+      "text": "Welcome to Tangram Town! Pick a picture to build.",
+      "speak": "Welcome to Tangram Town! Pick a picture to build."
+    },
+    "tangram-build-house": {
+      "file": "/audio/tangram/build-house.mp3",
+      "text": "Build the house!",
+      "speak": "Build the house!"
+    },
+    "tangram-build-fish": {
+      "file": "/audio/tangram/build-fish.mp3",
+      "text": "Build the fish!",
+      "speak": "Build the fish!"
+    },
+    "tangram-build-cat": {
+      "file": "/audio/tangram/build-cat.mp3",
+      "text": "Build the cat!",
+      "speak": "Build the cat!"
+    },
+    "tangram-build-arrow": {
+      "file": "/audio/tangram/build-arrow.mp3",
+      "text": "Build the arrow!",
+      "speak": "Build the arrow!"
+    },
+    "tangram-build-big-square": {
+      "file": "/audio/tangram/build-big-square.mp3",
+      "text": "Build the big square!",
+      "speak": "Build the big square!"
+    },
+    "tangram-no-lines": {
+      "file": "/audio/tangram/no-lines.mp3",
+      "text": "Now build it with no lines!",
+      "speak": "Now build it with no lines!"
+    },
+    "tangram-idle": {
+      "file": "/audio/tangram/idle.mp3",
+      "text": "Drag a shape onto the outline.",
+      "speak": "Drag a shape onto the outline."
+    },
+    "tangram-wrong": {
+      "file": "/audio/tangram/wrong.mp3",
+      "text": "That shape doesn't fit there. Try another spot!",
+      "speak": "That shape doesn't fit there. Try another spot!"
+    },
+    "tangram-made-house": {
+      "file": "/audio/tangram/made-house.mp3",
+      "text": "You made a house!",
+      "speak": "You made a house!"
+    },
+    "tangram-made-fish": {
+      "file": "/audio/tangram/made-fish.mp3",
+      "text": "You made a fish!",
+      "speak": "You made a fish!"
+    },
+    "tangram-made-cat": {
+      "file": "/audio/tangram/made-cat.mp3",
+      "text": "You made a cat!",
+      "speak": "You made a cat!"
+    },
+    "tangram-made-arrow": {
+      "file": "/audio/tangram/made-arrow.mp3",
+      "text": "You made an arrow!",
+      "speak": "You made an arrow!"
+    },
+    "tangram-made-big-square": {
+      "file": "/audio/tangram/made-big-square.mp3",
+      "text": "You made a big square!",
+      "speak": "You made a big square!"
+    },
+    "tangram-done": {
+      "file": "/audio/tangram/done.mp3",
+      "text": "You built it twice!",
+      "speak": "You built it twice!"
+    },
+    "onoff-welcome": {
+      "file": "/audio/onoff/welcome.mp3",
+      "text": "Let's play! Put things on, and take things off.",
+      "speak": "Let's play! Put things on, and take things off."
+    },
+    "onoff-put-teddy-bed": {
+      "file": "/audio/onoff/put-teddy-bed.mp3",
+      "text": "Put the teddy on the bed.",
+      "speak": "Put the teddy on the bed."
+    },
+    "onoff-take-bird-tree": {
+      "file": "/audio/onoff/take-bird-tree.mp3",
+      "text": "Take the bird off the tree.",
+      "speak": "Take the bird off the tree."
+    },
+    "onoff-take-ball-box": {
+      "file": "/audio/onoff/take-ball-box.mp3",
+      "text": "Take the ball off the box.",
+      "speak": "Take the ball off the box."
+    },
+    "onoff-put-cake-table": {
+      "file": "/audio/onoff/put-cake-table.mp3",
+      "text": "Put the cake on the table.",
+      "speak": "Put the cake on the table."
+    },
+    "onoff-take-cat-chair": {
+      "file": "/audio/onoff/take-cat-chair.mp3",
+      "text": "Take the cat off the chair.",
+      "speak": "Take the cat off the chair."
+    },
+    "onoff-put-dog-rug": {
+      "file": "/audio/onoff/put-dog-rug.mp3",
+      "text": "Put the dog on the rug.",
+      "speak": "Put the dog on the rug."
+    },
+    "onoff-put-bird-tree": {
+      "file": "/audio/onoff/put-bird-tree.mp3",
+      "text": "Put the bird on the tree.",
+      "speak": "Put the bird on the tree."
+    },
+    "onoff-take-teddy-bed": {
+      "file": "/audio/onoff/take-teddy-bed.mp3",
+      "text": "Take the teddy off the bed.",
+      "speak": "Take the teddy off the bed."
+    },
+    "onoff-is-on-teddy-bed": {
+      "file": "/audio/onoff/is-on-teddy-bed.mp3",
+      "text": "The teddy is on the bed!",
+      "speak": "The teddy is on the bed!"
+    },
+    "onoff-is-off-bird-tree": {
+      "file": "/audio/onoff/is-off-bird-tree.mp3",
+      "text": "The bird is off the tree!",
+      "speak": "The bird is off the tree!"
+    },
+    "onoff-is-off-ball-box": {
+      "file": "/audio/onoff/is-off-ball-box.mp3",
+      "text": "The ball is off the box!",
+      "speak": "The ball is off the box!"
+    },
+    "onoff-is-on-cake-table": {
+      "file": "/audio/onoff/is-on-cake-table.mp3",
+      "text": "The cake is on the table!",
+      "speak": "The cake is on the table!"
+    },
+    "onoff-is-off-cat-chair": {
+      "file": "/audio/onoff/is-off-cat-chair.mp3",
+      "text": "The cat is off the chair!",
+      "speak": "The cat is off the chair!"
+    },
+    "onoff-is-on-dog-rug": {
+      "file": "/audio/onoff/is-on-dog-rug.mp3",
+      "text": "The dog is on the rug!",
+      "speak": "The dog is on the rug!"
+    },
+    "onoff-is-on-bird-tree": {
+      "file": "/audio/onoff/is-on-bird-tree.mp3",
+      "text": "The bird is on the tree!",
+      "speak": "The bird is on the tree!"
+    },
+    "onoff-is-off-teddy-bed": {
+      "file": "/audio/onoff/is-off-teddy-bed.mp3",
+      "text": "The teddy is off the bed!",
+      "speak": "The teddy is off the bed!"
+    },
+    "onoff-wrong-on": {
+      "file": "/audio/onoff/wrong-on.mp3",
+      "text": "Oops! Put it on.",
+      "speak": "Oops! Put it on."
+    },
+    "onoff-wrong-off": {
+      "file": "/audio/onoff/wrong-off.mp3",
+      "text": "Oops! Take it off.",
+      "speak": "Oops! Take it off."
+    },
+    "onoff-done": {
+      "file": "/audio/onoff/done.mp3",
+      "text": "You put things on, and took them off!",
+      "speak": "You put things on, and took them off!"
+    },
+    "sort2-welcome": {
+      "file": "/audio/sort2/welcome.mp3",
+      "text": "Let's sort things two ways!",
+      "speak": "Let's sort things two ways!"
+    },
+    "sort2-mode-shapes": {
+      "file": "/audio/sort2/mode-shapes.mp3",
+      "text": "Colours and Shapes! By colour, then by shape.",
+      "speak": "Colours and Shapes! By colour, then by shape."
+    },
+    "sort2-mode-animals": {
+      "file": "/audio/sort2/mode-animals.mp3",
+      "text": "Animals and Things! Animal or thing, then big or small.",
+      "speak": "Animals and Things! Animal or thing, then big or small."
+    },
+    "sort2-mode-sweets": {
+      "file": "/audio/sort2/mode-sweets.mp3",
+      "text": "Sweets and Shoes! By colour, then sweets or shoes.",
+      "speak": "Sweets and Shoes! By colour, then sweets or shoes."
+    },
+    "sort2-by-colour": {
+      "file": "/audio/sort2/by-colour.mp3",
+      "text": "Let's sort them by colour!",
+      "speak": "Let's sort them by colour!"
+    },
+    "sort2-by-shape": {
+      "file": "/audio/sort2/by-shape.mp3",
+      "text": "Now sort them by shape!",
+      "speak": "Now sort them by shape!"
+    },
+    "sort2-by-kind-animals": {
+      "file": "/audio/sort2/by-kind-animals.mp3",
+      "text": "Let's sort animals and things!",
+      "speak": "Let's sort animals and things!"
+    },
+    "sort2-by-size": {
+      "file": "/audio/sort2/by-size.mp3",
+      "text": "Now sort them by size!",
+      "speak": "Now sort them by size!"
+    },
+    "sort2-by-kind-sweets": {
+      "file": "/audio/sort2/by-kind-sweets.mp3",
+      "text": "Now sort sweets and shoes!",
+      "speak": "Now sort sweets and shoes!"
+    },
+    "sort2-another-way": {
+      "file": "/audio/sort2/another-way.mp3",
+      "text": "Now sort them another way!",
+      "speak": "Now sort them another way!"
+    },
+    "sort2-wrong": {
+      "file": "/audio/sort2/wrong.mp3",
+      "text": "Hmm, that one goes in the other tray.",
+      "speak": "Hmm, that one goes in the other tray."
+    },
+    "name-peppermint": {
+      "file": "/audio/names/peppermint.mp3",
+      "text": "peppermint",
+      "speak": "peppermint"
+    },
+    "name-gumdrop": {
+      "file": "/audio/names/gumdrop.mp3",
+      "text": "gumdrop",
+      "speak": "gumdrop"
+    },
+    "name-yellow": {
+      "file": "/audio/names/yellow.mp3",
+      "text": "yellow",
+      "speak": "yellow"
+    },
+    "sort2-done": {
+      "file": "/audio/sort2/done.mp3",
+      "text": "You sorted them two ways!",
+      "speak": "You sorted them two ways!"
+    },
+    "count-welcome": {
+      "file": "/audio/count/welcome.mp3",
+      "text": "Welcome to Count and Match!",
+      "speak": "Welcome to Count and Match!"
+    },
+    "count-mode-plates": {
+      "file": "/audio/count/mode-plates.mp3",
+      "text": "Count the Plates! Tap the plate.",
+      "speak": "Count the Plates! Tap the plate."
+    },
+    "count-mode-cards": {
+      "file": "/audio/count/mode-cards.mp3",
+      "text": "Number Cards! Drag the number.",
+      "speak": "Number Cards! Drag the number."
+    },
+    "count-plate-2": {
+      "file": "/audio/count/plate-2.mp3",
+      "text": "Find the plate with two!",
+      "speak": "Find the plate with two!"
+    },
+    "count-plate-3": {
+      "file": "/audio/count/plate-3.mp3",
+      "text": "Find the plate with three!",
+      "speak": "Find the plate with three!"
+    },
+    "count-plate-4": {
+      "file": "/audio/count/plate-4.mp3",
+      "text": "Find the plate with four!",
+      "speak": "Find the plate with four!"
+    },
+    "count-plate-5": {
+      "file": "/audio/count/plate-5.mp3",
+      "text": "Find the plate with five!",
+      "speak": "Find the plate with five!"
+    },
+    "count-match-numbers": {
+      "file": "/audio/count/match-numbers.mp3",
+      "text": "Match the numbers!",
+      "speak": "Match the numbers!"
+    },
+    "count-done": {
+      "file": "/audio/count/done.mp3",
+      "text": "You're a number star!",
+      "speak": "You're a number star!"
+    },
+    "numhunt-welcome": {
+      "file": "/audio/numhunt/welcome.mp3",
+      "text": "Welcome to Number Hunt!",
+      "speak": "Welcome to Number Hunt!"
+    },
+    "numhunt-mode-find": {
+      "file": "/audio/numhunt/mode-find.mp3",
+      "text": "Find the Number! Tap every one.",
+      "speak": "Find the Number! Tap every one."
+    },
+    "numhunt-mode-boxes": {
+      "file": "/audio/numhunt/mode-boxes.mp3",
+      "text": "Group Boxes! Drag the card.",
+      "speak": "Group Boxes! Drag the card."
+    },
+    "numhunt-find-2": {
+      "file": "/audio/numhunt/find-2.mp3",
+      "text": "Find every two!",
+      "speak": "Find every two!"
+    },
+    "numhunt-find-3": {
+      "file": "/audio/numhunt/find-3.mp3",
+      "text": "Find every three!",
+      "speak": "Find every three!"
+    },
+    "numhunt-find-4": {
+      "file": "/audio/numhunt/find-4.mp3",
+      "text": "Find every four!",
+      "speak": "Find every four!"
+    },
+    "numhunt-find-5": {
+      "file": "/audio/numhunt/find-5.mp3",
+      "text": "Find every five!",
+      "speak": "Find every five!"
+    },
+    "numhunt-find-wrong": {
+      "file": "/audio/numhunt/find-wrong.mp3",
+      "text": "That one is a different number.",
+      "speak": "That one is a different number."
+    },
+    "numhunt-boxes": {
+      "file": "/audio/numhunt/boxes.mp3",
+      "text": "Put each card in its box!",
+      "speak": "Put each card in its box!"
+    },
+    "numhunt-done": {
+      "file": "/audio/numhunt/done.mp3",
+      "text": "Great hunting!",
+      "speak": "Great hunting!"
     }
   },
   "edgeVoice": {

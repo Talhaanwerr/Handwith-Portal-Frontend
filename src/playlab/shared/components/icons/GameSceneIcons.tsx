@@ -19,6 +19,10 @@
  */
 
 import type { ReactNode } from "react";
+import { OnOffIcon } from "@games/on-off/components/OnOffIcon";
+import { SortTwoWaysIcon } from "@games/sort-two-ways/components/SortTwoWaysIcon";
+import { NumberGroupsIcon } from "@games/number-groups/components/NumberGroupsIcon";
+import { NumberHuntIcon } from "@games/number-hunt/components/NumberHuntIcon";
 import { FriendlyShark, LetterFish } from "@games/feed-the-shark/components/SharkArt";
 import { OceanBackdrop } from "@games/feed-the-shark/components/OceanBackdrop";
 import { ChefArt, PuzzleMagnet } from "@games/magnet-match/components/MagnetArt";
@@ -35,6 +39,16 @@ import { LeoFigure } from "@games/shape-match/components/Leo";
 import { Picture } from "@games/blend-read/components/PictureArt";
 import { QuizPicture } from "@games/word-quiz/components/QuizArt";
 import { Thing as CountingThing, Plate } from "@games/counting-numbers/components/CountingArt";
+import { BirdArt } from "@games/sesame-activities/components/SesameArt";
+import { BerryArt } from "@games/color-shape-friends/components/Friends";
+import {
+  FIGURES,
+  PIECE_COLORS,
+  figureBox,
+  pointsAttr,
+} from "@games/tangram-town/constants/tangram";
+import { piecePath as jigsawPath, seedOf as jigsawSeed } from "@games/jigsaw-fun/constants/jigsaw";
+import { JigsawScene } from "@games/jigsaw-fun/components/JigsawArt";
 import { cssVars } from "@shared/styles/cssVars";
 
 /* ── shared scaffolding ── */
@@ -1240,6 +1254,315 @@ export function FoodSortIcon() {
   );
 }
 
+/**
+ * WHERE IS THE MOUSE? — the game's kitchen: a tiled wall, the counter, the
+ * big block of cheese with its mouse-holes, the game's own mouse (the Twemoji
+ * face it plays with) poking its head out of one hole, and a hand about to
+ * tap it. One SVG, colours inline — the Library page does not load
+ * playlab.css. Ids are prefixed so several icons can share a page.
+ */
+export function FindTheMouseIcon() {
+  return (
+    <Diorama>
+      <svg viewBox="0 0 100 100" className="absolute inset-0 block h-full w-full">
+        <defs>
+          <pattern id="ftm-ic-tiles" width="12.5" height="12.5" patternUnits="userSpaceOnUse">
+            <rect width="12.5" height="12.5" fill="#CDEEED" />
+            <path d="M0 0.5 H12.5 M0.5 0 V12.5" stroke="#FFFFFF" strokeWidth="1" opacity="0.8" />
+          </pattern>
+          <linearGradient id="ftm-ic-front" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#FFD957" />
+            <stop offset="1" stopColor="#F6AC22" />
+          </linearGradient>
+          <radialGradient id="ftm-ic-hole" cx="0.5" cy="0.64" r="0.6">
+            <stop offset="0" stopColor="#2A1402" />
+            <stop offset="0.55" stopColor="#4A2506" />
+            <stop offset="1" stopColor="#8A4B10" />
+          </radialGradient>
+          <clipPath id="ftm-ic-peek">
+            <circle cx="61" cy="59" r="10.4" />
+          </clipPath>
+        </defs>
+
+        <rect width="100" height="100" fill="url(#ftm-ic-tiles)" />
+        <rect y="80" width="100" height="20" fill="#B57A42" />
+        <rect y="80" width="100" height="4" fill="#E3B178" />
+
+        {/* the cheese block: top, side, front */}
+        <ellipse cx="50" cy="86" rx="40" ry="3" fill="#5A320A" opacity="0.25" />
+        <polygon points="10,38 18,27 92,27 84,38" fill="#FFE78F" />
+        <polygon points="84,38 92,27 92,75 84,86" fill="#E4960F" />
+        <rect x="10" y="38" width="74" height="48" fill="url(#ftm-ic-front)" />
+        <path
+          d="M10 38 L18 27 L92 27 L92 75 L84 86 L10 86 Z M10 38 H84 V86 M84 38 L92 27"
+          fill="none"
+          stroke="#C77D0A"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+        />
+        <g fill="#DB9316">
+          <circle cx="46" cy="45" r="2.2" />
+          <circle cx="78" cy="77" r="2" />
+          <circle cx="15" cy="78" r="1.7" />
+          <circle cx="44" cy="78" r="2.6" />
+          <ellipse cx="38" cy="32" rx="3" ry="1.4" fill="#EBA521" />
+          <ellipse cx="70" cy="31" rx="2.4" ry="1.2" fill="#EBA521" />
+        </g>
+
+        {/* an empty mouse-hole, and the one with a mouse in it */}
+        <circle cx="29" cy="60" r="11" fill="url(#ftm-ic-hole)" />
+        <path d="M18.4 62.6 A11 11 0 0 0 39.6 62.6" stroke="#FFF2C4" strokeWidth="1" fill="none" />
+        <circle cx="61" cy="59" r="11" fill="url(#ftm-ic-hole)" />
+        <image
+          href="/games/blend-read/icons/mouse.svg"
+          x="51.5"
+          y="50"
+          width="19"
+          height="19"
+          clipPath="url(#ftm-ic-peek)"
+        />
+        <path d="M50.4 61.6 A11 11 0 0 0 71.6 61.6" stroke="#FFF2C4" strokeWidth="1" fill="none" />
+      </svg>
+
+      <At x={64} y={64} w={24} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * JIGSAW FUN — the lion jigsaw on its wooden board, three pieces in and the
+ * last one lifted beside it, cut by the game's own cutter and drawn with the
+ * game's own picture. Sized inline: the Library page does not load
+ * playlab.css. Ids are prefixed so icons can share a page.
+ */
+export function JigsawFunIcon() {
+  const seed = jigsawSeed("lion", 0);
+  const cut = (i: number) => jigsawPath(seed, 2, 2, i % 2, Math.floor(i / 2));
+  return (
+    <Diorama>
+      <span
+        className="absolute inset-0 block"
+        style={{ background: "linear-gradient(#FFF6E8, #FFE2C2)" }}
+      />
+      <svg viewBox="-34 -34 300 300" className="absolute inset-0 block h-full w-full">
+        <defs>
+          {[0, 1, 2, 3].map((i) => (
+            <clipPath key={i} id={`jf-ic-${i}`}>
+              <path d={cut(i)} />
+            </clipPath>
+          ))}
+        </defs>
+        <rect x={-18} y={-18} width={236} height={236} rx={16} fill="#C98B4E" />
+        <rect x={-6} y={-6} width={212} height={212} rx={8} fill="#F6EEDC" />
+        {[0, 1, 2].map((i) => (
+          <g key={i} clipPath={`url(#jf-ic-${i})`}>
+            <JigsawScene module="lion" w={200} h={200} />
+          </g>
+        ))}
+        <path d={cut(3)} fill="none" stroke="#FFFFFF" strokeWidth={4} strokeDasharray="10 7" />
+        <g transform="translate(58 44) rotate(10 150 150)">
+          <g clipPath="url(#jf-ic-3)">
+            <JigsawScene module="lion" w={200} h={200} />
+          </g>
+          <path d={cut(3)} fill="none" stroke="#FFFFFF" strokeWidth={4} />
+        </g>
+      </svg>
+      <At x={66} y={68} w={24} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * TANGRAM TOWN — the tangram cat built from the seven real pieces (the game's
+ * own figure data, not a redrawing) on its squared drawing paper, a hand
+ * reaching in. Sized inline: the Library page does not load playlab.css.
+ */
+export function TangramTownIcon() {
+  const cat = FIGURES.find((f) => f.id === "cat") ?? FIGURES[0];
+  const b = figureBox(cat, 0.5);
+  return (
+    <Diorama>
+      <span
+        className="absolute inset-0 block"
+        style={{
+          background:
+            "linear-gradient(rgba(46,94,158,0.08) 1px, transparent 1px) 0 0 / 12% 12%, linear-gradient(90deg, rgba(46,94,158,0.08) 1px, transparent 1px) 0 0 / 12% 12%, linear-gradient(#F6F8FF, #E3E8FB)",
+        }}
+      />
+      <svg
+        viewBox={`${b.x} ${b.y} ${b.w} ${b.h}`}
+        className="absolute block"
+        style={{ left: "8%", top: "8%", width: "84%", height: "84%" }}
+      >
+        {cat.slots.map((s, i) => (
+          <polygon
+            key={i}
+            points={pointsAttr(s.pts)}
+            fill={PIECE_COLORS[i]}
+            stroke="#FFFFFF"
+            strokeWidth={0.14}
+            strokeLinejoin="round"
+          />
+        ))}
+      </svg>
+      <At x={64} y={66} w={24} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * POND NUMBERS —the game's pond: the Quick Look card of dots on its post, and
+ * a frog hopping onto the log where two more sit (One More). The frogs are the
+ * Twemoji frog the game plays with. One SVG, colours inline — the Library page
+ * does not load playlab.css. Ids are prefixed so icons can share a page.
+ */
+export function PondNumbersIcon() {
+  const frog = "/games/blend-read/icons/frog.svg";
+  return (
+    <Diorama>
+      <svg viewBox="0 0 100 100" className="absolute inset-0 block h-full w-full">
+        <defs>
+          <linearGradient id="pn-ic-sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#8FD3FF" />
+            <stop offset="1" stopColor="#E3F6FF" />
+          </linearGradient>
+          <linearGradient id="pn-ic-water" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#6CC6EF" />
+            <stop offset="1" stopColor="#3FA6DC" />
+          </linearGradient>
+        </defs>
+        <rect width="100" height="100" fill="url(#pn-ic-sky)" />
+        <circle cx="82" cy="16" r="8" fill="#FFD93D" />
+        <ellipse cx="30" cy="52" rx="44" ry="16" fill="#9ED98B" />
+        <rect y="50" width="100" height="50" fill="#6CC05F" />
+        <ellipse cx="54" cy="76" rx="54" ry="20" fill="url(#pn-ic-water)" />
+
+        {/* the Quick Look card on its post */}
+        <rect x="16" y="46" width="4" height="22" fill="#A8703A" />
+        <rect
+          x="4"
+          y="18"
+          width="28"
+          height="28"
+          rx="4"
+          fill="#FFFFFF"
+          stroke="#FFD466"
+          strokeWidth="2.4"
+        />
+        <g fill="#E5484D">
+          <circle cx="11" cy="25" r="3.2" />
+          <circle cx="25" cy="25" r="3.2" />
+          <circle cx="18" cy="32" r="3.2" />
+          <circle cx="11" cy="39" r="3.2" />
+          <circle cx="25" cy="39" r="3.2" />
+        </g>
+
+        {/* the log, two frogs on it, and one more hopping on */}
+        <rect x="38" y="68" width="42" height="8" rx="4" fill="#9A6130" />
+        <ellipse cx="79" cy="72" rx="3" ry="4" fill="#E7B77E" />
+        <image href={frog} x="40" y="54" width="16" height="16" />
+        <image href={frog} x="57" y="54" width="16" height="16" />
+        <path
+          d="M89 66 Q84 44 74 52"
+          stroke="#FFFFFF"
+          strokeWidth="1.4"
+          strokeDasharray="2.4 2"
+          fill="none"
+        />
+        <image href={frog} x="70" y="36" width="16" height="16" />
+        <ellipse cx="91" cy="82" rx="9" ry="4" fill="#5DBB63" />
+      </svg>
+      <At x={64} y={70} w={22} z={5}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * PLAY STREET PALS —Percy the bird beside the coloured balls of his matching
+ * game, the target ball ringed and a hand about to tap the match. Original
+ * art; colours inline because the Library page does not load playlab.css.
+ */
+export function SesameActivitiesIcon() {
+  return (
+    <Diorama className="bg-[linear-gradient(#BFE4FF,#D7F0CF)]">
+      <At x={2} y={20} w={52} z={2}>
+        <Art>
+          <BirdArt happy />
+        </Art>
+      </At>
+      {/* the ball row */}
+      <At x={54} y={22} w={20} z={2}>
+        <svg viewBox="0 0 60 60" className="block h-auto w-full drop-shadow-md">
+          <circle cx="30" cy="30" r="24" fill="#E4572E" stroke="#B83A18" strokeWidth="3" />
+        </svg>
+      </At>
+      <At x={76} y={20} w={20} z={2}>
+        <svg viewBox="0 0 60 60" className="block h-auto w-full drop-shadow-md">
+          <circle cx="30" cy="30" r="24" fill="#3DA5F4" stroke="#1476C0" strokeWidth="3" />
+        </svg>
+      </At>
+      <At x={62} y={52} w={24} z={2}>
+        <svg viewBox="0 0 60 60" className="block h-auto w-full drop-shadow-md">
+          <circle cx="30" cy="30" r="24" fill="#5FCB52" stroke="#38982F" strokeWidth="3" />
+        </svg>
+      </At>
+      {/* the match, ringed */}
+      <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" style={{ zIndex: 3 }}>
+        <circle
+          cx="74"
+          cy="62"
+          r="18"
+          fill="none"
+          stroke="#FFD23F"
+          strokeWidth="3.6"
+          strokeDasharray="6 5"
+          strokeLinecap="round"
+        />
+      </svg>
+      <At x={74} y={66} w={20} z={4}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
+/**
+ * COLOR & SHAPE FRIENDS — Berry, the original red furry character, beside the
+ * three big shapes he names (purple triangle, blue circle, orange square),
+ * with a hand about to tap one. Shapes reuse Leo's Puzzles' ShapeGlyph.
+ */
+export function ColorShapeFriendsIcon() {
+  return (
+    <Diorama className="bg-[linear-gradient(#E7F6D8,#CFEFE6)]">
+      <At x={-2} y={26} w={46} z={2}>
+        <span className="[&>svg]:block [&>svg]:h-auto [&>svg]:w-full">
+          <BerryArt still />
+        </span>
+      </At>
+      <At x={44} y={10} w={26} z={2} r={-6}>
+        <ShapeGlyph piece={{ shape: "triangle", hue: "grape" }} />
+      </At>
+      <At x={72} y={16} w={26} z={2}>
+        <ShapeGlyph piece={{ shape: "circle", hue: "sky" }} />
+      </At>
+      <At x={56} y={52} w={28} z={2} r={6}>
+        <ShapeGlyph piece={{ shape: "square", hue: "mango" }} />
+      </At>
+      <At x={70} y={64} w={20} z={4}>
+        <Hand />
+      </At>
+    </Diorama>
+  );
+}
+
 /** id → scene, for the portal card. */
 export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "letter-tracing": LetterTracingIcon,
@@ -1263,4 +1586,14 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "word-quiz": WordQuizIcon,
   "math-maze": MathMazeIcon,
   "food-sort": FoodSortIcon,
+  "find-the-mouse": FindTheMouseIcon,
+  "pond-numbers": PondNumbersIcon,
+  "jigsaw-fun": JigsawFunIcon,
+  "tangram-town": TangramTownIcon,
+  "sesame-activities": SesameActivitiesIcon,
+  "color-shape-friends": ColorShapeFriendsIcon,
+  "on-off": OnOffIcon,
+  "sort-two-ways": SortTwoWaysIcon,
+  "number-groups": NumberGroupsIcon,
+  "number-hunt": NumberHuntIcon,
 };

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { initAudio } from "@shared/audio/sfx";
-import { startMusic, stopMusic } from "@shared/audio/music";
+import { initAudio, warmSfx } from "@shared/audio/sfx";
+import { prepareMusic, startMusic, stopMusic } from "@shared/audio/music";
 import { useScreenHistorySync } from "@shared/hooks/useScreenHistorySync";
 
 interface GameSessionOptions {
@@ -50,6 +50,10 @@ export function useGameSession({
 
   useEffect(() => {
     initAudio();
+    // Build the sound effects and compose the music in idle moments now,
+    // not on the frame of the first round or the first celebration.
+    warmSfx();
+    prepareMusic();
     // Fresh entries come in with a clean URL and get the intro. Re-entries
     // (browser back/forward into the game, or a reload mid-session) carry
     // ?step= — for those the history pop handler restores the right screen,
