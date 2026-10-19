@@ -62,6 +62,7 @@
 @import "./games/sort-two-ways/styles/sort-two-ways.css";
 @import "./games/number-groups/styles/number-groups.css";
 @import "./games/number-hunt/styles/number-hunt.css";
+@import "./games/brick-lab/styles/brick-lab.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

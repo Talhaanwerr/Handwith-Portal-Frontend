@@ -7008,6 +7008,226 @@
       "file": "/audio/numhunt/done.mp3",
       "text": "Great hunting!",
       "speak": "Great hunting!"
+    },
+    "brick-lab-welcome": {
+      "file": "/audio/bricks/lab-welcome.mp3",
+      "text": "Let's build with bricks!",
+      "speak": "Let's build with bricks!"
+    },
+    "brick-lab-drag": {
+      "file": "/audio/bricks/lab-drag.mp3",
+      "text": "Pick a colour, then drag a brick onto the plate.",
+      "speak": "Pick a colour, then drag a brick onto the plate."
+    },
+    "brick-lab-done": {
+      "file": "/audio/bricks/lab-done.mp3",
+      "text": "What a great build!",
+      "speak": "What a great build!"
+    },
+    "brick-tower-build": {
+      "file": "/audio/bricks/tower-build.mp3",
+      "text": "Build a tower of",
+      "speak": "Build a tower of"
+    },
+    "brick-tower-enough": {
+      "file": "/audio/bricks/tower-enough.mp3",
+      "text": "That's enough bricks!",
+      "speak": "That's enough bricks!"
+    },
+    "brick-steps-welcome": {
+      "file": "/audio/bricks/steps-welcome.mp3",
+      "text": "Let's build, one brick at a time!",
+      "speak": "Let's build, one brick at a time!"
+    },
+    "brick-steps-look": {
+      "file": "/audio/bricks/steps-look.mp3",
+      "text": "Put the brick on its shadow.",
+      "speak": "Put the brick on its shadow."
+    },
+    "brick-steps-shadow": {
+      "file": "/audio/bricks/steps-shadow.mp3",
+      "text": "Look for the shadow. It goes there.",
+      "speak": "Look for the shadow. It goes there."
+    },
+    "brick-steps-done": {
+      "file": "/audio/bricks/steps-done.mp3",
+      "text": "You built it!",
+      "speak": "You built it!"
+    },
+    "brick-steps-all": {
+      "file": "/audio/bricks/steps-all.mp3",
+      "text": "You built every model!",
+      "speak": "You built every model!"
+    },
+    "brick-model-tower": {
+      "file": "/audio/bricks/model-tower.mp3",
+      "text": "A tower!",
+      "speak": "A tower!"
+    },
+    "brick-model-duck": {
+      "file": "/audio/bricks/model-duck.mp3",
+      "text": "A duck!",
+      "speak": "A duck!"
+    },
+    "brick-model-car": {
+      "file": "/audio/bricks/model-car.mp3",
+      "text": "A car!",
+      "speak": "A car!"
+    },
+    "brick-model-house": {
+      "file": "/audio/bricks/model-house.mp3",
+      "text": "A house!",
+      "speak": "A house!"
+    },
+    "brick-model-tree": {
+      "file": "/audio/bricks/model-tree.mp3",
+      "text": "A tree!",
+      "speak": "A tree!"
+    },
+    "brick-model-robot": {
+      "file": "/audio/bricks/model-robot.mp3",
+      "text": "A robot!",
+      "speak": "A robot!"
+    },
+    "brick-pattern-welcome": {
+      "file": "/audio/bricks/pattern-welcome.mp3",
+      "text": "Let's finish the patterns!",
+      "speak": "Let's finish the patterns!"
+    },
+    "brick-pattern-next": {
+      "file": "/audio/bricks/pattern-next.mp3",
+      "text": "What comes next?",
+      "speak": "What comes next?"
+    },
+    "brick-pattern-look": {
+      "file": "/audio/bricks/pattern-look.mp3",
+      "text": "Look at the pattern again.",
+      "speak": "Look at the pattern again."
+    },
+    "brick-pattern-done": {
+      "file": "/audio/bricks/pattern-done.mp3",
+      "text": "The pattern is finished!",
+      "speak": "The pattern is finished!"
+    },
+    "brick-pattern-all": {
+      "file": "/audio/bricks/pattern-all.mp3",
+      "text": "You finished every pattern!",
+      "speak": "You finished every pattern!"
+    },
+    "brick-factory-drag": {
+      "file": "/audio/bricks/factory-drag.mp3",
+      "text": "Drag the brick into the box of the same colour.",
+      "speak": "Drag the brick into the box of the same colour."
+    },
+    "brick-factory-match": {
+      "file": "/audio/bricks/factory-match.mp3",
+      "text": "Find the box with the same colour.",
+      "speak": "Find the box with the same colour."
+    },
+    "brick-spell-welcome": {
+      "file": "/audio/bricks/spell-welcome.mp3",
+      "text": "Let's spell with letter bricks!",
+      "speak": "Let's spell with letter bricks!"
+    },
+    "brick-spell-build": {
+      "file": "/audio/bricks/spell-build.mp3",
+      "text": "Build the word with letter bricks. Spell",
+      "speak": "Build the word with letter bricks. Spell"
+    },
+    "brick-spell-all": {
+      "file": "/audio/bricks/spell-all.mp3",
+      "text": "You spelled every word!",
+      "speak": "You spelled every word!"
+    },
+    "brick-countsort-welcome": {
+      "file": "/audio/bricks/countsort-welcome.mp3",
+      "text": "Pick a brick game!",
+      "speak": "Pick a brick game!"
+    },
+    "brick-sound-welcome": {
+      "file": "/audio/bricks/sound-welcome.mp3",
+      "text": "Which letter does it start with?",
+      "speak": "Which letter does it start with?"
+    },
+    "brick-sound-ask": {
+      "file": "/audio/bricks/sound-ask.mp3",
+      "text": "What sound does it start with?",
+      "speak": "What sound does it start with?"
+    },
+    "brick-sound-all": {
+      "file": "/audio/bricks/sound-all.mp3",
+      "text": "You know your first sounds!",
+      "speak": "You know your first sounds!"
+    },
+    "brick-abc-welcome": {
+      "file": "/audio/bricks/abc-welcome.mp3",
+      "text": "Let's build the alphabet!",
+      "speak": "Let's build the alphabet!"
+    },
+    "brick-abc-next": {
+      "file": "/audio/bricks/abc-next.mp3",
+      "text": "What letter comes next?",
+      "speak": "What letter comes next?"
+    },
+    "brick-abc-all": {
+      "file": "/audio/bricks/abc-all.mp3",
+      "text": "You built the whole alphabet!",
+      "speak": "You built the whole alphabet!"
+    },
+    "brick-plus-welcome": {
+      "file": "/audio/bricks/plus-welcome.mp3",
+      "text": "Let's add with bricks!",
+      "speak": "Let's add with bricks!"
+    },
+    "brick-plus-build": {
+      "file": "/audio/bricks/plus-build.mp3",
+      "text": "Build the sum with bricks.",
+      "speak": "Build the sum with bricks."
+    },
+    "brick-plus-now-blue": {
+      "file": "/audio/bricks/plus-now-blue.mp3",
+      "text": "Now add the blue bricks.",
+      "speak": "Now add the blue bricks."
+    },
+    "brick-plus-all": {
+      "file": "/audio/bricks/plus-all.mp3",
+      "text": "You can add!",
+      "speak": "You can add!"
+    },
+    "brick-take-welcome": {
+      "file": "/audio/bricks/take-welcome.mp3",
+      "text": "Let's take bricks away!",
+      "speak": "Let's take bricks away!"
+    },
+    "brick-take-tap": {
+      "file": "/audio/bricks/take-tap.mp3",
+      "text": "Tap the top brick to take it away.",
+      "speak": "Tap the top brick to take it away."
+    },
+    "brick-take-all": {
+      "file": "/audio/bricks/take-all.mp3",
+      "text": "You can take away!",
+      "speak": "You can take away!"
+    },
+    "math-plus": {
+      "file": "/audio/maths/plus.mp3",
+      "text": "plus",
+      "speak": "plus"
+    },
+    "math-makes": {
+      "file": "/audio/maths/makes.mp3",
+      "text": "makes",
+      "speak": "makes"
+    },
+    "math-take-away": {
+      "file": "/audio/maths/take-away.mp3",
+      "text": "take away",
+      "speak": "take away"
+    },
+    "math-is": {
+      "file": "/audio/maths/is.mp3",
+      "text": "is",
+      "speak": "is"
     }
   },
   "edgeVoice": {
