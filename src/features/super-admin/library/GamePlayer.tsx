@@ -110,6 +110,49 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "number-hunt": lazy(() =>
     import("@games/number-hunt/NumberHuntGame").then((m) => ({ default: m.NumberHuntGame }))
   ),
+  "brick-lab": lazy(() =>
+    import("@games/brick-lab/BrickLabGame").then((m) => ({ default: m.BrickLabGame }))
+  ),
+  "brick-build-steps": lazy(() =>
+    import("@games/brick-build-steps/BrickBuildStepsGame").then((m) => ({
+      default: m.BrickBuildStepsGame,
+    }))
+  ),
+  "brick-pattern-wall": lazy(() =>
+    import("@games/brick-pattern-wall/BrickPatternWallGame").then((m) => ({
+      default: m.BrickPatternWallGame,
+    }))
+  ),
+  "brick-spell-words": lazy(() =>
+    import("@games/brick-spell-words/BrickSpellWordsGame").then((m) => ({
+      default: m.BrickSpellWordsGame,
+    }))
+  ),
+  "brick-count-sort": lazy(() =>
+    import("@games/brick-count-sort/BrickCountSortGame").then((m) => ({
+      default: m.BrickCountSortGame,
+    }))
+  ),
+  "brick-first-sound": lazy(() =>
+    import("@games/brick-first-sound/BrickFirstSoundGame").then((m) => ({
+      default: m.BrickFirstSoundGame,
+    }))
+  ),
+  "brick-abc-tower": lazy(() =>
+    import("@games/brick-abc-tower/BrickAbcTowerGame").then((m) => ({
+      default: m.BrickAbcTowerGame,
+    }))
+  ),
+  "brick-plus-tower": lazy(() =>
+    import("@games/brick-plus-tower/BrickPlusTowerGame").then((m) => ({
+      default: m.BrickPlusTowerGame,
+    }))
+  ),
+  "brick-take-away": lazy(() =>
+    import("@games/brick-take-away/BrickTakeAwayGame").then((m) => ({
+      default: m.BrickTakeAwayGame,
+    }))
+  ),
 };
 
 interface GamePlayerProps {
