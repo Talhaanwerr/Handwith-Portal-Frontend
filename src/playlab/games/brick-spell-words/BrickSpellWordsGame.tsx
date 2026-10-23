@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BrickShell, type PlayApi } from "@games/brick-lab/engine/BrickShell";
 import { BrickBoard, type SnapResult } from "@games/brick-lab/engine/BrickBoard";
 import { RoundWin } from "@games/brick-lab/engine/RoundWin";
@@ -17,7 +17,8 @@ import {
   spellChoices,
 } from "@games/brick-lab/constants/spell";
 import { Picture } from "@games/blend-read/components/PictureArt";
-import { playClip, playSequence, stopVoice } from "@shared/audio/voice";
+import { playClip, playSequence } from "@shared/audio/voice";
+import { useAfterVoice, useIntro } from "@shared/hooks/useAfterVoice";
 import { playClickSound, playStarPop } from "@shared/audio/sfx";
 import { cheerFor } from "@shared/audio/cheers";
 
@@ -31,6 +32,15 @@ import { cheerFor } from "@shared/audio/cheers";
  * the finished word is sounded out and then said whole: blending, built by
  * hand. A wrong letter bumps back and the needed sound is said again.
  */
+/** The strip the picture card needs at the top: picture + letter spots (tall
+ *  screens) or one short row (short screens). Mirrors .bk-spell-card sizes. */
+function spellInset(h: number, w: number): number {
+  if (h < 520) return 118;
+  const pic = Math.min(230, Math.max(120, h * 0.26));
+  // Narrow (upright phone) screens keep the card below the two pills.
+  return pic + 100 + (w < 700 ? 56 : 0);
+}
+
 export function BrickSpellWordsGame() {
   return (
     <BrickShell
@@ -49,25 +59,18 @@ function Spell({ api }: { api: PlayApi }) {
   const [wi, setWi] = useState(0);
   const [bricks, setBricks] = useState<Brick[]>([]);
   const [won, setWon] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { thenAfter } = useAfterVoice();
   const word = SPELL_WORDS[wi];
   const n = bricks.length;
   const need = word.text[n];
 
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-      stopVoice();
-    },
-    []
+  // Each word opens by being said: "Spell … cat." The board holds still until
+  // the whole line has been said, so an early tap cannot cut it off.
+  const intro = useIntro(
+    wi === 0 ? ["brick-spell-build", SPELL_WORDS[wi].clip] : [SPELL_WORDS[wi].clip],
+    wi
   );
-
-  // Each word opens by being said: "Spell … cat."
-  useEffect(() => {
-    const lines = wi === 0 ? ["brick-spell-build", SPELL_WORDS[wi].clip] : [SPELL_WORDS[wi].clip];
-    const t = setTimeout(() => void playSequence(lines, 200), 600);
-    return () => clearTimeout(t);
-  }, [wi]);
+  const busy = intro || won;
 
   const tray: BrickKind[] = useMemo(
     () => (won ? [] : spellChoices(word.text, wi)),
@@ -104,24 +107,33 @@ function Spell({ api }: { api: PlayApi }) {
       }
       setWon(true);
       playStarPop();
-      // Sound it out, then say it whole: c — a — t … cat!
-      void playSequence(
+      // Sound it out, then say it whole: c — a — t … cat! The next word (or the
+      // star card) comes only once the whole line has finished playing.
+      thenAfter(
         [...word.text.split("").map((l) => `phonics-${l}`), word.clip, cheerFor(wi + 1)],
+        () => {
+          setWon(false);
+          setBricks([]);
+          if (wi + 1 >= SPELL_WORDS.length) api.finish(all, SPELL_PLATE);
+          else setWi(wi + 1);
+        },
         180
       );
-      timer.current = setTimeout(() => {
-        setWon(false);
-        setBricks([]);
-        if (wi + 1 >= SPELL_WORDS.length) api.finish(all, SPELL_PLATE);
-        else setWi(wi + 1);
-      }, 4200);
     },
-    [api, wi, word]
+    [api, wi, word, thenAfter]
   );
 
   const onRejected = useCallback(() => {
     if (need) void playSequence(["instr-try-again", `phonics-${need}`], 150);
   }, [need]);
+
+  // Replay the word — only while nothing required is being said, so a tap
+  // can never cut the instruction or the celebration off.
+  const hear = useCallback(() => {
+    if (busy) return;
+    playClickSound();
+    void playClip(word.clip);
+  }, [busy, word.clip]);
 
   const answer = tray.findIndex((k) => k.tag === need);
   const slots = useMemo(
@@ -150,34 +162,44 @@ function Spell({ api }: { api: PlayApi }) {
       onPlaced={onPlaced}
       onRejected={onRejected}
       marks={won ? undefined : slots.slice(n, n + 1)}
-      locked={won}
-      handFrom={won || answer < 0 ? undefined : answer}
+      locked={busy}
+      handFrom={busy || answer < 0 ? undefined : answer}
       plateColor="#F6E7C8"
       initialYaw={-0.18}
-      topInset={110}
+      topInsetFor={spellInset}
     >
       <div className="bk-spell-card">
         <button
           className="bk-spell-pic"
-          onClick={() => {
-            playClickSound();
-            void playClip(word.clip);
-          }}
+          onClick={hear}
+          disabled={busy}
           aria-label={`Hear the word ${word.text}`}
         >
-          <Picture id={word.picture} />
+          <Picture id={word.picture} photo />
         </button>
-        <div className="bk-spell-word" aria-label={`Spell ${word.text}`}>
-          {word.text.split("").map((l, i) => (
-            <span
-              key={i}
-              className={`bk-spell-letter bk-c--${letterColor(l, wi)} ${
-                i < n ? "bk-spell-letter--on" : ""
-              } ${i === n && !won ? "bk-spell-letter--now" : ""}`}
-            >
-              {i < n ? l : ""}
-            </span>
-          ))}
+        <div className="bk-spell-row">
+          <div className="bk-spell-word" aria-label={`Spell ${word.text}`}>
+            {word.text.split("").map((l, i) => (
+              <span
+                key={i}
+                className={`bk-spell-letter bk-c--${letterColor(l, wi)} ${
+                  i < n ? "bk-spell-letter--on" : ""
+                } ${i === n && !won ? "bk-spell-letter--now" : ""}`}
+              >
+                {i < n ? l : ""}
+              </span>
+            ))}
+          </div>
+          <button
+            className="bk-spell-hear"
+            onClick={hear}
+            disabled={busy}
+            aria-label="Hear the word again"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+              <path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" />
+            </svg>
+          </button>
         </div>
       </div>
       <RoundDots total={SPELL_WORDS.length} at={wi} />

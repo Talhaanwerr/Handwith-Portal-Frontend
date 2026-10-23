@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { motion } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { StarRow } from "@shared/components/ui/StarRow";
 import { playClickSound } from "@shared/audio/sfx";
-import { stopVoice } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { Teacher } from "@games/door-count/components/Teacher";
 import { Picture } from "@games/blend-read/components/PictureArt";
@@ -73,7 +72,7 @@ export function OoHome({
 }) {
   // "Let's play! Put things on, and take things off." — cut short by Play
   useSayOnEnter(["onoff-welcome"]);
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   return (
     <div className="oo-screen">

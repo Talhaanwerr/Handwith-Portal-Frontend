@@ -3,7 +3,13 @@
 import { motion } from "framer-motion";
 import { StartOptions } from "@shared/components/ui/StartOptions";
 import { playClickSound } from "@shared/audio/sfx";
-import { GROUPS, TOTAL_GROUPS } from "@games/magnet-match/constants/letters";
+import {
+  GROUPS,
+  TOTAL_GROUPS,
+  caseLetter,
+  type LetterCase,
+} from "@games/magnet-match/constants/letters";
+import { useMagnetStore } from "@games/magnet-match/store/magnetStore";
 import { ChefArt, SoupPot, PuzzleMagnet } from "@games/magnet-match/components/MagnetArt";
 import { KitchenBackdrop } from "@games/magnet-match/components/KitchenBackdrop";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
@@ -28,8 +34,12 @@ export function MagnetSplash({
   onStartFromA,
   onExitPortal,
 }: MagnetSplashProps) {
+  const letterCase = useMagnetStore((s) => s.letterCase);
+  const setLetterCase = useMagnetStore((s) => s.setLetterCase);
   const hasProgress = groupIndex > 0 && groupIndex < TOTAL_GROUPS;
-  const nextLetters = hasProgress ? GROUPS[groupIndex].join(" ") : "";
+  const nextLetters = hasProgress
+    ? GROUPS[groupIndex].map((l) => caseLetter(l, letterCase)).join(" ")
+    : "";
 
   return (
     <div className="mm-stage pl-screen-shell">
@@ -105,6 +115,31 @@ export function MagnetSplash({
             </div>
           </motion.div>
 
+          {/* Which letters: big ABC (names) or small abc (sounds). */}
+          <div className="mm-case" role="radiogroup" aria-label="Letter case">
+            {(
+              [
+                ["upper", "ABC", "Uppercase letters"],
+                ["lower", "abc", "Lowercase letters"],
+              ] as [LetterCase, string, string][]
+            ).map(([c, label, name]) => (
+              <button
+                key={c}
+                type="button"
+                role="radio"
+                aria-checked={letterCase === c}
+                aria-label={name}
+                className={`mm-case-btn font-rounded ${letterCase === c ? "mm-case-btn--on" : ""}`}
+                onClick={() => {
+                  playClickSound();
+                  setLetterCase(c);
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
           <motion.div
             initial={{ y: 14, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -115,7 +150,7 @@ export function MagnetSplash({
               onContinue={onStart}
               continueLabel={hasProgress ? `Continue · ${nextLetters}` : "Continue"}
               onStartFromA={onStartFromA}
-              startLabel="Start from a"
+              startLabel={`Start from ${caseLetter("a", letterCase)}`}
             />
           </motion.div>
         </div>

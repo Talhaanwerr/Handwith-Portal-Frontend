@@ -90,7 +90,14 @@ export function FtmCountRound({
 
   const countMouse = useCallback(
     (i: number) => {
-      if (counted.includes(i)) return;
+      // A mouse already counted can be tapped again, as often as the child
+      // likes: it says its own number again ("one…"), so after a wrong answer
+      // the child can count them over by tapping each mouse once more.
+      const done = counted.indexOf(i);
+      if (done >= 0) {
+        void playClip(NUMBER_CLIPS[Math.min(done, COUNT_MAX - 1)]);
+        return;
+      }
       void playClip(NUMBER_CLIPS[Math.min(counted.length, COUNT_MAX - 1)]);
       // the last mouse counted: the next step, after its number
       if (counted.length + 1 === count) void sayAfter("mouse-tap-number");
@@ -164,7 +171,7 @@ export function FtmCountRound({
       {BURROWS.map((_, i) => {
         const hasMouse = burrows.includes(i);
         const rank = order.indexOf(i);
-        const open = hasMouse && shown && !solved && rank < 0;
+        const open = hasMouse && shown && !solved;
         return (
           <Burrow
             key={i}
@@ -174,7 +181,11 @@ export function FtmCountRound({
             bob
             badge={rank >= 0 ? rank + 1 : null}
             onTap={open ? countMouse : null}
-            ariaLabel={hasMouse ? `A mouse${open ? " — tap to count it" : ""}` : `Hole ${i + 1}`}
+            ariaLabel={
+              hasMouse
+                ? `A mouse${open ? (rank >= 0 ? ` — counted ${rank + 1}, tap to hear it again` : " — tap to count it") : ""}`
+                : `Hole ${i + 1}`
+            }
           />
         );
       })}

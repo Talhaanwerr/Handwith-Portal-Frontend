@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BrickShell, type PlayApi } from "@games/brick-lab/engine/BrickShell";
 import { BrickBoard, type SnapResult } from "@games/brick-lab/engine/BrickBoard";
 import { RoundWin } from "@games/brick-lab/engine/RoundWin";
@@ -10,7 +10,8 @@ import type { Landing } from "@games/brick-lab/engine/world";
 import { HERO_PLATE } from "@games/brick-lab/constants/models";
 import { SOUND_POOL, SOUND_WORDS, threeLetters } from "@games/brick-lab/constants/literacy";
 import { Picture } from "@games/blend-read/components/PictureArt";
-import { playClip, playSequence, stopVoice } from "@shared/audio/voice";
+import { playClip, playSequence } from "@shared/audio/voice";
+import { useAfterVoice, useIntro } from "@shared/hooks/useAfterVoice";
 import { playClickSound, playStarPop } from "@shared/audio/sfx";
 import { cheerFor } from "@shared/audio/cheers";
 
@@ -41,6 +42,12 @@ export function BrickFirstSoundGame() {
   );
 }
 
+/** The strip the big picture card needs at the top (see .bk-sound-card). */
+function soundInset(h: number, w: number): number {
+  if (h < 520) return 118;
+  return Math.min(230, Math.max(120, h * 0.26)) + 104 + (w < 700 ? 56 : 0);
+}
+
 const PLATE = { w: 6, d: 4 };
 const SPOT = { x: 2, z: 1, y: 0, w: 2, d: 2 };
 
@@ -48,24 +55,15 @@ function FirstSound({ api }: { api: PlayApi }) {
   const [ri, setRi] = useState(0);
   const [bricks, setBricks] = useState<Brick[]>([]);
   const [won, setWon] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { thenAfter } = useAfterVoice();
   const word = SOUND_WORDS[ri];
   const first = word.word[0];
 
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-      stopVoice();
-    },
-    []
-  );
-
-  // "Ball. What sound does it start with?"
-  useEffect(() => {
-    const w = SOUND_WORDS[ri];
-    const t = setTimeout(() => void playSequence([w.clip, "brick-sound-ask"], 250), 600);
-    return () => clearTimeout(t);
-  }, [ri]);
+  // "Ball. What sound does it start with?" — said in full before the board
+  // takes a tap.
+  const introLines = useMemo(() => [SOUND_WORDS[ri].clip, "brick-sound-ask"], [ri]);
+  const intro = useIntro(introLines, ri);
+  const busy = intro || won;
 
   const tray: BrickKind[] = useMemo(
     () => (won ? [] : threeLetters(first, SOUND_POOL, ri)),
@@ -92,15 +90,18 @@ function FirstSound({ api }: { api: PlayApi }) {
     (b: Brick, all: readonly Brick[]) => {
       setWon(true);
       playStarPop();
-      void playSequence([`phonics-${b.tag}`, word.clip, cheerFor(ri + 3)], 260);
-      timer.current = setTimeout(() => {
-        setWon(false);
-        setBricks([]);
-        if (ri + 1 >= SOUND_WORDS.length) api.finish(all, PLATE);
-        else setRi(ri + 1);
-      }, 3400);
+      thenAfter(
+        [`phonics-${b.tag}`, word.clip, cheerFor(ri + 3)],
+        () => {
+          setWon(false);
+          setBricks([]);
+          if (ri + 1 >= SOUND_WORDS.length) api.finish(all, PLATE);
+          else setRi(ri + 1);
+        },
+        260
+      );
     },
-    [api, ri, word.clip]
+    [api, ri, word.clip, thenAfter]
   );
 
   const answer = tray.findIndex((k) => k.tag === first);
@@ -119,11 +120,11 @@ function FirstSound({ api }: { api: PlayApi }) {
       onPlaced={onPlaced}
       onRejected={() => void playSequence(["instr-try-again", word.clip], 200)}
       marks={won ? undefined : [SPOT]}
-      locked={won}
-      handFrom={won || answer < 0 ? undefined : answer}
+      locked={busy}
+      handFrom={busy || answer < 0 ? undefined : answer}
       plateColor="#BFE3C4"
       initialYaw={-0.3}
-      topInset={150}
+      topInsetFor={soundInset}
     >
       <button
         className="bk-sound-card"
@@ -134,7 +135,7 @@ function FirstSound({ api }: { api: PlayApi }) {
         aria-label={`Hear the word ${word.word} again`}
       >
         <span className="bk-sound-pic">
-          <Picture id={word.picture} />
+          <Picture id={word.picture} photo />
         </span>
         <span className="bk-sound-word font-rounded font-black">
           <span className={`bk-sound-first ${won ? "bk-sound-first--on" : ""}`}>

@@ -1,0 +1,260 @@
+/**
+ * Shadow Match Mystery — class prefix `shm-`. The shell, chrome, pieces and
+ * crosses are Count & Match's (`ng-`, number-groups.css). Sized in container
+ * units of the shared stage; portrait at the bottom.
+ */
+
+/* ─── The classroom (Blend & Seek's, calm) ─────────────────────────────── */
+.shm-classroom {
+  position: absolute;
+  inset: 0;
+  background: #fbe9d6;
+}
+
+/* ─── A shadow: the same picture, blacked out, static ──────────────────── */
+.shm-sil {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: 0.72;
+  transform: scale(var(--shm-sx, 1), var(--shm-sy, 1));
+}
+.shm-sil img,
+.shm-sil svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0);
+}
+
+/* ─── Find the Shadow ──────────────────────────────────────────────────── */
+.shm-play--find {
+  --shm-o: min(34cqh, 20cqw);
+  --shm-s: min(28cqh, 17cqw);
+}
+.shm-find-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqh;
+  width: 100%;
+  height: 100%;
+}
+.shm-obj {
+  position: relative;
+  width: var(--shm-o);
+  height: var(--shm-o);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.shm-obj.is-away {
+  visibility: hidden;
+}
+.shm-obj img,
+.shm-obj svg,
+.shm-carried img,
+.shm-fill img,
+.shm-ref img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.shm-carried {
+  left: calc(var(--shm-o) * -0.5);
+  top: calc(var(--shm-o) * -0.5);
+  width: var(--shm-o);
+  height: var(--shm-o);
+  pointer-events: none;
+}
+.shm-shadows {
+  display: flex;
+  gap: 4cqw;
+}
+.shm-spot {
+  position: relative;
+  width: var(--shm-s);
+  height: var(--shm-s);
+  min-width: 56px;
+  min-height: 56px;
+  padding: 0;
+  border: 0.6cqh dashed rgba(140, 110, 70, 0.35);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbe9 0 55%, #fff1c9 72%, rgba(255, 241, 201, 0) 74%);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.shm-spot .shm-sil,
+.shm-spot .shm-fill {
+  inset: 14%;
+}
+.shm-fill {
+  position: absolute;
+  z-index: 2;
+  display: block;
+}
+.shm-spot.is-lit {
+  border-color: #ffd23d;
+  box-shadow: 0 0 0 0.8cqh rgba(255, 210, 61, 0.6);
+}
+.shm-spot.is-filled {
+  border-style: solid;
+  border-color: #3dab72;
+}
+.shm-spot.is-wrong .shm-sil {
+  opacity: 0.3;
+}
+.shm-spot:disabled {
+  cursor: default;
+}
+
+/* ─── Long or Short ────────────────────────────────────────────────────── */
+.shm-play--size {
+  --shm-u: min(22cqw, 30cqh);
+}
+.shm-long-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+  width: 100%;
+  height: 100%;
+}
+.shm-ref {
+  width: min(20cqh, 14cqw);
+  height: min(20cqh, 14cqw);
+}
+.shm-pair {
+  display: flex;
+  align-items: flex-end;
+  gap: 5cqw;
+}
+.shm-len {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6cqh;
+}
+.shm-lspot {
+  position: relative;
+  width: calc(var(--shm-u) * var(--shm-k));
+  height: var(--shm-u);
+  min-height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 3cqh;
+  background: radial-gradient(ellipse, #fffbe9 0 55%, #fff1c9 70%, rgba(255, 241, 201, 0) 72%);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.shm-lspot:disabled {
+  cursor: default;
+}
+.shm-lsil {
+  position: absolute;
+  top: 10%;
+  right: 6%;
+  bottom: 10%;
+  left: 6%;
+}
+.shm-lsil .shm-sil {
+  transform-origin: center bottom;
+}
+.shm-lspot.is-lit {
+  box-shadow: 0 0 0 1cqh #ffd93d;
+}
+.shm-lspot.is-wrong .shm-sil {
+  opacity: 0.3;
+}
+.shm-ruler-slot {
+  display: block;
+  width: calc(var(--shm-u) * var(--shm-k));
+  height: 5cqh;
+}
+.shm-ruler {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+}
+.shm-ruler-base {
+  display: block;
+  width: var(--shm-u);
+  height: 100%;
+  border-radius: 1cqh 0 0 1cqh;
+  background: repeating-linear-gradient(
+    90deg,
+    #2e7fd6 0 calc(var(--shm-u) / 4 - 2px),
+    #ffffff 0 calc(var(--shm-u) / 4)
+  );
+}
+.shm-ruler-extra {
+  display: block;
+  flex: 1;
+  height: 100%;
+  border-radius: 0 1cqh 1cqh 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #f2b705 0 calc(var(--shm-u) / 4 - 2px),
+    #ffffff 0 calc(var(--shm-u) / 4)
+  );
+}
+
+/* ─── Miniatures on the home cards ─────────────────────────────────────── */
+.shm-mini-pic,
+.shm-mini-shadow,
+.shm-mini-short,
+.shm-mini-long {
+  position: absolute;
+  display: block;
+}
+.shm-mini-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.shm-mini-pic {
+  left: 30%;
+  top: 4%;
+  width: 40%;
+  height: 44%;
+}
+.shm-mini-shadow {
+  left: 30%;
+  bottom: 4%;
+  width: 40%;
+  height: 44%;
+}
+.shm-mini-short,
+.shm-mini-long {
+  top: 30%;
+  width: 26%;
+  height: 40%;
+}
+.shm-mini-short {
+  left: 8%;
+}
+.shm-mini-long {
+  left: 42%;
+}
+.shm-mini-long .shm-sil,
+.shm-mini-short .shm-sil {
+  transform-origin: center bottom;
+}
+
+@media (orientation: portrait) {
+  .shm-play--find {
+    --shm-o: min(26cqh, 34cqw);
+    --shm-s: min(22cqh, 24cqw);
+  }
+  .shm-play--size {
+    --shm-u: min(24cqw, 22cqh);
+  }
+}

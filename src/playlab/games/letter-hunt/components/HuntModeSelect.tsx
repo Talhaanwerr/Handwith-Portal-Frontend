@@ -3,6 +3,7 @@
 import { ModeSelect } from "@shared/components/game/ModeSelect";
 import { useHuntStore, type HuntMode } from "@games/letter-hunt/store/huntStore";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 
 /**
  * Letter Hunt's Free / 5 Star picker — the SAME screen component the tracing
@@ -17,11 +18,14 @@ import { playClickSound } from "@shared/audio/sfx";
 export function HuntModeSelect() {
   const setMode = useHuntStore((s) => s.setMode);
   const setScreen = useHuntStore((s) => s.setScreen);
+  const { gate } = useHowToPlay();
 
   const choose = (mode: HuntMode) => {
     playClickSound();
-    setMode(mode);
-    setScreen("level");
+    gate(() => {
+      setMode(mode);
+      setScreen("level");
+    }, mode);
   };
 
   return (

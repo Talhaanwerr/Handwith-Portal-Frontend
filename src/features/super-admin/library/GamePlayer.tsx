@@ -1,6 +1,17 @@
 "use client";
 
-import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from "react";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useState,
+  type ComponentType,
+  type LazyExoticComponent,
+} from "react";
+import { GAMES } from "@/constants/games";
+import { HowToPlay } from "@shared/components/ui/HowToPlay";
+import { HowToPlayProvider } from "@shared/components/ui/HowToPlayGate";
+import { GATED_GAMES, howToPlayFor } from "@shared/constants/howToPlay";
 
 const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "letter-tracing": lazy(() =>
@@ -148,10 +159,23 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
       default: m.BrickPlusTowerGame,
     }))
   ),
-  "brick-take-away": lazy(() =>
-    import("@games/brick-take-away/BrickTakeAwayGame").then((m) => ({
-      default: m.BrickTakeAwayGame,
-    }))
+  "tiny-toy-shop": lazy(() =>
+    import("@games/tiny-toy-shop/TinyToyShopGame").then((m) => ({ default: m.TinyToyShopGame }))
+  ),
+  "number-train": lazy(() =>
+    import("@games/number-train/NumberTrainGame").then((m) => ({ default: m.NumberTrainGame }))
+  ),
+  "silly-robot": lazy(() =>
+    import("@games/silly-robot/SillyRobotGame").then((m) => ({ default: m.SillyRobotGame }))
+  ),
+  "shadow-match": lazy(() =>
+    import("@games/shadow-match/ShadowMatchGame").then((m) => ({ default: m.ShadowMatchGame }))
+  ),
+  "animal-repair": lazy(() =>
+    import("@games/animal-repair/AnimalRepairGame").then((m) => ({ default: m.AnimalRepairGame }))
+  ),
+  "sock-case": lazy(() =>
+    import("@games/sock-case/SockCaseGame").then((m) => ({ default: m.SockCaseGame }))
   ),
 };
 
@@ -163,16 +187,36 @@ interface GamePlayerProps {
  * Loads a PlayLab game only in the browser (Howler/canvas). Uses React.lazy
  * inside a Client Component instead of next/dynamic `{ ssr: false }`, which
  * Next.js 16 rejects even when the parent page is a Server Component.
+ *
+ * Every game shows the shared "How to Play" card. A game that calls
+ * `useHowToPlay().gate` from its own Play button / module cards (GATED_GAMES)
+ * opens it right after the child picks what to play, over its own title
+ * screen. Any other game shows it first, before the game is mounted, so no
+ * music or narration starts behind it. Either way nothing starts until the
+ * child presses Play.
  */
 export function GamePlayer({ gameId }: GamePlayerProps) {
   const Game = GAME_COMPONENTS[gameId];
+  const steps = howToPlayFor(gameId);
+  const title = GAMES.find((g) => g.id === gameId)?.title;
+  // Keyed by game id, so opening another game shows its own card again.
+  const [startedId, setStartedId] = useState<string | null>(null);
+  const start = useCallback(() => setStartedId(gameId), [gameId]);
+  const gated = GATED_GAMES.has(gameId);
+  const started = gated || startedId === gameId || !steps;
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-white">
       {Game ? (
-        <Suspense fallback={null}>
-          <Game />
-        </Suspense>
+        started ? (
+          <HowToPlayProvider gameId={gameId} title={title}>
+            <Suspense fallback={null}>
+              <Game />
+            </Suspense>
+          </HowToPlayProvider>
+        ) : (
+          <HowToPlay gameTitle={title} steps={steps} onPlay={start} onClose={start} />
+        )
       ) : null}
     </div>
   );

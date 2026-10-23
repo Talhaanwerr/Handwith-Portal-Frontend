@@ -12,7 +12,8 @@ import { FACTORY_ROUNDS } from "@games/brick-lab/constants/models";
 import { useDragDrop } from "@shared/hooks/useDragDrop";
 import { useIdleHand } from "@shared/hooks/useIdleHand";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
-import { playClip, playSequence, stopVoice } from "@shared/audio/voice";
+import { playClip, playSequence } from "@shared/audio/voice";
+import { useAfterVoice } from "@shared/hooks/useAfterVoice";
 import { playPickUpSound, playSnapSound, playStarPop, playThudSound } from "@shared/audio/sfx";
 import { cheerFor } from "@shared/audio/cheers";
 
@@ -40,15 +41,7 @@ export function ColorSort({ api }: { api: PlayApi }) {
   const root = useRef<HTMLDivElement>(null);
   const brickEl = useRef<HTMLButtonElement>(null);
   const targets = useRef(new Map<BrickColor, HTMLElement>());
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-      stopVoice();
-    },
-    []
-  );
+  const { thenAfter } = useAfterVoice();
 
   // Each brick is named as it rolls in.
   useEffect(() => {
@@ -98,16 +91,15 @@ export function ColorSort({ api }: { api: PlayApi }) {
       setBi(it.i + 1);
       setWon(true);
       playStarPop();
-      void playSequence([cheerFor(ri + 2), "instr-sort-done"], 200);
-      timer.current = setTimeout(() => {
+      thenAfter([cheerFor(ri + 2), "instr-sort-done"], () => {
         setWon(false);
         setFilled({});
         setBi(0);
         if (ri + 1 >= FACTORY_ROUNDS.length) api.finish();
         else setRi(ri + 1);
-      }, 2800);
+      });
     },
-    [api, ri, round.belt.length]
+    [api, ri, round.belt.length, thenAfter]
   );
 
   const { dragging, over, start, ghostRef, tookClick } = useDragDrop<Item, BrickColor>({

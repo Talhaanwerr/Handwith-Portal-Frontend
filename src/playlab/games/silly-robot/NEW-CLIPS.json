@@ -1,0 +1,53 @@
+[
+  {
+    "id": "srb-welcome",
+    "text": "Oh no! The silly robot fell apart. Let's fix him!",
+    "file": "/audio/silly-robot/welcome.mp3"
+  },
+  {
+    "id": "srb-done",
+    "text": "The robot is all fixed. Beep boop, thank you!",
+    "file": "/audio/silly-robot/done.mp3"
+  },
+  {
+    "id": "srb-mode-fix",
+    "text": "Fix the Robot. Find the part with the same dots.",
+    "file": "/audio/silly-robot/mode-fix.mp3"
+  },
+  {
+    "id": "srb-mode-peek",
+    "text": "Quick Look. Look fast, then tap the number.",
+    "file": "/audio/silly-robot/mode-peek.mp3"
+  },
+  {
+    "id": "srb-fix-arm",
+    "text": "The robot lost an arm! Find the arm with the same dots as his tummy.",
+    "file": "/audio/silly-robot/fix-arm.mp3"
+  },
+  {
+    "id": "srb-fix-leg",
+    "text": "The robot lost a leg! Find the leg with the same dots as his tummy.",
+    "file": "/audio/silly-robot/fix-leg.mp3"
+  },
+  {
+    "id": "srb-fix-head",
+    "text": "The robot lost his head! Find the head with the same dots as his tummy.",
+    "file": "/audio/silly-robot/fix-head.mp3"
+  },
+  {
+    "id": "srb-not-that",
+    "text": "Not that one. Look at his tummy again!",
+    "file": "/audio/silly-robot/not-that.mp3"
+  },
+  {
+    "id": "srb-look",
+    "text": "Look at the robot's tummy. Quick!",
+    "file": "/audio/silly-robot/look.mp3"
+  },
+  {
+    "id": "srb-what-see",
+    "text": "How many dots did you see?",
+    "file": "/audio/silly-robot/what-see.mp3"
+  },
+  { "id": "srb-peek-again", "text": "Peek again", "file": "/audio/silly-robot/peek-again.mp3" }
+]

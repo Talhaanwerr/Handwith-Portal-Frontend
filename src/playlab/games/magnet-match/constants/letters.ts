@@ -9,6 +9,19 @@ export const GROUPS: readonly (readonly string[])[] = Array.from(
 
 export const TOTAL_GROUPS = GROUPS.length; // 9 (the last is y·z)
 
+/** Which case the child is practising. Uppercase teaches the letter NAMES
+ *  ("ay"), lowercase teaches the SOUNDS ("a" as in apple). */
+export type LetterCase = "upper" | "lower";
+
+/** The letter as it is drawn in this case. Ids stay lowercase everywhere. */
+export const caseLetter = (l: string, c: LetterCase): string =>
+  c === "upper" ? l.toUpperCase() : l.toLowerCase();
+
+/** The recorded clip that teaches this letter in this case: the letter name
+ *  for uppercase, the phonics sound for lowercase — never the name. */
+export const letterClipId = (l: string, c: LetterCase): string =>
+  c === "upper" ? `letter-${l}` : `phonics-${l}`;
+
 /** Bright physical-magnet colors, rotating per letter */
 export const MAGNET_COLORS = [
   { fill: "#E85D5D", edge: "#C23B3B" }, // red

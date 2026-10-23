@@ -9,6 +9,7 @@ import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { SiteScene } from "@games/cvc-match/components/SiteScene";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useMazeStore, type MazeScreen } from "@games/math-maze/store/mazeStore";
 import { mazeFor, starsFor, type LevelId } from "@games/math-maze/constants/mazes";
 import { MazeBoard } from "@games/math-maze/components/MazeBoard";
@@ -47,6 +48,7 @@ const SCREEN = {
  */
 export function MathMazeGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const screen = useMazeStore((s) => s.screen);
   const level = useMazeStore((s) => s.level);
   const round = useMazeStore((s) => s.round);
@@ -79,7 +81,7 @@ export function MathMazeGame() {
   }, [router]);
 
   const toPick = useCallback(() => setScreen("pick"), [setScreen]);
-  const pick = useCallback((l: LevelId) => begin(l), [begin]);
+  const pick = useCallback((l: LevelId) => gate(() => begin(l), l), [gate, begin]);
 
   const maze = mazeFor(level, round);
 

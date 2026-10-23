@@ -7,6 +7,7 @@ import { GameStage } from "@shared/components/game/GameStage";
 import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useBlendReadStore, type BRScreen } from "@games/blend-read/store/blendReadStore";
 import { LEVELS, questionCount } from "@games/blend-read/constants/levels";
 import { TitleScreen } from "@games/blend-read/components/TitleScreen";
@@ -38,6 +39,7 @@ function toBucket(screen: BRScreen): "splash" | "menu" | "play" {
  */
 export function BlendReadGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const {
     screen,
     levelId,
@@ -91,7 +93,7 @@ export function BlendReadGame() {
               <LevelMenu
                 progress={progress}
                 onBack={() => router.push(PORTAL_ROUTE)}
-                onPick={(id) => openLevel(id)}
+                onPick={(id) => gate(() => openLevel(id), id)}
               />
             </motion.div>
           )}

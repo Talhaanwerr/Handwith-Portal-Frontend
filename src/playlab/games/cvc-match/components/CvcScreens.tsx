@@ -22,7 +22,7 @@ export function SplashScreen({
   useSayOnEnter(["instr-tap-play"]);
   return (
     <div className="cv-splash ct-world">
-      <SiteScene />
+      <SiteScene calm />
 
       <NavPillButton
         label="Back to Games"
@@ -90,7 +90,7 @@ export function ModuleScreen({
   useSayOnEnter(["instr-site-pick-vowel"]);
   return (
     <div className="cv-pick ct-world">
-      <SiteScene />
+      <SiteScene calm />
       <ChoiceScreen<string>
         title="Which sound?"
         subtitle="Every sound has its own set of words"
@@ -168,7 +168,7 @@ export function AllDone({
   useSayOnEnter(["instr-site-built"]);
   return (
     <div className="cv-done ct-world">
-      <SiteScene cheer />
+      <SiteScene cheer calm />
 
       <Confetti count={54} />
 

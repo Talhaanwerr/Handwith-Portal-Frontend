@@ -1,0 +1,213 @@
+AUDIO TO RECORD — BRICK GAMES
+==============================
+
+44 lines. Until a file exists, that line is silent (browser speech is off).
+Checked 2026-10-19 against public/audio: every OTHER clip the brick games
+play (94 of 138: colour names, numbers 1-10, letter names A-Z, letter
+sounds, word names, cheers) is already recorded — nothing else is needed.
+
+VOICE: the same as the existing recordings — warm, slow, a nursery teacher
+talking to one child. Full sentences at storytime pace.
+
+HOW TO SAVE: name each file exactly as shown and put it under
+Handwith-Portal-Frontend/public/ (e.g. public/audio/bricks/lab-welcome.mp3).
+The clip id is only for matching the list to the game.
+
+
+BRICK LAB (free build) — 3
+---------------------------
+ 1. "Let's build with bricks!"
+    save as: public/audio/bricks/lab-welcome.mp3
+    clip id: brick-lab-welcome
+ 2. "Pick a colour, then drag a brick onto the plate."
+    save as: public/audio/bricks/lab-drag.mp3
+    clip id: brick-lab-drag
+ 3. "What a great build!"
+    save as: public/audio/bricks/lab-done.mp3
+    clip id: brick-lab-done
+
+SORT & COUNT (Color Sort + Number Tower) — 5
+---------------------------------------------
+ 4. "Pick a brick game!"
+    save as: public/audio/bricks/countsort-welcome.mp3
+    clip id: brick-countsort-welcome
+ 5. "Drag the brick into the box of the same colour."
+    save as: public/audio/bricks/factory-drag.mp3
+    clip id: brick-factory-drag
+ 6. "Find the box with the same colour."
+    save as: public/audio/bricks/factory-match.mp3
+    clip id: brick-factory-match
+ 7. "Build a tower of"
+    save as: public/audio/bricks/tower-build.mp3
+    clip id: brick-tower-build
+    note:    Unfinished sentence: the game plays a recorded number straight after it ("Build a tower of … five").
+ 8. "That's enough bricks!"
+    save as: public/audio/bricks/tower-enough.mp3
+    clip id: brick-tower-enough
+
+BUILD STEPS — 11
+----------------
+ 9. "Let's build, one brick at a time!"
+    save as: public/audio/bricks/steps-welcome.mp3
+    clip id: brick-steps-welcome
+10. "Put the brick on its shadow."
+    save as: public/audio/bricks/steps-look.mp3
+    clip id: brick-steps-look
+11. "Look for the shadow. It goes there."
+    save as: public/audio/bricks/steps-shadow.mp3
+    clip id: brick-steps-shadow
+12. "You built it!"
+    save as: public/audio/bricks/steps-done.mp3
+    clip id: brick-steps-done
+13. "You built every model!"
+    save as: public/audio/bricks/steps-all.mp3
+    clip id: brick-steps-all
+14. "A tower!"
+    save as: public/audio/bricks/model-tower.mp3
+    clip id: brick-model-tower
+    note:    Short and bright — it is the reveal when the model is finished.
+15. "A duck!"
+    save as: public/audio/bricks/model-duck.mp3
+    clip id: brick-model-duck
+16. "A car!"
+    save as: public/audio/bricks/model-car.mp3
+    clip id: brick-model-car
+17. "A house!"
+    save as: public/audio/bricks/model-house.mp3
+    clip id: brick-model-house
+18. "A tree!"
+    save as: public/audio/bricks/model-tree.mp3
+    clip id: brick-model-tree
+19. "A robot!"
+    save as: public/audio/bricks/model-robot.mp3
+    clip id: brick-model-robot
+
+PATTERN WALL — 5
+-----------------
+20. "Let's finish the patterns!"
+    save as: public/audio/bricks/pattern-welcome.mp3
+    clip id: brick-pattern-welcome
+21. "What comes next?"
+    save as: public/audio/bricks/pattern-next.mp3
+    clip id: brick-pattern-next
+22. "Look at the pattern again."
+    save as: public/audio/bricks/pattern-look.mp3
+    clip id: brick-pattern-look
+23. "The pattern is finished!"
+    save as: public/audio/bricks/pattern-done.mp3
+    clip id: brick-pattern-done
+24. "You finished every pattern!"
+    save as: public/audio/bricks/pattern-all.mp3
+    clip id: brick-pattern-all
+
+SPELL BRICKS — 3
+-----------------
+25. "Let's spell with letter bricks!"
+    save as: public/audio/bricks/spell-welcome.mp3
+    clip id: brick-spell-welcome
+26. "Build the word with letter bricks. Spell"
+    save as: public/audio/bricks/spell-build.mp3
+    clip id: brick-spell-build
+    note:    Lead-in: the game plays the recorded word straight after it ("…Spell — cat").
+27. "You spelled every word!"
+    save as: public/audio/bricks/spell-all.mp3
+    clip id: brick-spell-all
+
+FIRST SOUND — 3
+----------------
+28. "Which letter does it start with?"
+    save as: public/audio/bricks/sound-welcome.mp3
+    clip id: brick-sound-welcome
+29. "What sound does it start with?"
+    save as: public/audio/bricks/sound-ask.mp3
+    clip id: brick-sound-ask
+30. "You know your first sounds!"
+    save as: public/audio/bricks/sound-all.mp3
+    clip id: brick-sound-all
+
+ABC TOWER — 3
+--------------
+31. "Let's build the alphabet!"
+    save as: public/audio/bricks/abc-welcome.mp3
+    clip id: brick-abc-welcome
+32. "What letter comes next?"
+    save as: public/audio/bricks/abc-next.mp3
+    clip id: brick-abc-next
+33. "You built the whole alphabet!"
+    save as: public/audio/bricks/abc-all.mp3
+    clip id: brick-abc-all
+
+PLUS TOWER — 4
+---------------
+34. "Let's add with bricks!"
+    save as: public/audio/bricks/plus-welcome.mp3
+    clip id: brick-plus-welcome
+35. "Build the sum with bricks."
+    save as: public/audio/bricks/plus-build.mp3
+    clip id: brick-plus-build
+36. "Now add the blue bricks."
+    save as: public/audio/bricks/plus-now-blue.mp3
+    clip id: brick-plus-now-blue
+37. "You can add!"
+    save as: public/audio/bricks/plus-all.mp3
+    clip id: brick-plus-all
+
+TAKE AWAY TOWER — 3
+--------------------
+38. "Let's take bricks away!"
+    save as: public/audio/bricks/take-welcome.mp3
+    clip id: brick-take-welcome
+39. "Tap the top brick to take it away."
+    save as: public/audio/bricks/take-tap.mp3
+    clip id: brick-take-tap
+40. "You can take away!"
+    save as: public/audio/bricks/take-all.mp3
+    clip id: brick-take-all
+
+MATHS WORDS (Plus Tower + Take Away Tower — record each word ALONE) — 4
+------------------------------------------------------------------------
+41. "plus"
+    save as: public/audio/maths/plus.mp3
+    clip id: math-plus
+    note:    One word, plain and even: the game plays "two" + "plus" + "one" + "makes" + "three" as separate files.
+42. "makes"
+    save as: public/audio/maths/makes.mp3
+    clip id: math-makes
+43. "take away"
+    save as: public/audio/maths/take-away.mp3
+    clip id: math-take-away
+    note:    Two words together, said as one phrase: "four … take away … one … is … three".
+44. "is"
+    save as: public/audio/maths/is.mp3
+    clip id: math-is
+
+
+TOTAL: 44 recordings.
+
+ADDED (Brick Lab "Copy the Design"):
+
+  say: "Pick a design to build."
+    save as: public/audio/bricks/copy-pick.mp3
+    clip id: brick-copy-pick
+
+  say: "Build the same as the picture."
+    save as: public/audio/bricks/copy-same.mp3
+    clip id: brick-copy-same
+
+(2 more recordings; until recorded the game simply stays silent on those two lines.)
+
+ADDED (Build Steps says "small/big" + "<colour> block!"; small/big use word-small / word-big):
+
+  say: "White block!"
+    save as: public/audio/friends/block-white.mp3
+    clip id: friends-block-white
+
+  say: "Black block!"
+    save as: public/audio/friends/block-black.mp3
+    clip id: friends-block-black
+
+ADDED (Shadow Match, Big or Small):
+
+  say: "Big or Small! Tap the shadow I ask for."
+    save as: public/audio/shadow-match/mode-size.mp3
+    clip id: shm-mode-size

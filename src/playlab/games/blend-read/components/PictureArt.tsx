@@ -24,7 +24,46 @@
  *     mouse, not a crowd) so the picture still reads as plural.
  */
 
+import { fluentSrc } from "@shared/constants/fluent3d";
+
 const ICON_BASE = "/games/blend-read/icons";
+
+/** The Fluent 3D picture when there is one, else the old Twemoji file. */
+const iconSrc = (id: string) => fluentSrc(id) ?? `${ICON_BASE}/${id}.svg`;
+
+/**
+ * Real animal PHOTOS — Jungle Spy's own (public/games/jungle-spy/animals/).
+ * The word games (Word Site, Blend & Seek, Spell Bricks, First Sound) ask for
+ * them with `photo`, so a child sees a real cat, not a drawing. Games where an
+ * animal is a TOY (Tiny Toy Shop's teddy bear and horse) keep the picture.
+ */
+const ANIMAL_PHOTO: Readonly<Record<string, string>> = {
+  ant: "ant",
+  bear: "bear",
+  cat: "cat",
+  dog: "dog",
+  pup: "dog",
+  elephant: "elephant",
+  fish: "fish",
+  frog: "frog",
+  giraffe: "giraffe",
+  horse: "horse",
+  jellyfish: "jellyfish",
+  koala: "koala",
+  lion: "lion",
+  monkey: "monkey",
+  octopus: "octopus",
+  penguin: "penguin",
+  rabbit: "rabbit",
+  snake: "snake",
+  turtle: "turtle",
+  whale: "whale",
+  zebra: "zebra",
+};
+
+/** The photo for an animal word, or null when there is no photo of it. */
+export const animalPhoto = (id: string): string | null =>
+  ANIMAL_PHOTO[id] ? `/games/jungle-spy/animals/${ANIMAL_PHOTO[id]}.jpg` : null;
 
 export type PictureId =
   // level 1
@@ -107,13 +146,7 @@ export type PictureId =
 /** Every id EXCEPT the two special-cased below is a plain Twemoji file. */
 function IconImg({ id }: { id: PictureId }) {
   return (
-    <img
-      src={`${ICON_BASE}/${id}.svg`}
-      alt=""
-      className="br-pic-img"
-      draggable={false}
-      aria-hidden="true"
-    />
+    <img src={iconSrc(id)} alt="" className="br-pic-img" draggable={false} aria-hidden="true" />
   );
 }
 
@@ -155,15 +188,27 @@ function GlueArt() {
 function MiceArt() {
   return (
     <div className="br-pic-group" aria-hidden="true">
-      <img src={`${ICON_BASE}/mice.svg`} alt="" className="br-pic-group-item" draggable={false} />
-      <img src={`${ICON_BASE}/mice.svg`} alt="" className="br-pic-group-item" draggable={false} />
-      <img src={`${ICON_BASE}/mice.svg`} alt="" className="br-pic-group-item" draggable={false} />
+      <img src={iconSrc("mice")} alt="" className="br-pic-group-item" draggable={false} />
+      <img src={iconSrc("mice")} alt="" className="br-pic-group-item" draggable={false} />
+      <img src={iconSrc("mice")} alt="" className="br-pic-group-item" draggable={false} />
     </div>
   );
 }
 
-/** The picture for one card. */
-export function Picture({ id }: { id: PictureId }) {
+/** The picture for one card. `photo`: a real photo for animals that have one. */
+export function Picture({ id, photo = false }: { id: PictureId; photo?: boolean }) {
+  const src = photo ? animalPhoto(id) : null;
+  if (src)
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt=""
+        className="br-pic-img br-pic-photo"
+        draggable={false}
+        aria-hidden="true"
+      />
+    );
   if (id === "glue") return <GlueArt />;
   if (id === "mice") return <MiceArt />;
   return <IconImg id={id} />;

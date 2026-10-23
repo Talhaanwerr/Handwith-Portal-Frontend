@@ -1,6 +1,14 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import { motion } from "framer-motion";
 import type { CountLevel, Level, SequenceLevel } from "@games/number-safari/constants/levels";
 import { SCATTER_MAX, numbersFor } from "@games/number-safari/constants/levels";
@@ -15,7 +23,7 @@ import { useScheduler } from "@shared/hooks/useScheduler";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { cssVars } from "@shared/styles/cssVars";
 import { cheerFor } from "@shared/audio/cheers";
-import { clipText, playClip, sayAfter } from "@shared/audio/voice";
+import { clipText, playClip, sayAfter, voiceIdle } from "@shared/audio/voice";
 import { useDragDrop, type DropInfo } from "@shared/hooks/useDragDrop";
 import { registerTarget, toRootPoint } from "@shared/utils/pointer";
 import {
@@ -102,6 +110,14 @@ export function LevelScreen({ level, index, total, onMiss, onComplete }: LevelSc
   const bubbleRefs = useRef<Map<number, HTMLElement>>(new Map());
   const targetRefs = useRef<Map<string, HTMLElement>>(new Map());
   const schedule = useScheduler();
+  /** False once this level has gone: a late "next level" must not fire. */
+  const aliveRef = useRef(true);
+  useEffect(() => {
+    aliveRef.current = true;
+    return () => {
+      aliveRef.current = false;
+    };
+  }, []);
 
   const toRoot = useCallback((x: number, y: number) => toRootPoint(rootRef.current, x, y), []);
 
@@ -123,7 +139,12 @@ export function LevelScreen({ level, index, total, onMiss, onComplete }: LevelSc
     playCorrectSound();
     schedule(playFanfare, 320);
     void sayAfter(cheerFor(level.id));
-    schedule(onComplete, HOLD_MS);
+    // on after the hold AND once the cheer has been said, never mid-word
+    schedule(() => {
+      void voiceIdle().then(() => {
+        if (aliveRef.current) onComplete();
+      });
+    }, HOLD_MS);
   }, [schedule, onComplete, level.id]);
 
   const shakeHead = useCallback(

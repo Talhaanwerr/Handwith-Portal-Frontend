@@ -1,0 +1,391 @@
+==============================================================================
+AUDIO TO RECORD - 179 LINES
+==============================================================================
+
+Already covered: 656 clips have a recording, and 183 more say words
+we already own, so they reuse those files. Nothing below is a duplicate.
+
+HOW TO USE THIS LIST
+  1. Record each line under SAY.
+  2. Name the file and put it at the path under SAVE AS, relative to
+     Handwith-Portal-Frontend/public/ .
+  3. That is all - no code change needed. Each line already has its entry
+     in the game, and starts playing the moment the file is there.
+
+VOICE: warm, slow, a nursery teacher reading to one child - the same voice
+as the recordings already in the folders.
+
+==============================================================================
+WORDS (WORD SITE, SORT IT, PICTURE WORDS)  (46)
+==============================================================================
+
+  SAY     SAVE AS
+  -----   ----------------------------------
+  bag     audio/words/bag.mp3
+  bed     audio/words/bed.mp3
+  big     audio/words/big.mp3
+  bin     audio/words/bin.mp3
+  bug     audio/words/bug.mp3
+  can     audio/words/can.mp3
+  cap     audio/words/cap.mp3
+  cob     audio/words/cob.mp3
+  dig     audio/words/dig.mp3
+  dot     audio/words/dot.mp3
+  fog     audio/words/fog.mp3
+  gas     audio/words/gas.mp3
+  gem     audio/words/gem.mp3
+  ham     audio/words/ham.mp3
+  hop     audio/words/hop.mp3
+  hot     audio/words/hot.mp3
+  hug     audio/words/hug.mp3
+  kid     audio/words/kid.mp3
+  land    audio/words/land.mp3
+  leg     audio/words/leg.mp3
+  lip     audio/words/lip.mp3
+  log     audio/words/log.mp3
+  man     audio/words/man.mp3
+  map     audio/words/map.mp3
+  mat     audio/words/mat.mp3
+  mug     audio/words/mug.mp3
+  pan     audio/words/pan.mp3
+  peg     audio/words/peg.mp3
+  pet     audio/words/pet.mp3
+  pig     audio/words/pig.mp3
+  pin     audio/words/pin.mp3
+  pot     audio/words/pot.mp3
+  pup     audio/words/pup.mp3
+  rat     audio/words/rat.mp3
+  red     audio/words/red.mp3
+  sit     audio/words/sit.mp3
+  sky     audio/words/sky.mp3
+  small   audio/words/small.mp3
+  sock    audio/words/sock.mp3
+  sub     audio/words/sub.mp3
+  tap     audio/words/tap.mp3
+  ten     audio/words/ten.mp3
+  tin     audio/words/tin.mp3
+  top     audio/words/top.mp3
+  tub     audio/words/tub.mp3
+  web     audio/words/web.mp3
+
+==============================================================================
+NUMBERS (NUMBER SAFARI)  (7)
+==============================================================================
+
+  SAY   SAVE AS
+  --   ----------------------------------
+  20   audio/numbers/20.mp3
+  25   audio/numbers/25.mp3
+  30   audio/numbers/30.mp3
+  35   audio/numbers/35.mp3
+  40   audio/numbers/40.mp3
+  45   audio/numbers/45.mp3
+  50   audio/numbers/50.mp3
+
+==============================================================================
+PICTURE WORDS - SCREEN LINE  (1)
+==============================================================================
+
+  SAY                                        SAVE AS
+  ----------------------------------------   ----------------------------------
+  Click the word that matches the picture.   audio/instructions/click-the-word.mp3
+
+==============================================================================
+BLEND & SEEK - WORDS  (26)
+==============================================================================
+
+  SAY       SAVE AS
+  -------   ----------------------------------
+  bed       audio/blend/word-level1-bed.mp3
+  clam      audio/blend/word-level2-clam.mp3
+  crab      audio/blend/word-level2-crab.mp3
+  plum      audio/blend/word-level2-plum.mp3
+  shell     audio/blend/word-level2-shell.mp3
+  ship      audio/blend/word-level2-ship.mp3
+  blue      audio/blend/word-level3-blue.mp3
+  bowl      audio/blend/word-level3-bowl.mp3
+  mice      audio/blend/word-level3-mice.mp3
+  spoon     audio/blend/word-level3-spoon.mp3
+  toes      audio/blend/word-level3-toes.mp3
+  brush     audio/blend/word-level4-brush.mp3
+  chair     audio/blend/word-level4-chair.mp3
+  cheese    audio/blend/word-level4-cheese.mp3
+  clock     audio/blend/word-level4-clock.mp3
+  crown     audio/blend/word-level4-crown.mp3
+  teeth     audio/blend/word-level4-teeth.mp3
+  thumb     audio/blend/word-level4-thumb.mp3
+  bike      audio/blend/word-level5-bike.mp3
+  chef      audio/blend/word-level5-chef.mp3
+  cloud     audio/blend/word-level5-cloud.mp3
+  cube      audio/blend/word-level5-cube.mp3
+  meat      audio/blend/word-level5-meat.mp3
+  tie       audio/blend/word-level5-tie.mp3
+  toys      audio/blend/word-level5-toys.mp3
+  unicorn   audio/blend/word-level5-unicorn.mp3
+
+==============================================================================
+BLEND & SEEK - LETTER SOUNDS  (32)
+==============================================================================
+
+  SAY   SAVE AS
+  ---   ----------------------------------
+  sh    audio/blend/sound-level2-shell-0.mp3
+  sh    audio/blend/sound-level2-ship-0.mp3
+  ar    audio/blend/sound-level2-star-2.mp3
+  ue    audio/blend/sound-level3-blue-2.mp3
+  ow    audio/blend/sound-level3-bowl-1.mp3
+  ou    audio/blend/sound-level3-house-1.mp3
+  ui    audio/blend/sound-level3-juice-1.mp3
+  ou    audio/blend/sound-level3-mouse-1.mp3
+  oo    audio/blend/sound-level3-spoon-2.mp3
+  oe    audio/blend/sound-level3-toes-1.mp3
+  ai    audio/blend/sound-level3-train-2.mp3
+  sh    audio/blend/sound-level4-brush-3.mp3
+  ch    audio/blend/sound-level4-chair-0.mp3
+  air   audio/blend/sound-level4-chair-1.mp3
+  ch    audio/blend/sound-level4-cheese-0.mp3
+  ee    audio/blend/sound-level4-cheese-1.mp3
+  ck    audio/blend/sound-level4-clock-3.mp3
+  ow    audio/blend/sound-level4-crown-2.mp3
+  qu    audio/blend/sound-level4-queen-0.mp3
+  ee    audio/blend/sound-level4-queen-1.mp3
+  sh    audio/blend/sound-level4-shoe-0.mp3
+  oe    audio/blend/sound-level4-shoe-1.mp3
+  ee    audio/blend/sound-level4-teeth-1.mp3
+  th    audio/blend/sound-level4-teeth-2.mp3
+  th    audio/blend/sound-level4-thumb-0.mp3
+  wh    audio/blend/sound-level4-whale-0.mp3
+  ch    audio/blend/sound-level5-chef-0.mp3
+  ou    audio/blend/sound-level5-cloud-2.mp3
+  ea    audio/blend/sound-level5-meat-1.mp3
+  ie    audio/blend/sound-level5-tie-1.mp3
+  oy    audio/blend/sound-level5-toys-1.mp3
+  or    audio/blend/sound-level5-unicorn-4.mp3
+
+==============================================================================
+BLEND & SEEK - STRETCHED BLENDS  (50)
+==============================================================================
+
+  SAY     b-b-b... eeeee... d-d-d... bbeeeedd
+  SAVE AS audio/blend/merge-level1-bed.mp3
+
+  SAY     b-b-b... ooooo... x-x-x... bbooooxx
+  SAVE AS audio/blend/merge-level1-box.mp3
+
+  SAY     b-b-b... uuuuu... sssss... bbuuuussss
+  SAVE AS audio/blend/merge-level1-bus.mp3
+
+  SAY     c-c-c... aaaaa... t-t-t... ccaaaatt
+  SAVE AS audio/blend/merge-level1-cat.mp3
+
+  SAY     c-c-c... uuuuu... p-p-p... ccuuuupp
+  SAVE AS audio/blend/merge-level1-cup.mp3
+
+  SAY     d-d-d... ooooo... g-g-g... ddoooogg
+  SAVE AS audio/blend/merge-level1-dog.mp3
+
+  SAY     fffff... ooooo... x-x-x... ffffooooxx
+  SAVE AS audio/blend/merge-level1-fox.mp3
+
+  SAY     hhhhh... aaaaa... t-t-t... hhhhaaaatt
+  SAVE AS audio/blend/merge-level1-hat.mp3
+
+  SAY     hhhhh... eeeee... nnnnn... hhhheeeennnn
+  SAVE AS audio/blend/merge-level1-hen.mp3
+
+  SAY     sssss... uuuuu... nnnnn... ssssuuuunnnn
+  SAVE AS audio/blend/merge-level1-sun.mp3
+
+  SAY     c-c-c... lllll... aaaaa... mmmmm... ccllllaaaammmm
+  SAVE AS audio/blend/merge-level2-clam.mp3
+
+  SAY     c-c-c... rrrrr... aaaaa... b-b-b... ccrrrraaaabb
+  SAVE AS audio/blend/merge-level2-crab.mp3
+
+  SAY     d-d-d... rrrrr... uuuuu... mmmmm... ddrrrruuuummmm
+  SAVE AS audio/blend/merge-level2-drum.mp3
+
+  SAY     fffff... lllll... aaaaa... g-g-g... ffffllllaaaagg
+  SAVE AS audio/blend/merge-level2-flag.mp3
+
+  SAY     fffff... rrrrr... ooooo... g-g-g... ffffrrrroooogg
+  SAVE AS audio/blend/merge-level2-frog.mp3
+
+  SAY     nnnnn... eeeee... sssss... t-t-t... nnnneeeesssstt
+  SAVE AS audio/blend/merge-level2-nest.mp3
+
+  SAY     p-p-p... lllll... uuuuu... mmmmm... pplllluuuummmm
+  SAVE AS audio/blend/merge-level2-plum.mp3
+
+  SAY     shhhh... eeeee... lllll... shhheeeellll
+  SAVE AS audio/blend/merge-level2-shell.mp3
+
+  SAY     shhhh... iiiii... p-p-p... shhhiiiipp
+  SAVE AS audio/blend/merge-level2-ship.mp3
+
+  SAY     sssss... t-t-t... arrrr... ssssttarrr
+  SAVE AS audio/blend/merge-level2-star.mp3
+
+  SAY     b-b-b... lllll... ueeee... bbllllueee
+  SAVE AS audio/blend/merge-level3-blue.mp3
+
+  SAY     b-b-b... owwww... lllll... bbowwwllll
+  SAVE AS audio/blend/merge-level3-bowl.mp3
+
+  SAY     c-c-c... aaaaa... k-k-k... ccaaaakk
+  SAVE AS audio/blend/merge-level3-cake.mp3
+
+  SAY     hhhhh... ouuuu... sssss... hhhhouuussss
+  SAVE AS audio/blend/merge-level3-house.mp3
+
+  SAY     j-j-j... uiiii... c-c-c... jjuiiicc
+  SAVE AS audio/blend/merge-level3-juice.mp3
+
+  SAY     mmmmm... iiiii... c-c-c... mmmmiiiicc
+  SAVE AS audio/blend/merge-level3-mice.mp3
+
+  SAY     mmmmm... ouuuu... sssss... mmmmouuussss
+  SAVE AS audio/blend/merge-level3-mouse.mp3
+
+  SAY     sssss... p-p-p... ooooo... nnnnn... ssssppoooonnnn
+  SAVE AS audio/blend/merge-level3-spoon.mp3
+
+  SAY     t-t-t... oeeee... sssss... ttoeeessss
+  SAVE AS audio/blend/merge-level3-toes.mp3
+
+  SAY     t-t-t... rrrrr... aiiii... nnnnn... ttrrrraiiinnnn
+  SAVE AS audio/blend/merge-level3-train.mp3
+
+  SAY     b-b-b... rrrrr... uuuuu... shhhh... bbrrrruuuushhh
+  SAVE AS audio/blend/merge-level4-brush.mp3
+
+  SAY     ch-ch-ch... airrrr... chchairrr
+  SAVE AS audio/blend/merge-level4-chair.mp3
+
+  SAY     ch-ch-ch... eeeee... sssss... chcheeeessss
+  SAVE AS audio/blend/merge-level4-cheese.mp3
+
+  SAY     c-c-c... lllll... ooooo... ck-ck-ck... cclllloooockck
+  SAVE AS audio/blend/merge-level4-clock.mp3
+
+  SAY     c-c-c... rrrrr... owwww... nnnnn... ccrrrrowwwnnnn
+  SAVE AS audio/blend/merge-level4-crown.mp3
+
+  SAY     qu-qu-qu... eeeee... nnnnn... ququeeeennnn
+  SAVE AS audio/blend/merge-level4-queen.mp3
+
+  SAY     shhhh... oeeee... shhhoeee
+  SAVE AS audio/blend/merge-level4-shoe.mp3
+
+  SAY     t-t-t... eeeee... thhhh... tteeeethhh
+  SAVE AS audio/blend/merge-level4-teeth.mp3
+
+  SAY     thhhh... uuuuu... mmmmm... thhhuuuummmm
+  SAVE AS audio/blend/merge-level4-thumb.mp3
+
+  SAY     whhhh... aaaaa... lllll... whhhaaaallll
+  SAVE AS audio/blend/merge-level4-whale.mp3
+
+  SAY     b-b-b... iiiii... k-k-k... bbiiiikk
+  SAVE AS audio/blend/merge-level5-bike.mp3
+
+  SAY     ch-ch-ch... eeeee... fffff... chcheeeeffff
+  SAVE AS audio/blend/merge-level5-chef.mp3
+
+  SAY     c-c-c... lllll... ouuuu... d-d-d... ccllllouuudd
+  SAVE AS audio/blend/merge-level5-cloud.mp3
+
+  SAY     c-c-c... uuuuu... b-b-b... ccuuuubb
+  SAVE AS audio/blend/merge-level5-cube.mp3
+
+  SAY     lllll... iiiii... ooooo... nnnnn... lllliiiioooonnnn
+  SAVE AS audio/blend/merge-level5-lion.mp3
+
+  SAY     mmmmm... eaaaa... t-t-t... mmmmeaaatt
+  SAVE AS audio/blend/merge-level5-meat.mp3
+
+  SAY     sssss... nnnnn... aaaaa... k-k-k... ssssnnnnaaaakk
+  SAVE AS audio/blend/merge-level5-snake.mp3
+
+  SAY     t-t-t... ieeee... ttieee
+  SAVE AS audio/blend/merge-level5-tie.mp3
+
+  SAY     t-t-t... oyyyy... sssss... ttoyyyssss
+  SAVE AS audio/blend/merge-level5-toys.mp3
+
+  SAY     uuuuu... nnnnn... iiiii... c-c-c... orrrr... nnnnn... uuuunnnniiiiccorrrnnnn
+  SAVE AS audio/blend/merge-level5-unicorn.mp3
+
+==============================================================================
+BLEND & SEEK - SCREEN LINES  (5)
+==============================================================================
+
+  SAY     Sound out the word at the top of the screen, then select the picture that matches the word.
+  SAVE AS audio/blend/instructions.mp3
+
+  SAY     Hint: Click on the letter, or the sound button beneath it, to hear the sound that the letter makes!
+  SAVE AS audio/blend/instructions-hint.mp3
+
+  SAY     Choose a level to practise.
+  SAVE AS audio/blend/menu.mp3
+
+  SAY     Blend & Seek! Levels 1 to 5 phonics.
+  SAVE AS audio/blend/title.mp3
+
+  SAY     Great work! You matched up all the words and pictures correctly. Would you like to play again?
+  SAVE AS audio/blend/well-done.mp3
+
+==============================================================================
+CANDY ABC  (2)
+==============================================================================
+
+  SAY              SAVE AS
+  --------------   ----------------------------------
+  ah - alligator   audio/treats/blend-alligator.mp3
+  puh - penguin    audio/treats/blend-penguin.mp3
+
+==============================================================================
+COLOUR & PAINT  (10)
+==============================================================================
+
+  SAY            SAVE AS
+  ------------   ----------------------------------
+  Let's paint!   audio/paint/intro.mp3
+  Pick blue.     audio/paint/pick-blue.mp3
+  Pick green.    audio/paint/pick-green.mp3
+  Pick orange.   audio/paint/pick-orange.mp3
+  Pick pink.     audio/paint/pick-pink.mp3
+  Pick purple.   audio/paint/pick-purple.mp3
+  Pick red.      audio/paint/pick-red.mp3
+  Pick yellow.   audio/paint/pick-yellow.mp3
+  cloud          audio/paint/word-cloud.mp3
+  grape          audio/paint/word-grape.mp3
+
+==============================================================================
+HOW EACH GROUP SHOULD SOUND
+==============================================================================
+
+WORDS
+  One word, said plainly - the way you would point at the picture and name
+  it. No sentence around it.
+
+NUMBERS
+  Just the number. The fives and tens are for a counting-in-tens run, so
+  they want the same even pace as one to ten.
+
+LETTER SOUNDS
+  These are PHONEMES, NOT LETTER NAMES.
+    sh  = "shh"            (not "ess-aitch")
+    ch  = "ch" as in chair (not "see-aitch")
+    oo  = the sound in moon
+  Saying the letter name instead makes the blending game teach the wrong
+  thing. The recordings in public/audio/phonics/ are the reference.
+
+STRETCHED BLENDS
+  A teacher sounding a word out slowly and then running it together:
+    c-c-c... aaaaa... t-t-t... ccaaaatt
+  Exaggerated and unhurried. The dots are real pauses.
+
+SCREEN LINES
+  Full sentences, normal storytime pace. The Picture Words line is read
+  once at the start of every question, so it wants to be calm and short.

@@ -1,12 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { useScheduler } from "@shared/hooks/useScheduler";
+import { useAfterVoice } from "@shared/hooks/useAfterVoice";
 import { playClickSound, playCorrectSound, playIncorrectSound, playChime } from "@shared/audio/sfx";
 import { playClip, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
 import { shuffle } from "@shared/utils/random";
@@ -29,8 +31,6 @@ interface FeedLevelProps {
 
 /** Chomp beat before the next dino steps up to ask. */
 const NEXT_AFTER_MS = 1100;
-/** Final cheer window — the you-did-it clip runs ~1.9s (measured). */
-const DONE_CHEER_MS = 2800;
 
 /**
  * FEED THE DINOS — listening mode.
@@ -63,13 +63,14 @@ export function FeedLevel({ letterCase, onComplete }: FeedLevelProps) {
   const [rootRef, dims] = useElementSize();
   const dinoRef = useRef<HTMLDivElement | null>(null);
   const schedule = useScheduler();
+  const { thenAfter } = useAfterVoice();
   /** Servings already swallowed — onAnimationComplete can fire twice, and a
    *  second swallow would double-schedule the advance and skip a serving. */
   const servedRef = useRef(-1);
   /** The confirmation clip for the letter just eaten — the next serving's ask
    *  chains off it rather than off a guessed timeout. */
   const confirmRef = useRef<Promise<void>>(Promise.resolve());
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   /** This session's menu: ten letters, shuffled once per mount, no repeats. */
   const menu = useMemo(() => shuffle([...ALPHABET]).slice(0, FEED_TOTAL), []);
@@ -120,9 +121,9 @@ export function FeedLevel({ letterCase, onComplete }: FeedLevelProps) {
           setCelebrating(true);
           setMood("cheer");
           playChime();
-          void playClip("cheer-you-did-it");
+          // the finale waits for the whole cheer, not a guessed delay
+          thenAfter(["cheer-you-did-it"], () => onComplete([...menu]));
         }, 650);
-        schedule(() => onComplete([...menu]), 650 + DONE_CHEER_MS);
       } else {
         schedule(() => {
           setFed(next);
@@ -130,7 +131,7 @@ export function FeedLevel({ letterCase, onComplete }: FeedLevelProps) {
         }, NEXT_AFTER_MS);
       }
     },
-    [fed, servingIndex, menu, onComplete, schedule]
+    [fed, servingIndex, menu, onComplete, schedule, thenAfter]
   );
 
   const chooseStone = useCallback(

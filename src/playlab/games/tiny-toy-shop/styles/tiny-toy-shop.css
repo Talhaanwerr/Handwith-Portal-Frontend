@@ -1,0 +1,493 @@
+/**
+ * Tiny Toy Shop — class prefix `tys-`. The stage chrome (teacher, star trail,
+ * pills, crosses, minis) is Count & Match's (`ng-`); the street is Sesame
+ * Street's (`sa-`). Here: the shop — customer, shelf, counter, basket, number
+ * buttons. Sized in container units of the shared `.ng-root`.
+ */
+
+/* ─── The street ───────────────────────────────────────────────────────── */
+.tys-world {
+  position: absolute;
+  inset: 0;
+}
+.tys-world.sa-root {
+  height: 100%;
+}
+
+/* ─── The board ────────────────────────────────────────────────────────── */
+.tys-play {
+  --tys-t: min(20cqh, 11cqw);
+  --tys-l: min(11cqh, 6cqw);
+}
+.tys-board {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2cqw;
+  width: 100%;
+  height: 100%;
+}
+
+/* the customer, with the picture bubble over their head */
+.tys-customer {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  width: min(36cqh, 17cqw);
+  padding-bottom: 6cqh;
+}
+.tys-bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70%;
+  min-height: 12cqh;
+  margin-bottom: 2.6cqh;
+  padding: 1.4cqh 1.8cqh;
+  border-radius: 3cqh;
+  background: #ffffff;
+  box-shadow: 0 0.8cqh 0 rgba(60, 40, 20, 0.18);
+}
+.tys-bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1.8cqh;
+  margin-left: -1.4cqh;
+  border-left: 1.4cqh solid transparent;
+  border-right: 1.4cqh solid transparent;
+  border-top: 1.9cqh solid #ffffff;
+}
+.tys-pal {
+  width: 100%;
+  aspect-ratio: 140 / 162;
+}
+.tys-ask {
+  color: #2e9e6a;
+  font-size: 9cqh;
+  line-height: 1;
+}
+
+/* a row of little toys (the bubble, the groups) */
+.tys-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6cqh;
+}
+.tys-row-toy {
+  display: block;
+  width: min(8cqh, 4.2cqw);
+  height: min(8cqh, 4.2cqw);
+}
+.tys-row-toy img,
+.tys-row-toy svg,
+.tys-toy-pic img,
+.tys-toy-pic svg,
+.tys-load-toy img,
+.tys-load-toy svg,
+.tys-mini-toy img,
+.tys-mini-toy svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ─── The shop: shelf on top, counter below ────────────────────────────── */
+.tys-shop {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2cqh;
+  max-width: 58cqw;
+  height: 100%;
+}
+.tys-shelf {
+  display: grid;
+  grid-template-columns: repeat(3, var(--tys-t));
+  grid-auto-rows: var(--tys-t);
+  gap: 2.4cqh 3cqw;
+  padding: 1.6cqh 2.4cqw 0;
+  border: 1.2cqh solid #8a5a2b;
+  border-radius: 1.6cqh;
+  background:
+    linear-gradient(#9b6a3c, #9b6a3c) left calc(var(--tys-t) + 1.6cqh) / 100% 1.6cqh no-repeat,
+    linear-gradient(#9b6a3c, #9b6a3c) left bottom / 100% 1.6cqh no-repeat,
+    #f6dfb4;
+  padding-bottom: 1.6cqh;
+}
+.tys-toy {
+  position: relative;
+  display: block;
+  width: var(--tys-t);
+  height: var(--tys-t);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.tys-toy:disabled {
+  cursor: default;
+}
+.tys-toy-pic {
+  position: absolute;
+  inset: 6%;
+  display: block;
+}
+.tys-toy.is-gone {
+  pointer-events: none;
+}
+.tys-toy.is-wrong .tys-toy-pic {
+  opacity: 0.4;
+}
+
+.tys-counter {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3cqw;
+  width: 100%;
+  padding: 0 2cqw 1.2cqh;
+  border-radius: 1.6cqh 1.6cqh 0.8cqh 0.8cqh;
+  background: linear-gradient(#e2a766 0 2.4cqh, #c98a4e 2.4cqh);
+  box-shadow: 0 1cqh 0 #8a5a2b;
+}
+
+/* ─── The basket ───────────────────────────────────────────────────────── */
+.tys-basket {
+  position: relative;
+  width: min(40cqh, 21cqw);
+  height: min(24cqh, 13cqw);
+  margin-top: -6cqh;
+}
+.tys-basket-handle {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 0;
+  height: 80%;
+  border: 1cqh solid #8a5a2b;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.tys-basket-load {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 14%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+.tys-load-toy {
+  display: block;
+  flex: none;
+  width: var(--tys-l);
+  height: var(--tys-l);
+  margin: 0 -1cqh;
+}
+.tys-basket-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 52%;
+  border: 0.6cqh solid #8a5a2b;
+  border-radius: 1cqh 1cqh 3cqh 3cqh;
+  background: repeating-linear-gradient(180deg, #d9a35b 0 2.2cqh, #b9813f 2.2cqh 2.8cqh);
+}
+.tys-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(14cqh, 8cqw);
+  height: min(14cqh, 8cqw);
+  margin-bottom: 1cqh;
+  border: 0.7cqh solid #b83a34;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #b83a34;
+  font-size: min(9cqh, 5cqw);
+  line-height: 1;
+}
+
+/* ─── Add Them Up ──────────────────────────────────────────────────────── */
+.tys-sum {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4cqw;
+}
+.tys-group {
+  padding: 1.6cqh 1.8cqh;
+  border-radius: 2.4cqh;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 0.8cqh 0 rgba(60, 40, 20, 0.18);
+}
+.tys-group .tys-row-toy {
+  width: min(13cqh, 7cqw);
+  height: min(13cqh, 7cqw);
+}
+.tys-plus {
+  color: #ffffff;
+  font-size: min(14cqh, 8cqw);
+  line-height: 1;
+  text-shadow: 0 0.8cqh 0 #1f7a4f;
+}
+.tys-counter--add {
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 3.4cqh;
+}
+.tys-choices {
+  display: flex;
+  gap: 2.4cqw;
+}
+.tys-num {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tys-t);
+  height: var(--tys-t);
+  padding: 0;
+  border: 0.8cqh solid #1f7a4f;
+  border-radius: 2.6cqh;
+  background: #ffffff;
+  color: #1f7a4f;
+  font-size: calc(var(--tys-t) * 0.62);
+  line-height: 1;
+  box-shadow: 0 1cqh 0 #1f7a4f;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.tys-num:disabled {
+  cursor: default;
+}
+.tys-num.is-right {
+  background: #2e9e6a;
+  color: #ffffff;
+}
+.tys-num.is-wrong {
+  opacity: 0.5;
+}
+.tys-counter--add .tys-basket {
+  margin-top: 0;
+}
+
+/* ─── Minis ────────────────────────────────────────────────────────────── */
+.tys-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4%;
+}
+.tys-mini .tys-basket {
+  --tys-l: 26cqh;
+  width: 72cqh;
+  height: 46cqh;
+  margin: 0;
+}
+.tys-mini-toy {
+  display: block;
+  width: 30%;
+  height: 50%;
+}
+.tys-mini .tys-plus {
+  font-size: 30cqh;
+}
+
+/* ─── Portrait ─────────────────────────────────────────────────────────── */
+@media (orientation: portrait) {
+  .tys-play {
+    --tys-t: min(24cqw, 11cqh);
+    --tys-l: min(12cqw, 6cqh);
+  }
+  .tys-board {
+    flex-direction: column;
+    align-items: center;
+  }
+  .tys-customer {
+    flex-direction: row;
+    width: auto;
+    height: 18cqh;
+    padding-bottom: 0;
+    gap: 3cqw;
+  }
+  .tys-pal {
+    width: auto;
+    height: 100%;
+  }
+  .tys-bubble {
+    margin-bottom: 0;
+  }
+  .tys-shop {
+    max-width: none;
+    width: 100%;
+  }
+  .tys-row-toy {
+    width: min(8cqw, 4.2cqh);
+    height: min(8cqw, 4.2cqh);
+  }
+  .tys-basket {
+    width: min(42cqw, 20cqh);
+    height: min(26cqw, 12cqh);
+  }
+  .tys-counter--add {
+    flex-direction: column;
+    gap: 2cqh;
+  }
+}
+
+/* A plain backdrop and no teacher. */
+.tys-game {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.tys-game .ng-teacher-slot {
+  display: none;
+}
+.tys-game .ng-main {
+  left: 3cqw;
+}
+.tys-plain {
+  background: linear-gradient(#fff6dc, #ffe9bd);
+}
+.tys-plain-floor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 22%;
+  background: linear-gradient(#f3cf93, #e9b96f);
+}
+
+/* With no teacher on the left, the title and cards use the whole width. */
+.tys-game .ng-home-col,
+.tys-game .ng-done-center {
+  left: 2cqw;
+  right: 2cqw;
+}
+@media (orientation: portrait) {
+  .tys-game .ng-home-col,
+  .tys-game .ng-done-center {
+    left: 4cqw;
+    right: 4cqw;
+  }
+}
+
+/* "How hard?" — Easy / Medium / Hard for Add Them Up. */
+.tys-levels {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(30, 40, 60, 0.38);
+}
+.tys-levels-card {
+  position: relative;
+  width: min(100%, 820px);
+  padding: clamp(20px, 4vw, 44px);
+  border-radius: clamp(24px, 4vw, 44px);
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(20, 50, 40, 0.28);
+  text-align: center;
+}
+.tys-levels-title {
+  margin: 0 0 clamp(14px, 3vw, 28px);
+  color: #0d5c36;
+  font-size: clamp(30px, 6vw, 60px);
+}
+.tys-levels-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: clamp(48px, 7vw, 72px);
+  height: clamp(48px, 7vw, 72px);
+  border: 0;
+  border-radius: 50%;
+  background: #e3f0e8;
+  color: #0d5c36;
+  cursor: pointer;
+}
+.tys-levels-close svg {
+  width: 48%;
+  height: 48%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.tys-levels-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(10px, 2.4vw, 24px);
+}
+.tys-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: clamp(110px, 20vw, 190px);
+  padding: 12px;
+  border: 0;
+  border-radius: clamp(20px, 3vw, 32px);
+  color: #fff;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.22);
+}
+.tys-level:active {
+  translate: 0 4px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.22);
+}
+.tys-level--1 {
+  background: #2e9e6a;
+}
+.tys-level--2 {
+  background: #2f8fcb;
+}
+.tys-level--3 {
+  background: #8a57c9;
+}
+.tys-level-name {
+  font-size: clamp(26px, 4.6vw, 46px);
+}
+.tys-level-tag {
+  font-size: clamp(14px, 2.2vw, 22px);
+  opacity: 0.9;
+}
+@media (max-width: 560px) {
+  .tys-levels-row {
+    grid-template-columns: 1fr;
+  }
+  .tys-level {
+    min-height: 84px;
+  }
+}
+@media (max-height: 480px) {
+  .tys-level {
+    min-height: 90px;
+  }
+  .tys-levels-title {
+    margin-bottom: 8px;
+    font-size: 26px;
+  }
+}

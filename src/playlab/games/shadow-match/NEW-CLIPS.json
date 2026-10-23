@@ -1,0 +1,53 @@
+[
+  {
+    "id": "shm-welcome",
+    "text": "Welcome to Shadow Match Mystery!",
+    "file": "/audio/shadow-match/welcome.mp3"
+  },
+  {
+    "id": "shm-done",
+    "text": "You solved every shadow mystery!",
+    "file": "/audio/shadow-match/done.mp3"
+  },
+  {
+    "id": "shm-mode-find",
+    "text": "Find the Shadow! Drag the picture onto its shadow.",
+    "file": "/audio/shadow-match/mode-find.mp3"
+  },
+  {
+    "id": "shm-mode-long",
+    "text": "Long or Short! Tap the shadow I ask for.",
+    "file": "/audio/shadow-match/mode-long.mp3"
+  },
+  {
+    "id": "shm-find",
+    "text": "Whose shadow is it? Drag it to its shadow!",
+    "file": "/audio/shadow-match/find.mp3"
+  },
+  {
+    "id": "shm-find-wrong",
+    "text": "Not that one. Look at the shape!",
+    "file": "/audio/shadow-match/find-wrong.mp3"
+  },
+  {
+    "id": "shm-ask-longer",
+    "text": "Which shadow is longer?",
+    "file": "/audio/shadow-match/ask-longer.mp3"
+  },
+  {
+    "id": "shm-ask-shorter",
+    "text": "Which shadow is shorter?",
+    "file": "/audio/shadow-match/ask-shorter.mp3"
+  },
+  {
+    "id": "shm-yes-longer",
+    "text": "Yes! That one is longer.",
+    "file": "/audio/shadow-match/yes-longer.mp3"
+  },
+  {
+    "id": "shm-yes-shorter",
+    "text": "Yes! That one is shorter.",
+    "file": "/audio/shadow-match/yes-shorter.mp3"
+  },
+  { "id": "shm-long-wrong", "text": "Look again!", "file": "/audio/shadow-match/long-wrong.mp3" }
+]

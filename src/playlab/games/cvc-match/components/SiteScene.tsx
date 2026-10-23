@@ -28,7 +28,22 @@ import { FloatingClouds } from "@shared/components/animations/FloatingClouds";
  * The machines are deliberately LARGE — in the reference they fill the frame,
  * and a site drawn small reads as wallpaper rather than a place.
  */
-export const SiteScene = memo(function SiteScene({ cheer = false }: { cheer?: boolean }) {
+export const SiteScene = memo(function SiteScene({
+  cheer = false,
+  calm = false,
+}: {
+  cheer?: boolean;
+  /** Just sky, clouds and dirt — no city, frame, crane, digger, cones or
+   *  crew. Word Site uses it: the full site was too busy behind the words. */
+  calm?: boolean;
+}) {
+  if (calm)
+    return (
+      <div className="cv-site" aria-hidden="true">
+        <FloatingClouds />
+        <DirtGround className="cv-site-ground" />
+      </div>
+    );
   return (
     <div className="cv-site" aria-hidden="true">
       <FloatingClouds />

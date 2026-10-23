@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { Penguin } from "@shared/components/arctic/ArcticAnimals";
+import { animalPhoto } from "@games/blend-read/components/PictureArt";
 
 /**
  * THE TEN PICTURES, drawn.
@@ -318,6 +319,13 @@ const PICTURES: Readonly<Record<string, () => ReactNode>> = {
 
 /** The picture for one question word. */
 export function QuizPicture({ word }: { word: string }) {
+  // real animals are real photos (Jungle Spy's): a cat is a photo of a cat
+  const photo = animalPhoto(word);
+  if (photo)
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={photo} alt="" className="wq-photo" draggable={false} aria-hidden="true" />
+    );
   const Draw = PICTURES[word];
   return Draw ? <Draw /> : null;
 }

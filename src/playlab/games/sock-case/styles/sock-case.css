@@ -1,0 +1,381 @@
+/**
+ * The Missing Sock Case — class prefix `skc-` (grepped clear across
+ * src/playlab; every game's CSS loads on every play page, so nothing here is
+ * bare).
+ *
+ * The root, the screens, the chrome (teacher, star trail, pills), the carried
+ * pieces and the cross are Count & Match's (`ng-`, number-groups.css); the
+ * playroom is Jigsaw Fun's (`jf-`). Only the washing line, the socks, the
+ * basket and the magnifying glass are styled here. Sized in container units
+ * of the shared `.ng-root`; portrait at the bottom.
+ *
+ * One dial per board: the sock's width `--skc-w`. Everything — the slots,
+ * the pegs, the rope, the basket — is a share of it, so the thing carried
+ * always fits the place it goes.
+ */
+
+.skc-world {
+  position: absolute;
+  inset: 0;
+}
+/* the title plate is the shared one; this game's name is long, so upright
+   it may be a touch smaller (only on this game's home: it holds .skc-world) */
+.ng-home:has(.skc-world) .ng-title {
+  font-size: clamp(18px, min(8cqh, 4.6cqw), 58px);
+}
+
+/* ─── The board ────────────────────────────────────────────────────────── */
+/* The Odd Sock's sock size depends on how many hang (`--skc-n`, written on
+   the board and on the glass), so its dial is restated where that is known;
+   custom properties are computed where they are declared, so everything
+   derived from the dial is restated there too. */
+.skc-play--pair {
+  --skc-w: min(21cqh, 14cqw);
+  --skc-slot: calc(var(--skc-w) * 1.14);
+}
+.skc-play--odd,
+.skc-board--odd,
+.skc-glass-at {
+  --skc-w: min(24cqh, calc(73cqw / (var(--skc-n, 3) * 1.4 + 0.6)));
+  --skc-slot: calc(var(--skc-w) * 1.4);
+}
+.skc-play,
+.skc-board--odd,
+.skc-glass-at {
+  --skc-h: calc(var(--skc-w) * 1.375);
+  --skc-peg-w: calc(var(--skc-w) * 0.26);
+  --skc-peg-h: calc(var(--skc-w) * 0.52);
+  --skc-rope-y: calc(var(--skc-peg-h) * 0.44);
+}
+.skc-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The washing line ─────────────────────────────────────────────────── */
+.skc-lines {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.skc-line {
+  position: relative;
+  padding: 0 calc(var(--skc-w) * 0.3);
+}
+.skc-line--left {
+  padding-right: 0;
+}
+.skc-line--right {
+  padding-left: 0;
+}
+.skc-rope {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--skc-rope-y);
+  height: max(4px, calc(var(--skc-w) * 0.06));
+  margin-top: max(-2px, calc(var(--skc-w) * -0.03));
+  border-radius: 9999px;
+  background: repeating-linear-gradient(-60deg, #fbf3df 0 5px, #d9b173 5px 9px);
+  box-shadow: 0 0.6cqh 0.8cqh rgba(90, 60, 20, 0.22);
+}
+.skc-hook {
+  position: absolute;
+  top: var(--skc-rope-y);
+  width: calc(var(--skc-w) * 0.16);
+  aspect-ratio: 1;
+  margin-top: calc(var(--skc-w) * -0.08);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffe7a3, #e0a85e 55%, #a56e1c);
+  box-shadow: 0 0.5cqh 0.6cqh rgba(90, 60, 20, 0.3);
+}
+.skc-hook--l {
+  left: calc(var(--skc-w) * -0.08);
+}
+.skc-hook--r {
+  right: calc(var(--skc-w) * -0.08);
+}
+.skc-line--left .skc-hook--r,
+.skc-line--right .skc-hook--l {
+  display: none;
+}
+.skc-slots {
+  display: flex;
+}
+
+/* one place on the line: the peg on the rope, the sock hanging from it */
+.skc-slot {
+  position: relative;
+  width: var(--skc-slot);
+  height: calc(var(--skc-rope-y) + var(--skc-h) * 1.01);
+}
+.skc-hang {
+  position: absolute;
+  /* the cuff's middle (45% of the drawing) sits under the peg */
+  left: calc(50% - var(--skc-w) * 0.45);
+  top: calc(var(--skc-rope-y) - var(--skc-h) * 0.055);
+  display: block;
+  width: var(--skc-w);
+  height: var(--skc-h);
+  transform-origin: 45% 5%;
+}
+.skc-sock-art,
+.skc-peg-art,
+.skc-basket-svg,
+.skc-towel-svg,
+.skc-glass-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.skc-peg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 2;
+  width: var(--skc-peg-w);
+  height: var(--skc-peg-h);
+  margin-left: calc(var(--skc-peg-w) * -0.5);
+}
+/* the empty peg's place: a dashed sock, lit when a sock is carried over it */
+.skc-slot--empty .skc-ghost {
+  border-radius: 18%;
+}
+.skc-slot--empty.is-lit .skc-ghost {
+  background: radial-gradient(circle, rgba(255, 217, 61, 0.55) 0 55%, rgba(255, 217, 61, 0) 72%);
+}
+
+/* ─── The basket ───────────────────────────────────────────────────────── */
+.skc-basket {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 0 calc(var(--skc-w) * 0.3) calc(var(--skc-h) * 0.3);
+}
+.skc-basket-art {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--skc-h) * 0.72);
+  filter: drop-shadow(0 1cqh 1cqh rgba(60, 40, 20, 0.25));
+}
+.skc-basket-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--skc-w) * 0.16);
+}
+.skc-piece {
+  width: var(--skc-w);
+  height: var(--skc-h);
+}
+.ng-carried.skc-piece {
+  left: calc(var(--skc-w) * -0.5);
+  top: calc(var(--skc-h) * -0.5);
+}
+.skc-piece:disabled {
+  cursor: default;
+}
+.skc-piece.is-wrong .skc-sock-art,
+.skc-line-sock.is-wrong .skc-hang {
+  opacity: 0.45;
+}
+.skc-piece .ng-cross,
+.skc-line-sock .ng-cross {
+  inset: 22% 14% 26% 14%;
+}
+
+/* the small basket of The Odd Sock: a towel in it, the partner hidden under */
+.skc-basket--small {
+  width: calc(var(--skc-w) * 2.5);
+  height: calc(var(--skc-w) * 1.05);
+  padding: 0;
+}
+.skc-basket--small .skc-basket-art {
+  height: 78%;
+}
+.skc-basket--small .skc-basket-row {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 0;
+  z-index: 0;
+  display: block;
+  height: 42%;
+}
+.skc-towel {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The Odd Sock: socks that are buttons, and the partner's place ────── */
+.skc-line-sock {
+  position: absolute;
+  left: calc(50% - var(--skc-w) * 0.5);
+  top: 0;
+  display: block;
+  width: var(--skc-w);
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.skc-line-sock:disabled {
+  cursor: default;
+}
+.skc-hang-box {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-origin: 50% var(--skc-rope-y);
+}
+.skc-line-sock .skc-hang {
+  left: calc(50% - var(--skc-w) * 0.45);
+}
+.skc-line-sock.is-odd .skc-hang {
+  border-radius: 20%;
+  background: radial-gradient(circle, rgba(255, 236, 160, 0.85) 0 52%, rgba(255, 236, 160, 0) 70%);
+}
+.skc-partner-seat {
+  position: absolute;
+  top: 0;
+  left: calc(50% - var(--skc-w) * 0.5 + var(--skc-w) * 0.28);
+  z-index: 3;
+  display: block;
+  width: var(--skc-w);
+  height: 100%;
+  pointer-events: none;
+}
+.skc-partner {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* ─── The magnifying glass ─────────────────────────────────────────────── */
+.skc-glass-at {
+  position: absolute;
+  z-index: 30;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.skc-glass {
+  position: absolute;
+  left: calc(var(--skc-w) * -2.3 * 58 / 140);
+  top: calc(var(--skc-w) * -2.3 * 58 / 140);
+  display: block;
+  width: calc(var(--skc-w) * 2.3);
+  height: calc(var(--skc-w) * 2.3);
+  filter: drop-shadow(0 1.4cqh 1.4cqh rgba(60, 40, 20, 0.3));
+}
+.skc-solved {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--skc-w) * 1.05);
+  translate: -50% 0;
+  padding: 0.8cqh 2.6cqh;
+  border: 0.6cqh solid #f08a24;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #c06a12;
+  font-size: clamp(16px, 6cqh, 40px);
+  line-height: 1.1;
+  white-space: nowrap;
+  rotate: -5deg;
+  box-shadow: 0 0.8cqh 0 #c06a12;
+}
+.skc-solved:empty {
+  display: none;
+}
+
+/* ─── Each module in miniature (inside the shared `.ng-mini` box, whose
+   picture area is the container: cqh/cqw here are that area's) ──────────── */
+.skc-mini {
+  --skc-mw: min(30cqh, 19cqw);
+}
+.skc-mini-rope {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 14%;
+  height: 3.2%;
+  border-radius: 9999px;
+  background: repeating-linear-gradient(-60deg, #fbf3df 0 4px, #d9b173 4px 7px);
+}
+.skc-mini-sock {
+  position: absolute;
+  top: 12%;
+  width: var(--skc-mw);
+  aspect-ratio: 80 / 110;
+}
+.skc-mini-sock--a {
+  left: calc(50% - var(--skc-mw) * 1.05);
+}
+.skc-mini-sock--b {
+  left: calc(50% + var(--skc-mw) * 0.05);
+}
+.skc-mini-sock--l {
+  left: calc(50% - var(--skc-mw) * 1.8);
+}
+.skc-mini-sock--m {
+  left: calc(50% - var(--skc-mw) * 0.5);
+}
+.skc-mini-sock--r {
+  left: calc(50% + var(--skc-mw) * 0.8);
+}
+.skc-mini-glass {
+  position: absolute;
+  left: calc(50% - var(--skc-mw) * 1.02);
+  top: 14%;
+  width: calc(var(--skc-mw) * 2.1);
+  aspect-ratio: 1;
+}
+
+/* ─── Short landscape phones: a little less air ────────────────────────── */
+@media (orientation: landscape) and (max-height: 420px) {
+  .skc-board {
+    gap: 2cqh;
+  }
+}
+
+/* ─── Portrait: the line on top, the basket under it; a long line's two
+   halves become two lines ─────────────────────────────────────────────── */
+@media (orientation: portrait) {
+  .skc-play--pair {
+    --skc-w: min(18.4cqw, 14cqh);
+  }
+  .skc-play--odd,
+  .skc-board--odd,
+  .skc-glass-at {
+    --skc-w: min(13cqh, calc(92cqw / (3 * 1.4 + 0.6)));
+  }
+  .skc-board {
+    gap: 4cqh;
+  }
+  .skc-lines {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4cqh;
+  }
+  .skc-line--left,
+  .skc-line--right {
+    padding: 0 calc(var(--skc-w) * 0.3);
+  }
+  .skc-line--left .skc-hook--r,
+  .skc-line--right .skc-hook--l {
+    display: block;
+  }
+}

@@ -1,0 +1,316 @@
+## Where Is the Mouse? - Home
+
+* Where is the mouse? Let's find it!
+* Pick one!
+* Peek-a-Mouse! Watch where it hides.
+* Count the Mice! How many can you see?
+
+## Where Is the Mouse? - Peek-a-Mouse
+
+* Watch the mouse!
+* Where did it hide?
+* Not that hole. Try another one!
+* Squeak! You found me!
+* Tap the hole where the mouse was.
+
+## Where Is the Mouse? - Count the Mice
+
+* How many mice?
+* Tap each mouse to count it.
+* Now tap the number!
+* Let's count them again.
+* One mouse!
+* Two mice!
+* Three mice!
+* Four mice!
+* Five mice!
+
+## Where Is the Mouse? - Finish
+
+* You found the mouse!
+* You counted the mice!
+* Play again, or try the other game!
+
+## Pond Numbers - Home
+
+* Welcome to the pond! Let's play with numbers.
+* Quick Look! How many dots did you see?
+* One More! One more frog hops on!
+
+## Pond Numbers - Quick Look
+
+* Get ready...
+* Quick, look!
+* How many dots?
+* Look again!
+* One dot!
+* Two dots!
+* Three dots!
+* Four dots!
+* Five dots!
+* Six dots!
+* Tap a number!
+
+## Pond Numbers - One More
+
+* Look at the log!
+* One frog on the log.
+* Two frogs on the log.
+* Three frogs on the log.
+* Four frogs on the log.
+* Five frogs on the log.
+* One more!
+* Ribbit!
+* How many now?
+* Now there are two frogs!
+* Now there are three frogs!
+* Now there are four frogs!
+* Now there are five frogs!
+* Now there are six frogs!
+* Let's count the frogs again.
+
+## Pond Numbers - Finish
+
+* Super quick eyes!
+* You counted on!
+
+## Rainbow Shapes - Home
+
+* Hi! I'm Berry. Welcome to Rainbow Shapes!
+* Pick a game!
+* Colors! Find the color.
+* Shapes! Tap the shape.
+* Sorter! Put each block in its hole.
+
+## Rainbow Shapes - Colors
+
+* Find the red one!
+* Find the blue one!
+* Find the yellow one!
+* Find the green one!
+* Find the purple one!
+* Find the orange one!
+* That one is red.
+* That one is orange.
+* That one is yellow.
+* That one is green.
+* That one is blue.
+* That one is purple.
+* That one is pink.
+
+## Rainbow Shapes - Shapes
+
+* Tap the triangle!
+* Tap the circle!
+* Tap the square!
+* Tap the star!
+* Tap the heart!
+* Tap the rectangle!
+* That one is a circle.
+* That one is a triangle.
+* That one is a square.
+* That one is a star.
+* That one is a heart.
+* That one is a rectangle.
+* That one is a diamond.
+
+## Rainbow Shapes - Sorter
+
+* Put each block in its hole!
+* Tap a block, then tap its hole.
+* It fits!
+* Oops, not that hole. Try another one!
+* Red block!
+* Orange block!
+* Yellow block!
+* Green block!
+* Teal block!
+* Blue block!
+* Purple block!
+* Pink block!
+
+## Rainbow Shapes - Finish
+
+* You know your colors!
+* You know your shapes!
+* All the blocks are in!
+
+## Play Street Pals - Home
+
+* Hi, pals! Pick a game to play.
+* Colour Match! Find the ball Percy is holding.
+* Snack Time! Give the hungry pal their snack.
+
+## Play Street Pals - Colour Match
+
+* Percy has a red ball. Find the red ball!
+* Percy has a blue ball. Find the blue ball!
+* Percy has a yellow ball. Find the yellow ball!
+* Percy has a green ball. Find the green ball!
+* Percy has a purple ball. Find the purple ball!
+* Percy has an orange ball. Find the orange ball!
+
+## Play Street Pals - Snack Time
+
+* Ruby is hungry! Ruby wants an apple.
+* Bo is hungry! Bo wants a cupcake.
+* Ruby is hungry! Ruby wants some cheese.
+* Bo is hungry! Bo wants some juice.
+* Ruby is hungry! Ruby wants some cake.
+* Bo is hungry! Bo wants a plum.
+* Not that one. What does Ruby want?
+* Not that one. What does Bo want?
+* Yum! Thank you!
+* Yum yum! Thank you!
+
+## Play Street Pals - Finish
+
+* You matched all the balls!
+* All the pals are full!
+
+## Jigsaw Fun - Home
+
+* Welcome to Jigsaw Fun! Pick a picture.
+* Let's make the lion!
+* Let's make the whale!
+* Let's make the unicorn!
+* Let's make the train!
+* Let's make the cake!
+* Let's make the planet!
+* How many pieces?
+* Easy! Four pieces.
+* Medium! Six pieces.
+* Hard! Nine pieces.
+
+## Jigsaw Fun - Puzzle
+
+* Put the four pieces together!
+* Put the six pieces together!
+* Put the nine pieces together!
+* Drag a piece onto the picture.
+* Hmm, that piece goes somewhere else.
+* You made the lion!
+* You made the whale!
+* You made the unicorn!
+* You made the train!
+* You made the cake!
+* You made the planet!
+
+## Jigsaw Fun - Finish
+
+* Ready for more pieces?
+* You did the hard one! Super puzzler!
+
+## Tangram Town - Home
+
+* Welcome to Tangram Town! Pick a picture to build.
+
+## Tangram Town - Building
+
+* Build the house!
+* Build the fish!
+* Build the cat!
+* Build the arrow!
+* Build the big square!
+* Now build it with no lines!
+* Drag a shape onto the outline.
+* That shape doesn't fit there. Try another spot!
+* You made a house!
+* You made a fish!
+* You made a cat!
+* You made an arrow!
+* You made a big square!
+
+## Tangram Town - Finish
+
+* You built it twice!
+
+## On and Off - Home
+
+* Let's play! Put things on, and take things off.
+
+## On and Off - Rounds
+
+* Put the teddy on the bed.
+* Take the bird off the tree.
+* Take the ball off the box.
+* Put the cake on the table.
+* Take the cat off the chair.
+* Put the dog on the rug.
+* Put the bird on the tree.
+* Take the teddy off the bed.
+* The teddy is on the bed!
+* The bird is off the tree!
+* The ball is off the box!
+* The cake is on the table!
+* The cat is off the chair!
+* The dog is on the rug!
+* The bird is on the tree!
+* The teddy is off the bed!
+* Oops! Put it on.
+* Oops! Take it off.
+
+## On and Off - Finish
+
+* You put things on, and took them off!
+
+## Sort Two Ways - Home
+
+* Let's sort things two ways!
+* Colours and Shapes! By colour, then by shape.
+* Animals and Things! Animal or thing, then big or small.
+* Sweets and Shoes! By colour, then sweets or shoes.
+
+## Sort Two Ways - Sorting
+
+* Let's sort them by colour!
+* Now sort them by shape!
+* Let's sort animals and things!
+* Now sort them by size!
+* Now sort sweets and shoes!
+* Now sort them another way!
+* Hmm, that one goes in the other tray.
+* peppermint
+* gumdrop
+* yellow
+
+## Sort Two Ways - Finish
+
+* You sorted them two ways!
+
+## Count and Match - Home
+
+* Welcome to Count and Match!
+* Count the Plates! Tap the plate.
+* Number Cards! Drag the number.
+
+## Count and Match - Rounds
+
+* Find the plate with two!
+* Find the plate with three!
+* Find the plate with four!
+* Find the plate with five!
+* Match the numbers!
+
+## Count and Match - Finish
+
+* You're a number star!
+
+## Number Hunt - Home
+
+* Welcome to Number Hunt!
+* Find the Number! Tap every one.
+* Group Boxes! Drag the card.
+
+## Number Hunt - Rounds
+
+* Find every two!
+* Find every three!
+* Find every four!
+* Find every five!
+* That one is a different number.
+* Put each card in its box!
+
+## Number Hunt - Finish
+
+* Great hunting!

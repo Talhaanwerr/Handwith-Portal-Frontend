@@ -114,10 +114,10 @@ export function peekClue(round: number): Clue {
   return CLUES[round % CLUES.length];
 }
 
-/** How long the mouse stays out, in ms: a generous first look, a little
- *  quicker each round, never shorter than a second. */
+/** How long the mouse stays out, in ms: a very quick look (so the child has to
+ *  watch closely), a little quicker each round, never shorter than 350. */
 export function peekMs(round: number): number {
-  return Math.max(1100, 1900 - round * 150);
+  return Math.max(350, 650 - round * 50);
 }
 
 /* ─── Count rounds ────────────────────────────────────────────────────────── */

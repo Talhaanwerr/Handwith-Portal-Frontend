@@ -15,6 +15,7 @@ import { Burst } from "@shared/components/game/Burst";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { cssVars } from "@shared/styles/cssVars";
 import { useScheduler } from "@shared/hooks/useScheduler";
+import { useAfterVoice } from "@shared/hooks/useAfterVoice";
 import { useDragDrop } from "@shared/hooks/useDragDrop";
 import { registerTarget, toRootPoint } from "@shared/utils/pointer";
 import {
@@ -24,7 +25,7 @@ import {
   playSnapSound,
 } from "@shared/audio/sfx";
 import { cheerFor } from "@shared/audio/cheers";
-import { playClip, sayAfter } from "@shared/audio/voice";
+import { playClip } from "@shared/audio/voice";
 import { wordClip } from "@shared/audio/wordClips";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 
@@ -93,6 +94,7 @@ export function SortBoard({
   const targetRefs = useRef<Map<string, HTMLElement>>(new Map());
   const looseRefs = useRef<Map<string, HTMLElement>>(new Map());
   const schedule = useScheduler();
+  const { thenAfter } = useAfterVoice();
   useSayOnEnter([activity.rule === "size" ? "instr-sort-size" : "instr-sort-home"]);
 
   const placedIds = useMemo(
@@ -162,21 +164,21 @@ export function SortBoard({
       playSnapSound();
       const board = activity.boards.find((b) => b.group === target);
       const said = board ? labelClip(board.label) : null;
-      if (said) void playClip(said);
-      setCheer(true);
-      schedule(() => setCheer(false), 1100);
-      // worked out HERE rather than inside a state updater, which must be
-      // pure — this one used to set the puff and schedule the win from inside
       const inBoard = filled[target] ?? [];
       const next = { ...filled, [target]: [...inBoard, object] };
+      const complete = Object.values(next).flat().length >= activity.objects.length;
+      // the last piece: the board's name and the cheer are one spoken line,
+      // and the next board waits for all of it
+      if (complete)
+        thenAfter(said ? [said, cheerFor(activity.id)] : [cheerFor(activity.id)], onSolved);
+      else if (said) void playClip(said);
+      setCheer(true);
+      schedule(() => setCheer(false), 1100);
+      // worked out HERE rather than inside a state updater, which must be pure
       setFilled(next);
       setPuff({ group: target, n: inBoard.length + 1 });
-      if (Object.values(next).flat().length >= activity.objects.length) {
-        void sayAfter(cheerFor(activity.id));
-        schedule(onSolved, 900);
-      }
     },
-    [filled, activity, onSolved, schedule]
+    [filled, activity, onSolved, schedule, thenAfter]
   );
 
   const { dragging, over, start, ghostRef } = useDragDrop<SortObject, string>({

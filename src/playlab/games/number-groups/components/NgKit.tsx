@@ -29,6 +29,9 @@ import { PieceBurst, RoundCheer } from "@games/jigsaw-fun/components/Cheer";
  * board, the world or the teacher — so its first frame is not kept waiting.
  */
 
+/** Bumped each time a round mounts; see the unmount in useRoundCelebration. */
+let roundSerial = 0;
+
 /** How long a burst stays mounted. */
 const BURST_MS = 900;
 /** From the last right answer to the next round. */
@@ -124,7 +127,19 @@ export function useRoundCelebration({
   const burstId = useRef(0);
   const cheerId = useMemo(() => cheerFor(cheerSeed), [cheerSeed]);
 
-  useEffect(() => () => stopVoice(), []);
+  const aliveRef = useRef(true);
+  useEffect(() => {
+    aliveRef.current = true;
+    const mine = ++roundSerial;
+    return () => {
+      aliveRef.current = false;
+      // Leaving for the NEXT round: that round is already on screen and
+      // already talking (the old one only unmounts when its exit animation
+      // ends), so stopping the voice here cut the new round's question off.
+      // Stop only when no newer round has mounted — Back, home, the star card.
+      if (mine === roundSerial) stopVoice();
+    };
+  }, []);
 
   const burst = useCallback(
     (el: Element | null | undefined) => {
@@ -152,11 +167,24 @@ export function useRoundCelebration({
           fx.cheer(stamp);
         }, 0)
       );
+      // The next round comes only when BOTH the celebration (ROUND_MS) and the
+      // spoken cheer have finished — never before the cheer has been heard.
+      let animDone = false;
+      let voiceDone = false;
+      const next = () => {
+        if (animDone && voiceDone && aliveRef.current) onDone();
+      };
       schedule(() => {
         playCorrectSound();
-        void sayAfter(cheerId);
+        void sayAfter(cheerId).then(() => {
+          voiceDone = true;
+          next();
+        });
       }, 350);
-      schedule(onDone, ROUND_MS);
+      schedule(() => {
+        animDone = true;
+        next();
+      }, ROUND_MS);
     },
     [cheerId, fx, onDone, schedule, stageRef]
   );

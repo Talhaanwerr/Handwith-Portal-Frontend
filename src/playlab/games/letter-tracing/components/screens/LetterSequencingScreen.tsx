@@ -16,6 +16,7 @@ import { SceneDecor } from "@shared/components/animations/SceneDecor";
 import { RotateDevicePrompt } from "@shared/components/ui/RotateDevicePrompt";
 import { cssVars, type PlayLabCssVar } from "@shared/styles/cssVars";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
+import { useAfterVoice } from "@shared/hooks/useAfterVoice";
 
 interface LetterSequencingScreenProps {
   onHome: () => void;
@@ -89,6 +90,7 @@ interface DragState {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function LetterSequencingScreen({ onHome }: LetterSequencingScreenProps) {
+  const { thenAfter } = useAfterVoice();
   const [phase, setPhase] = useState<"select-difficulty" | "playing" | "success">(
     "select-difficulty"
   );
@@ -285,8 +287,7 @@ export function LetterSequencingScreen({ onHome }: LetterSequencingScreenProps) 
         newSlots.every((s, i) => s === currentPuzzle.letters[i])
       ) {
         setCelebrating(true);
-        void playClip("cheer-well-done");
-        setTimeout(() => {
+        thenAfter(["cheer-well-done"], () => {
           setCelebrating(false);
           const puzzles = PUZZLES[difficulty];
           if (puzzleIndex + 1 < puzzles.length) {
@@ -298,10 +299,10 @@ export function LetterSequencingScreen({ onHome }: LetterSequencingScreenProps) 
             setPhase("success");
             void playClip("cheer-amazing"); // matches the displayed "Amazing!"
           }
-        }, 2200);
+        });
       }
     },
-    [drag, slots, available, currentPuzzle, difficulty, puzzleIndex]
+    [drag, slots, available, currentPuzzle, difficulty, puzzleIndex, thenAfter]
   );
 
   // ── Tile sizing ──────────────────────────────────────────────────────────

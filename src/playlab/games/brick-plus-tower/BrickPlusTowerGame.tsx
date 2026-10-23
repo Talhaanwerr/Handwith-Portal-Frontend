@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { BrickShell, type PlayApi } from "@games/brick-lab/engine/BrickShell";
 import { BrickBoard, type SnapResult } from "@games/brick-lab/engine/BrickBoard";
@@ -15,7 +15,8 @@ import {
   MATH_SPOT,
   PLUS_ROUNDS,
 } from "@games/brick-lab/constants/maths";
-import { playClip, playSequence, stopVoice } from "@shared/audio/voice";
+import { playClip } from "@shared/audio/voice";
+import { useAfterVoice, useIntro } from "@shared/hooks/useAfterVoice";
 import { playStarPop } from "@shared/audio/sfx";
 import { cheerFor } from "@shared/audio/cheers";
 
@@ -50,31 +51,21 @@ function Plus({ api }: { api: PlayApi }) {
   const [ri, setRi] = useState(0);
   const [bricks, setBricks] = useState<Brick[]>([]);
   const [won, setWon] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { thenAfter } = useAfterVoice();
   const { a, b } = PLUS_ROUNDS[ri];
   const sum = a + b;
   const n = bricks.length;
   // Red until the first number is built, then blue.
   const color = n < a ? FIRST_COLOR : ADD_COLOR;
 
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-      stopVoice();
-    },
-    []
-  );
-
   // "Two plus one." — the sum, read as it opens.
-  useEffect(() => {
+  const introLines = useMemo(() => {
     const r = PLUS_ROUNDS[ri];
     const lines = [`number-${r.a}`, "math-plus", `number-${r.b}`];
-    const t = setTimeout(
-      () => void playSequence(ri === 0 ? ["brick-plus-build", ...lines] : lines, 150),
-      600
-    );
-    return () => clearTimeout(t);
+    return ri === 0 ? ["brick-plus-build", ...lines] : lines;
   }, [ri]);
+  const intro = useIntro(introLines, ri);
+  const busy = intro || won;
 
   // A cue when the colour changes: "Now add the blue ones."
   const prevColor = useRef(color);
@@ -103,7 +94,7 @@ function Plus({ api }: { api: PlayApi }) {
       }
       setWon(true);
       playStarPop();
-      void playSequence(
+      thenAfter(
         [
           `number-${a}`,
           "math-plus",
@@ -112,16 +103,16 @@ function Plus({ api }: { api: PlayApi }) {
           `number-${sum}`,
           cheerFor(ri + 1),
         ],
+        () => {
+          setWon(false);
+          setBricks([]);
+          if (ri + 1 >= PLUS_ROUNDS.length) api.finish();
+          else setRi(ri + 1);
+        },
         140
       );
-      timer.current = setTimeout(() => {
-        setWon(false);
-        setBricks([]);
-        if (ri + 1 >= PLUS_ROUNDS.length) api.finish();
-        else setRi(ri + 1);
-      }, 4200);
     },
-    [a, b, sum, ri, api]
+    [a, b, sum, ri, api, thenAfter]
   );
 
   const red = Math.min(n, a);
@@ -140,8 +131,8 @@ function Plus({ api }: { api: PlayApi }) {
       onPlaced={onPlaced}
       onRejected={() => void playClip("brick-tower-enough")}
       marks={n === 0 ? [{ ...MATH_SPOT, y: 0 }] : undefined}
-      locked={won}
-      handFrom={won ? undefined : 0}
+      locked={busy}
+      handFrom={busy ? undefined : 0}
       plateColor="#F3C85A"
       topInset={100}
     >

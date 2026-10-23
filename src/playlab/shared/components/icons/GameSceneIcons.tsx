@@ -23,6 +23,12 @@ import { OnOffIcon } from "@games/on-off/components/OnOffIcon";
 import { SortTwoWaysIcon } from "@games/sort-two-ways/components/SortTwoWaysIcon";
 import { NumberGroupsIcon } from "@games/number-groups/components/NumberGroupsIcon";
 import { NumberHuntIcon } from "@games/number-hunt/components/NumberHuntIcon";
+import { SockCaseIcon } from "@games/sock-case/components/SockCaseIcon";
+import { AnimalRepairIcon } from "@games/animal-repair/components/AnimalRepairIcon";
+import { ShadowMatchIcon } from "@games/shadow-match/components/ShadowMatchIcon";
+import { SillyRobotIcon } from "@games/silly-robot/components/SillyRobotIcon";
+import { NumberTrainIcon } from "@games/number-train/components/NumberTrainIcon";
+import { TinyToyShopIcon } from "@games/tiny-toy-shop/components/TinyToyShopIcon";
 import {
   BrickBuildStepsIcon,
   BrickCountSortIcon,
@@ -30,7 +36,6 @@ import {
   BrickPatternWallIcon,
   BrickSpellWordsIcon,
   BrickPlusTowerIcon,
-  BrickTakeAwayIcon,
   BrickFirstSoundIcon,
   BrickAbcTowerIcon,
 } from "@games/brick-lab/components/BrickIcons";
@@ -1613,7 +1618,12 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "brick-pattern-wall": BrickPatternWallIcon,
   "brick-spell-words": BrickSpellWordsIcon,
   "brick-plus-tower": BrickPlusTowerIcon,
-  "brick-take-away": BrickTakeAwayIcon,
+  "sock-case": SockCaseIcon,
+  "animal-repair": AnimalRepairIcon,
+  "shadow-match": ShadowMatchIcon,
+  "silly-robot": SillyRobotIcon,
+  "number-train": NumberTrainIcon,
+  "tiny-toy-shop": TinyToyShopIcon,
   "brick-first-sound": BrickFirstSoundIcon,
   "brick-abc-tower": BrickAbcTowerIcon,
 };

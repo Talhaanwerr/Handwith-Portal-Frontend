@@ -1,0 +1,459 @@
+AUDIO TO RECORD — ALL NEW GAMES (with file names)
+=================================================
+
+129 recordings. Only lines the games actually play, and only ones that are not recorded yet.
+Everything else these games say (numbers, letters, letter sounds, word names, colours, cheers) is already recorded.
+
+Voice: the same as the existing recordings — warm, slow, a nursery teacher talking to one child.
+Save each file at exactly the path shown (inside Handwith-Portal-Frontend).
+Words marked (alone) are joined to recorded numbers by the game — say them on their own, e.g. "plus".
+
+
+SHADOW MATCH MYSTERY — 7
+-------------------------
+  1. "Whose shadow is it? Drag it to its shadow!"
+     file: public/audio/shadow-match/find.mp3
+     id:   shm-find
+  2. "Not that one. Look at the shape!"
+     file: public/audio/shadow-match/find-wrong.mp3
+     id:   shm-find-wrong
+  3. "Which shadow is longer?"
+     file: public/audio/shadow-match/ask-longer.mp3
+     id:   shm-ask-longer
+  4. "Which shadow is shorter?"
+     file: public/audio/shadow-match/ask-shorter.mp3
+     id:   shm-ask-shorter
+  5. "Yes! That one is longer."
+     file: public/audio/shadow-match/yes-longer.mp3
+     id:   shm-yes-longer
+  6. "Yes! That one is shorter."
+     file: public/audio/shadow-match/yes-shorter.mp3
+     id:   shm-yes-shorter
+  7. "Look again!"
+     file: public/audio/shadow-match/long-wrong.mp3
+     id:   shm-long-wrong
+
+
+TEDDY'S WOBBLY SEESAW — 9
+--------------------------
+  8. "Teddy's Wobbly Seesaw!"
+     file: public/audio/teddy-seesaw/welcome.mp3
+     id:   tsw-welcome
+  9. "Wow! You are a seesaw star!"
+     file: public/audio/teddy-seesaw/done.mp3
+     id:   tsw-done
+ 10. "Which side goes down?"
+     file: public/audio/teddy-seesaw/mode-tip.mp3
+     id:   tsw-mode-tip
+ 11. "Make it balance!"
+     file: public/audio/teddy-seesaw/mode-balance.mp3
+     id:   tsw-mode-balance
+ 12. "Which side will go down? Tap it!"
+     file: public/audio/teddy-seesaw/ask-tip.mp3
+     id:   tsw-ask-tip
+ 13. "Yes! That side has more bears."
+     file: public/audio/teddy-seesaw/right.mp3
+     id:   tsw-right
+ 14. "Look! This side was heavier. It has more bears."
+     file: public/audio/teddy-seesaw/heavier.mp3
+     id:   tsw-heavier
+ 15. "Make both sides the same!"
+     file: public/audio/teddy-seesaw/ask-balance.mp3
+     id:   tsw-ask-balance
+ 16. "The same! It balances!"
+     file: public/audio/teddy-seesaw/same.mp3
+     id:   tsw-same
+
+
+WHICH WAY? — 10
+---------------
+ 17. "Which way? Let's go!"
+     file: public/audio/whichway/welcome.mp3
+     id:   ww-welcome
+ 18. "Go up!"
+     file: public/audio/whichway/go-up.mp3
+     id:   ww-go-up
+ 19. "Go down!"
+     file: public/audio/whichway/go-down.mp3
+     id:   ww-go-down
+ 20. "Go forward!"
+     file: public/audio/whichway/go-forward.mp3
+     id:   ww-go-forward
+ 21. "Go back!"
+     file: public/audio/whichway/go-back.mp3
+     id:   ww-go-back
+ 22. "Up!"
+     file: public/audio/whichway/up.mp3
+     id:   ww-up
+ 23. "Down!"
+     file: public/audio/whichway/down.mp3
+     id:   ww-down
+ 24. "Forward!"
+     file: public/audio/whichway/forward.mp3
+     id:   ww-forward
+ 25. "Back!"
+     file: public/audio/whichway/back.mp3
+     id:   ww-back
+ 26. "You know which way to go!"
+     file: public/audio/whichway/done.mp3
+     id:   ww-done
+
+
+THE MISSING SOCK CASE — 9
+--------------------------
+ 27. "Detective time! Let's solve the sock case!"
+     file: public/audio/sock-case/welcome.mp3
+     id:   skc-welcome
+ 28. "Case solved! Every sock has a partner."
+     file: public/audio/sock-case/done.mp3
+     id:   skc-done
+ 29. "Find the Pair. Find the matching sock."
+     file: public/audio/sock-case/mode-pair.mp3
+     id:   skc-mode-pair
+ 30. "The Odd Sock. Which sock has no partner?"
+     file: public/audio/sock-case/mode-odd.mp3
+     id:   skc-mode-odd
+ 31. "Find the sock that matches!"
+     file: public/audio/sock-case/find-pair.mp3
+     id:   skc-find-pair
+ 32. "They match! A pair!"
+     file: public/audio/sock-case/pair.mp3
+     id:   skc-pair
+ 33. "Which sock has no partner?"
+     file: public/audio/sock-case/odd-ask.mp3
+     id:   skc-odd-ask
+ 34. "Case solved!"
+     file: public/audio/sock-case/case-solved.mp3
+     id:   skc-case-solved
+ 35. "That one has a partner!"
+     file: public/audio/sock-case/has-partner.mp3
+     id:   skc-has-partner
+
+
+FIND ANOTHER WAY — 8
+---------------------
+ 36. "Find another way! Help the bunny."
+     file: public/audio/find-another-way/welcome.mp3
+     id:   faw-welcome
+ 37. "You can always find a way!"
+     file: public/audio/find-another-way/done.mp3
+     id:   faw-done
+ 38. "Oh no, blocked! Find another way."
+     file: public/audio/find-another-way/mode-blocked.mp3
+     id:   faw-mode-blocked
+ 39. "Look first! Find the open path."
+     file: public/audio/find-another-way/mode-look.mp3
+     id:   faw-mode-look
+ 40. "Help bunny get to the carrots!"
+     file: public/audio/find-another-way/ask-go.mp3
+     id:   faw-ask-go
+ 41. "Oh! It's blocked. Let's find another way."
+     file: public/audio/find-another-way/blocked.mp3
+     id:   faw-blocked
+ 42. "You found another way!"
+     file: public/audio/find-another-way/found.mp3
+     id:   faw-found
+ 43. "Which way is open? Look first!"
+     file: public/audio/find-another-way/ask-look.mp3
+     id:   faw-ask-look
+
+
+WHAT'S INSIDE? — 11
+-------------------
+ 44. "Treasure chests! What's inside?"
+     file: public/audio/whats-inside/welcome.mp3
+     id:   wsi-welcome
+ 45. "You found every toy!"
+     file: public/audio/whats-inside/done.mp3
+     id:   wsi-done
+ 46. "Peek and Guess. What's in the chest?"
+     file: public/audio/whats-inside/mode-peek.mp3
+     id:   wsi-mode-peek
+ 47. "Where Did It Go? Watch the chests!"
+     file: public/audio/whats-inside/mode-where.mp3
+     id:   wsi-mode-where
+ 48. "What's inside? Tap your guess."
+     file: public/audio/whats-inside/peek-ask.mp3
+     id:   wsi-peek-ask
+ 49. "Look! Now you can see more."
+     file: public/audio/whats-inside/peek-more.mp3
+     id:   wsi-peek-more
+ 50. "Empty! Try another chest."
+     file: public/audio/whats-inside/empty.mp3
+     id:   wsi-empty
+ 51. "Where is the ball?"
+     file: public/audio/whats-inside/where-ball.mp3
+     id:   wsi-where-ball
+ 52. "Where is the drum?"
+     file: public/audio/whats-inside/where-drum.mp3
+     id:   wsi-where-drum
+ 53. "Where is the train?"
+     file: public/audio/whats-inside/where-train.mp3
+     id:   wsi-where-train
+ 54. "Where is the dog?"
+     file: public/audio/whats-inside/where-dog.mp3
+     id:   wsi-where-dog
+
+
+THE MESSY CAR WASH — 7
+-----------------------
+ 55. "Welcome to the car wash!"
+     file: public/audio/car-wash/welcome.mp3
+     id:   mcw-welcome
+ 56. "Spray the mud!"
+     file: public/audio/car-wash/spray.mp3
+     id:   mcw-spray
+ 57. "Scrub, scrub, scrub!"
+     file: public/audio/car-wash/scrub.mp3
+     id:   mcw-scrub
+ 58. "Now rinse it off!"
+     file: public/audio/car-wash/rinse.mp3
+     id:   mcw-rinse
+ 59. "Make it shine!"
+     file: public/audio/car-wash/shine.mp3
+     id:   mcw-shine
+ 60. "What colour is under the mud?"
+     file: public/audio/car-wash/mystery.mp3
+     id:   mcw-mystery
+ 61. "Every car is clean and shiny!"
+     file: public/audio/car-wash/done.mp3
+     id:   mcw-done
+
+
+SILLY ANIMAL REPAIR SHOP — 10
+-----------------------------
+ 62. "Welcome to the toy repair shop!"
+     file: public/audio/animal-repair/welcome.mp3
+     id:   arp-welcome
+ 63. "All the toys are fixed. Thank you!"
+     file: public/audio/animal-repair/done.mp3
+     id:   arp-done
+ 64. "What's missing? Find the lost part."
+     file: public/audio/animal-repair/mode-missing.mp3
+     id:   arp-mode-missing
+ 65. "Silly mix-up! Find the silly part."
+     file: public/audio/animal-repair/mode-silly.mp3
+     id:   arp-mode-silly
+ 66. "Oh no! The ears came off. Find them!"
+     file: public/audio/animal-repair/lost-ears.mp3
+     id:   arp-lost-ears
+ 67. "Oh no! The nose came off. Find it!"
+     file: public/audio/animal-repair/lost-nose.mp3
+     id:   arp-lost-nose
+ 68. "Oh no! The tail came off. Find it!"
+     file: public/audio/animal-repair/lost-tail.mp3
+     id:   arp-lost-tail
+ 69. "Oh no! The mane came off. Find it!"
+     file: public/audio/animal-repair/lost-mane.mp3
+     id:   arp-lost-mane
+ 70. "Oh, silly! Tap the silly part."
+     file: public/audio/animal-repair/silly.mp3
+     id:   arp-silly
+ 71. "Now find the right one!"
+     file: public/audio/animal-repair/find-right.mp3
+     id:   arp-find-right
+
+
+FIND MY BABY — 7
+-----------------
+ 72. "Let's help the mummies find their babies!"
+     file: public/audio/find-my-baby/welcome.mp3
+     id:   fmb-welcome
+ 73. "Every baby is back with Mummy!"
+     file: public/audio/find-my-baby/done.mp3
+     id:   fmb-done
+ 74. "Follow the footprints to the baby!"
+     file: public/audio/find-my-baby/mode-prints.mp3
+     id:   fmb-mode-prints
+ 75. "Find the baby in Mummy's colour!"
+     file: public/audio/find-my-baby/mode-colour.mp3
+     id:   fmb-mode-colour
+ 76. "Where is my baby?"
+     file: public/audio/find-my-baby/where-baby.mp3
+     id:   fmb-where-baby
+ 77. "Follow the footprints!"
+     file: public/audio/find-my-baby/follow.mp3
+     id:   fmb-follow
+ 78. "Find the baby with the same colour!"
+     file: public/audio/find-my-baby/ask-colour.mp3
+     id:   fmb-ask-colour
+
+
+BUILD-A-CAR GARAGE — 10
+-----------------------
+ 79. "Welcome to the garage! Let's build cars."
+     file: public/audio/car-garage/welcome.mp3
+     id:   bcg-welcome
+ 80. "All the cars are ready. Beep beep!"
+     file: public/audio/car-garage/done.mp3
+     id:   bcg-done
+ 81. "Build the Car. One part at a time."
+     file: public/audio/car-garage/mode-build.mp3
+     id:   bcg-mode-build
+ 82. "Missing Part. Find the part that fits."
+     file: public/audio/car-garage/mode-missing.mp3
+     id:   bcg-mode-missing
+ 83. "Put the body on the lift!"
+     file: public/audio/car-garage/step-body.mp3
+     id:   bcg-step-body
+ 84. "Now the wheels. Count them!"
+     file: public/audio/car-garage/step-wheels.mp3
+     id:   bcg-step-wheels
+ 85. "Now put the roof on!"
+     file: public/audio/car-garage/step-roof.mp3
+     id:   bcg-step-roof
+ 86. "Now the windows!"
+     file: public/audio/car-garage/step-windows.mp3
+     id:   bcg-step-windows
+ 87. "Oh no! Which part is missing?"
+     file: public/audio/car-garage/ask-missing.mp3
+     id:   bcg-ask-missing
+ 88. "That does not go on a car!"
+     file: public/audio/car-garage/not-that.mp3
+     id:   bcg-not-that
+
+
+YOUR TURN, MY TURN — 6
+-----------------------
+ 89. "Your turn, my turn! Let's take turns."
+     file: public/audio/your-turn/welcome.mp3
+     id:   ytt-welcome
+ 90. "Roll the ball to Ruby!"
+     file: public/audio/your-turn/intro-ruby.mp3
+     id:   ytt-intro-ruby
+ 91. "Who says my turn? Roll to them!"
+     file: public/audio/your-turn/intro-around.mp3
+     id:   ytt-intro-around
+ 92. "My turn!"
+     file: public/audio/your-turn/my-turn.mp3
+     id:   ytt-my-turn
+ 93. "Wait, my turn."
+     file: public/audio/your-turn/wait.mp3
+     id:   ytt-wait
+ 94. "You took turns so well!"
+     file: public/audio/your-turn/done.mp3
+     id:   ytt-done
+
+
+MAGIC FLOWER — 9
+-----------------
+ 95. "Magic Flower! Let's grow a flower."
+     file: public/audio/magic-flower/welcome.mp3
+     id:   mgf-welcome
+ 96. "Tap the seeds!"
+     file: public/audio/magic-flower/step-seed.mp3
+     id:   mgf-step-seed
+ 97. "Water the seeds!"
+     file: public/audio/magic-flower/step-water.mp3
+     id:   mgf-step-water
+ 98. "A little sprout!"
+     file: public/audio/magic-flower/sprout.mp3
+     id:   mgf-sprout
+ 99. "Tap the cloud!"
+     file: public/audio/magic-flower/step-sun.mp3
+     id:   mgf-step-sun
+100. "Tap the leaves!"
+     file: public/audio/magic-flower/step-leaves.mp3
+     id:   mgf-step-leaves
+101. "Tap the bud!"
+     file: public/audio/magic-flower/step-bloom.mp3
+     id:   mgf-step-bloom
+102. "Let's paint the flower!"
+     file: public/audio/magic-flower/paint.mp3
+     id:   mgf-paint
+103. "What a beautiful garden!"
+     file: public/audio/magic-flower/done.mp3
+     id:   mgf-done
+
+
+FEED THE FISH — 8
+------------------
+104. "Feed the Fish! Let's feed them."
+     file: public/audio/feed-the-fish/welcome.mp3
+     id:   ftf-welcome
+105. "Tap the water to feed the fish!"
+     file: public/audio/feed-the-fish/tap.mp3
+     id:   ftf-tap
+106. "All the fish are asleep!"
+     file: public/audio/feed-the-fish/asleep.mp3
+     id:   ftf-asleep
+107. "Feed the red fish!"
+     file: public/audio/feed-the-fish/feed-red.mp3
+     id:   ftf-feed-red
+108. "Feed the yellow fish!"
+     file: public/audio/feed-the-fish/feed-yellow.mp3
+     id:   ftf-feed-yellow
+109. "Feed the orange fish!"
+     file: public/audio/feed-the-fish/feed-orange.mp3
+     id:   ftf-feed-orange
+110. "Feed the purple fish!"
+     file: public/audio/feed-the-fish/feed-purple.mp3
+     id:   ftf-feed-purple
+111. "Every fish is full and happy!"
+     file: public/audio/feed-the-fish/done.mp3
+     id:   ftf-done
+
+
+BIRTHDAY PARTY — 11
+-------------------
+112. "It's a birthday party!"
+     file: public/audio/birthday-party/welcome.mp3
+     id:   bdc-welcome
+113. "What a happy party!"
+     file: public/audio/birthday-party/done.mp3
+     id:   bdc-done
+114. "One for each!"
+     file: public/audio/birthday-party/mode-each.mp3
+     id:   bdc-mode-each
+115. "Candles on the cake!"
+     file: public/audio/birthday-party/mode-candles.mp3
+     id:   bdc-mode-candles
+116. "Give each friend one cupcake!"
+     file: public/audio/birthday-party/ask-each.mp3
+     id:   bdc-ask-each
+117. "This friend has one!"
+     file: public/audio/birthday-party/has-one.mp3
+     id:   bdc-has-one
+118. "Everyone has one!"
+     file: public/audio/birthday-party/everyone.mp3
+     id:   bdc-everyone
+119. "How many cupcakes?"
+     file: public/audio/birthday-party/how-many.mp3
+     id:   bdc-how-many
+120. "I am"
+     file: public/audio/birthday-party/i-am.mp3
+     id:   bdc-i-am
+121. "Put the candles on the cake!"
+     file: public/audio/birthday-party/ask-candles.mp3
+     id:   bdc-ask-candles
+122. "Blow them out!"
+     file: public/audio/birthday-party/blow.mp3
+     id:   bdc-blow
+
+
+ROCKET COUNTDOWN — 7
+---------------------
+123. "Rocket Countdown!"
+     file: public/audio/rocket-countdown/welcome.mp3
+     id:   rkc-welcome
+124. "You flew to the stars!"
+     file: public/audio/rocket-countdown/done.mp3
+     id:   rkc-done
+125. "Count down!"
+     file: public/audio/rocket-countdown/mode-count.mp3
+     id:   rkc-mode-count
+126. "Fuel the rocket!"
+     file: public/audio/rocket-countdown/mode-fuel.mp3
+     id:   rkc-mode-fuel
+127. "Count down from"
+     file: public/audio/rocket-countdown/count-from.mp3
+     id:   rkc-count-from
+128. "Blast off!"
+     file: public/audio/rocket-countdown/blast.mp3
+     id:   rkc-blast
+129. "Fill the tank with"
+     file: public/audio/rocket-countdown/fill-with.mp3
+     id:   rkc-fill-with
+
+
+TOTAL: 129 recordings.

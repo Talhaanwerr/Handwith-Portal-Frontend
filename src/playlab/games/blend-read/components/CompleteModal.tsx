@@ -23,7 +23,7 @@ export function CompleteModal({ onHome, onReplay }: CompleteModalProps) {
 
   return (
     <div className="br-screen pl-screen-shell">
-      <ClassroomScene />
+      <ClassroomScene calm />
       <Confetti count={44} />
 
       <div className="br-modal-tint absolute inset-0 z-30 flex items-center justify-center px-6">
