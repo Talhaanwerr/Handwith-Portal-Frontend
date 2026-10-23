@@ -754,6 +754,7 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "shadow-match",
   "shape-match",
   "silly-robot",
+  "sock-case",
   "sort-it",
   "sort-two-ways",
   "space-letters",
