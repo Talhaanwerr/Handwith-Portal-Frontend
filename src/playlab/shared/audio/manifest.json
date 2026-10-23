@@ -7399,26 +7399,6 @@
       "text": "Not that one. Look at the shape!",
       "speak": "Not that one. Look at the shape!"
     },
-    "shm-ask-longer": {
-      "file": "/audio/shadow-match/ask-longer.mp3",
-      "text": "Which shadow is longer?",
-      "speak": "Which shadow is longer?"
-    },
-    "shm-ask-shorter": {
-      "file": "/audio/shadow-match/ask-shorter.mp3",
-      "text": "Which shadow is shorter?",
-      "speak": "Which shadow is shorter?"
-    },
-    "shm-yes-longer": {
-      "file": "/audio/shadow-match/yes-longer.mp3",
-      "text": "Yes! That one is longer.",
-      "speak": "Yes! That one is longer."
-    },
-    "shm-yes-shorter": {
-      "file": "/audio/shadow-match/yes-shorter.mp3",
-      "text": "Yes! That one is shorter.",
-      "speak": "Yes! That one is shorter."
-    },
     "shm-long-wrong": {
       "file": "/audio/shadow-match/long-wrong.mp3",
       "text": "Look again!",

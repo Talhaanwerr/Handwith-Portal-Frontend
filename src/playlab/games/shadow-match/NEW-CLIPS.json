@@ -30,24 +30,8 @@
     "file": "/audio/shadow-match/find-wrong.mp3"
   },
   {
-    "id": "shm-ask-longer",
-    "text": "Which shadow is longer?",
-    "file": "/audio/shadow-match/ask-longer.mp3"
-  },
-  {
-    "id": "shm-ask-shorter",
-    "text": "Which shadow is shorter?",
-    "file": "/audio/shadow-match/ask-shorter.mp3"
-  },
-  {
-    "id": "shm-yes-longer",
-    "text": "Yes! That one is longer.",
-    "file": "/audio/shadow-match/yes-longer.mp3"
-  },
-  {
-    "id": "shm-yes-shorter",
-    "text": "Yes! That one is shorter.",
-    "file": "/audio/shadow-match/yes-shorter.mp3"
-  },
-  { "id": "shm-long-wrong", "text": "Look again!", "file": "/audio/shadow-match/long-wrong.mp3" }
+    "id": "shm-long-wrong",
+    "text": "Look again!",
+    "file": "/audio/shadow-match/long-wrong.mp3"
+  }
 ]
