@@ -32,38 +32,51 @@ const ICON_BASE = "/games/blend-read/icons";
 const iconSrc = (id: string) => fluentSrc(id) ?? `${ICON_BASE}/${id}.svg`;
 
 /**
- * Real animal PHOTOS — Jungle Spy's own (public/games/jungle-spy/animals/).
+ * Real animal PHOTOS — Jungle Spy's own (public/games/jungle-spy/animals/)
+ * plus the word games' extra ones (public/games/word-photos/).
  * The word games (Word Site, Blend & Seek, Spell Bricks, First Sound) ask for
  * them with `photo`, so a child sees a real cat, not a drawing. Games where an
  * animal is a TOY (Tiny Toy Shop's teddy bear and horse) keep the picture.
  */
+const SPY = "/games/jungle-spy/animals";
+const WORD = "/games/word-photos";
 const ANIMAL_PHOTO: Readonly<Record<string, string>> = {
-  ant: "ant",
-  bear: "bear",
-  cat: "cat",
-  dog: "dog",
-  pup: "dog",
-  elephant: "elephant",
-  fish: "fish",
-  frog: "frog",
-  giraffe: "giraffe",
-  horse: "horse",
-  jellyfish: "jellyfish",
-  koala: "koala",
-  lion: "lion",
-  monkey: "monkey",
-  octopus: "octopus",
-  penguin: "penguin",
-  rabbit: "rabbit",
-  snake: "snake",
-  turtle: "turtle",
-  whale: "whale",
-  zebra: "zebra",
+  ant: `${SPY}/ant.jpg`,
+  bear: `${SPY}/bear.jpg`,
+  bird: `${WORD}/bird.jpg`,
+  bug: `${WORD}/bug.jpg`,
+  cat: `${SPY}/cat.jpg`,
+  crab: `${WORD}/crab.jpg`,
+  dog: `${SPY}/dog.jpg`,
+  pup: `${SPY}/dog.jpg`,
+  duck: `${WORD}/duck.jpg`,
+  elephant: `${SPY}/elephant.jpg`,
+  fish: `${SPY}/fish.jpg`,
+  fox: `${WORD}/fox.jpg`,
+  frog: `${SPY}/frog.jpg`,
+  giraffe: `${SPY}/giraffe.jpg`,
+  hen: `${WORD}/hen.jpg`,
+  horse: `${SPY}/horse.jpg`,
+  jellyfish: `${SPY}/jellyfish.jpg`,
+  koala: `${SPY}/koala.jpg`,
+  lion: `${SPY}/lion.jpg`,
+  monkey: `${SPY}/monkey.jpg`,
+  // one photo serves rat, mouse and mice
+  mouse: `${WORD}/rat.jpg`,
+  mice: `${WORD}/rat.jpg`,
+  octopus: `${SPY}/octopus.jpg`,
+  penguin: `${SPY}/penguin.jpg`,
+  rabbit: `${SPY}/rabbit.jpg`,
+  rat: `${WORD}/rat.jpg`,
+  snake: `${SPY}/snake.jpg`,
+  spider: `${WORD}/spider.jpg`,
+  turtle: `${SPY}/turtle.jpg`,
+  whale: `${SPY}/whale.jpg`,
+  zebra: `${SPY}/zebra.jpg`,
 };
 
 /** The photo for an animal word, or null when there is no photo of it. */
-export const animalPhoto = (id: string): string | null =>
-  ANIMAL_PHOTO[id] ? `/games/jungle-spy/animals/${ANIMAL_PHOTO[id]}.jpg` : null;
+export const animalPhoto = (id: string): string | null => ANIMAL_PHOTO[id] ?? null;
 
 export type PictureId =
   // level 1
