@@ -1,0 +1,369 @@
+/**
+ * Silly Animal Repair Shop — class prefix `arp-` (grepped clear across
+ * src/playlab; every game's CSS loads on every play page, so nothing here is
+ * bare). The root, screens, chrome, carried pieces and cross are Count &
+ * Match's (`ng-`, number-groups.css); the room is Number Hunt's (`nh-csf`).
+ * Sized in container units of the shared `.ng-root`; portrait at the bottom.
+ */
+
+/* ─── The board: the bench across it, the toy on the left, the kit right ─ */
+.arp-play {
+  /* the toy's height, a part card's side, the bench top's height */
+  --arp-toy: min(62cqh, 33cqw);
+  --arp-p: min(19cqh, 10cqw);
+  --arp-surface: 14cqh;
+}
+.arp-shop {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The workbench (Play Street Pals' table paint, with a drawer apron) ─ */
+.arp-bench {
+  position: absolute;
+  left: -1cqw;
+  right: -1cqw;
+  bottom: 0;
+  height: var(--arp-surface);
+  pointer-events: none;
+}
+.arp-bench > span {
+  position: absolute;
+  display: block;
+}
+.arp-bench-top {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4.2cqh;
+  border-radius: 1.6cqh 1.6cqh 0.8cqh 0.8cqh;
+  background: linear-gradient(180deg, #f2c895 0%, #e6b07a 45%, #d69a62 100%);
+  box-shadow:
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.35),
+    0 0.9cqh 0 #9b6238;
+}
+.arp-bench-apron {
+  left: 3%;
+  right: 3%;
+  top: 4.2cqh;
+  display: flex;
+  gap: 2cqw;
+  height: min(6cqh, calc(var(--arp-surface) - 4.2cqh));
+  padding: 0.9cqh 2cqw;
+  border-radius: 0 0 1.2cqh 1.2cqh;
+  background: #c98a55;
+  box-shadow: inset 0 0.9cqh 0 rgba(90, 50, 20, 0.22);
+}
+.arp-bench-drawer {
+  position: relative;
+  flex: 1;
+  border-radius: 0.8cqh;
+  background: #dba56f;
+  box-shadow: inset 0 -0.5cqh 0 rgba(90, 50, 20, 0.18);
+}
+.arp-bench-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.8cqh;
+  height: 1.8cqh;
+  margin: -0.9cqh 0 0 -0.9cqh;
+  border-radius: 50%;
+  background: #8c5c40;
+}
+.arp-bench-leg {
+  top: 4cqh;
+  bottom: 0;
+  width: 2.6cqw;
+  border-radius: 0 0 0.8cqh 0.8cqh;
+  background: linear-gradient(90deg, #b7794a, #9b6238);
+}
+.arp-bench-leg--l {
+  left: 7%;
+}
+.arp-bench-leg--r {
+  right: 7%;
+}
+
+/* ─── The tool rack on the wall ────────────────────────────────────────── */
+.arp-rack {
+  position: absolute;
+  right: 7%;
+  top: 1cqh;
+  width: min(21cqw, 38cqh);
+  aspect-ratio: 120 / 76;
+  pointer-events: none;
+}
+.arp-rack-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0.8cqh 0.8cqh rgba(60, 40, 20, 0.2));
+}
+
+/* ─── The toy ──────────────────────────────────────────────────────────── */
+.arp-toy-slot {
+  position: absolute;
+  left: 4%;
+  bottom: calc(var(--arp-surface) - 2.4cqh);
+  z-index: 2;
+  height: var(--arp-toy);
+  aspect-ratio: 120 / 140;
+}
+.arp-toy {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 92%;
+}
+.arp-toy-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.arp-slot,
+.arp-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+/* a missing part: its own outline, dashed, softly breathing */
+.arp-ghost {
+  animation: arp-ghost-pulse 1.4s ease-in-out infinite alternate;
+}
+.arp-ghost > * {
+  fill: rgba(255, 255, 255, 0.62);
+  stroke: #e39a2d;
+  stroke-width: 1.8;
+  stroke-dasharray: 4.5 3.5;
+  stroke-linejoin: round;
+}
+@keyframes arp-ghost-pulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+/* come alive: two slow blinks */
+.arp-toy.is-happy .arp-eye {
+  animation: arp-blink 1.5s ease-in-out 0.35s 2;
+}
+@keyframes arp-blink {
+  0%,
+  42%,
+  58%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.12);
+  }
+}
+.arp-sparkle {
+  position: absolute;
+  display: block;
+  width: 15%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  opacity: 0;
+  animation: arp-sparkle 1.5s ease-out var(--arp-d, 0s) 2 both;
+}
+.arp-sparkle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: #ffd93d;
+}
+@keyframes arp-sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1) rotate(20deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.6) rotate(45deg);
+  }
+}
+
+/* the drop gap and the tap targets, laid over the drawing in toy units */
+.arp-gap,
+.arp-hit {
+  position: absolute;
+  left: var(--arp-x);
+  top: var(--arp-y);
+  width: var(--arp-w);
+  height: var(--arp-h);
+  border-radius: 30%;
+}
+.arp-gap {
+  pointer-events: none;
+}
+.arp-gap.is-lit {
+  background: radial-gradient(circle, rgba(255, 222, 120, 0.55) 0 45%, rgba(255, 222, 120, 0) 72%);
+}
+.arp-hit {
+  z-index: 3;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.arp-hit:disabled {
+  cursor: default;
+}
+
+/* ─── The kit: a wooden tray of three compartments on the bench ────────── */
+.arp-kit {
+  position: absolute;
+  right: 3%;
+  bottom: calc(var(--arp-surface) - 1.6cqh);
+  z-index: 2;
+  display: flex;
+  gap: 1.2cqw;
+  padding: 1.4cqh 1.4cqw 2cqh;
+  border-radius: 2.4cqh;
+  background: linear-gradient(180deg, #f3d3a6 0%, #e2b57e 100%);
+  box-shadow:
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.45),
+    0 1cqh 0 #b98552,
+    0 1.8cqh 2.4cqh rgba(60, 40, 20, 0.22);
+}
+.arp-kit-cell {
+  position: relative;
+  display: block;
+  width: var(--arp-p);
+  height: var(--arp-p);
+  border-radius: 1.8cqh;
+  background: rgba(150, 100, 50, 0.16);
+  box-shadow: inset 0 0.6cqh 0 rgba(120, 80, 30, 0.2);
+}
+
+/* a part on its card — in the kit, and under the finger */
+.arp-piece {
+  width: var(--arp-p);
+  height: var(--arp-p);
+}
+.ng-carried.arp-piece {
+  left: calc(var(--arp-p) * -0.5);
+  top: calc(var(--arp-p) * -0.5);
+}
+.arp-piece:disabled {
+  cursor: default;
+}
+.arp-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.arp-card-face {
+  position: absolute;
+  inset: 0;
+  border: 0.7cqh solid #ffd466;
+  border-radius: 18%;
+  background: #ffffff;
+  box-shadow:
+    0 0.9cqh 0 #e0a93a,
+    0 1.4cqh 1.8cqh rgba(60, 40, 20, 0.18);
+}
+.arp-piece--lifted .arp-card-face {
+  box-shadow:
+    0 0.9cqh 0 #e0a93a,
+    0 2.4cqh 2.6cqh rgba(40, 30, 60, 0.3);
+}
+.arp-card-pic {
+  position: absolute;
+  inset: 11%;
+  display: block;
+}
+.arp-part {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.arp-piece.is-wrong .arp-card-pic {
+  opacity: 0.4;
+}
+
+/* ─── Home-card miniatures (cqh/cqw: the card's picture area) ──────────── */
+.arp-mini-toy {
+  position: absolute;
+  left: 12%;
+  top: 5%;
+  height: 90%;
+  aspect-ratio: 120 / 140;
+}
+.arp-mini-toy--mid {
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+.arp-mini-card {
+  position: absolute;
+  right: 10%;
+  bottom: 12%;
+  height: 46%;
+  aspect-ratio: 1;
+}
+.arp-mini-card .arp-card-face {
+  border-width: min(1.6cqh, 1cqw);
+  box-shadow: 0 min(2cqh, 1.2cqw) 0 #e0a93a;
+}
+
+/* ─── Portrait: the toy on the bench, the kit in front of it ───────────── */
+@media (orientation: portrait) {
+  .arp-play {
+    --arp-toy: min(36cqh, 64cqw);
+    --arp-p: min(23cqw, 10.5cqh);
+    --arp-surface: calc(var(--arp-p) + 7cqh);
+  }
+  .arp-toy-slot {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+  .arp-kit {
+    left: 0;
+    right: 0;
+    bottom: 1cqh;
+    z-index: 3;
+    width: max-content;
+    margin: 0 auto;
+    gap: 2.6cqw;
+    padding: 1.2cqh 3cqw 1.8cqh;
+  }
+  .arp-bench-apron {
+    height: 5cqh;
+  }
+  .arp-rack {
+    display: none;
+  }
+}
+
+/* The plain backdrop (no carpet): a warm wall, a soft floor band. */
+.arp-plain {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#fff4df, #ffe8c4);
+}
+.arp-plain-floor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 24%;
+  background: linear-gradient(#f0d2a6, #e5bd84);
+}

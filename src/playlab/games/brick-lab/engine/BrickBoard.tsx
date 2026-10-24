@@ -118,6 +118,9 @@ export interface BrickBoardProps {
   initialYaw?: number;
   /** Pixels at the top of the scene kept clear for the pills and HUD cards. */
   topInset?: number;
+  /** For a big picture card: the strip to keep clear as a function of the
+   *  scene height. Replaces topInset and its 20 % ceiling (60 % here). */
+  topInsetFor?: (sceneHeight: number, sceneWidth: number) => number;
 }
 
 const PITCH_HIGH = 0.72;
@@ -167,6 +170,7 @@ export const BrickBoard = memo(function BrickBoard({
   children,
   initialYaw = -0.62,
   topInset = 64,
+  topInsetFor,
 }: BrickBoardProps) {
   const [sceneRef, size] = useElementSize<HTMLDivElement>();
   // Shadows fall on the plate only; the clip path needs a page-unique id.
@@ -196,7 +200,9 @@ export const BrickBoard = memo(function BrickBoard({
   const top = Math.max(-1, ...bricks.map((b) => b.y), ...(hints ?? []).map((b) => b.y));
   const room = Math.min(levels, Math.max(2, top + 2.5));
   // On a short screen the HUD cards shrink, so the reserved strip does too.
-  const inset = Math.min(topInset, size.h * 0.2);
+  const inset = topInsetFor
+    ? Math.min(topInsetFor(size.h, size.w), size.h * 0.6)
+    : Math.min(topInset, size.h * 0.2);
   const view: View = useMemo(() => {
     const diag = Math.hypot(plate.w, plate.d);
     const tall = room * BRICK_H * Math.cos(pitch);
@@ -826,7 +832,7 @@ export const BrickBoard = memo(function BrickBoard({
                   ref={(el) => {
                     trayRefs.current[i] = el;
                   }}
-                  className="bk-tray-item"
+                  className={`bk-tray-item ${kk.color === "white" ? "bk-tray-item--white" : ""}`}
                   onPointerDown={(e) => startTray(e, i)}
                   aria-label={
                     k.tag ? `Letter ${k.tag} brick` : `${k.color} brick, ${k.w} by ${k.d}`

@@ -37,7 +37,7 @@ export function PlayScreen({
 
   return (
     <div className="br-screen pl-screen-shell">
-      <ClassroomScene bare />
+      <ClassroomScene bare calm />
 
       <NavPillButton
         label="Back"

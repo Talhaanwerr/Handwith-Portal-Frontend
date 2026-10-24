@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
@@ -13,7 +14,14 @@ import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { playClickSound, playStarPop, playIncorrectSound } from "@shared/audio/sfx";
 import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
 import { shuffle } from "@shared/utils/random";
-import { GROUPS, TOTAL_GROUPS, LOWERCASE } from "@games/magnet-match/constants/letters";
+import {
+  GROUPS,
+  TOTAL_GROUPS,
+  LOWERCASE,
+  caseLetter,
+  letterClipId,
+} from "@games/magnet-match/constants/letters";
+import { useMagnetStore } from "@games/magnet-match/store/magnetStore";
 import {
   SoupPot,
   ChefArt,
@@ -44,6 +52,8 @@ interface DragState {
 export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
   const router = useRouter();
   const group = GROUPS[groupIndex];
+  // Uppercase: letter names. Lowercase: phonics sounds. Never mixed.
+  const letterCase = useMagnetStore((s) => s.letterCase);
 
   /** letters already matched into the pot this group */
   const [matched, setMatched] = useState<string[]>([]);
@@ -78,13 +88,13 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
 
   // every timer tracked + cleared on unmount — no stale advances/audio
   const schedule = useScheduler();
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   // Group intro narration: full instruction on the very first group, then
   // just the group's letter names — always ending with the letters so the
   // child hears exactly what to look for.
   useEffect(() => {
-    const letterClips = group.map((l) => `letter-${l}`);
+    const letterClips = group.map((l) => letterClipId(l, letterCase));
     preloadClips(["magnet-intro", "magnet-excellent", ...letterClips]);
     let cancelled = false;
     const t = setTimeout(() => {
@@ -186,7 +196,7 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
       // TOP of it, 26 times a game, was celebrating the same event twice and
       // pushing the letter name (the only part that teaches anything) later.
       // SFX for the verdict, voice for the letter.
-      void playClip(`letter-${letter}`);
+      void playClip(letterClipId(letter, letterCase));
       setBurstSlot(letter);
       schedule(() => setBurstSlot(null), 650);
       const now = [...matched, letter];
@@ -203,7 +213,7 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
         schedule(onGroupComplete, 700 + GROUP_DONE_MS);
       }
     },
-    [matched, group, onGroupComplete, schedule]
+    [matched, group, onGroupComplete, schedule, letterCase]
   );
 
   const endDrag = useCallback(
@@ -383,7 +393,11 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
                     animate={wrongSlot === l ? { x: [-6, 6, -4, 4, 0] } : { x: 0 }}
                     transition={{ duration: 0.45 }}
                     role="img"
-                    aria-label={isMatched ? `${l} — matched!` : `gray target letter ${l}`}
+                    aria-label={
+                      isMatched
+                        ? `${caseLetter(l, letterCase)} — matched!`
+                        : `gray target letter ${caseLetter(l, letterCase)}`
+                    }
                   >
                     {/* halo while dragging; brighter + swollen when the magnet
                       is hovering right over this slot */}
@@ -466,7 +480,7 @@ export function MagnetLevel({ groupIndex, onGroupComplete }: MagnetLevelProps) {
                       onPointerDown={(e) => startDrag(e, l)}
                       role="button"
                       tabIndex={0}
-                      aria-label={`magnet letter ${l} — drag it onto the gray ${l} in the pot`}
+                      aria-label={`magnet letter ${caseLetter(l, letterCase)} — drag it onto the gray ${caseLetter(l, letterCase)} in the pot`}
                     >
                       <Magnet letter={l} colorIndex={group.indexOf(l)} size={magnetSize} />
                     </motion.div>

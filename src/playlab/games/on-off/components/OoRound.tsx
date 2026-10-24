@@ -15,7 +15,7 @@ import {
   playStarPop,
   playThudSound,
 } from "@shared/audio/sfx";
-import { clipText, playClip, stopVoice } from "@shared/audio/voice";
+import { clipText, playClip, stopVoice, voiceIdle } from "@shared/audio/voice";
 import { cheerFor } from "@shared/audio/cheers";
 import { Picture } from "@games/blend-read/components/PictureArt";
 import { PieceBurst, RoundCheer } from "@games/jigsaw-fun/components/Cheer";
@@ -117,7 +117,15 @@ export function OoRound({ round, onDone, onMiss, onHome, onExitPortal }: RoundPr
   const flights = useRef(0);
   const schedule = useScheduler();
 
-  useEffect(() => () => stopVoice(), []);
+  /** False once this round has gone: a late "next round" must not fire. */
+  const aliveRef = useRef(true);
+  useEffect(() => {
+    aliveRef.current = true;
+    return () => {
+      aliveRef.current = false;
+      stopVoice();
+    };
+  }, []);
 
   const { dragging, start, ghostRef } = useDragDrop<number, string>({
     root: stageRef,
@@ -153,7 +161,12 @@ export function OoRound({ round, onDone, onMiss, onHome, onExitPortal }: RoundPr
           else void playClip(cheerId);
         }, LAND_MS);
         schedule(playStarPop, LAND_MS + STAMP_MS);
-        schedule(onDone, ADVANCE_MS);
+        // on after the beat AND once the spoken line has ended, never mid-word
+        schedule(() => {
+          void voiceIdle().then(() => {
+            if (aliveRef.current) onDone();
+          });
+        }, ADVANCE_MS);
         return;
       }
 

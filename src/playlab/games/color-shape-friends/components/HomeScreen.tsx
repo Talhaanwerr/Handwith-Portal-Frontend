@@ -5,6 +5,7 @@ import { cssVars } from "@shared/styles/cssVars";
 import { StarRow } from "@shared/components/ui/StarRow";
 import { playClickSound } from "@shared/audio/sfx";
 import { playClip } from "@shared/audio/voice";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { ShapeGlyph } from "@games/shape-match/components/ShapeArt";
 import {
@@ -87,6 +88,7 @@ function Miniature({ module }: { module: ModuleId }) {
  */
 export function HomeScreen({ best, onPick }: HomeScreenProps) {
   useSayOnEnter([WELCOME_CLIP, PICK_CLIP]);
+  const { gate } = useHowToPlay();
 
   return (
     <div className="csf-stage csf-stage--home">
@@ -102,9 +104,11 @@ export function HomeScreen({ best, onPick }: HomeScreenProps) {
             className={`csf-card csf-card--${m.id}`}
             onClick={() => {
               playClickSound();
-              // cuts the welcome off; the first round's prompt queues after it
-              void playClip(m.clip);
-              onPick(m.id);
+              gate(() => {
+                // cuts the welcome off; the first round's prompt queues after it
+                void playClip(m.clip);
+                onPick(m.id);
+              }, m.id);
             }}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

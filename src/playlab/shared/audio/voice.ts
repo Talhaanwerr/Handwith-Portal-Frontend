@@ -279,6 +279,20 @@ export async function playSequence(
   gapMs = 250,
   onPart?: (index: number) => void
 ): Promise<void> {
+  await playSequenceChecked(ids, gapMs, onPart);
+}
+
+/**
+ * Same as playSequence, but says whether the line really played to its END:
+ * true = every clip finished, false = something stopped it part-way (another
+ * voice, Back, an unmount). Progression that must wait for the whole spoken
+ * line (useAfterVoice) uses this, never a timer.
+ */
+export async function playSequenceChecked(
+  ids: ClipId[],
+  gapMs = 250,
+  onPart?: (index: number) => void
+): Promise<boolean> {
   // playClip itself calls stopVoice() (which bumps `generation`), so the
   // token is read AFTER each part starts; a stop from anywhere else - Back,
   // unmount, another tap - then ends the sequence at the next boundary.
@@ -286,12 +300,18 @@ export async function playSequence(
   for (let i = 0; i < ids.length; i++) {
     if (i > 0) {
       if (gapMs > 0) await new Promise((r) => setTimeout(r, gapMs));
-      if (generation !== token) return;
+      if (generation !== token) return false;
     }
     onPart?.(i);
     const play = playClip(ids[i]);
     token = generation;
     await play;
-    if (generation !== token) return;
+    if (generation !== token) return false;
   }
+  return true;
+}
+
+/** Resolves when the line being said right now (if any) has finished. */
+export function voiceIdle(): Promise<void> {
+  return speaking;
 }

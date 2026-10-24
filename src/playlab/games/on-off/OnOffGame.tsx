@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { GameStage } from "@shared/components/game/GameStage";
 import { useGameSession } from "@shared/hooks/useGameSession";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { useOnOffStore, type OoScreen } from "@games/on-off/store/onOffStore";
@@ -36,6 +37,7 @@ function toBucket(screen: OoScreen): "menu" | "play" {
  */
 export function OnOffGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, round, misses, best, setScreen, toHome, start, advance, miss, record } =
     useOnOffStore();
 
@@ -74,7 +76,7 @@ export function OnOffGame() {
         <AnimatePresence>
           {screen === "home" && (
             <motion.div key="home" className="oo-layer" {...SCREEN}>
-              <OoHome best={best} onPlay={start} onExitPortal={exitPortal} />
+              <OoHome best={best} onPlay={() => gate(start)} onExitPortal={exitPortal} />
             </motion.div>
           )}
           {screen === "play" && round < ROUND_COUNT && (

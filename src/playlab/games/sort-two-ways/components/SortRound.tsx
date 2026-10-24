@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { AnimatePresence, motion } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { FigureBreak } from "@shared/components/game/FigureBreak";
@@ -11,7 +12,7 @@ import { useScheduler } from "@shared/hooks/useScheduler";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { registerTarget, toRootPoint } from "@shared/utils/pointer";
 import { cheerFor } from "@shared/audio/cheers";
-import { clipText, playClip, sayAfter, stopVoice } from "@shared/audio/voice";
+import { clipText, playClip, sayAfter } from "@shared/audio/voice";
 import { wordClip } from "@shared/audio/wordClips";
 import {
   playClickSound,
@@ -150,7 +151,7 @@ export function SortRound({
   const landedRef = useRef<{ board: number; ids: ReadonlySet<string> }>({ board, ids: NONE });
   const schedule = useScheduler();
 
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
   // each board's prompt as it is dealt (the set's first, then after the
   // break the second), queued behind whatever is still being said
   useSayOnEnter([rule.clip]);

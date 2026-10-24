@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { BrickShell, type PlayApi } from "@games/brick-lab/engine/BrickShell";
+import { BrickShell, type PlayApi, type ShellModule } from "@games/brick-lab/engine/BrickShell";
 import { BrickBoard } from "@games/brick-lab/engine/BrickBoard";
 import {
   COLORS,
@@ -9,13 +9,35 @@ import {
   type BrickColor,
   type BrickKind,
 } from "@games/brick-lab/engine/geometry";
-import { HERO_HOUSE, HERO_PLATE } from "@games/brick-lab/constants/models";
+import { HERO_HOUSE, HERO_PLATE, HERO_TOWER } from "@games/brick-lab/constants/models";
+import { CopyDesign } from "@games/brick-lab/components/CopyDesign";
 import { playClickSound } from "@shared/audio/sfx";
 import { playClip } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 
+const MODULES: readonly ShellModule[] = [
+  {
+    id: "copy",
+    label: "Copy the Design",
+    hero: HERO_TOWER,
+    heroPlate: HERO_PLATE,
+    doneClip: "brick-lab-done",
+    play: (api) => <CopyDesign api={api} />,
+  },
+  {
+    id: "free",
+    label: "Free Build",
+    hero: HERO_HOUSE,
+    heroPlate: HERO_PLATE,
+    doneClip: "brick-lab-done",
+    play: (api) => <FreeBuild api={api} />,
+  },
+];
+
 /**
- * BRICK LAB — free building on a big green plate. Pick a colour, drag any of
+ * BRICK LAB — two ways to build. "Copy the Design" is guided: pick a design,
+ * see it beside the plate, rebuild it and get checked. "Free Build" is free
+ * building on a big green plate. Pick a colour, drag any of
  * eight brick sizes on, stack, turn, move and take off. When the child says
  * they are done, their own model is what the star card shows.
  */
@@ -23,12 +45,11 @@ export function BrickLabGame() {
   return (
     <BrickShell
       title="Brick Lab"
-      tagline="Build anything you like!"
+      tagline="Pick a game!"
       hero={HERO_HOUSE}
       heroPlate={HERO_PLATE}
       welcomeClip="brick-lab-welcome"
-      doneClip="brick-lab-done"
-      play={(api) => <FreeBuild api={api} />}
+      modules={MODULES}
     />
   );
 }

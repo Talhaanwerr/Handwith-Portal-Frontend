@@ -61,6 +61,13 @@ export const SOUND_POOL = "abcdfhlmnpstw";
 /** Each round builds one tower: the alphabet in five runs. */
 export const ABC_RUNS = ["abcde", "fghij", "klmno", "pqrst", "uvwxyz"] as const;
 
+/** The three ways to play ABC Tower: towers of 3, 5 or 10 letters in a row. */
+export const ABC_RUN_SETS: Record<"three" | "five" | "ten", readonly string[]> = {
+  three: ["abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vwx", "yz"],
+  five: ABC_RUNS,
+  ten: ["abcdefghij", "klmnopqrst", "uvwxyz"],
+};
+
 /* ── Self-check ──────────────────────────────────────────────────────── */
 
 export function checkLiteracy(has: (id: string) => boolean): string[] {
@@ -73,7 +80,8 @@ export function checkLiteracy(has: (id: string) => boolean): string[] {
     if (tray.filter((k) => k.tag === first).length !== 1) errs.push(`${w.word}: answer not once`);
     if (new Set(tray.map((k) => k.tag)).size !== 3) errs.push(`${w.word}: repeated choice`);
   }
-  if (ABC_RUNS.join("") !== "abcdefghijklmnopqrstuvwxyz") errs.push("abc: runs skip a letter");
+  for (const [set, runs] of Object.entries(ABC_RUN_SETS))
+    if (runs.join("") !== "abcdefghijklmnopqrstuvwxyz") errs.push(`abc ${set}: runs skip a letter`);
   for (const l of ABC_RUNS.join("")) if (!has(`letter-${l}`)) errs.push(`abc: no name for ${l}`);
   return errs;
 }

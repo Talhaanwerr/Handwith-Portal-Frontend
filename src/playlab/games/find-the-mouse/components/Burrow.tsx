@@ -16,7 +16,7 @@ export type HeadState = "in" | "peek" | "out" | "popped";
 
 const HEAD = {
   in: { y: "118%", scale: 1 },
-  peek: { y: "44%", scale: 1 },
+  peek: { y: "62%", scale: 1 },
   out: { y: "6%", scale: 1 },
   popped: { y: "-50%", scale: 1.14 },
 } as const;

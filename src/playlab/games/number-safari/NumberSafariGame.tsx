@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { GameStage } from "@shared/components/game/GameStage";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useGameSession } from "@shared/hooks/useGameSession";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
 import { useSafariStore, type SafariScreen } from "@games/number-safari/store/numberSafariStore";
@@ -46,6 +47,7 @@ const SLIDE = {
  */
 export function NumberSafariGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, difficulty, levelIndex, misses, best, setScreen, beginRun, nextLevel, addMiss } =
     useSafariStore();
 
@@ -96,7 +98,10 @@ export function NumberSafariGame() {
 
             {screen === "pick" && (
               <motion.div key="pick" className="ns-screen" {...SLIDE}>
-                <DifficultyScreen onPick={pick} onBack={() => setScreen("splash")} />
+                <DifficultyScreen
+                  onPick={(d) => gate(() => pick(d), d)}
+                  onBack={() => setScreen("splash")}
+                />
               </motion.div>
             )}
 

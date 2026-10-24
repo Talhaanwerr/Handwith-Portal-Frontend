@@ -89,7 +89,6 @@ const WORD_CLIPS: Readonly<Record<string, string>> = {
   grapes: "name-grapes",
   guitar: "treat-word-guitar",
   gumdrop: "name-gumdrop",
-  ham: "word-ham",
   hand: "treat-word-hand",
   hat: "name-hat",
   hazelnut: "treat-word-hazelnut",

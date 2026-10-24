@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { CandyScene, Bee } from "@games/letter-treats/components/CandyScene";
 import { Sparkle, CANDY } from "@games/letter-treats/components/candy-world/CandyArt";
 import { useTreatsStore } from "@games/letter-treats/store/treatsStore";
@@ -16,6 +17,7 @@ const TITLE_B = ["A", "B", "C"];
  */
 export function TreatSplash() {
   const setScreen = useTreatsStore((s) => s.setScreen);
+  const { gate } = useHowToPlay();
 
   return (
     <div className="lt-screen lt-wash relative flex h-full w-full flex-col items-center justify-center">
@@ -72,7 +74,7 @@ export function TreatSplash() {
       <motion.button
         onClick={() => {
           playClickSound();
-          setScreen("alphabet-set");
+          gate(() => setScreen("alphabet-set"));
         }}
         className="lt-go lt-go--splash font-rounded relative z-10 flex items-center gap-3 font-black"
         initial={{ scale: 0, opacity: 0 }}

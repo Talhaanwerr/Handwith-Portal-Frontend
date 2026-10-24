@@ -8,6 +8,7 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useSortStore, type SortScreen } from "@games/sort-it/store/sortStore";
 import { activitiesFor, type Rule } from "@games/sort-it/constants/activities";
 import { SortBoard } from "@games/sort-it/components/SortBoard";
@@ -34,6 +35,7 @@ function toBucket(screen: SortScreen): "menu" | "pick" | "play" {
  */
 export function SortItGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, rule, index, setScreen, beginModule, next } = useSortStore();
 
   const activities = activitiesFor(rule);
@@ -61,7 +63,7 @@ export function SortItGame() {
     router.push(PORTAL_ROUTE);
   }, [router]);
 
-  const pick = useCallback((r: Rule) => beginModule(r), [beginModule]);
+  const pick = useCallback((r: Rule) => gate(() => beginModule(r), r), [beginModule, gate]);
 
   return (
     <GameStage>

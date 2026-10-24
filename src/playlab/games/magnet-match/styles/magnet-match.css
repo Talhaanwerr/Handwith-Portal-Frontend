@@ -324,3 +324,30 @@
     width: clamp(30px, 7vmin, 48px);
   }
 }
+
+/* Uppercase / lowercase choice on the title screen. */
+.mm-case {
+  display: flex;
+  gap: 10px;
+  padding: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.85);
+}
+.mm-case-btn {
+  min-width: 96px;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 3px solid transparent;
+  border-radius: 9999px;
+  background: transparent;
+  color: #7a4a1a;
+  font-size: 26px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.mm-case-btn--on {
+  border-color: #fff;
+  background: #e2793a;
+  color: #fff;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+}

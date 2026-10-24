@@ -8,6 +8,7 @@ import { cssVars } from "@shared/styles/cssVars";
 import { playClickSound } from "@shared/audio/sfx";
 import { clipText, playClip, stopVoice } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { Teacher } from "@games/door-count/components/Teacher";
 import type { ModuleInfo } from "@games/number-groups/constants/kit";
 
@@ -26,6 +27,7 @@ export function NgHome<Id extends string>({
   best,
   onPick,
   onExitPortal,
+  beforeStart,
 }: {
   title: string;
   /** Said as the screen lands, before "Pick one!". */
@@ -36,8 +38,12 @@ export function NgHome<Id extends string>({
   best: Partial<Record<Id, number>>;
   onPick: (m: Id) => void;
   onExitPortal: () => void;
+  /** A game may step in when a card is picked (e.g. to ask for a level
+   *  first): return true and call `go` when ready. Default: start at once. */
+  beforeStart?: (m: Id, go: () => void) => boolean;
 }) {
   useSayOnEnter([welcomeClip, "mouse-pick-one"]);
+  const { gate } = useHowToPlay();
 
   return (
     <div className="ng-screen ng-home">
@@ -70,8 +76,12 @@ export function NgHome<Id extends string>({
                 // drop the welcome still queued, then name the module; the
                 // round's prompt queues after it
                 stopVoice();
-                void playClip(m.clip);
-                onPick(m.id);
+                const go = () =>
+                  gate(() => {
+                    void playClip(m.clip);
+                    onPick(m.id);
+                  }, m.id);
+                if (!beforeStart?.(m.id, go)) go();
               }}
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}

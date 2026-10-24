@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
@@ -97,7 +98,7 @@ export function SharkLevel({ roundIndex, onRoundComplete }: SharkLevelProps) {
   // Every timer this screen schedules, cleared on unmount — nothing can fire
   // a state change or screen advance after the child has navigated away.
   const schedule = useScheduler();
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   // Fresh round: preload this round's clips; speak the instruction once, on
   // the very first round only (repeating it 13 times would be noise).

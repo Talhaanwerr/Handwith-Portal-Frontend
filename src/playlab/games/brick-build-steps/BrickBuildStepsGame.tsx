@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BrickShell, ModelView, type PlayApi } from "@games/brick-lab/engine/BrickShell";
 import { BrickBoard, type SnapResult } from "@games/brick-lab/engine/BrickBoard";
 import { RoundWin } from "@games/brick-lab/engine/RoundWin";
@@ -8,7 +8,8 @@ import { RoundDots } from "@games/brick-lab/engine/RoundDots";
 import { COLORS, type Brick, type BrickKind } from "@games/brick-lab/engine/geometry";
 import type { Landing } from "@games/brick-lab/engine/world";
 import { HERO_HOUSE, HERO_PLATE, STEP_MODELS } from "@games/brick-lab/constants/models";
-import { playSequence, stopVoice } from "@shared/audio/voice";
+import { playSequence } from "@shared/audio/voice";
+import { useAfterVoice, useIntro } from "@shared/hooks/useAfterVoice";
 import { playStarPop } from "@shared/audio/sfx";
 
 /**
@@ -66,6 +67,22 @@ function stepChoices(t: Brick, seed: number): BrickKind[] {
   return [...all.slice(r), ...all.slice(0, r)];
 }
 
+/** Square bricks (2x2, 1x1) are "small"; rectangles (2x4, 1x2, 2x3…) are "big". */
+const isSmall = (k: Pick<BrickKind, "w" | "d">) => k.w === k.d;
+
+/** What the voice says for a brick: its size, then its colour and "block" —
+ *  "small" … "Red block!" — from the recorded size words and colour clips. */
+function brickClips(k: Pick<BrickKind, "w" | "d" | "color">): string[] {
+  const clip = COLORS[k.color].clip;
+  return [isSmall(k) ? "word-small" : "word-big", ...(clip ? [clip] : [])];
+}
+
+/** "Small red" / "Big white": the words a grown-up would say, shown under each
+ *  tray brick so colour and size are never left to the picture alone. */
+function brickName(k: Pick<BrickKind, "w" | "d" | "color">): string {
+  return `${isSmall(k) ? "Small" : "Big"} ${COLORS[k.color].name}`;
+}
+
 /** How close (in studs, centre to centre) counts as "on the shadow". */
 const PULL = 2.2;
 
@@ -74,27 +91,19 @@ function Steps({ api }: { api: PlayApi }) {
   const [step, setStep] = useState(0);
   const [bricks, setBricks] = useState<Brick[]>([]);
   const [won, setWon] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { thenAfter } = useAfterVoice();
   const model = STEP_MODELS[mi];
   const target = model.steps[step] as Brick | undefined;
 
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-      stopVoice();
-    },
-    []
-  );
-
-  // Every step says what to look for: "Red block!"
-  useEffect(() => {
-    if (!target) return;
-    const clip = COLORS[target.color].clip;
+  // Every step says what to look for: "Red block!" — in full, before a tap
+  // on the board is accepted.
+  const introLines = useMemo(() => {
     const lines = step === 0 ? ["brick-steps-look"] : [];
-    if (clip) lines.push(clip);
-    const t = setTimeout(() => void playSequence(lines, 150), step === 0 ? 600 : 350);
-    return () => clearTimeout(t);
-  }, [mi, step, target]);
+    if (target) lines.push(...brickClips(target));
+    return lines;
+  }, [target, step]);
+  const intro = useIntro(introLines, `${mi}-${step}`, step === 0 ? 600 : 350);
+  const busy = intro || won;
 
   // Three bricks to choose from: the right one, one the right size in the
   // wrong colour, one the right colour in the wrong size — so the child looks
@@ -143,15 +152,14 @@ function Steps({ api }: { api: PlayApi }) {
     }
     setWon(true);
     playStarPop();
-    void playSequence(["brick-steps-done", `brick-model-${model.id}`], 200);
-    timer.current = setTimeout(() => {
+    thenAfter(["brick-steps-done", `brick-model-${model.id}`], () => {
       setWon(false);
       setBricks([]);
       setStep(0);
       if (mi + 1 >= STEP_MODELS.length) api.finish(STEP_MODELS[mi].steps, model.plate);
       else setMi(mi + 1);
-    }, 3000);
-  }, [api, mi, model, step]);
+    });
+  }, [api, mi, model, step, thenAfter]);
 
   return (
     <BrickBoard
@@ -166,12 +174,14 @@ function Steps({ api }: { api: PlayApi }) {
       onPlaced={onPlaced}
       accept={(b) => isTarget(b, target)}
       onRejected={() => {
-        const clip = target ? COLORS[target.color].clip : null;
-        void playSequence(clip ? ["brick-steps-shadow", clip] : ["brick-steps-shadow"], 150);
+        void playSequence(["brick-steps-shadow", ...(target ? brickClips(target) : [])], 150);
       }}
+      trayLabel={(k) => (
+        <span className="bk-tray-name font-rounded font-black">{brickName(k)}</span>
+      )}
       hints={won ? undefined : hints}
-      locked={won}
-      handFrom={target && !won && answer >= 0 ? answer : undefined}
+      locked={busy}
+      handFrom={target && !busy && answer >= 0 ? answer : undefined}
       plateColor="#8FC9EA"
     >
       <div

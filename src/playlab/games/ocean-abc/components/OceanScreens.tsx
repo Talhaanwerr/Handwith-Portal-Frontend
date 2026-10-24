@@ -12,6 +12,7 @@ import {
   type OceanModule,
 } from "@games/ocean-abc/store/oceanStore";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { ProgressBar } from "@shared/components/ui/ProgressBar";
 import { StartOptions } from "@shared/components/ui/StartOptions";
 import { ChoiceScreen, type Choice } from "@shared/components/game/ChoiceScreen";
@@ -228,11 +229,15 @@ export function OceanModeSelect() {
  */
 export function OceanModules({ onExitPortal = () => {} }: { onExitPortal?: () => void }) {
   const { module, setModule, setScreen } = useOceanStore();
+  const { gate } = useHowToPlay();
 
   const pick = (m: OceanModule) => {
     playClickSound();
-    setModule(m);
-    setScreen("mode");
+    // the How to Play card opens first; Play there moves on to the letter choice
+    gate(() => {
+      setModule(m);
+      setScreen("mode");
+    }, m);
   };
 
   const options: { m: OceanModule; icon: string; title: string; sub: string; aria: string }[] = [

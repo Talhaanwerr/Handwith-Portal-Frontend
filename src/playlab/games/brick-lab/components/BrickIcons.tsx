@@ -167,14 +167,3 @@ export function BrickPlusTowerIcon() {
     <IconScene bricks={PLUS} plate={PLATE} sky={["#FFF6DA", "#FFE29A"]} plateColor="#F3C85A" />
   );
 }
-/** Take Away Tower: a green tower, its top brick lifting off. */
-const TAKE: Brick[] = [
-  { id: "t1", x: 3, z: 2, y: 0, w: 2, d: 2, color: "green" },
-  { id: "t2", x: 3, z: 2, y: 1, w: 2, d: 2, color: "green" },
-  { id: "t3", x: 5, z: 3, y: 0, w: 2, d: 2, color: "green", tag: "−" },
-];
-export function BrickTakeAwayIcon() {
-  return (
-    <IconScene bricks={TAKE} plate={PLATE} sky={["#E9F7EB", "#BFE3C4"]} plateColor="#9ED6A6" />
-  );
-}

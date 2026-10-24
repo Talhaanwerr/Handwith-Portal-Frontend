@@ -8,6 +8,7 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { CandyDefs } from "@games/letter-treats/components/candy-world/CandyDefs";
 import { KitchenBackdrop } from "@games/magnet-match/components/KitchenBackdrop";
 import { useFoodSortStore, type FoodScreen } from "@games/food-sort/store/foodSortStore";
@@ -48,6 +49,7 @@ const SCREEN = {
  */
 export function FoodSortGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const screen = useFoodSortStore((s) => s.screen);
   const moduleId = useFoodSortStore((s) => s.module);
   const index = useFoodSortStore((s) => s.index);
@@ -82,7 +84,7 @@ export function FoodSortGame() {
   }, [router]);
 
   const toPick = useCallback(() => setScreen("pick"), [setScreen]);
-  const pick = useCallback((m: ModuleId) => begin(m), [begin]);
+  const pick = useCallback((m: ModuleId) => gate(() => begin(m), m), [gate, begin]);
 
   const activity = current.activities[Math.min(index, total - 1)];
 

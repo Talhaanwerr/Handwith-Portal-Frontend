@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { playClickSound } from "@shared/audio/sfx";
 import { playClip, clipText } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
@@ -31,12 +32,16 @@ export function PnHome({
   onExitPortal: () => void;
 }) {
   useSayOnEnter(ENTER_LINES);
+  const { gate } = useHowToPlay();
 
   const pick = (m: ModuleId) => {
     playClickSound();
-    // the card names itself — the round's own prompt queues after it
-    void playClip(MODE_CLIPS[m]);
-    onPick(m);
+    // the How to Play card opens first; the card names itself (the round's own
+    // prompt queues after it) and the round starts when Play is pressed there
+    gate(() => {
+      void playClip(MODE_CLIPS[m]);
+      onPick(m);
+    }, m);
   };
 
   return (

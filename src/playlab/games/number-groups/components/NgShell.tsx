@@ -38,6 +38,7 @@ export function NgShell<Id extends string>({
   Mini,
   world,
   children,
+  beforeStart,
 }: {
   title: string;
   /** The game's welcome and finish lines (clip ids). */
@@ -52,6 +53,8 @@ export function NgShell<Id extends string>({
   world: ReactNode;
   /** Mounted once under the screens (e.g. shared SVG gradients). */
   children?: ReactNode;
+  /** See NgHome: lets a game ask something (a level) before a module starts. */
+  beforeStart?: (m: Id, go: () => void) => boolean;
 }) {
   const router = useRouter();
   const { screen, module, round, misses, best } = store;
@@ -93,6 +96,7 @@ export function NgShell<Id extends string>({
                 world={world}
                 best={best}
                 onPick={start}
+                beforeStart={beforeStart}
                 onExitPortal={exitPortal}
               />
             </motion.div>

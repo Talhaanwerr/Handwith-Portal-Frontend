@@ -7,6 +7,7 @@ import { GameStage } from "@shared/components/game/GameStage";
 import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useDinoStore, stonesRoundFor, type DinoScreen } from "@games/dino-dig/store/dinoStore";
 import { TOTAL_CROSSINGS } from "@games/dino-dig/constants/rounds";
 import { DinoSplash } from "@games/dino-dig/components/DinoSplash";
@@ -27,6 +28,7 @@ function toBucket(screen: DinoScreen): "menu" | "play" {
 
 export function AlphabetDinoDigGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const store = useDinoStore();
   const {
     screen,
@@ -67,7 +69,10 @@ export function AlphabetDinoDigGame() {
       <AnimatePresence mode="wait">
         {screen === "splash" && (
           <motion.div key="splash" className="absolute inset-0" {...PAGE_TRANSITION}>
-            <DinoSplash onPick={startMode} onExitPortal={() => router.push(PORTAL_ROUTE)} />
+            <DinoSplash
+              onPick={(m) => gate(() => startMode(m), m)}
+              onExitPortal={() => router.push(PORTAL_ROUTE)}
+            />
           </motion.div>
         )}
         {screen === "case-select" && (

@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { ChoiceScreen, type Choice } from "@shared/components/game/ChoiceScreen";
 import type { PuzzleLevelsProps } from "@games/jigsaw-fun/components/PuzzleShell";
 import { cssVars } from "@shared/styles/cssVars";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import {
   LEVELS,
   LEVEL_NAMES,
@@ -33,6 +34,7 @@ export function TtLevels({
   onBack,
   onExitPortal,
 }: PuzzleLevelsProps<ModuleId>) {
+  const { gate } = useHowToPlay();
   const fig = figureOf(module);
   const paint = useMemo(
     () =>
@@ -64,7 +66,7 @@ export function TtLevels({
         tone="ocean"
         backAriaLabel="Back to the Tangram Town pictures"
         onBack={onBack}
-        onPick={onPick}
+        onPick={(level) => gate(() => onPick(level), level)}
         options={options}
       />
       <LeavePill className="tt-leave" onExit={onExitPortal} />

@@ -22,6 +22,7 @@ import { playClip } from "@shared/audio/voice";
 import { playClickSound } from "@shared/audio/sfx";
 import { continueLetter } from "@shared/utils/progression";
 import { StartOptions } from "@shared/components/ui/StartOptions";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
 
 /** Four familiar faces flanking the title — existing art, no new assets. */
@@ -269,6 +270,7 @@ export function JungleSplash({ onExitPortal }: { onExitPortal?: () => void }) {
 export function JungleGrid({ onExitPortal = () => {} }: { onExitPortal?: () => void }) {
   const store = useJungleStore();
   const { letterCase, setScreen, setCase, beginRun, jumpTo } = store;
+  const { gate } = useHowToPlay();
   // progress is per case: switching BIG ↔ little switches to that run's board
   const found = foundFor(store, letterCase);
   const foundCount = found.length;
@@ -282,8 +284,10 @@ export function JungleGrid({ onExitPortal = () => {} }: { onExitPortal?: () => v
   /** Tapping a tile starts (or redirects) a run at that animal. */
   const openLetter = (l: string) => {
     playClickSound();
-    jumpTo(l);
-    setScreen("level");
+    gate(() => {
+      jumpTo(l);
+      setScreen("level");
+    });
   };
 
   // Unified start flow (same as Letter Tracing / Letter Hunt): continue from
@@ -460,8 +464,10 @@ export function JungleGrid({ onExitPortal = () => {} }: { onExitPortal?: () => v
                 : () => {
                     // CONTINUE — only the animals still to find.
                     playClickSound();
-                    beginRun(0, "continue");
-                    setScreen("level");
+                    gate(() => {
+                      beginRun(0, "continue");
+                      setScreen("level");
+                    });
                   }
             }
             continueLabel={runComplete ? "See my alphabet!" : `Continue · ${nextUnfound}`}
@@ -469,8 +475,10 @@ export function JungleGrid({ onExitPortal = () => {} }: { onExitPortal?: () => v
               // START FROM A — a FRESH run: every animal from A onward, found or
               // not. Saved progress is left untouched.
               playClickSound();
-              beginRun(0, "fresh");
-              setScreen("level");
+              gate(() => {
+                beginRun(0, "fresh");
+                setScreen("level");
+              });
             }}
           />
         </div>

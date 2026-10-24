@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { GameStage } from "@shared/components/game/GameStage";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useGameSession } from "@shared/hooks/useGameSession";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
@@ -111,6 +112,7 @@ type Aside = "none" | "yes" | "oops";
  */
 export function ShapeMatchGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const store = useShapeStore();
   const { screen, round, finished, openModule, nextRound, nextModule, goHome, resetAll } = store;
   const moduleIndex = store.module;
@@ -327,10 +329,12 @@ export function ShapeMatchGame() {
                 <motion.div key="home" className="sm-screen-wrap" {...PAGE_TRANSITION}>
                   <ShapeHome
                     finished={finished}
-                    onOpen={(index) => {
-                      interrupt();
-                      openModule(index);
-                    }}
+                    onOpen={(index) =>
+                      gate(() => {
+                        interrupt();
+                        openModule(index);
+                      })
+                    }
                     onReset={() => {
                       interrupt();
                       resetAll();

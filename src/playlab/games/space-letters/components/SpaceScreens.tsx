@@ -15,6 +15,7 @@ import { StartOptions } from "@shared/components/ui/StartOptions";
 import { continueLetter } from "@shared/utils/progression";
 import { playClip } from "@shared/audio/voice";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { SpaceScene } from "@games/space-letters/components/SpaceScene";
 
@@ -191,6 +192,7 @@ export function SpaceModeSelect({ onExitPortal = () => {} }: { onExitPortal?: ()
 export function SpaceGrid() {
   const store = useSpaceStore();
   const { letterCase, setScreen, beginRun, jumpTo } = store;
+  const { gate } = useHowToPlay();
   const built = builtFor(store, letterCase);
 
   useEffect(() => {
@@ -200,8 +202,10 @@ export function SpaceGrid() {
 
   const openLetter = (l: string) => {
     playClickSound();
-    jumpTo(l);
-    setScreen("level");
+    gate(() => {
+      jumpTo(l);
+      setScreen("level");
+    });
   };
 
   const nextUnbuilt = continueLetter(SPACE_ALPHA, built);
@@ -295,8 +299,10 @@ export function SpaceGrid() {
                   }
                 : () => {
                     playClickSound();
-                    beginRun(0, "continue");
-                    setScreen("level");
+                    gate(() => {
+                      beginRun(0, "continue");
+                      setScreen("level");
+                    });
                   }
             }
             continueLabel={
@@ -306,8 +312,10 @@ export function SpaceGrid() {
             }
             onStartFromA={() => {
               playClickSound();
-              beginRun(0, "fresh");
-              setScreen("level");
+              gate(() => {
+                beginRun(0, "fresh");
+                setScreen("level");
+              });
             }}
             startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
           />

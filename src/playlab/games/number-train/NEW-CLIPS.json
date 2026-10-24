@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ntr-welcome",
+    "text": "All aboard the Number Train!",
+    "file": "/audio/number-train/welcome.mp3"
+  },
+  {
+    "id": "ntr-done",
+    "text": "Choo choo! You know your numbers in order!",
+    "file": "/audio/number-train/done.mp3"
+  },
+  {
+    "id": "ntr-mode-build",
+    "text": "Build the Train. Put the carriages in order.",
+    "file": "/audio/number-train/mode-build.mp3"
+  },
+  {
+    "id": "ntr-mode-missing",
+    "text": "Missing Carriage. Find the number that is missing.",
+    "file": "/audio/number-train/mode-missing.mp3"
+  },
+  {
+    "id": "ntr-build",
+    "text": "Build the train! Start with one.",
+    "file": "/audio/number-train/build.mp3"
+  },
+  {
+    "id": "ntr-which-next",
+    "text": "Which number comes next?",
+    "file": "/audio/number-train/which-next.mp3"
+  },
+  {
+    "id": "ntr-missing",
+    "text": "Which carriage is missing?",
+    "file": "/audio/number-train/missing.mp3"
+  },
+  {
+    "id": "ntr-missing-wrong",
+    "text": "Not that one. Count along the train.",
+    "file": "/audio/number-train/missing-wrong.mp3"
+  }
+]

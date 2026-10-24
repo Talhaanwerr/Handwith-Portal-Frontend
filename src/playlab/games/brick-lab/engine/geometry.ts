@@ -30,8 +30,8 @@ export const COLORS = {
   blue: { hex: "#0A5BC4", clip: "friends-block-blue", is: "friends-is-blue", name: "blue" },
   purple: { hex: "#7E3FB5", clip: "friends-block-purple", is: "friends-is-purple", name: "purple" },
   pink: { hex: "#F27BB0", clip: "friends-block-pink", is: "friends-is-pink", name: "pink" },
-  white: { hex: "#F2F3F2", clip: null, is: null, name: "white" },
-  black: { hex: "#2A3138", clip: null, is: null, name: "black" },
+  white: { hex: "#F2F3F2", clip: "friends-block-white", is: null, name: "white" },
+  black: { hex: "#2A3138", clip: "friends-block-black", is: null, name: "black" },
 } as const;
 
 export type BrickColor = keyof typeof COLORS;

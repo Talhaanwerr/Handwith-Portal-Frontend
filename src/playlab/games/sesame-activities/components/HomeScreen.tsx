@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { FloatingClouds } from "@shared/components/animations/FloatingClouds";
 import { StarRow } from "@shared/components/ui/StarRow";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { playClickSound } from "@shared/audio/sfx";
 import { playClip } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
@@ -83,6 +84,7 @@ export function HomeScreen({
   onPick: (id: ModuleId) => void;
 }) {
   useSayOnEnter([WELCOME_CLIP]);
+  const { gate } = useHowToPlay();
 
   return (
     <div className="sa-world sa-world--street sa-world--home">
@@ -120,9 +122,12 @@ export function HomeScreen({
               className={`sa-card sa-card--${id}`}
               onClick={() => {
                 playClickSound();
-                // cuts the welcome off; round one's prompt queues after it
-                void playClip(MODULES[id].clip);
-                onPick(id);
+                // the How to Play card opens first; Play there cuts the welcome
+                // off, and round one's prompt queues after it
+                gate(() => {
+                  void playClip(MODULES[id].clip);
+                  onPick(id);
+                }, id);
               }}
               aria-label={`${MODULES[id].title}: ${MODULES[id].tag}`}
               initial={{ y: 18, opacity: 0 }}

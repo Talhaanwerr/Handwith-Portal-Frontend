@@ -24,9 +24,13 @@ interface ClassroomSceneProps {
    *  asks for this so nothing behind the game competes with it; the title,
    *  level menu and "Well Done" screens keep the full room. */
   bare?: boolean;
+  /** The quiet room: walls, window and floor only — no shelf, board,
+   *  corkboard, door or desk. The CVC game (Blend & Seek) uses it on every
+   *  screen; the busy room distracted from the words. */
+  calm?: boolean;
 }
 
-export function ClassroomScene({ bare = false }: ClassroomSceneProps) {
+export function ClassroomScene({ bare = false, calm = false }: ClassroomSceneProps) {
   return (
     <svg
       className="br-scene"
@@ -58,122 +62,141 @@ export function ClassroomScene({ bare = false }: ClassroomSceneProps) {
         ))}
       </g>
 
-      {/* ── bookshelf + globe, left of the board ── */}
-      <g>
-        <rect
-          x="94"
-          y="86"
-          width="46"
-          height="82"
-          fill="#A8683C"
-          stroke="#7A4A26"
-          strokeWidth="2"
-        />
-        <rect x="99" y="92" width="36" height="20" fill="#8B5A2E" />
-        <rect x="99" y="118" width="36" height="20" fill="#8B5A2E" />
-        <rect x="99" y="144" width="36" height="20" fill="#8B5A2E" />
-        {/* books, top shelf */}
-        <rect x="101" y="96" width="6" height="14" fill="#5B8AD6" />
-        <rect x="108" y="94" width="6" height="16" fill="#E05A6E" />
-        <rect x="115" y="97" width="6" height="13" fill="#5FAF3A" />
-        <rect x="122" y="95" width="6" height="15" fill="#F0A32E" />
-        {/* books, middle shelf */}
-        <rect x="101" y="122" width="7" height="14" fill="#B06AD6" />
-        <rect x="109" y="120" width="6" height="16" fill="#5B8AD6" />
-        <rect x="116" y="123" width="14" height="13" fill="#8B6F47" />
-        {/* the globe, standing on the shelf top */}
-        <rect x="112" y="80" width="4" height="8" fill="#6B4B33" />
-        <circle cx="114" cy="72" r="10" fill="#5B8AD6" stroke="#3F6FBF" strokeWidth="1.6" />
-        <path
-          d="M106 68 Q114 64 122 68 M105 74 Q114 78 123 74"
-          stroke="#5FAF3A"
-          strokeWidth="2.2"
-          fill="none"
-        />
-        <ellipse
-          cx="114"
-          cy="72"
-          rx="10"
-          ry="3.4"
-          fill="none"
-          stroke="#3F6FBF"
-          strokeWidth="1.2"
-          opacity="0.7"
-        />
-      </g>
-
-      {/* ── the chalkboard, centred — hidden on the play screen (`bare`) so it
-           never sits behind the word card ── */}
-      {!bare && (
-        <g>
-          <rect x="150" y="42" width="140" height="76" rx="4" fill="#C9731A" />
-          <rect x="158" y="48" width="124" height="62" rx="2" fill="#2F6B4F" />
-          {/* chalk doodles — decorative, not meant to be read */}
-          <g stroke="#F4EFE2" strokeWidth="1.6" fill="none" opacity="0.85" strokeLinecap="round">
-            <path d="M170 62 Q182 54 194 62 Q186 68 178 70" />
-            <path d="M206 58 L224 58 L215 76 Z" />
-            <path d="M238 90 Q250 68 264 90" />
-            <path d="M168 96 L186 96 M172 90 L172 102" />
+      {/* ── everything on the walls — gone in the `calm` room ── */}
+      {!calm && (
+        <>
+          {/* ── bookshelf + globe, left of the board ── */}
+          <g>
+            <rect
+              x="94"
+              y="86"
+              width="46"
+              height="82"
+              fill="#A8683C"
+              stroke="#7A4A26"
+              strokeWidth="2"
+            />
+            <rect x="99" y="92" width="36" height="20" fill="#8B5A2E" />
+            <rect x="99" y="118" width="36" height="20" fill="#8B5A2E" />
+            <rect x="99" y="144" width="36" height="20" fill="#8B5A2E" />
+            {/* books, top shelf */}
+            <rect x="101" y="96" width="6" height="14" fill="#5B8AD6" />
+            <rect x="108" y="94" width="6" height="16" fill="#E05A6E" />
+            <rect x="115" y="97" width="6" height="13" fill="#5FAF3A" />
+            <rect x="122" y="95" width="6" height="15" fill="#F0A32E" />
+            {/* books, middle shelf */}
+            <rect x="101" y="122" width="7" height="14" fill="#B06AD6" />
+            <rect x="109" y="120" width="6" height="16" fill="#5B8AD6" />
+            <rect x="116" y="123" width="14" height="13" fill="#8B6F47" />
+            {/* the globe, standing on the shelf top */}
+            <rect x="112" y="80" width="4" height="8" fill="#6B4B33" />
+            <circle cx="114" cy="72" r="10" fill="#5B8AD6" stroke="#3F6FBF" strokeWidth="1.6" />
+            <path
+              d="M106 68 Q114 64 122 68 M105 74 Q114 78 123 74"
+              stroke="#5FAF3A"
+              strokeWidth="2.2"
+              fill="none"
+            />
+            <ellipse
+              cx="114"
+              cy="72"
+              rx="10"
+              ry="3.4"
+              fill="none"
+              stroke="#3F6FBF"
+              strokeWidth="1.2"
+              opacity="0.7"
+            />
           </g>
-          <circle cx="252" cy="66" r="2" fill="#F4EFE2" opacity="0.85" />
-          <circle cx="258" cy="72" r="1.4" fill="#F4EFE2" opacity="0.7" />
-          {/* chalk tray with a stub of chalk and a corner ruler */}
-          <rect x="158" y="110" width="124" height="6" fill="#A8571A" />
-          <rect x="196" y="106" width="10" height="4" rx="1.5" fill="#F4EFE2" />
-          <path d="M262 106 L282 106 L282 118 Z" fill="#5B8AD6" opacity="0.85" />
-        </g>
+
+          {/* ── the chalkboard, centred — hidden on the play screen (`bare`) so it
+           never sits behind the word card ── */}
+          {!bare && !calm && (
+            <g>
+              <rect x="150" y="42" width="140" height="76" rx="4" fill="#C9731A" />
+              <rect x="158" y="48" width="124" height="62" rx="2" fill="#2F6B4F" />
+              {/* chalk doodles — decorative, not meant to be read */}
+              <g
+                stroke="#F4EFE2"
+                strokeWidth="1.6"
+                fill="none"
+                opacity="0.85"
+                strokeLinecap="round"
+              >
+                <path d="M170 62 Q182 54 194 62 Q186 68 178 70" />
+                <path d="M206 58 L224 58 L215 76 Z" />
+                <path d="M238 90 Q250 68 264 90" />
+                <path d="M168 96 L186 96 M172 90 L172 102" />
+              </g>
+              <circle cx="252" cy="66" r="2" fill="#F4EFE2" opacity="0.85" />
+              <circle cx="258" cy="72" r="1.4" fill="#F4EFE2" opacity="0.7" />
+              {/* chalk tray with a stub of chalk and a corner ruler */}
+              <rect x="158" y="110" width="124" height="6" fill="#A8571A" />
+              <rect x="196" y="106" width="10" height="4" rx="1.5" fill="#F4EFE2" />
+              <path d="M262 106 L282 106 L282 118 Z" fill="#5B8AD6" opacity="0.85" />
+            </g>
+          )}
+
+          {/* ── corkboard, right of the board ── */}
+          <g>
+            <rect x="300" y="50" width="52" height="58" rx="3" fill="#C9731A" />
+            <rect x="305" y="55" width="42" height="48" fill="#D9B27C" />
+            <rect
+              x="311"
+              y="61"
+              width="12"
+              height="12"
+              rx="1.5"
+              fill="#F0A6D8"
+              transform="rotate(-6 317 67)"
+            />
+            <rect
+              x="327"
+              y="59"
+              width="12"
+              height="12"
+              rx="1.5"
+              fill="#8FC2E8"
+              transform="rotate(5 333 65)"
+            />
+            <rect
+              x="313"
+              y="79"
+              width="12"
+              height="12"
+              rx="1.5"
+              fill="#F6C544"
+              transform="rotate(4 319 85)"
+            />
+            <rect
+              x="329"
+              y="81"
+              width="10"
+              height="10"
+              rx="1.5"
+              fill="#8FD6A8"
+              transform="rotate(-5 334 86)"
+            />
+          </g>
+
+          {/* ── the door, far right ── */}
+          <g>
+            <rect x="356" y="30" width="34" height="138" fill="#B85A20" />
+            <rect
+              x="356"
+              y="30"
+              width="34"
+              height="138"
+              fill="none"
+              stroke="#8A4212"
+              strokeWidth="2"
+            />
+            <rect x="362" y="40" width="22" height="34" rx="2" fill="#DCEEFF" opacity="0.8" />
+            <rect x="362" y="82" width="22" height="70" rx="2" fill="#A8481A" opacity="0.4" />
+            <circle cx="382" cy="102" r="2.6" fill="#F6C544" />
+          </g>
+        </>
       )}
-
-      {/* ── corkboard, right of the board ── */}
-      <g>
-        <rect x="300" y="50" width="52" height="58" rx="3" fill="#C9731A" />
-        <rect x="305" y="55" width="42" height="48" fill="#D9B27C" />
-        <rect
-          x="311"
-          y="61"
-          width="12"
-          height="12"
-          rx="1.5"
-          fill="#F0A6D8"
-          transform="rotate(-6 317 67)"
-        />
-        <rect
-          x="327"
-          y="59"
-          width="12"
-          height="12"
-          rx="1.5"
-          fill="#8FC2E8"
-          transform="rotate(5 333 65)"
-        />
-        <rect
-          x="313"
-          y="79"
-          width="12"
-          height="12"
-          rx="1.5"
-          fill="#F6C544"
-          transform="rotate(4 319 85)"
-        />
-        <rect
-          x="329"
-          y="81"
-          width="10"
-          height="10"
-          rx="1.5"
-          fill="#8FD6A8"
-          transform="rotate(-5 334 86)"
-        />
-      </g>
-
-      {/* ── the door, far right ── */}
-      <g>
-        <rect x="356" y="30" width="34" height="138" fill="#B85A20" />
-        <rect x="356" y="30" width="34" height="138" fill="none" stroke="#8A4212" strokeWidth="2" />
-        <rect x="362" y="40" width="22" height="34" rx="2" fill="#DCEEFF" opacity="0.8" />
-        <rect x="362" y="82" width="22" height="70" rx="2" fill="#A8481A" opacity="0.4" />
-        <circle cx="382" cy="102" r="2.6" fill="#F6C544" />
-      </g>
 
       {/* ── skirting where the walls meet the floor ── */}
       <rect x="0" y="160" width="400" height="8" fill="#8A6A3E" opacity="0.35" />
@@ -188,7 +211,7 @@ export function ClassroomScene({ bare = false }: ClassroomSceneProps) {
 
       {/* ── the teacher's desk, standing on the floor — also hidden when
            `bare`, same reason as the chalkboard above ── */}
-      {!bare && (
+      {!bare && !calm && (
         <g>
           <rect
             x="220"

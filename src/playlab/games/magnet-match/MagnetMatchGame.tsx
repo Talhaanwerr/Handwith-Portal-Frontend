@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { GameStage } from "@shared/components/game/GameStage";
 import { useGameSession } from "@shared/hooks/useGameSession";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { useMagnetStore, type MagnetScreen } from "@games/magnet-match/store/magnetStore";
@@ -21,6 +22,7 @@ function toBucket(screen: MagnetScreen): "menu" | "play" {
 
 export function MagnetMatchGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, groupIndex, setScreen, nextGroup, resetProgress } = useMagnetStore();
 
   const handlePop = useCallback(
@@ -60,8 +62,8 @@ export function MagnetMatchGame() {
           <motion.div key="splash" className="absolute inset-0" {...PAGE_TRANSITION}>
             <MagnetSplash
               groupIndex={groupIndex}
-              onStart={handleStart}
-              onStartFromA={handleStartFromA}
+              onStart={() => gate(handleStart)}
+              onStartFromA={() => gate(handleStartFromA)}
               onExitPortal={() => router.push(PORTAL_ROUTE)}
             />
           </motion.div>

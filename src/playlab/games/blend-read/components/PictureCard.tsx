@@ -42,7 +42,7 @@ export function PictureCard({ picture, state, disabled, onPick, label }: Picture
       whileTap={disabled ? undefined : { scale: 0.94 }}
     >
       <span className="br-card-art">
-        <Picture id={picture} />
+        <Picture id={picture} photo />
       </span>
 
       {state === "wrong" && (

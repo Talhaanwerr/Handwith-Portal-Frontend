@@ -6,6 +6,7 @@ import type { PuzzleLevelsProps } from "@games/jigsaw-fun/components/PuzzleShell
 import { cssVars } from "@shared/styles/cssVars";
 import { clipText, playClip } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import {
   LEVELS,
   LEVEL_NAMES,
@@ -52,13 +53,16 @@ export function JfLevels({
 }: PuzzleLevelsProps<ModuleId>) {
   const scene = sceneOf(module);
   useSayOnEnter(["jigsaw-how-many"]);
+  const { gate } = useHowToPlay();
   // the level's name and size, said as it is picked ("Easy! Four pieces.")
   const pick = useCallback(
     (level: Level) => {
-      void playClip(`jigsaw-level-${level}`);
-      onPick(level);
+      gate(() => {
+        void playClip(`jigsaw-level-${level}`);
+        onPick(level);
+      });
     },
-    [onPick]
+    [onPick, gate]
   );
   const paint = useMemo(
     () =>

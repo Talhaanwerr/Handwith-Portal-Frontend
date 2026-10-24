@@ -5,6 +5,7 @@ import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { playClickSound } from "@shared/audio/sfx";
 import { playClip, clipText } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { Teacher } from "@games/door-count/components/Teacher";
 import { Picture } from "@games/blend-read/components/PictureArt";
 import { Kitchen, MouseHead } from "@games/find-the-mouse/components/SceneArt";
@@ -35,12 +36,15 @@ export function FtmSplash({
   onExitPortal: () => void;
 }) {
   useSayOnEnter(ENTER_LINES);
+  const { gate } = useHowToPlay();
 
   const pick = (mode: FtmMode) => {
     playClickSound();
-    // the card names itself — the round's own prompt queues after it
-    void playClip(MODE_CLIPS[mode]);
-    onPick(mode);
+    gate(() => {
+      // the card names itself — the round's own prompt queues after it
+      void playClip(MODE_CLIPS[mode]);
+      onPick(mode);
+    }, mode);
   };
 
   return (

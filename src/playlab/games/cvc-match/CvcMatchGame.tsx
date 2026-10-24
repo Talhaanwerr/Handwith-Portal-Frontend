@@ -8,6 +8,7 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useCvcStore, type CvcScreen } from "@games/cvc-match/store/cvcStore";
 import { boardsFor, moduleById, starsFor } from "@games/cvc-match/constants/words";
 import { BoardScreen } from "@games/cvc-match/components/BoardScreen";
@@ -40,6 +41,7 @@ function toBucket(screen: CvcScreen): "menu" | "pick" | "play" {
  */
 export function CvcMatchGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const {
     screen,
     moduleId,
@@ -113,7 +115,10 @@ export function CvcMatchGame() {
 
           {screen === "pick" && (
             <motion.div key="pick" className="absolute inset-0" {...PAGE_TRANSITION}>
-              <ModuleScreen onPick={pick} onBack={() => setScreen("splash")} />
+              <ModuleScreen
+                onPick={(id) => gate(() => pick(id), id)}
+                onBack={() => setScreen("splash")}
+              />
             </motion.div>
           )}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BrickShell, type PlayApi } from "@games/brick-lab/engine/BrickShell";
 import { BrickBoard, type SnapResult } from "@games/brick-lab/engine/BrickBoard";
 import { RoundWin } from "@games/brick-lab/engine/RoundWin";
@@ -16,7 +16,8 @@ import {
   patternColor,
   patternPlate,
 } from "@games/brick-lab/constants/models";
-import { playClip, playSequence, stopVoice } from "@shared/audio/voice";
+import { playClip } from "@shared/audio/voice";
+import { useAfterVoice, useIntro } from "@shared/hooks/useAfterVoice";
 import { playStarPop } from "@shared/audio/sfx";
 import { cheerFor } from "@shared/audio/cheers";
 
@@ -55,31 +56,25 @@ function Wall({ api }: { api: PlayApi }) {
   const [li, setLi] = useState(0);
   const [bricks, setBricks] = useState<Brick[]>(() => givenBricks(0));
   const [won, setWon] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { thenAfter } = useAfterVoice();
   const level = PATTERNS[li];
   const plate = patternPlate(level);
   const n = bricks.length;
   const slot = { x: n * PATTERN_W, z: ROW_Z, y: 0, w: PATTERN_W, d: 2 };
 
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-      stopVoice();
-    },
-    []
-  );
-
-  // Read the pattern aloud as the level opens, then ask.
-  useEffect(() => {
+  // Read the pattern aloud as the level opens, then ask. The board holds still
+  // until the whole line is said, so a tap cannot cut the instruction off.
+  const introLines = useMemo(() => {
     const seq: string[] = [];
     for (let i = 0; i < PATTERNS[li].given; i++) {
       const clip = COLORS[patternColor(PATTERNS[li], i)].clip;
       if (clip) seq.push(clip);
     }
     seq.push("brick-pattern-next");
-    const t = setTimeout(() => void playSequence(seq, 160), 600);
-    return () => clearTimeout(t);
+    return seq;
   }, [li]);
+  const intro = useIntro(introLines, li);
+  const busy = intro || won;
 
   const tray: BrickKind[] = useMemo(
     () => patternChoices(level, li).map((color) => ({ w: PATTERN_W, d: 2, color })),
@@ -113,8 +108,7 @@ function Wall({ api }: { api: PlayApi }) {
       }
       setWon(true);
       playStarPop();
-      void playSequence([cheerFor(li + 1), "brick-pattern-done"], 200);
-      timer.current = setTimeout(() => {
+      thenAfter([cheerFor(li + 1), "brick-pattern-done"], () => {
         setWon(false);
         if (li + 1 >= PATTERNS.length) {
           api.finish(all, plate);
@@ -122,9 +116,9 @@ function Wall({ api }: { api: PlayApi }) {
         }
         setBricks(givenBricks(li + 1));
         setLi(li + 1);
-      }, 2800);
+      });
     },
-    [api, level.length, li, plate]
+    [api, level.length, li, plate, thenAfter]
   );
 
   // The hand shows the RIGHT brick, never a wrong one.
@@ -144,8 +138,8 @@ function Wall({ api }: { api: PlayApi }) {
       onPlaced={onPlaced}
       onRejected={() => void playClip("brick-pattern-look")}
       marks={won ? undefined : [slot]}
-      locked={won}
-      handFrom={won || answer < 0 ? undefined : answer}
+      locked={busy}
+      handFrom={busy || answer < 0 ? undefined : answer}
       plateColor="#F3C85A"
       initialYaw={-0.32}
     >

@@ -10,6 +10,7 @@ import {
 } from "@games/ocean-hunt/store/huntStore";
 import { ALPHA } from "@games/ocean-hunt/constants/sequence";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { ProgressBar } from "@shared/components/ui/ProgressBar";
 import { StartOptions } from "@shared/components/ui/StartOptions";
 import { CaseSelectScreen } from "@shared/components/game/CaseSelectScreen";
@@ -125,6 +126,7 @@ export function HuntCaseSelect({ onExitPortal = () => {} }: { onExitPortal?: () 
 export function HuntStart() {
   const store = useHuntStore();
   const { letterCase, setScreen, beginRun } = store;
+  const { gate } = useHowToPlay();
   const done = doneFor(store, letterCase);
 
   const nextUndone = continueLetter(ALPHA, done);
@@ -195,8 +197,10 @@ export function HuntStart() {
                   }
                 : () => {
                     playClickSound();
-                    beginRun(0, "continue");
-                    setScreen("level");
+                    gate(() => {
+                      beginRun(0, "continue");
+                      setScreen("level");
+                    });
                   }
             }
             continueLabel={
@@ -206,8 +210,10 @@ export function HuntStart() {
             }
             onStartFromA={() => {
               playClickSound();
-              beginRun(0, "fresh");
-              setScreen("level");
+              gate(() => {
+                beginRun(0, "fresh");
+                setScreen("level");
+              });
             }}
             startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
           />

@@ -370,19 +370,19 @@
    opening like the head is */
 .ftm-rump {
   position: absolute;
-  left: 18%;
-  width: 64%;
-  bottom: -26%;
-  height: 62%;
+  left: 32%;
+  width: 36%;
+  bottom: -16%;
+  height: 30%;
   border-radius: 50%;
   background: radial-gradient(circle at 42% 30%, #ccd6dd 0%, #99aab5 55%, #7c8b96 100%);
 }
 .ftm-tail {
   position: absolute;
   left: 44%;
-  top: 80%;
-  width: 40%;
-  height: 70%;
+  top: 78%;
+  width: 26%;
+  height: 42%;
   transform-origin: 15% 5%;
   pointer-events: none;
 }
@@ -405,10 +405,10 @@
 }
 .ftm-foot {
   position: absolute;
-  left: 24%;
-  top: 60%;
-  width: 52%;
-  height: 70%;
+  left: 35%;
+  top: 70%;
+  width: 30%;
+  height: 40%;
   transform-origin: 50% 0;
   pointer-events: none;
 }

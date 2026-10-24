@@ -8,6 +8,7 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useCountingStore, type CountingScreen } from "@games/counting-numbers/store/countingStore";
 import {
   BREAK_EVERY,
@@ -57,6 +58,7 @@ const CHEERERS: readonly CharacterId[] = ["pip", "nova", "dot", "rusty", "momo"]
  */
 export function CountingNumbersGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, levelIndex, setScreen, goTo, nextLevel, resetProgress } = useCountingStore();
   const [paused, setPaused] = useState(false);
   /** Bumped by ↻ so the current level remounts fresh. */
@@ -115,7 +117,7 @@ export function CountingNumbersGame() {
           <AnimatePresence mode="sync" initial={false}>
             {screen === "title" && (
               <motion.div key="title" className="cn-screen" {...SLIDE}>
-                <TitleScreen onStart={start} />
+                <TitleScreen onStart={() => gate(start)} />
               </motion.div>
             )}
             {screen === "play" && levelIndex < TOTAL_LEVELS && (
@@ -158,6 +160,7 @@ export function CountingNumbersGame() {
             playClickSound();
             setPaused(false);
             if (screen === "play") setReplay((n) => n + 1);
+            else if (screen === "title") gate(start);
             else start();
           }}
           onTogglePause={() => {
@@ -167,7 +170,7 @@ export function CountingNumbersGame() {
           onForward={() => {
             playClickSound();
             setPaused(false);
-            if (screen === "title") start();
+            if (screen === "title") gate(start);
             else if (screen === "play") {
               if (levelIndex + 1 >= TOTAL_LEVELS) nextLevel();
               else goTo(levelIndex + 1);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useDragDrop } from "@shared/hooks/useDragDrop";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { useIdleHand } from "@shared/hooks/useIdleHand";
@@ -11,7 +12,7 @@ import {
   playStarPop,
   playThudSound,
 } from "@shared/audio/sfx";
-import { playClip, sayAfter, stopVoice } from "@shared/audio/voice";
+import { playClip, sayAfter } from "@shared/audio/voice";
 import { shake } from "@games/find-the-mouse/utils/shake";
 import type { Verdict } from "@games/jigsaw-fun/constants/levels";
 import { BURST_MS, PieceBurst, RoundCheer, STAMP_AT } from "@games/jigsaw-fun/components/Cheer";
@@ -131,7 +132,7 @@ export function usePuzzleBoard({
   const burstId = useRef(0);
   const schedule = useScheduler();
 
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   const land = useCallback(
     (piece: number, place: number, last: boolean) => {

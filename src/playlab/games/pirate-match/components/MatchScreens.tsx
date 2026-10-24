@@ -10,6 +10,7 @@ import {
 } from "@games/pirate-match/store/matchStore";
 import { ALPHA, type MatchDifficulty } from "@games/pirate-match/constants/rounds";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { ProgressBar } from "@shared/components/ui/ProgressBar";
 import { StartOptions } from "@shared/components/ui/StartOptions";
 import { CaseSelectScreen } from "@shared/components/game/CaseSelectScreen";
@@ -196,6 +197,7 @@ export function MatchDifficultySelect() {
 export function MatchStart() {
   const store = useMatchStore();
   const { letterCase, setScreen, beginRun } = store;
+  const { gate } = useHowToPlay();
   const done = doneFor(store, letterCase);
 
   const nextUndone = continueLetter(ALPHA, done);
@@ -257,8 +259,10 @@ export function MatchStart() {
                   }
                 : () => {
                     playClickSound();
-                    beginRun(0, "continue");
-                    setScreen("level");
+                    gate(() => {
+                      beginRun(0, "continue");
+                      setScreen("level");
+                    });
                   }
             }
             continueLabel={
@@ -268,8 +272,10 @@ export function MatchStart() {
             }
             onStartFromA={() => {
               playClickSound();
-              beginRun(0, "fresh");
-              setScreen("level");
+              gate(() => {
+                beginRun(0, "fresh");
+                setScreen("level");
+              });
             }}
             startLabel={letterCase === "lower" ? "Start from a" : "Start from A"}
           />

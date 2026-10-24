@@ -8,6 +8,7 @@ import { GameStage } from "@shared/components/game/GameStage";
 import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 
 import { useGameStore } from "@games/letter-tracing/store/gameStore";
 import type { GameScreen } from "@games/letter-tracing/types";
@@ -42,6 +43,7 @@ function toBucket(screen: GameScreen): "entry" | "menu" | "play" {
 
 export function LetterTracingGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const {
     screen,
     module,
@@ -99,14 +101,16 @@ export function LetterTracingGame() {
   // Main menu → module home
   const handleSelectModule = useCallback(
     (selectedModule: typeof module) => {
-      setModule(selectedModule);
-      if (selectedModule === "sequencing") {
-        setScreen("sequencing");
-      } else {
-        setScreen("home");
-      }
+      gate(() => {
+        setModule(selectedModule);
+        if (selectedModule === "sequencing") {
+          setScreen("sequencing");
+        } else {
+          setScreen("home");
+        }
+      }, selectedModule);
     },
-    [setModule, setScreen]
+    [setModule, setScreen, gate]
   );
 
   // A practice mode must be chosen once per session before the first letter

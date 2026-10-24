@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { StarRow } from "@shared/components/ui/StarRow";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { clipText, playClip } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { Teacher } from "@games/door-count/components/Teacher";
@@ -34,6 +35,7 @@ export function StwHome({
   onPick: (m: ModuleId) => void;
   onExitPortal: () => void;
 }) {
+  const { gate } = useHowToPlay();
   useSayOnEnter(["sort2-welcome", "mouse-pick-one"]);
 
   return (
@@ -66,8 +68,10 @@ export function StwHome({
                 className={`stw-mode stw-mode--${m.id}`}
                 onClick={() => {
                   playClickSound();
-                  void playClip(MODE_CLIP[m.id]);
-                  onPick(m.id);
+                  gate(() => {
+                    void playClip(MODE_CLIP[m.id]);
+                    onPick(m.id);
+                  }, m.id);
                 }}
                 initial={{ y: 26, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

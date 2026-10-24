@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { GameStage } from "@shared/components/game/GameStage";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useGameSession } from "@shared/hooks/useGameSession";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
@@ -89,6 +90,7 @@ export function BrickShell({
   const router = useRouter();
   const [screen, setScreen] = useState<Screen>("splash");
   const [run, setRun] = useState(0);
+  const { gate } = useHowToPlay();
 
   const exit = useCallback(() => router.push(PORTAL_ROUTE), [router]);
   const home = useCallback(() => setScreen("splash"), []);
@@ -127,9 +129,14 @@ export function BrickShell({
                 world={world}
                 onPlay={(i) => {
                   playClickSound();
-                  setMod(i);
-                  setRun((r) => r + 1);
-                  setScreen("play");
+                  // The "How to Play" card opens first; play starts on its Play.
+                  gate(() => {
+                    const clip = modules?.[i]?.clip;
+                    if (clip) void playClip(clip);
+                    setMod(i);
+                    setRun((r) => r + 1);
+                    setScreen("play");
+                  }, modules?.[i]?.id);
                 }}
                 onExit={exit}
               />
@@ -281,7 +288,6 @@ function Splash({
                 key={m.id}
                 className="bk-module font-rounded font-black"
                 onClick={() => {
-                  if (m.clip) void playClip(m.clip);
                   onPlay(i);
                 }}
                 initial={{ y: 18, opacity: 0 }}

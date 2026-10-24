@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audio Check</title>
+<style>
+  :root { --bg:#f6f7fb; --card:#fff; --ink:#1d2433; --muted:#6b7385; --line:#e3e6ee; --ok:#1f9d55; --bad:#d64545; --accent:#3b6fd8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.4 system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  header { position:sticky; top:0; z-index:2; background:var(--card); border-bottom:1px solid var(--line); padding:12px 16px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+  header h1 { font-size:18px; margin:0 auto 0 0; }
+  .tally span { margin-left:10px; font-weight:600; }
+  .tally .ok { color:var(--ok); } .tally .bad { color:var(--bad); }
+  button { font:inherit; border:1px solid var(--line); background:var(--card); border-radius:8px; padding:6px 12px; cursor:pointer; }
+  main { max-width:900px; margin:0 auto; padding:16px; }
+  h2 { font-size:16px; margin:24px 0 8px; }
+  .row { display:grid; grid-template-columns:44px 1fr auto auto; gap:12px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:6px; }
+  .row.ok { border-color:var(--ok); background:#f0fbf4; }
+  .row.bad { border-color:var(--bad); background:#fdf1f1; }
+  .row.missing { background:#fffbea; border-style:dashed; }
+  .seg { color:var(--muted); font-size:13px; text-align:right; }
+  .word { font-size:20px; font-weight:700; }
+  .path { display:block; font-size:12px; color:var(--muted); font-weight:400; word-break:break-all; }
+  audio { height:32px; width:220px; }
+  .marks button { padding:4px 10px; }
+  .marks .yes.on { background:var(--ok); color:#fff; border-color:var(--ok); }
+  .marks .no.on { background:var(--bad); color:#fff; border-color:var(--bad); }
+  .note { color:var(--muted); font-size:13px; }
+  @media (max-width:640px) {
+    .row { grid-template-columns:36px 1fr; }
+    audio { width:100%; grid-column:1 / -1; }
+    .marks { grid-column:1 / -1; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Audio check</h1>
+  <div class="tally">Right <span class="ok" id="ok">0</span> Wrong <span class="bad" id="bad">0</span> Unchecked <span id="left">0</span></div>
+  <button id="playAll" type="button">Play all in order</button>
+  <button id="reset" type="button">Clear marks</button>
+</header>
+<main>
+  <p class="note">Play each clip and mark whether it says the word shown. Marks stay in this browser. "Play all" runs through every clip so you can listen along.</p>
+  <div id="list"></div>
+</main>
+<script>
+const B1 = "bag bed big bin bug can cap cob dot fog gas gem ham hot hug kid land leg lip log map mug pan pin pot pup rat red sky small sub ten top tub web"
+  .split(" ").map((w) => ({ word: w, path: `public/audio/words/${w}.mp3` }));
+const NUMS = ["20","25","30","35","40","45","50"].map((n) => ({ word: n, path: `public/audio/numbers/${n}.mp3` }));
+const BLEND = [
+  ["bed",1],["clam",2],["crab",2],["plum",2],["shell",2],["ship",2],
+  ["blue",3],["bowl",3],["mice",3],["spoon",3],["toes",3],
+  ["brush",4],["chair",4],["cheese",4],["clock",4],["crown",4],["teeth",4],["thumb",4],
+  ["bike",5],["chef",5],["cloud",5],["cube",5],["meat",5],["tie",5],["toys",5],["unicorn",5],
+].map(([w, l]) => ({ word: w, path: `public/audio/blend/word-level${l}-${w}.mp3` }));
+
+const SOUNDS = [["sh","sound-level2-shell-0"],["ar","sound-level2-star-2"],["ue","sound-level3-blue-2"],["ow","sound-level3-bowl-1"],["ou","sound-level3-house-1"],["ui","sound-level3-juice-1"],["oo","sound-level3-spoon-2"],["oe","sound-level3-toes-1"],["ai","sound-level3-train-2"],["sh","sound-level4-brush-3"],["ch","sound-level4-chair-0"],["air","sound-level4-chair-1"],["ch","sound-level4-cheese-0"],["ee","sound-level4-cheese-1"],["ck","sound-level4-clock-3"],["ow","sound-level4-crown-2"],["qu","sound-level4-queen-0"],["ee","sound-level4-queen-1"],["sh","sound-level4-shoe-0"],["oe","sound-level4-shoe-1"],["ee","sound-level4-teeth-1"],["th","sound-level4-teeth-2"],["th","sound-level4-thumb-0"],["wh","sound-level4-whale-0"],["ch","sound-level5-chef-0"],["ou","sound-level5-cloud-2"],["ea","sound-level5-meat-1"],["ie","sound-level5-tie-1"],["oy","sound-level5-toys-1"],["or","sound-level5-unicorn-4"]].map(([w,p])=>({word:w,path:`public/audio/blend/${p}.mp3`}));
+const MERGES = [[1,"bed","b-b-b... eeeee... d-d-d... bbeeeedd"],[1,"box","b-b-b... ooooo... x-x-x... bbooooxx"],[1,"bus","b-b-b... uuuuu... sssss... bbuuuussss"],[1,"cat","c-c-c... aaaaa... t-t-t... ccaaaatt"],[1,"cup","c-c-c... uuuuu... p-p-p... ccuuuupp"],[1,"dog","d-d-d... ooooo... g-g-g... ddoooogg"],[1,"fox","fffff... ooooo... x-x-x... ffffooooxx"],[1,"hat","hhhhh... aaaaa... t-t-t... hhhhaaaatt"],[1,"hen","hhhhh... eeeee... nnnnn... hhhheeeennnn"],[1,"sun","sssss... uuuuu... nnnnn... ssssuuuunnnn"],[2,"clam","c-c-c... lllll... aaaaa... mmmmm... ccllllaaaammmm"],[2,"crab","c-c-c... rrrrr... aaaaa... b-b-b... ccrrrraaaabb"],[2,"drum","d-d-d... rrrrr... uuuuu... mmmmm... ddrrrruuuummmm"],[2,"flag","fffff... lllll... aaaaa... g-g-g... ffffllllaaaagg"],[2,"frog","fffff... rrrrr... ooooo... g-g-g... ffffrrrroooogg"],[2,"nest","nnnnn... eeeee... sssss... t-t-t... nnnneeeesssstt"],[2,"plum","p-p-p... lllll... uuuuu... mmmmm... pplllluuuummmm"],[2,"shell","shhhh... eeeee... lllll... shhheeeellll"],[2,"ship","shhhh... iiiii... p-p-p... shhhiiiipp"],[2,"star","sssss... t-t-t... arrrr... ssssttarrr"],[3,"blue","b-b-b... lllll... ueeee... bbllllueee"],[3,"bowl","b-b-b... owwww... lllll... bbowwwllll"],[3,"cake","c-c-c... aaaaa... k-k-k... ccaaaakk"],[3,"house","hhhhh... ouuuu... sssss... hhhhouuussss"],[3,"juice","j-j-j... uiiii... c-c-c... jjuiiicc"],[3,"mice","mmmmm... iiiii... c-c-c... mmmmiiiicc"],[3,"mouse","mmmmm... ouuuu... sssss... mmmmouuussss"]].map(([l,w,say])=>({word:say,path:`public/audio/blend/merge-level${l}-${w}.mp3`}));
+const COPIES = [{word:"sh (copy of #1)",path:"public/audio/blend/sound-level2-ship-0.mp3"},{word:"ou (copy of #5)",path:"public/audio/blend/sound-level3-mouse-1.mp3"}];
+const BORROWED = ["cake","cup","drum","fan","flag","fox","frog","house","jar","jet","juice","mouse","net","nut","pen","shoe","six","snake","train","whale","zip"].map((w) => ({ word: w, path: `public/audio/treats/word-${w}.mp3` }));
+const SECTIONS = [
+  { title: "Batch 1: words (35)", items: B1 },
+  { title: "Batch 2: numbers (7)", items: NUMS, offset: 0 },
+  { title: "Batch 2: Blend & Seek words (26)", items: BLEND, offset: 7 },
+  { title: "Batch 3: letter sounds (30)", items: SOUNDS },
+  { title: "Batch 3: stretched blends (27)", items: MERGES, offset: 30 },
+  { title: "Batch 3: duplicate sounds, copied", items: COPIES, offset: 57 },
+  { title: "Borrowed from Candy ABC: check these (bus and hen were wrong)", items: BORROWED },
+];
+const MISSING = [
+  { word: "bus", path: "public/audio/words/bus.mp3", why: "Candy ABC file said the wrong thing; now silent until recorded" },
+  { word: "hen", path: "public/audio/words/hen.mp3", why: "Candy ABC file said the wrong thing; now silent until recorded" },
+];
+
+const KEY = "audio-check-marks";
+let marks = {};
+try { marks = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(marks)); } catch {} };
+
+const list = document.getElementById("list");
+const players = [];
+
+function row(item, seg) {
+  const el = document.createElement("div");
+  el.className = "row";
+  el.innerHTML = `
+    <div class="seg">#${seg}</div>
+    <div class="word"></div>
+    <audio controls preload="none"></audio>
+    <div class="marks"><button type="button" class="yes">Right</button> <button type="button" class="no">Wrong</button></div>`;
+  el.querySelector(".word").textContent = item.word;
+  const p = document.createElement("span"); p.className = "path"; p.textContent = item.path;
+  el.querySelector(".word").append(p);
+  const audio = el.querySelector("audio"); audio.src = item.path;
+  players.push(audio);
+  const paint = () => {
+    const m = marks[item.path];
+    el.classList.toggle("ok", m === "ok"); el.classList.toggle("bad", m === "bad");
+    el.querySelector(".yes").classList.toggle("on", m === "ok");
+    el.querySelector(".no").classList.toggle("on", m === "bad");
+    tally();
+  };
+  el.querySelector(".yes").onclick = () => { marks[item.path] = marks[item.path] === "ok" ? undefined : "ok"; save(); paint(); };
+  el.querySelector(".no").onclick = () => { marks[item.path] = marks[item.path] === "bad" ? undefined : "bad"; save(); paint(); };
+  paint();
+  return el;
+}
+
+const all = [];
+for (const s of SECTIONS) {
+  const h = document.createElement("h2"); h.textContent = s.title; list.append(h);
+  s.items.forEach((item, i) => { all.push(item); list.append(row(item, (s.offset ?? 0) + i + 1)); });
+}
+const hm = document.createElement("h2"); hm.textContent = "Not recorded yet"; list.append(hm);
+for (const m of MISSING) {
+  const el = document.createElement("div"); el.className = "row missing";
+  el.innerHTML = `<div class="seg">–</div><div class="word"></div><div class="note"></div><div></div>`;
+  el.querySelector(".word").textContent = m.word;
+  const p = document.createElement("span"); p.className = "path"; p.textContent = m.path;
+  el.querySelector(".word").append(p);
+  el.querySelector(".note").textContent = m.why;
+  list.append(el);
+}
+
+function tally() {
+  const v = Object.values(marks);
+  const ok = v.filter((x) => x === "ok").length, bad = v.filter((x) => x === "bad").length;
+  document.getElementById("ok").textContent = ok;
+  document.getElementById("bad").textContent = bad;
+  document.getElementById("left").textContent = Math.max(0, all.length - ok - bad);
+}
+tally();
+
+document.getElementById("reset").onclick = () => { marks = {}; save(); location.reload(); };
+document.getElementById("playAll").onclick = async () => {
+  for (const a of players) {
+    a.closest(".row").scrollIntoView({ block: "center", behavior: "smooth" });
+    a.currentTime = 0;
+    try { await a.play(); } catch { continue; }
+    await new Promise((r) => { a.onended = r; a.onerror = r; });
+    await new Promise((r) => setTimeout(r, 400));
+  }
+};
+</script>
+</body>
+</html>

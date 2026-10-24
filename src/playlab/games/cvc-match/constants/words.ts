@@ -32,7 +32,7 @@ export const MODULES: readonly Module[] = [
     label: "a words",
     preview: "a",
     aria: "The short a sound — cat, hat, bag",
-    words: ["cat", "hat", "bag", "cap", "can", "pan", "map", "rat", "van", "jar", "gas", "ham"],
+    words: ["cat", "hat", "bag", "cap", "can", "pan", "map", "rat", "van", "jar", "gas", "tap"],
   },
   {
     id: "e",

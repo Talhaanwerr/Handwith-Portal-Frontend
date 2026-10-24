@@ -1,0 +1,192 @@
+/* "How to Play" card — shared by every game (HowToPlay.tsx). Prefix htp-.
+   Big on purpose: about twice the first version, in dark green. */
+
+.htp-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: linear-gradient(160deg, #fff7e3 0%, #e9f4ff 100%);
+}
+.htp-card {
+  --htp-green: #0d5c36;
+  --htp-green-deep: #08402a;
+  position: relative;
+  box-sizing: border-box;
+  width: min(100%, 800px);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: clamp(24px, 5vw, 56px) clamp(18px, 4.5vw, 52px) clamp(22px, 4.5vw, 48px);
+  border-radius: clamp(26px, 4vw, 48px);
+  background: #fff;
+  box-shadow:
+    0 24px 70px rgba(20, 50, 40, 0.28),
+    0 3px 0 rgba(20, 50, 40, 0.08);
+  color: #1d3b2e;
+  text-align: center;
+}
+.htp-close {
+  position: absolute;
+  top: clamp(10px, 2vw, 20px);
+  right: clamp(10px, 2vw, 20px);
+  display: grid;
+  place-items: center;
+  width: clamp(52px, 8vw, 88px);
+  height: clamp(52px, 8vw, 88px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #e3f0e8;
+  color: var(--htp-green);
+  cursor: pointer;
+}
+.htp-close svg {
+  width: 48%;
+  height: 48%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.htp-close:focus-visible,
+.htp-play:focus-visible {
+  outline: 5px solid #2f6fed;
+  outline-offset: 3px;
+}
+.htp-game {
+  margin: 0 0 6px;
+  font-size: clamp(16px, 2.4vw, 28px);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #4f7a62;
+}
+.htp-heading {
+  margin: 0 0 clamp(14px, 3vw, 30px);
+  padding: 0 clamp(56px, 9vw, 96px);
+  color: var(--htp-green);
+  font-size: clamp(34px, 6.4vw, 68px);
+  font-weight: 900;
+  line-height: 1.08;
+}
+.htp-steps {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2vw, 20px);
+  margin: 0 0 clamp(20px, 4vw, 40px);
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+.htp-step {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.4vw, 24px);
+  padding: clamp(12px, 2.2vw, 22px) clamp(14px, 2.8vw, 28px);
+  border-radius: clamp(18px, 3vw, 32px);
+  background: #eef7f1;
+}
+.htp-num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: clamp(40px, 6vw, 68px);
+  height: clamp(40px, 6vw, 68px);
+  border-radius: 50%;
+  background: var(--htp-green);
+  color: #fff;
+  font-size: clamp(22px, 3.6vw, 38px);
+  font-weight: 900;
+}
+.htp-line {
+  font-size: clamp(22px, 3.7vw, 40px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+.htp-steps:has(.htp-step:only-child) .htp-step {
+  justify-content: center;
+  text-align: center;
+}
+.htp-play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.6vw, 16px);
+  min-width: clamp(200px, 36vw, 340px);
+  min-height: clamp(68px, 11vw, 112px);
+  padding: 0 clamp(30px, 5vw, 60px);
+  border: 0;
+  border-radius: 999px;
+  background: var(--htp-green);
+  box-shadow: 0 8px 0 var(--htp-green-deep);
+  color: #fff;
+  font-family: inherit;
+  font-size: clamp(32px, 5.4vw, 56px);
+  font-weight: 900;
+  cursor: pointer;
+}
+.htp-play:active {
+  transform: translateY(5px);
+  box-shadow: 0 3px 0 var(--htp-green-deep);
+}
+.htp-play svg {
+  width: 0.9em;
+  height: 0.9em;
+  fill: currentColor;
+}
+
+/* Sideways phones: the card has to fit in ~320px of height. */
+@media (max-height: 480px) {
+  .htp-stage {
+    padding: 8px;
+  }
+  .htp-card {
+    padding: 14px 18px;
+    border-radius: 22px;
+  }
+  .htp-heading {
+    margin-bottom: 8px;
+    font-size: 26px;
+  }
+  .htp-game {
+    display: none;
+  }
+  .htp-steps {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .htp-step {
+    padding: 6px 12px;
+  }
+  .htp-num {
+    width: 30px;
+    height: 30px;
+    font-size: 17px;
+  }
+  .htp-line {
+    font-size: 18px;
+  }
+  .htp-play {
+    min-height: 52px;
+    font-size: 24px;
+    box-shadow: 0 4px 0 var(--htp-green-deep);
+  }
+  .htp-close {
+    width: 44px;
+    height: 44px;
+    top: 6px;
+    right: 6px;
+  }
+}
+
+/* When the card opens over a game's own title screen: a soft dim behind it. */
+.htp-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+}
+.htp-scrim .htp-stage {
+  background: rgba(30, 40, 60, 0.38);
+}

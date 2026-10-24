@@ -1,0 +1,52 @@
+[
+  {
+    "id": "arp-welcome",
+    "text": "Welcome to the toy repair shop!",
+    "file": "/audio/animal-repair/welcome.mp3"
+  },
+  {
+    "id": "arp-done",
+    "text": "All the toys are fixed. Thank you!",
+    "file": "/audio/animal-repair/done.mp3"
+  },
+  {
+    "id": "arp-mode-missing",
+    "text": "What's missing? Find the lost part.",
+    "file": "/audio/animal-repair/mode-missing.mp3"
+  },
+  {
+    "id": "arp-mode-silly",
+    "text": "Silly mix-up! Find the silly part.",
+    "file": "/audio/animal-repair/mode-silly.mp3"
+  },
+  {
+    "id": "arp-lost-ears",
+    "text": "Oh no! The ears came off. Find them!",
+    "file": "/audio/animal-repair/lost-ears.mp3"
+  },
+  {
+    "id": "arp-lost-nose",
+    "text": "Oh no! The nose came off. Find it!",
+    "file": "/audio/animal-repair/lost-nose.mp3"
+  },
+  {
+    "id": "arp-lost-tail",
+    "text": "Oh no! The tail came off. Find it!",
+    "file": "/audio/animal-repair/lost-tail.mp3"
+  },
+  {
+    "id": "arp-lost-mane",
+    "text": "Oh no! The mane came off. Find it!",
+    "file": "/audio/animal-repair/lost-mane.mp3"
+  },
+  {
+    "id": "arp-silly",
+    "text": "Oh, silly! Tap the silly part.",
+    "file": "/audio/animal-repair/silly.mp3"
+  },
+  {
+    "id": "arp-find-right",
+    "text": "Now find the right one!",
+    "file": "/audio/animal-repair/find-right.mp3"
+  }
+]

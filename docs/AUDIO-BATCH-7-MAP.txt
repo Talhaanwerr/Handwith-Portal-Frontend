@@ -1,0 +1,232 @@
+AUDIO BATCH 7 - save-as map (segment N = line N of AUDIO-BATCH-7.txt)
+Save each to public/audio/<path>.mp3 and mirror into audio-backup/audio/<path>.mp3
+
+  1  audio/mouse/welcome.mp3              Where is the mouse? Let's find it!
+  2  audio/mouse/pick-one.mp3             Pick one!
+  3  audio/mouse/mode-peek.mp3            Peek-a-Mouse! Watch where it hides.
+  4  audio/mouse/mode-count.mp3           Count the Mice! How many can you see?
+  5  audio/mouse/watch.mp3                Watch the mouse!
+  6  audio/mouse/where.mp3                Where did it hide?
+  7  audio/mouse/wrong-hole.mp3           Not that hole. Try another one!
+  8  audio/mouse/found-me.mp3             Squeak! You found me!
+  9  audio/mouse/idle-peek.mp3            Tap the hole where the mouse was.
+ 10  audio/mouse/how-many.mp3             How many mice?
+ 11  audio/mouse/tap-each.mp3             Tap each mouse to count it.
+ 12  audio/mouse/tap-number.mp3           Now tap the number!
+ 13  audio/mouse/count-again.mp3          Let's count them again.
+ 14  audio/mouse/total-1.mp3              One mouse!
+ 15  audio/mouse/total-2.mp3              Two mice!
+ 16  audio/mouse/total-3.mp3              Three mice!
+ 17  audio/mouse/total-4.mp3              Four mice!
+ 18  audio/mouse/total-5.mp3              Five mice!
+ 19  audio/mouse/done-peek.mp3            You found the mouse!
+ 20  audio/mouse/done-count.mp3           You counted the mice!
+ 21  audio/mouse/done-next.mp3            Play again, or try the other game!
+ 22  audio/pond/welcome.mp3               Welcome to the pond! Let's play with numbers.
+ 23  audio/pond/mode-quick.mp3            Quick Look! How many dots did you see?
+ 24  audio/pond/mode-more.mp3             One More! One more frog hops on!
+ 25  audio/pond/get-ready.mp3             Get ready...
+ 26  audio/pond/quick-look.mp3            Quick, look!
+ 27  audio/pond/how-many-dots.mp3         How many dots?
+ 28  audio/pond/look-again.mp3            Look again!
+ 29  audio/pond/dots-1.mp3                One dot!
+ 30  audio/pond/dots-2.mp3                Two dots!
+ 31  audio/pond/dots-3.mp3                Three dots!
+ 32  audio/pond/dots-4.mp3                Four dots!
+ 33  audio/pond/dots-5.mp3                Five dots!
+ 34  audio/pond/dots-6.mp3                Six dots!
+ 35  audio/pond/tap-number.mp3            Tap a number!
+ 36  audio/pond/look-log.mp3              Look at the log!
+ 37  audio/pond/start-1.mp3               One frog on the log.
+ 38  audio/pond/start-2.mp3               Two frogs on the log.
+ 39  audio/pond/start-3.mp3               Three frogs on the log.
+ 40  audio/pond/start-4.mp3               Four frogs on the log.
+ 41  audio/pond/start-5.mp3               Five frogs on the log.
+ 42  audio/pond/one-more.mp3              One more!
+ 43  audio/pond/ribbit.mp3                Ribbit!
+ 44  audio/pond/how-many-now.mp3          How many now?
+ 45  audio/pond/total-2.mp3               Now there are two frogs!
+ 46  audio/pond/total-3.mp3               Now there are three frogs!
+ 47  audio/pond/total-4.mp3               Now there are four frogs!
+ 48  audio/pond/total-5.mp3               Now there are five frogs!
+ 49  audio/pond/total-6.mp3               Now there are six frogs!
+ 50  audio/pond/count-again.mp3           Let's count the frogs again.
+ 51  audio/pond/done-quick.mp3            Super quick eyes!
+ 52  audio/pond/done-more.mp3             You counted on!
+ 53  audio/friends/welcome.mp3            Hi! I'm Berry. Welcome to Rainbow Shapes!
+ 54  audio/friends/pick-a-game.mp3        Pick a game!
+ 55  audio/friends/mode-colors.mp3        Colors! Find the color.
+ 56  audio/friends/mode-shapes.mp3        Shapes! Tap the shape.
+ 57  audio/friends/mode-sorter.mp3        Sorter! Put each block in its hole.
+ 58  audio/friends/find-red.mp3           Find the red one!
+ 59  audio/friends/find-blue.mp3          Find the blue one!
+ 60  audio/friends/find-yellow.mp3        Find the yellow one!
+ 61  audio/friends/find-green.mp3         Find the green one!
+ 62  audio/friends/find-purple.mp3        Find the purple one!
+ 63  audio/friends/find-orange.mp3        Find the orange one!
+ 64  audio/friends/is-red.mp3             That one is red.
+ 65  audio/friends/is-orange.mp3          That one is orange.
+ 66  audio/friends/is-yellow.mp3          That one is yellow.
+ 67  audio/friends/is-green.mp3           That one is green.
+ 68  audio/friends/is-blue.mp3            That one is blue.
+ 69  audio/friends/is-purple.mp3          That one is purple.
+ 70  audio/friends/is-pink.mp3            That one is pink.
+ 71  audio/friends/tap-triangle.mp3       Tap the triangle!
+ 72  audio/friends/tap-circle.mp3         Tap the circle!
+ 73  audio/friends/tap-square.mp3         Tap the square!
+ 74  audio/friends/tap-star.mp3           Tap the star!
+ 75  audio/friends/tap-heart.mp3          Tap the heart!
+ 76  audio/friends/tap-rectangle.mp3      Tap the rectangle!
+ 77  audio/friends/is-circle.mp3          That one is a circle.
+ 78  audio/friends/is-triangle.mp3        That one is a triangle.
+ 79  audio/friends/is-square.mp3          That one is a square.
+ 80  audio/friends/is-star.mp3            That one is a star.
+ 81  audio/friends/is-heart.mp3           That one is a heart.
+ 82  audio/friends/is-rectangle.mp3       That one is a rectangle.
+ 83  audio/friends/is-diamond.mp3         That one is a diamond.
+ 84  audio/friends/sorter-prompt.mp3      Put each block in its hole!
+ 85  audio/friends/sorter-how.mp3         Tap a block, then tap its hole.
+ 86  audio/friends/sorter-fits.mp3        It fits!
+ 87  audio/friends/sorter-wrong.mp3       Oops, not that hole. Try another one!
+ 88  audio/friends/block-red.mp3          Red block!
+ 89  audio/friends/block-orange.mp3       Orange block!
+ 90  audio/friends/block-yellow.mp3       Yellow block!
+ 91  audio/friends/block-green.mp3        Green block!
+ 92  audio/friends/block-teal.mp3         Teal block!
+ 93  audio/friends/block-blue.mp3         Blue block!
+ 94  audio/friends/block-purple.mp3       Purple block!
+ 95  audio/friends/block-pink.mp3         Pink block!
+ 96  audio/friends/done-colors.mp3        You know your colors!
+ 97  audio/friends/done-shapes.mp3        You know your shapes!
+ 98  audio/friends/done-sorter.mp3        All the blocks are in!
+ 99  audio/street/welcome.mp3             Hi, pals! Pick a game to play.
+100  audio/street/mode-colours.mp3        Colour Match! Find the ball Percy is holding.
+101  audio/street/mode-snack.mp3          Snack Time! Give the hungry pal their snack.
+102  audio/street/ball-red.mp3            Percy has a red ball. Find the red ball!
+103  audio/street/ball-blue.mp3           Percy has a blue ball. Find the blue ball!
+104  audio/street/ball-yellow.mp3         Percy has a yellow ball. Find the yellow ball!
+105  audio/street/ball-green.mp3          Percy has a green ball. Find the green ball!
+106  audio/street/ball-purple.mp3         Percy has a purple ball. Find the purple ball!
+107  audio/street/ball-orange.mp3         Percy has an orange ball. Find the orange ball!
+108  audio/street/snack-ruby-apple.mp3    Ruby is hungry! Ruby wants an apple.
+109  audio/street/snack-bo-cupcake.mp3    Bo is hungry! Bo wants a cupcake.
+110  audio/street/snack-ruby-cheese.mp3   Ruby is hungry! Ruby wants some cheese.
+111  audio/street/snack-bo-juice.mp3      Bo is hungry! Bo wants some juice.
+112  audio/street/snack-ruby-cake.mp3     Ruby is hungry! Ruby wants some cake.
+113  audio/street/snack-bo-plum.mp3       Bo is hungry! Bo wants a plum.
+114  audio/street/wrong-ruby.mp3          Not that one. What does Ruby want?
+115  audio/street/wrong-bo.mp3            Not that one. What does Bo want?
+116  audio/street/yum-ruby.mp3            Yum! Thank you!
+117  audio/street/yum-bo.mp3              Yum yum! Thank you!
+118  audio/street/done-colours.mp3        You matched all the balls!
+119  audio/street/done-snack.mp3          All the pals are full!
+120  audio/jigsaw/welcome.mp3             Welcome to Jigsaw Fun! Pick a picture.
+121  audio/jigsaw/start-lion.mp3          Let's make the lion!
+122  audio/jigsaw/start-whale.mp3         Let's make the whale!
+123  audio/jigsaw/start-unicorn.mp3       Let's make the unicorn!
+124  audio/jigsaw/start-train.mp3         Let's make the train!
+125  audio/jigsaw/start-cake.mp3          Let's make the cake!
+126  audio/jigsaw/start-planet.mp3        Let's make the planet!
+127  audio/jigsaw/how-many.mp3            How many pieces?
+128  audio/jigsaw/level-easy.mp3          Easy! Four pieces.
+129  audio/jigsaw/level-medium.mp3        Medium! Six pieces.
+130  audio/jigsaw/level-hard.mp3          Hard! Nine pieces.
+131  audio/jigsaw/pieces-4.mp3            Put the four pieces together!
+132  audio/jigsaw/pieces-6.mp3            Put the six pieces together!
+133  audio/jigsaw/pieces-9.mp3            Put the nine pieces together!
+134  audio/jigsaw/idle.mp3                Drag a piece onto the picture.
+135  audio/jigsaw/wrong.mp3               Hmm, that piece goes somewhere else.
+136  audio/jigsaw/made-lion.mp3           You made the lion!
+137  audio/jigsaw/made-whale.mp3          You made the whale!
+138  audio/jigsaw/made-unicorn.mp3        You made the unicorn!
+139  audio/jigsaw/made-train.mp3          You made the train!
+140  audio/jigsaw/made-cake.mp3           You made the cake!
+141  audio/jigsaw/made-planet.mp3         You made the planet!
+142  audio/jigsaw/done-more.mp3           Ready for more pieces?
+143  audio/jigsaw/done-hard.mp3           You did the hard one! Super puzzler!
+144  audio/tangram/welcome.mp3            Welcome to Tangram Town! Pick a picture to build.
+145  audio/tangram/build-house.mp3        Build the house!
+146  audio/tangram/build-fish.mp3         Build the fish!
+147  audio/tangram/build-cat.mp3          Build the cat!
+148  audio/tangram/build-arrow.mp3        Build the arrow!
+149  audio/tangram/build-big-square.mp3   Build the big square!
+150  audio/tangram/no-lines.mp3           Now build it with no lines!
+151  audio/tangram/idle.mp3               Drag a shape onto the outline.
+152  audio/tangram/wrong.mp3              That shape doesn't fit there. Try another spot!
+153  audio/tangram/made-house.mp3         You made a house!
+154  audio/tangram/made-fish.mp3          You made a fish!
+155  audio/tangram/made-cat.mp3           You made a cat!
+156  audio/tangram/made-arrow.mp3         You made an arrow!
+157  audio/tangram/made-big-square.mp3    You made a big square!
+158  audio/tangram/done.mp3               You built it twice!
+159  audio/onoff/welcome.mp3              Let's play! Put things on, and take things off.
+160  audio/onoff/put-teddy-bed.mp3        Put the teddy on the bed.
+161  audio/onoff/take-bird-tree.mp3       Take the bird off the tree.
+162  audio/onoff/take-ball-box.mp3        Take the ball off the box.
+163  audio/onoff/put-cake-table.mp3       Put the cake on the table.
+164  audio/onoff/take-cat-chair.mp3       Take the cat off the chair.
+165  audio/onoff/put-dog-rug.mp3          Put the dog on the rug.
+166  audio/onoff/put-bird-tree.mp3        Put the bird on the tree.
+167  audio/onoff/take-teddy-bed.mp3       Take the teddy off the bed.
+168  audio/onoff/is-on-teddy-bed.mp3      The teddy is on the bed!
+169  audio/onoff/is-off-bird-tree.mp3     The bird is off the tree!
+170  audio/onoff/is-off-ball-box.mp3      The ball is off the box!
+171  audio/onoff/is-on-cake-table.mp3     The cake is on the table!
+172  audio/onoff/is-off-cat-chair.mp3     The cat is off the chair!
+173  audio/onoff/is-on-dog-rug.mp3        The dog is on the rug!
+174  audio/onoff/is-on-bird-tree.mp3      The bird is on the tree!
+175  audio/onoff/is-off-teddy-bed.mp3     The teddy is off the bed!
+176  audio/onoff/wrong-on.mp3             Oops! Put it on.
+177  audio/onoff/wrong-off.mp3            Oops! Take it off.
+178  audio/onoff/done.mp3                 You put things on, and took them off!
+179  audio/sort2/welcome.mp3              Let's sort things two ways!
+180  audio/sort2/mode-shapes.mp3          Colours and Shapes! By colour, then by shape.
+181  audio/sort2/mode-animals.mp3         Animals and Things! Animal or thing, then big or small.
+182  audio/sort2/mode-sweets.mp3          Sweets and Shoes! By colour, then sweets or shoes.
+183  audio/sort2/by-colour.mp3            Let's sort them by colour!
+184  audio/sort2/by-shape.mp3             Now sort them by shape!
+185  audio/sort2/by-kind-animals.mp3      Let's sort animals and things!
+186  audio/sort2/by-size.mp3              Now sort them by size!
+187  audio/sort2/by-kind-sweets.mp3       Now sort sweets and shoes!
+188  audio/sort2/another-way.mp3          Now sort them another way!
+189  audio/sort2/wrong.mp3                Hmm, that one goes in the other tray.
+190  audio/names/peppermint.mp3           peppermint
+191  audio/names/gumdrop.mp3              gumdrop
+192  audio/names/yellow.mp3               yellow
+193  audio/sort2/done.mp3                 You sorted them two ways!
+194  audio/count/welcome.mp3              Welcome to Count and Match!
+195  audio/count/mode-plates.mp3          Count the Plates! Tap the plate.
+196  audio/count/mode-cards.mp3           Number Cards! Drag the number.
+197  audio/count/plate-2.mp3              Find the plate with two!
+198  audio/count/plate-3.mp3              Find the plate with three!
+199  audio/count/plate-4.mp3              Find the plate with four!
+200  audio/count/plate-5.mp3              Find the plate with five!
+201  audio/count/match-numbers.mp3        Match the numbers!
+202  audio/count/done.mp3                 You're a number star!
+203  audio/numhunt/welcome.mp3            Welcome to Number Hunt!
+204  audio/numhunt/mode-find.mp3          Find the Number! Tap every one.
+205  audio/numhunt/mode-boxes.mp3         Group Boxes! Drag the card.
+206  audio/numhunt/find-2.mp3             Find every two!
+207  audio/numhunt/find-3.mp3             Find every three!
+208  audio/numhunt/find-4.mp3             Find every four!
+209  audio/numhunt/find-5.mp3             Find every five!
+210  audio/numhunt/find-wrong.mp3         That one is a different number.
+211  audio/numhunt/boxes.mp3              Put each card in its box!
+212  audio/numhunt/done.mp3               Great hunting!
+
+ALREADY RECORDED - reused, do NOT record again
+  Numbers 1-9 (tiles, counting taps, Find the Number)      audio/numbers/*.mp3
+  Cheers: Great job! / Amazing! / Well done! / Wonderful! / You did it!   audio/encouragement/*
+  Try again!                                                audio/instructions/try-again.mp3
+  Watch carefully! (Sort Two Ways, Count and Match, Number Hunt)   audio/instructions/watch-carefully.mp3
+  Sort Two Ways landing words: blue, red, circle, square, triangle, star, big, small,
+    frog, cat, ball, cup, hen, dog, drum, box, shoe         existing word / name clips
+  "yellow" is RE-RECORDED in this batch (names/yellow.mp3) - the old treats/word-yellow is the old voice;
+    point wordClips "yellow" at it.
+  "Pick one!" (Pond, Sort Two Ways, Count and Match, Number Hunt) reuses audio/mouse/pick-one.mp3
+  "Play again, or try the other game!" (Pond) reuses audio/mouse/done-next.mp3
+  "One more!" (Find the Number) reuses audio/pond/one-more.mp3
+  "Let's count them again." (Plates, Cards, Boxes) reuses audio/mouse/count-again.mp3
+  Note: public/audio/hunt/ belongs to an older game, so Number Hunt uses audio/numhunt/.
+  Street Pals wrong ball ("That one is blue.") reuses the Color and Shape Friends lines.
+  Sound effects (pops, snaps, splashes, fanfare) are synthesized in code - no files needed.
