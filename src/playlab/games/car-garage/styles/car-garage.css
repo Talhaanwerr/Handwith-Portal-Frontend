@@ -1,0 +1,492 @@
+/**
+ * Build-a-Car Garage — class prefix `bcg-` (grepped clear across
+ * src/playlab). The root, screens, chrome, star trail, carried pieces and the
+ * cross are Count & Match's (`ng-`, number-groups.css); the yard is the
+ * shared construction theme's (`pl-art`, `ac-fill`). The car's motion rules
+ * live here too, so The Messy Car Wash (which draws the same `CarArt`) gets
+ * them for free. Sized in container units of `.ng-root`; portrait at the end.
+ */
+
+/* ─── The car (CarArt) — its motion ───────────────────────────────────── */
+.bcg-car {
+  display: block;
+  overflow: visible;
+}
+.bcg-car-bob {
+  transform-box: view-box;
+  transform-origin: 50% 96%;
+}
+.bcg-car.is-happy .bcg-car-bob {
+  animation: bcg-bounce 0.62s ease-in-out 3;
+}
+@keyframes bcg-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px) scale(1.01, 0.99);
+  }
+  70% {
+    transform: translateY(1.5px);
+  }
+}
+.bcg-lid {
+  transform-box: fill-box;
+  animation: bcg-blink 4.6s ease-in-out infinite;
+}
+@keyframes bcg-blink {
+  0%,
+  90%,
+  100% {
+    transform: translateY(0);
+  }
+  94% {
+    transform: translateY(100%);
+  }
+}
+.bcg-wheel {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+.bcg-wheel.is-spinning {
+  animation: bcg-spin 0.55s linear infinite;
+}
+@keyframes bcg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.bcg-ghost.is-lit {
+  animation: bcg-glow 1.3s ease-in-out infinite alternate;
+}
+@keyframes bcg-glow {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+.bcg-part-svg {
+  display: block;
+  overflow: visible;
+}
+
+/* ─── The garage yard (GarageWorld) ───────────────────────────────────── */
+.bcg-world {
+  --bcg-ground: 36cqh;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bcg-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--bcg-ground);
+}
+/* the back of the yard stands on the dirt's far edge */
+.bcg-yard-back {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--bcg-ground) - 7cqh);
+  height: 34cqh;
+}
+.bcg-shed {
+  position: absolute;
+  left: 1cqw;
+  bottom: 0;
+  width: 30cqh;
+}
+.bcg-tyres {
+  position: absolute;
+  right: 1cqw;
+  bottom: 2cqh;
+  display: block;
+  width: 15cqh;
+}
+.bcg-toolbox {
+  position: absolute;
+  left: 18cqw;
+  bottom: 1.5cqh;
+  width: 13cqh;
+}
+.bcg-cone {
+  position: absolute;
+  right: 17cqh;
+  bottom: 1.5cqh;
+  width: 6cqh;
+}
+
+/* ─── The board: the car on its lift, and the tray beside it ──────────── */
+.bcg-play {
+  --bcg-car: min(38cqw, 70cqh);
+  /* the tray's unit: never under 50px, so a wheel stays a 48px target */
+  --bcg-u: max(50px, min(8.4cqw, 14.5cqh));
+}
+.bcg-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5cqw;
+  width: 100%;
+  height: 100%;
+}
+.bcg-bay {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6cqh;
+  width: var(--bcg-car);
+}
+/* the lift and the car on it: the car's wheels (y 144 of 150) stand on the
+   lift's platform; the rig is the car's 150 units plus the lift's 34 */
+.bcg-rig {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 240 / 178;
+}
+.bcg-car-slot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 84.27%;
+}
+.bcg-lift {
+  position: absolute;
+  left: 0;
+  top: 79.78%;
+  width: 100%;
+  height: 19.1%;
+}
+.bcg-lift-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* a box over the car, in the car's own units (CarArt's boxVars) */
+.bcg-at-box {
+  position: absolute;
+  left: var(--bcg-x);
+  top: var(--bcg-y);
+  width: var(--bcg-w);
+  height: var(--bcg-h);
+  pointer-events: none;
+}
+.bcg-target {
+  border-radius: 1.6cqh;
+}
+.bcg-target.is-over {
+  background: rgba(255, 236, 150, 0.32);
+  box-shadow: 0 0 0 0.7cqh rgba(255, 194, 26, 0.75);
+}
+
+/* ─── The step strip ──────────────────────────────────────────────────── */
+.bcg-steps {
+  display: flex;
+  align-items: center;
+  gap: 1.8cqh;
+  margin: 0;
+  padding: 0.8cqh 1.6cqh;
+  list-style: none;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0.7cqh 0 rgba(120, 80, 30, 0.2);
+}
+.bcg-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--bcg-u) * 1.05);
+  height: calc(var(--bcg-u) * 0.74);
+  border-radius: 1.6cqh;
+  background: #f1ebe2;
+  opacity: 0.5;
+}
+/* a little arrow from each step to the next */
+.bcg-step + .bcg-step::before {
+  content: "";
+  position: absolute;
+  left: -1.55cqh;
+  top: 50%;
+  width: 0;
+  height: 0;
+  margin-top: -0.9cqh;
+  border-top: 0.9cqh solid transparent;
+  border-bottom: 0.9cqh solid transparent;
+  border-left: 1.1cqh solid #c9b79f;
+}
+.bcg-step.is-now {
+  opacity: 1;
+  background: #fff3bf;
+  box-shadow: 0 0 0 0.55cqh #ffc21a;
+}
+.bcg-step.is-done {
+  opacity: 1;
+  background: #e2f4e8;
+}
+.bcg-step-pic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84%;
+  height: 62%;
+  container-type: size;
+}
+.bcg-step-dots {
+  display: flex;
+  gap: 0.5cqh;
+  margin-top: 0.4cqh;
+}
+.bcg-step-dot {
+  display: block;
+  width: 1.3cqh;
+  height: 1.3cqh;
+  border-radius: 50%;
+  background: #d8cbb8;
+}
+.bcg-step-dot.is-on {
+  background: #3dab72;
+}
+.bcg-step-tick {
+  position: absolute;
+  right: -0.8cqh;
+  top: -0.8cqh;
+  width: 3.4cqh;
+  height: 3.4cqh;
+}
+
+/* ─── The tray: a wooden parts bench ──────────────────────────────────── */
+.bcg-tray {
+  flex: none;
+  padding: 1.4cqh;
+  border-radius: 2.8cqh;
+  background: linear-gradient(180deg, #cf9b62 0%, #b57d45 100%);
+  box-shadow:
+    inset 0 0.5cqh 0 rgba(255, 255, 255, 0.25),
+    0 1.1cqh 0 #7e5129,
+    0 2cqh 2.6cqh rgba(60, 40, 20, 0.25);
+}
+.bcg-tray--build {
+  display: grid;
+  grid-template-areas:
+    "body body"
+    "wheel roof"
+    "wheel windows";
+  grid-template-columns: calc(var(--bcg-u) * 2 + 1.2cqh) calc(var(--bcg-u) * 1.55);
+  grid-template-rows: calc(var(--bcg-u) * 1.05) var(--bcg-u) var(--bcg-u);
+  gap: 1.2cqh;
+}
+.bcg-bin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  gap: 1cqh;
+  border-radius: 1.9cqh;
+  background: rgba(255, 248, 235, 0.86);
+  box-shadow: inset 0 0.5cqh 0 rgba(110, 69, 34, 0.2);
+}
+.bcg-bin--body {
+  grid-area: body;
+}
+.bcg-bin--wheel {
+  grid-area: wheel;
+}
+.bcg-bin--roof {
+  grid-area: roof;
+}
+.bcg-bin--windows {
+  grid-area: windows;
+}
+.bcg-bin.is-now {
+  background: #fff6cf;
+  box-shadow:
+    inset 0 0.5cqh 0 rgba(110, 69, 34, 0.12),
+    0 0 0 0.6cqh #ffc21a;
+}
+
+.bcg-piece {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  container-type: size;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.bcg-piece:disabled {
+  cursor: default;
+}
+.bcg-piece.is-dim {
+  opacity: 0.38;
+}
+.bcg-piece.is-gone {
+  visibility: hidden;
+}
+.bcg-piece--body {
+  width: 94%;
+  height: 86%;
+}
+.bcg-piece--wheel {
+  width: calc(var(--bcg-u) * 0.96);
+  height: calc(var(--bcg-u) * 0.96);
+}
+.bcg-piece--roof,
+.bcg-piece--windows {
+  width: 90%;
+  height: 84%;
+}
+/* a part's picture at its true shape, as large as its box allows */
+.bcg-piece-art {
+  display: block;
+  width: min(100cqw, calc(100cqh * var(--bcg-r, 1)));
+  aspect-ratio: var(--bcg-r, 1);
+}
+.bcg-piece-art--odd {
+  --bcg-r: 1;
+}
+.bcg-odd-svg,
+.bcg-odd-pic,
+.bcg-odd-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* the part under the finger, and the parts flying to the car or home */
+.bcg-flight {
+  position: absolute;
+  z-index: 40;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.bcg-carried {
+  position: absolute;
+  left: calc(var(--bcg-pw) * -0.5);
+  top: calc(var(--bcg-ph) * -0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bcg-pw);
+  height: var(--bcg-ph);
+  container-type: size;
+}
+.bcg-carried--lifted {
+  transform: scale(1.08) translateY(-4%);
+}
+
+/* ─── Missing Part: the three things to try ───────────────────────────── */
+.bcg-tray--missing {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4cqh;
+}
+.bcg-piece--choice {
+  width: calc(var(--bcg-u) * 2);
+  height: calc(var(--bcg-u) * 1.25);
+  padding: calc(var(--bcg-u) * 0.14);
+  border-radius: 2cqh;
+  background: rgba(255, 248, 235, 0.92);
+  box-shadow:
+    inset 0 -0.5cqh 0 rgba(110, 69, 34, 0.16),
+    0 0.8cqh 0 rgba(110, 69, 34, 0.35);
+}
+.bcg-piece--choice.is-wrong .bcg-piece-art {
+  opacity: 0.4;
+}
+
+/* ─── Home-card miniatures ────────────────────────────────────────────── */
+.bcg-mini-rig {
+  position: absolute;
+  left: 3%;
+  top: 10%;
+  width: 72%;
+  aspect-ratio: 240 / 178;
+}
+.bcg-mini-car {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 84.27%;
+}
+.bcg-mini-lift {
+  position: absolute;
+  left: 0;
+  top: 79.78%;
+  width: 100%;
+  height: 19.1%;
+}
+.bcg-mini-part {
+  position: absolute;
+  right: 3%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22%;
+  aspect-ratio: 1;
+  container-type: size;
+}
+.bcg-mini-part--a {
+  bottom: 12%;
+}
+.bcg-mini-part--b {
+  top: 8%;
+}
+
+/* ─── Portrait: the car (and its steps) on top, the tray under it ─────── */
+@media (orientation: portrait) {
+  .bcg-play {
+    --bcg-car: min(86cqw, 30cqh);
+    --bcg-u: max(50px, min(17cqw, 7cqh));
+  }
+  .bcg-board {
+    flex-direction: column;
+    gap: 2cqh;
+  }
+  .bcg-tray--missing {
+    flex-direction: row;
+  }
+  .bcg-piece--choice {
+    width: calc(var(--bcg-u) * 1.75);
+    height: calc(var(--bcg-u) * 1.35);
+  }
+  .bcg-world {
+    --bcg-ground: 30cqh;
+  }
+  .bcg-shed {
+    width: 22cqw;
+  }
+  .bcg-cone {
+    display: none;
+  }
+  .bcg-tyres {
+    width: 16cqw;
+  }
+  .bcg-toolbox {
+    left: auto;
+    right: 20cqw;
+    width: 14cqw;
+  }
+}

@@ -1,0 +1,197 @@
+/**
+ * Sound Show — the toddlers' show on Phonics Game Show's stage.
+ *
+ * The root is also `.pgs-root`, so the studio, the lit sign, the title
+ * screen, the pills, the progress row and the finish card are all Phonics
+ * Game Show's styles (and its `pgs` container units). This file owns only
+ * the round: one big letter on the sign and two or three picture cards.
+ */
+
+/** The sign above, the pictures below. */
+.snd-board {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 4cqh;
+}
+.snd-sign .pgs-sign-screen {
+  padding: 1.6cqh 5cqh;
+}
+
+/** The letter itself: huge, white, lowercase — and a button that says it. */
+.snd-letter {
+  min-width: 26cqh;
+  padding: 0 2cqh 1cqh;
+  border: 0;
+  background: none;
+  font-size: 26cqh;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0 1cqh 0 #10276b,
+    0 2cqh 3cqh rgba(0, 0, 30, 0.35);
+  cursor: pointer;
+}
+/** While its sound is taught, the letter breathes in time with it. */
+.snd-letter--teach {
+  animation: snd-pulse 1.1s ease-in-out infinite;
+}
+@keyframes snd-pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.12;
+  }
+}
+
+.snd-pictures {
+  display: flex;
+  gap: min(4cqh, 4cqw);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/** A picture on a fat white card with a lip — the thing to tap. */
+.snd-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(30cqh, 26cqw);
+  aspect-ratio: 1;
+  min-width: 72px;
+  padding: 2.4cqh;
+  border: 0.8cqh solid var(--snd-rim, #f0c870);
+  border-radius: 3.6cqh;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -1.4cqh 0 rgba(120, 80, 20, 0.08),
+    0 1.2cqh 0 var(--snd-lip, #c48a2a);
+  transition:
+    translate 0.15s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+.snd-card:disabled {
+  cursor: default;
+}
+.snd-card:active:not(:disabled) {
+  translate: 0 1cqh;
+}
+/** Found it: green rim, lifted, a tick on its corner. */
+.snd-card.snd-card--right {
+  --snd-rim: #34a95a;
+  --snd-lip: #1c7a45;
+  translate: 0 -1cqh;
+}
+/** Not this one: it just steps back — dimmed and grey, no red for toddlers. */
+.snd-card.snd-card--wrong {
+  opacity: 0.45;
+  filter: grayscale(0.8);
+  animation: snd-nudge 0.45s ease-out;
+}
+@keyframes snd-nudge {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: -6px 0;
+  }
+  60% {
+    translate: 5px 0;
+  }
+}
+/** The hint: the right picture glows and bobs, gently. */
+.snd-card.snd-card--hint {
+  --snd-rim: #ffc93c;
+  animation: snd-glow 1.4s ease-in-out infinite;
+}
+@keyframes snd-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(255, 201, 60, 0.7),
+      0 1.2cqh 0 var(--snd-lip, #c48a2a);
+    translate: 0 0;
+  }
+  50% {
+    box-shadow:
+      0 0 0 2.4cqh rgba(255, 201, 60, 0),
+      0 1.2cqh 0 var(--snd-lip, #c48a2a);
+    translate: 0 -1cqh;
+  }
+}
+/** The tick: Phonics Game Show's, smaller, on the card's corner. */
+.snd-tick {
+  position: absolute;
+  top: -3cqh;
+  right: -3cqh;
+  width: 11cqh;
+  height: 11cqh;
+  border: 0.8cqh solid #ffffff;
+  border-radius: 50%;
+  background: #3fae68;
+  box-shadow: 0 0.8cqh 1.6cqh rgba(0, 60, 20, 0.35);
+}
+.snd-tick::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 26%;
+  height: 50%;
+  border-right: 1.3cqh solid #ffffff;
+  border-bottom: 1.3cqh solid #ffffff;
+  translate: -50% -50%;
+  rotate: 45deg;
+}
+
+/* ── A phone held sideways: the pictures move beside the sign ────────────── */
+
+@container pgs (max-height: 520px) and (min-aspect-ratio: 3 / 2) {
+  .snd-screen.pgs-screen {
+    padding-left: 9cqw;
+    padding-right: 9cqw;
+  }
+  .snd-board {
+    flex-direction: row;
+    gap: 5cqw;
+  }
+  .snd-letter {
+    min-width: 30cqh;
+    font-size: 34cqh;
+  }
+  .snd-card {
+    width: 30cqh;
+    min-width: 64px;
+  }
+}
+
+/* ── A phone held upright ────────────────────────────────────────────────── */
+
+/* The letter is a little smaller here so the pictures — the part a toddler
+   taps — can be bigger: two side by side, or three across the width. */
+@container pgs (orientation: portrait) {
+  .snd-letter {
+    min-width: 20cqh;
+    font-size: min(18cqh, 34cqw);
+  }
+  .snd-sign .pgs-sign-screen {
+    padding: 1cqh 4cqh;
+  }
+  .snd-card {
+    width: min(38cqw, 24cqh);
+  }
+  .snd-pictures--3 .snd-card {
+    width: min(27cqw, 20cqh);
+  }
+  .snd-pictures {
+    gap: 4cqw;
+  }
+}

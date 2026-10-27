@@ -43,6 +43,9 @@
 @import "./games/sort-it/styles/sort-it.css";
 /* Picture Words */
 @import "./games/word-quiz/styles/word-quiz.css";
+@import "./games/phonics-show/styles/phonics-show.css";
+@import "./games/sound-show/styles/sound-show.css";
+@import "./games/odd-sound/styles/odd-sound.css";
 /* Math Maze */
 @import "./games/math-maze/styles/math-maze.css";
 /* Sorting Food */
@@ -66,6 +69,7 @@
 @import "./games/brick-lab/styles/brick-lab.css";
 @import "./games/sock-case/styles/sock-case.css";
 @import "./games/animal-repair/styles/animal-repair.css";
+@import "./games/car-garage/styles/car-garage.css";
 @import "./games/shadow-match/styles/shadow-match.css";
 @import "./games/silly-robot/styles/silly-robot.css";
 @import "./games/number-train/styles/number-train.css";

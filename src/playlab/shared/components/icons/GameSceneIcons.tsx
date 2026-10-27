@@ -24,7 +24,11 @@ import { SortTwoWaysIcon } from "@games/sort-two-ways/components/SortTwoWaysIcon
 import { NumberGroupsIcon } from "@games/number-groups/components/NumberGroupsIcon";
 import { NumberHuntIcon } from "@games/number-hunt/components/NumberHuntIcon";
 import { SockCaseIcon } from "@games/sock-case/components/SockCaseIcon";
+import { PhonicsShowIcon } from "@games/phonics-show/components/PhonicsShowIcon";
+import { SoundShowIcon } from "@games/sound-show/components/SoundShowIcon";
+import { OddSoundIcon } from "@games/odd-sound/components/OddSoundIcon";
 import { AnimalRepairIcon } from "@games/animal-repair/components/AnimalRepairIcon";
+import { CarGarageIcon } from "@games/car-garage/components/CarGarageIcon";
 import { ShadowMatchIcon } from "@games/shadow-match/components/ShadowMatchIcon";
 import { SillyRobotIcon } from "@games/silly-robot/components/SillyRobotIcon";
 import { NumberTrainIcon } from "@games/number-train/components/NumberTrainIcon";
@@ -1600,6 +1604,9 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "cvc-match": CvcMatchIcon,
   "sort-it": SortItIcon,
   "word-quiz": WordQuizIcon,
+  "phonics-show": PhonicsShowIcon,
+  "sound-show": SoundShowIcon,
+  "odd-sound": OddSoundIcon,
   "math-maze": MathMazeIcon,
   "food-sort": FoodSortIcon,
   "find-the-mouse": FindTheMouseIcon,
@@ -1620,6 +1627,7 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "brick-plus-tower": BrickPlusTowerIcon,
   "sock-case": SockCaseIcon,
   "animal-repair": AnimalRepairIcon,
+  "car-garage": CarGarageIcon,
   "shadow-match": ShadowMatchIcon,
   "silly-robot": SillyRobotIcon,
   "number-train": NumberTrainIcon,

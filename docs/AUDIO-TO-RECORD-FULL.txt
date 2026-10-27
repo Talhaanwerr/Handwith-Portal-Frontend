@@ -130,34 +130,6 @@ THE MISSING SOCK CASE — 9
      id:   skc-has-partner
 
 
-FIND ANOTHER WAY — 8
----------------------
- 36. "Find another way! Help the bunny."
-     file: public/audio/find-another-way/welcome.mp3
-     id:   faw-welcome
- 37. "You can always find a way!"
-     file: public/audio/find-another-way/done.mp3
-     id:   faw-done
- 38. "Oh no, blocked! Find another way."
-     file: public/audio/find-another-way/mode-blocked.mp3
-     id:   faw-mode-blocked
- 39. "Look first! Find the open path."
-     file: public/audio/find-another-way/mode-look.mp3
-     id:   faw-mode-look
- 40. "Help bunny get to the carrots!"
-     file: public/audio/find-another-way/ask-go.mp3
-     id:   faw-ask-go
- 41. "Oh! It's blocked. Let's find another way."
-     file: public/audio/find-another-way/blocked.mp3
-     id:   faw-blocked
- 42. "You found another way!"
-     file: public/audio/find-another-way/found.mp3
-     id:   faw-found
- 43. "Which way is open? Look first!"
-     file: public/audio/find-another-way/ask-look.mp3
-     id:   faw-ask-look
-
-
 WHAT'S INSIDE? — 11
 -------------------
  44. "Treasure chests! What's inside?"
@@ -254,31 +226,6 @@ SILLY ANIMAL REPAIR SHOP — 10
      id:   arp-find-right
 
 
-FIND MY BABY — 7
------------------
- 72. "Let's help the mummies find their babies!"
-     file: public/audio/find-my-baby/welcome.mp3
-     id:   fmb-welcome
- 73. "Every baby is back with Mummy!"
-     file: public/audio/find-my-baby/done.mp3
-     id:   fmb-done
- 74. "Follow the footprints to the baby!"
-     file: public/audio/find-my-baby/mode-prints.mp3
-     id:   fmb-mode-prints
- 75. "Find the baby in Mummy's colour!"
-     file: public/audio/find-my-baby/mode-colour.mp3
-     id:   fmb-mode-colour
- 76. "Where is my baby?"
-     file: public/audio/find-my-baby/where-baby.mp3
-     id:   fmb-where-baby
- 77. "Follow the footprints!"
-     file: public/audio/find-my-baby/follow.mp3
-     id:   fmb-follow
- 78. "Find the baby with the same colour!"
-     file: public/audio/find-my-baby/ask-colour.mp3
-     id:   fmb-ask-colour
-
-
 BUILD-A-CAR GARAGE — 10
 -----------------------
  79. "Welcome to the garage! Let's build cars."
@@ -311,59 +258,6 @@ BUILD-A-CAR GARAGE — 10
  88. "That does not go on a car!"
      file: public/audio/car-garage/not-that.mp3
      id:   bcg-not-that
-
-
-YOUR TURN, MY TURN — 6
------------------------
- 89. "Your turn, my turn! Let's take turns."
-     file: public/audio/your-turn/welcome.mp3
-     id:   ytt-welcome
- 90. "Roll the ball to Ruby!"
-     file: public/audio/your-turn/intro-ruby.mp3
-     id:   ytt-intro-ruby
- 91. "Who says my turn? Roll to them!"
-     file: public/audio/your-turn/intro-around.mp3
-     id:   ytt-intro-around
- 92. "My turn!"
-     file: public/audio/your-turn/my-turn.mp3
-     id:   ytt-my-turn
- 93. "Wait, my turn."
-     file: public/audio/your-turn/wait.mp3
-     id:   ytt-wait
- 94. "You took turns so well!"
-     file: public/audio/your-turn/done.mp3
-     id:   ytt-done
-
-
-MAGIC FLOWER — 9
------------------
- 95. "Magic Flower! Let's grow a flower."
-     file: public/audio/magic-flower/welcome.mp3
-     id:   mgf-welcome
- 96. "Tap the seeds!"
-     file: public/audio/magic-flower/step-seed.mp3
-     id:   mgf-step-seed
- 97. "Water the seeds!"
-     file: public/audio/magic-flower/step-water.mp3
-     id:   mgf-step-water
- 98. "A little sprout!"
-     file: public/audio/magic-flower/sprout.mp3
-     id:   mgf-sprout
- 99. "Tap the cloud!"
-     file: public/audio/magic-flower/step-sun.mp3
-     id:   mgf-step-sun
-100. "Tap the leaves!"
-     file: public/audio/magic-flower/step-leaves.mp3
-     id:   mgf-step-leaves
-101. "Tap the bud!"
-     file: public/audio/magic-flower/step-bloom.mp3
-     id:   mgf-step-bloom
-102. "Let's paint the flower!"
-     file: public/audio/magic-flower/paint.mp3
-     id:   mgf-paint
-103. "What a beautiful garden!"
-     file: public/audio/magic-flower/done.mp3
-     id:   mgf-done
 
 
 FEED THE FISH — 8
