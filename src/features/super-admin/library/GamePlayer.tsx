@@ -81,6 +81,15 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "word-quiz": lazy(() =>
     import("@games/word-quiz/WordQuizGame").then((m) => ({ default: m.WordQuizGame }))
   ),
+  "phonics-show": lazy(() =>
+    import("@games/phonics-show/PhonicsShowGame").then((m) => ({ default: m.PhonicsShowGame }))
+  ),
+  "sound-show": lazy(() =>
+    import("@games/sound-show/SoundShowGame").then((m) => ({ default: m.SoundShowGame }))
+  ),
+  "odd-sound": lazy(() =>
+    import("@games/odd-sound/OddSoundGame").then((m) => ({ default: m.OddSoundGame }))
+  ),
   "math-maze": lazy(() =>
     import("@games/math-maze/MathMazeGame").then((m) => ({ default: m.MathMazeGame }))
   ),
@@ -176,6 +185,9 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   ),
   "sock-case": lazy(() =>
     import("@games/sock-case/SockCaseGame").then((m) => ({ default: m.SockCaseGame }))
+  ),
+  "car-garage": lazy(() =>
+    import("@games/car-garage/CarGarageGame").then((m) => ({ default: m.CarGarageGame }))
   ),
 };
 

@@ -1,0 +1,32 @@
+Can you click the starting sound of
+Find something that starts with
+ant
+Which one starts with a different sound?
+
+
+
+----------------------------------------
+WHERE EACH ONE GOES (for patching)
+----------------------------------------
+  1. "Can you click the starting sound of"
+     file: public/audio/instructions/click-starting-sound.mp3
+     id:   instr-click-starting-sound
+     used: Phonics Game Show, every question:
+           word + this line + word + its sound  ->  "Sun. Can you click the starting sound of sun? sss"
+
+  2. "Find something that starts with"
+     file: public/audio/instructions/find-starts-with.mp3
+     id:   instr-find-starts-with
+     used: Sound Show, every round, followed by the letter sound  ->  "Find something that starts with sss"
+           (replaces the old-voice treat-sound-* lines)
+
+  3. "ant"
+     file: public/audio/names/ant.mp3
+     id:   name-ant
+     used: Phonics Game Show question 3 (replaces the old treat-word-ant)
+
+  4. "Which one starts with a different sound?"
+     file: public/audio/instructions/odd-sound.mp3
+     id:   instr-odd-sound
+     used: Odd Sound Out, every round, after the four pictures are named
+           ->  "ball... cat... bus... bed. Which one starts with a different sound?"

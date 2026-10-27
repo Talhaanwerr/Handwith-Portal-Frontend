@@ -245,38 +245,6 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
-  "find-another-way": {
-    default: [
-      "Look carefully at the path in front of the bunny.",
-      "Then help the bunny find a way to get home.",
-    ],
-    modules: {
-      blocked: [
-        "Look closely, because the path is blocked.",
-        "Then tap another way for the bunny to go home.",
-      ],
-      look: [
-        "Look carefully at all of the paths that you can see.",
-        "Then tap the path that is open for the bunny.",
-      ],
-    },
-  },
-  "find-my-baby": {
-    default: [
-      "Look carefully around the picture to find the baby.",
-      "Then tap the place where you think it is.",
-    ],
-    modules: {
-      prints: [
-        "Follow the footprints with your eyes across the picture.",
-        "Then tap the place where the baby is hiding.",
-      ],
-      colour: [
-        "Look at the colour of the mummy animal.",
-        "Then tap the baby that has the matching colour.",
-      ],
-    },
-  },
   "find-the-mouse": {
     default: [
       "Look at the cheese with all of its little holes.",
@@ -368,10 +336,6 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
   "letter-treats": [
     "Pick a letter that you would like to try.",
     "Then tap the picture that starts with that letter.",
-  ],
-  "magic-flower": [
-    "Look carefully at the magic flower on the screen.",
-    "Then tap and drag on it to watch it grow.",
   ],
   "magnet-match": [
     "Look at the gray letters that are waiting on the screen.",
@@ -501,9 +465,17 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
     "Look carefully at the row of letters on the screen.",
     "Then drag the missing letter into the empty bubble.",
   ],
+  "odd-sound": [
+    "Listen carefully to the names of all four pictures.",
+    "Then tap the one that starts with a different sound.",
+  ],
   "on-off": [
     "Listen to hear if you should put it ON or take it OFF.",
     "Then drag the thing onto its shadow.",
+  ],
+  "phonics-show": [
+    "Look carefully at the picture and listen to its word.",
+    "Then tap the letter sound that the word starts with.",
   ],
   "pirate-match": [
     "Look at the letter and the pictures next to it.",
@@ -590,6 +562,10 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
+  "sound-show": [
+    "Listen to the letter sound on the big sign.",
+    "Then tap the picture that starts with that sound.",
+  ],
   "sock-case": [
     "Look carefully at all of the socks on the screen.",
     "Then drag the matching sock, or tap the odd one.",
@@ -685,10 +661,6 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
     "Look carefully at the picture on the screen.",
     "Then tap the word that matches the picture.",
   ],
-  "your-turn": [
-    "Look at your friend who is waiting for you.",
-    "Then drag the ball to roll it to your friend.",
-  ],
 };
 
 /** The lines to show for a game (and the module the child picked, if any). */
@@ -728,8 +700,6 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "dino-dig",
   "door-count",
   "feed-the-shark",
-  "find-another-way",
-  "find-my-baby",
   "find-the-mouse",
   "food-sort",
   "jigsaw-fun",
@@ -744,10 +714,12 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "number-match",
   "number-safari",
   "number-train",
+  "odd-sound",
   "ocean-abc",
   "ocean-hunt",
   "on-off",
   "pirate-match",
+  "phonics-show",
   "pond-numbers",
   "rocket-countdown",
   "sesame-activities",
@@ -755,6 +727,7 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "shape-match",
   "silly-robot",
   "sock-case",
+  "sound-show",
   "sort-it",
   "sort-two-ways",
   "space-letters",

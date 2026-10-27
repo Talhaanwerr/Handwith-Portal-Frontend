@@ -128,57 +128,6 @@ BRICK LAB — COPY THE DESIGN — 2
      file: public/audio/bricks/copy-same.mp3
      id:   brick-copy-same
 
-FIND ANOTHER WAY — 8
-----------------------------------------
-  34. "Find another way! Help the bunny."
-     file: public/audio/find-another-way/welcome.mp3
-     id:   faw-welcome
-  35. "You can always find a way!"
-     file: public/audio/find-another-way/done.mp3
-     id:   faw-done
-  36. "Oh no, blocked! Find another way."
-     file: public/audio/find-another-way/mode-blocked.mp3
-     id:   faw-mode-blocked
-  37. "Look first! Find the open path."
-     file: public/audio/find-another-way/mode-look.mp3
-     id:   faw-mode-look
-  38. "Help bunny get to the carrots!"
-     file: public/audio/find-another-way/ask-go.mp3
-     id:   faw-ask-go
-  39. "Oh! It's blocked. Let's find another way."
-     file: public/audio/find-another-way/blocked.mp3
-     id:   faw-blocked
-  40. "You found another way!"
-     file: public/audio/find-another-way/found.mp3
-     id:   faw-found
-  41. "Which way is open? Look first!"
-     file: public/audio/find-another-way/ask-look.mp3
-     id:   faw-ask-look
-
-FIND MY BABY — 7
-----------------------------------------
-  42. "Let's help the mummies find their babies!"
-     file: public/audio/find-my-baby/welcome.mp3
-     id:   fmb-welcome
-  43. "Every baby is back with Mummy!"
-     file: public/audio/find-my-baby/done.mp3
-     id:   fmb-done
-  44. "Follow the footprints to the baby!"
-     file: public/audio/find-my-baby/mode-prints.mp3
-     id:   fmb-mode-prints
-  45. "Find the baby in Mummy's colour!"
-     file: public/audio/find-my-baby/mode-colour.mp3
-     id:   fmb-mode-colour
-  46. "Where is my baby?"
-     file: public/audio/find-my-baby/where-baby.mp3
-     id:   fmb-where-baby
-  47. "Follow the footprints!"
-     file: public/audio/find-my-baby/follow.mp3
-     id:   fmb-follow
-  48. "Find the baby with the same colour!"
-     file: public/audio/find-my-baby/ask-colour.mp3
-     id:   fmb-ask-colour
-
 BUILD STEPS — WHITE AND BLACK BLOCKS — 2
 ----------------------------------------
   49. "White block!"
@@ -238,36 +187,6 @@ THE MESSY CAR WASH — 7
   65. "Every car is clean and shiny!"
      file: public/audio/car-wash/done.mp3
      id:   mcw-done
-
-MAGIC FLOWER — 9
-----------------------------------------
-  66. "Magic Flower! Let's grow a flower."
-     file: public/audio/magic-flower/welcome.mp3
-     id:   mgf-welcome
-  67. "Tap the seeds!"
-     file: public/audio/magic-flower/step-seed.mp3
-     id:   mgf-step-seed
-  68. "Water the seeds!"
-     file: public/audio/magic-flower/step-water.mp3
-     id:   mgf-step-water
-  69. "A little sprout!"
-     file: public/audio/magic-flower/sprout.mp3
-     id:   mgf-sprout
-  70. "Tap the cloud!"
-     file: public/audio/magic-flower/step-sun.mp3
-     id:   mgf-step-sun
-  71. "Tap the leaves!"
-     file: public/audio/magic-flower/step-leaves.mp3
-     id:   mgf-step-leaves
-  72. "Tap the bud!"
-     file: public/audio/magic-flower/step-bloom.mp3
-     id:   mgf-step-bloom
-  73. "Let's paint the flower!"
-     file: public/audio/magic-flower/paint.mp3
-     id:   mgf-paint
-  74. "What a beautiful garden!"
-     file: public/audio/magic-flower/done.mp3
-     id:   mgf-done
 
 COLOR & PAINT — 10
 ----------------------------------------
@@ -391,28 +310,6 @@ WHAT'S INSIDE? — 11
   111. "Where is the dog?"
      file: public/audio/whats-inside/where-dog.mp3
      id:   wsi-where-dog
-
-YOUR TURN, MY TURN — 6
-----------------------------------------
-  112. "Your turn, my turn! Let's take turns."
-     file: public/audio/your-turn/welcome.mp3
-     id:   ytt-welcome
-  113. "Roll the ball to Ruby!"
-     file: public/audio/your-turn/intro-ruby.mp3
-     id:   ytt-intro-ruby
-  114. "Who says my turn? Roll to them!"
-     file: public/audio/your-turn/intro-around.mp3
-     id:   ytt-intro-around
-  115. "My turn!"
-     file: public/audio/your-turn/my-turn.mp3
-     id:   ytt-my-turn
-  116. "Wait, my turn."
-     file: public/audio/your-turn/wait.mp3
-     id:   ytt-wait
-  117. "You took turns so well!"
-     file: public/audio/your-turn/done.mp3
-     id:   ytt-done
-
 
 PART B — THE FIVE MATHS GAMES (after the brick games) — 13 recordings
 ===========================================================

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "bcg-welcome",
+    "text": "Welcome to the garage! Let's build cars.",
+    "file": "/audio/car-garage/welcome.mp3"
+  },
+  {
+    "id": "bcg-done",
+    "text": "All the cars are ready. Beep beep!",
+    "file": "/audio/car-garage/done.mp3"
+  },
+  {
+    "id": "bcg-mode-build",
+    "text": "Build the Car. One part at a time.",
+    "file": "/audio/car-garage/mode-build.mp3"
+  },
+  {
+    "id": "bcg-mode-missing",
+    "text": "Missing Part. Find the part that fits.",
+    "file": "/audio/car-garage/mode-missing.mp3"
+  },
+  {
+    "id": "bcg-step-body",
+    "text": "Put the body on the lift!",
+    "file": "/audio/car-garage/step-body.mp3"
+  },
+  {
+    "id": "bcg-step-wheels",
+    "text": "Now the wheels. Count them!",
+    "file": "/audio/car-garage/step-wheels.mp3"
+  },
+  {
+    "id": "bcg-step-roof",
+    "text": "Now put the roof on!",
+    "file": "/audio/car-garage/step-roof.mp3"
+  },
+  {
+    "id": "bcg-step-windows",
+    "text": "Now the windows!",
+    "file": "/audio/car-garage/step-windows.mp3"
+  },
+  {
+    "id": "bcg-ask-missing",
+    "text": "Oh no! Which part is missing?",
+    "file": "/audio/car-garage/ask-missing.mp3"
+  },
+  {
+    "id": "bcg-not-that",
+    "text": "That does not go on a car!",
+    "file": "/audio/car-garage/not-that.mp3"
+  }
+]

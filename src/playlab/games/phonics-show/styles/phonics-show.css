@@ -1,0 +1,686 @@
+/**
+ * Phonics Game Show — fifteen pictures on a lit sign, three letters each.
+ *
+ * The studio is mixed from rooms the portal already has (Blend & Seek's calm
+ * classroom, Rainbow Shapes' bunting); the curtains, the spotlight and the
+ * lit sign are this game's. Every size is in container units of `.pgs-root`
+ * (1cqh = 1% of the stage's height), and the stacks below are added up
+ * against the 100cqh they must fit in, at every screen shape.
+ *
+ * LAYOUT RULE: the two pinned pills (Back, Back to Games) own the top
+ * corners, so every screen keeps its content below them.
+ */
+
+.pgs-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container: pgs / size;
+  background: #fbe9d6;
+}
+
+/* ── The studio ──────────────────────────────────────────────────────────── */
+
+.pgs-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+/** A warm pool of light on the middle of the stage, and its spot on the floor. */
+.pgs-spot {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(34% 46% at 50% 42%, rgba(255, 246, 214, 0.75), transparent 70%),
+    radial-gradient(30% 9% at 50% 93%, rgba(255, 236, 170, 0.6), transparent 72%);
+}
+.pgs-bunting {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(24px, 9cqh, 64px);
+}
+.pgs-bunting svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/** Red velvet, tied back at the sides: folds drawn as stripes of light and shade. */
+.pgs-curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: min(14cqw, 24cqh);
+  background:
+    linear-gradient(rgba(0, 0, 0, 0) 70%, rgba(60, 0, 10, 0.25)),
+    repeating-linear-gradient(
+      90deg,
+      #b3202f 0 1.6cqh,
+      #d83a49 1.6cqh 3.4cqh,
+      #c22a39 3.4cqh 4.4cqh,
+      #92162a 4.4cqh 5.4cqh
+    );
+  box-shadow: 0 0 3cqh rgba(80, 0, 10, 0.35);
+}
+.pgs-curtain::after {
+  /* the gold tie-back */
+  content: "";
+  position: absolute;
+  top: 54%;
+  width: 70%;
+  height: 2.4cqh;
+  border-radius: 999px;
+  background: linear-gradient(#ffe08a, #e0a52c);
+  box-shadow: 0 0.5cqh 0 #a8741a;
+}
+.pgs-curtain--l {
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 92% 30%, 48% 54%, 70% 100%, 0 100%);
+}
+.pgs-curtain--l::after {
+  left: 0;
+}
+.pgs-curtain--r {
+  right: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%, 52% 54%, 8% 30%);
+}
+.pgs-curtain--r::after {
+  right: 0;
+}
+
+/* ── The lit sign ────────────────────────────────────────────────────────── */
+
+/** A gold frame; the bulbs show in the ring between its edge and the screen. */
+.pgs-sign {
+  --pgs-ring: 3.4cqh;
+  position: relative;
+  padding: var(--pgs-ring);
+  border-radius: 4cqh;
+  background: linear-gradient(#ffd66b, #eaa526);
+  box-shadow:
+    inset 0 -0.8cqh 0 rgba(150, 90, 0, 0.35),
+    0 1.2cqh 0 #a8701a,
+    0 2.4cqh 4cqh rgba(60, 30, 0, 0.3);
+}
+.pgs-sign-bulbs {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+      circle,
+      #fffbe6 0 0.6cqh,
+      #ffe27a 0.75cqh,
+      rgba(255, 210, 90, 0.5) 1cqh,
+      transparent 1.25cqh
+    )
+    0 0 / var(--pgs-ring) var(--pgs-ring);
+}
+.pgs-sign-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2.4cqh;
+  background: radial-gradient(120% 95% at 50% 18%, #4a7ff0, #1f3fa6 70%, #182f85);
+  box-shadow: inset 0 0 0 0.6cqh #13296f;
+}
+
+/* ── The title screen ────────────────────────────────────────────────────── */
+
+.pgs-splash,
+.pgs-screen,
+.pgs-done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.pgs-splash {
+  gap: 3cqh;
+  padding: max(64px, 11cqh) 18cqw 3cqh;
+}
+.pgs-splash-head {
+  position: relative;
+  z-index: 2;
+}
+.pgs-sign--title .pgs-sign-screen {
+  padding: 2.6cqh 6cqh 3cqh;
+}
+.pgs-title {
+  font-size: min(10cqh, 7.4cqw);
+  line-height: 1;
+  white-space: nowrap;
+  color: #ffffff;
+  text-shadow:
+    0 0.6cqh 0 #10276b,
+    0 1.2cqh 2.4cqh rgba(0, 0, 30, 0.35);
+}
+.pgs-level {
+  margin-top: 1.6cqh;
+  padding: 0.6cqh 3cqh;
+  border-radius: 999px;
+  background: #ff6fa8;
+  font-size: 3.8cqh;
+  color: #ffffff;
+  box-shadow: inset 0 -0.6cqh 0 rgba(0, 0, 0, 0.16);
+}
+.pgs-splash-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 3cqw;
+}
+.pgs-splash-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20cqh;
+  padding: 2cqh 2cqh 0;
+  border-radius: 3cqh;
+  background: #ffffff;
+  box-shadow:
+    inset 0 -1cqh 0 rgba(30, 50, 120, 0.08),
+    0 1cqh 0 rgba(120, 70, 20, 0.25);
+}
+.pgs-splash-pic {
+  display: block;
+  width: 15cqh;
+  aspect-ratio: 1;
+}
+.pgs-splash-letter {
+  display: grid;
+  place-items: center;
+  width: 9cqh;
+  height: 9cqh;
+  margin: 0.6cqh 0 -3.6cqh;
+  border: 0.5cqh solid #c9600f;
+  border-radius: 2cqh;
+  background: linear-gradient(#ffad4d, #ff8a1f);
+  font-size: 6cqh;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.4cqh 0 #b4560c;
+  box-shadow: 0 0.7cqh 0 #a84c08;
+}
+.pgs-best {
+  position: relative;
+  z-index: 2;
+  margin-top: 2cqh;
+  padding: 0.5cqh 2.4cqh;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 3.2cqh;
+  color: #6b3fa0;
+}
+.pgs-play {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 1.6cqh;
+  margin-top: 1.6cqh;
+  padding: 2.2cqh 7cqh;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(#ffa23d, #ff7a12);
+  font-size: 5.6cqh;
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -1cqh 0 rgba(0, 0, 0, 0.18),
+    0 1.4cqh 2.8cqh rgba(120, 50, 0, 0.3);
+}
+.pgs-play-glyph {
+  font-size: 4.2cqh;
+}
+
+/* The host is Key Quest's teacher, and his classes (`.dc-teacher*`) are Key
+   Quest's — sized there in ITS unit, which this game never declares. So every
+   dimension is restated here, scoped under this game's own slot: never bare,
+   since class names are global. */
+/* Beside the showcase, never on it: far enough right that his bubble clears
+   the last picture card, low enough that it sits under the sign. */
+.pgs-host {
+  position: absolute;
+  right: 10cqw;
+  bottom: 2cqh;
+  z-index: 3;
+  width: 24cqh;
+  height: 40cqh;
+  pointer-events: none;
+}
+.pgs-host .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.pgs-host .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 1%;
+  width: 54%;
+  height: 2.4cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 50, 20, 0.4), transparent 70%);
+}
+.pgs-host .dc-teacher-says {
+  position: absolute;
+  left: 50%;
+  bottom: 92%;
+  z-index: 1;
+  padding: 0.8cqh 2cqh;
+  translate: -50% 0;
+  white-space: nowrap;
+  border-radius: 2cqh;
+  background: #ffffff;
+  font-size: 3.8cqh;
+  line-height: 1.1;
+  color: #6b3fa0;
+  box-shadow: 0 0.8cqh 1.6cqh rgba(60, 30, 10, 0.25);
+}
+.pgs-host .dc-teacher-says::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1.4cqh;
+  width: 0;
+  height: 0;
+  margin-left: -1.2cqh;
+  border-left: 1.2cqh solid transparent;
+  border-right: 1.2cqh solid transparent;
+  border-top: 1.6cqh solid #ffffff;
+}
+
+/* ── A question ──────────────────────────────────────────────────────────── */
+
+.pgs-screen {
+  gap: 2.4cqh;
+  padding: max(62px, 10cqh) 15cqw 3cqh;
+}
+
+/** The way out, top-right — the twin of the pinned Back pill. Placed and
+ *  sized by the shared `.pl-exit-pill`; this is only its paint. */
+.pgs-leave {
+  padding: 0.5em 1.2em;
+  border: clamp(2px, 0.4vmin, 4px) solid #6b3fa0;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: clamp(11px, 1.7vmin, 16px);
+  line-height: 1;
+  color: #4b2577;
+  cursor: pointer;
+  box-shadow: 0 clamp(2px, 0.5vmin, 5px) 0 rgba(75, 37, 119, 0.3);
+}
+
+.pgs-topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(100%, 120cqh);
+  align-items: center;
+  gap: 2cqh;
+}
+.pgs-progress {
+  display: flex;
+  flex: 1;
+  gap: 0.6cqh;
+}
+.pgs-progress-seg {
+  flex: 1;
+  height: clamp(8px, 2.4cqh, 20px);
+  border: clamp(2px, 0.4cqh, 3px) solid #c9a7e8;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+.pgs-progress-seg--now {
+  border-color: #ff6fa8;
+  background: #ffe1ee;
+}
+.pgs-progress-seg--done {
+  border-color: #1c7a45;
+  background: linear-gradient(#7fe0a0, #34a95a);
+}
+/** "3 of 15", on the show's pink tag. */
+.pgs-count {
+  flex: none;
+  padding: 0.5cqh 2cqh;
+  border-radius: 999px;
+  background: #ff6fa8;
+  font-size: clamp(13px, 3.8cqh, 26px);
+  line-height: 1.1;
+  color: #ffffff;
+  box-shadow: inset 0 -0.5cqh 0 rgba(0, 0, 0, 0.16);
+}
+.pgs-count-of {
+  font-size: 0.72em;
+  opacity: 0.92;
+}
+
+/** The sign above, the three letters below. */
+.pgs-board {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 4.4cqh;
+}
+.pgs-sign--question .pgs-sign-screen {
+  padding: 2.2cqh;
+}
+.pgs-picture {
+  display: grid;
+  place-items: center;
+  width: min(40cqh, 46cqw);
+  aspect-ratio: 1;
+  padding: 2.4cqh;
+  border: 0;
+  border-radius: 2.6cqh;
+  background: radial-gradient(70% 70% at 50% 40%, #ffffff 0 62%, #eef4ff 100%);
+  cursor: pointer;
+  box-shadow: inset 0 -1cqh 0 rgba(30, 60, 140, 0.1);
+}
+.pgs-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+.pgs-pic--photo {
+  object-fit: cover;
+  border-radius: 1.6cqh;
+}
+
+/**
+ * The big green tick that lands on the sign when the right letter is
+ * tapped — a white tick drawn as two borders of a rotated box on a green
+ * disc (the Snow Words tick, bigger).
+ */
+.pgs-tick {
+  position: absolute;
+  right: -3cqh;
+  bottom: -3cqh;
+  width: 16cqh;
+  height: 16cqh;
+  border: 1cqh solid #ffffff;
+  border-radius: 50%;
+  background: #3fae68;
+  box-shadow: 0 1cqh 2cqh rgba(0, 60, 20, 0.35);
+}
+.pgs-tick::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 26%;
+  height: 50%;
+  border-right: 1.8cqh solid #ffffff;
+  border-bottom: 1.8cqh solid #ffffff;
+  translate: -50% -50%;
+  rotate: 45deg;
+}
+
+.pgs-options {
+  display: flex;
+  gap: min(4cqh, 4cqw);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/**
+ * A letter: a fat orange key with a lip it presses onto — the most
+ * obviously pressable thing on the stage. Lowercase, as the show asks.
+ */
+.pgs-option {
+  display: grid;
+  place-items: center;
+  width: min(20cqh, 22cqw);
+  aspect-ratio: 1;
+  min-width: 48px;
+  border: 0.7cqh solid var(--pgs-rim, #c9600f);
+  border-radius: 3.2cqh;
+  background: var(--pgs-key, linear-gradient(#ffad4d, #ff8a1f));
+  font-size: min(13cqh, 14cqw);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.5cqh 0 rgba(120, 50, 0, 0.45);
+  cursor: pointer;
+  box-shadow:
+    inset 0 -1.6cqh 0 rgba(0, 0, 0, 0.14),
+    inset 0 0.8cqh 0 rgba(255, 255, 255, 0.35),
+    0 1.2cqh 0 var(--pgs-lip, #a84c08);
+  transition:
+    translate 0.12s ease,
+    box-shadow 0.12s ease,
+    filter 0.15s ease;
+}
+.pgs-option:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+.pgs-option:active:not(:disabled) {
+  translate: 0 1cqh;
+  box-shadow:
+    inset 0 -1.6cqh 0 rgba(0, 0, 0, 0.14),
+    0 0.2cqh 0 var(--pgs-lip, #a84c08);
+}
+.pgs-option:disabled {
+  cursor: default;
+}
+/** The right one, lit green while the question turns over. */
+.pgs-option.pgs-option--chosen {
+  --pgs-key: linear-gradient(#7fe0a0, #34a95a);
+  --pgs-rim: #1c7a45;
+  --pgs-lip: #14592f;
+  translate: 0 -0.8cqh;
+}
+.pgs-option:disabled:not(.pgs-option--chosen):not(.pgs-option--wrong) {
+  filter: saturate(0.6) brightness(1.04);
+}
+/**
+ * A wrong one: red, shaken, and marked with a red ✕ badge on its corner —
+ * and it stays that way. Never struck through: a line across an `l` reads
+ * as a `t`.
+ */
+.pgs-option.pgs-option--wrong {
+  --pgs-key: linear-gradient(#ffb4b4, #f08080);
+  --pgs-rim: #d14545;
+  --pgs-lip: #9e2a2a;
+  position: relative;
+  animation: pgs-shake 0.4s ease-out;
+}
+.pgs-option.pgs-option--wrong::after {
+  content: "✕";
+  position: absolute;
+  top: -1.6cqh;
+  right: -1.6cqh;
+  display: grid;
+  place-items: center;
+  width: 6.4cqh;
+  height: 6.4cqh;
+  min-width: 22px;
+  min-height: 22px;
+  border: 0.5cqh solid #ffffff;
+  border-radius: 50%;
+  background: #d63c3c;
+  font-size: 3.4cqh;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: none;
+  box-shadow: 0 0.5cqh 1cqh rgba(120, 20, 20, 0.35);
+}
+@keyframes pgs-shake {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  25% {
+    translate: -8px 0;
+  }
+  50% {
+    translate: 7px 0;
+  }
+  75% {
+    translate: -4px 0;
+  }
+}
+
+/* ── The finish ──────────────────────────────────────────────────────────── */
+
+.pgs-done {
+  padding: max(62px, 10cqh) 15cqw 3cqh;
+}
+.pgs-done-card {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4cqh;
+  padding: 5cqh 7cqh;
+  border-radius: 5cqh;
+  background: #ffffff;
+  box-shadow: 0 2cqh 5cqh rgba(90, 50, 10, 0.3);
+}
+.pgs-done-title {
+  font-size: min(8cqh, 6cqw);
+  line-height: 1.05;
+  text-align: center;
+  color: #6b3fa0;
+}
+.pgs-done-line {
+  margin-top: -1cqh;
+  font-size: 3.6cqh;
+  color: #8a6a3a;
+}
+.pgs-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2cqh;
+}
+.pgs-done-btn {
+  min-height: 44px;
+  padding: 1.8cqh 4cqh;
+  border: 0;
+  border-radius: 999px;
+  background: #f1e4cf;
+  font-size: 3.6cqh;
+  line-height: 1;
+  color: #7a5520;
+  cursor: pointer;
+  box-shadow: inset 0 -0.8cqh 0 rgba(0, 0, 0, 0.1);
+}
+.pgs-done-btn--go {
+  background: linear-gradient(#ffa23d, #ff7a12);
+  color: #ffffff;
+}
+
+/* ── A phone held sideways: the letters move beside the sign ─────────────── */
+
+@container pgs (max-height: 520px) and (min-aspect-ratio: 3 / 2) {
+  .pgs-screen {
+    gap: 2cqh;
+    padding: max(58px, 16cqh) 13cqw 4cqh;
+  }
+  .pgs-board {
+    flex-direction: row;
+    gap: 6cqw;
+  }
+  .pgs-picture {
+    width: 46cqh;
+  }
+  .pgs-options {
+    flex-direction: column;
+    gap: 3cqh;
+  }
+  .pgs-option {
+    width: 21cqh;
+  }
+  .pgs-tick {
+    width: 20cqh;
+    height: 20cqh;
+  }
+  .pgs-splash {
+    gap: 2cqh;
+    padding-top: max(56px, 14cqh);
+  }
+  .pgs-splash-pic {
+    width: 13cqh;
+  }
+  .pgs-splash-card {
+    width: 17cqh;
+  }
+  .pgs-host {
+    right: 13cqw;
+    width: 22cqh;
+    height: 44cqh;
+  }
+}
+
+/* ── A phone held upright: one column, the host steps off ────────────────── */
+
+@container pgs (orientation: portrait) {
+  .pgs-splash,
+  .pgs-screen,
+  .pgs-done {
+    padding-left: 5cqw;
+    padding-right: 5cqw;
+  }
+  .pgs-curtain {
+    width: 8cqw;
+  }
+  .pgs-title {
+    font-size: 8cqw;
+  }
+  .pgs-level {
+    font-size: 4cqw;
+  }
+  .pgs-sign--title .pgs-sign-screen {
+    padding: 2cqh 5cqw 2.4cqh;
+  }
+  .pgs-splash-card {
+    width: 24cqw;
+    padding: 2cqw 2cqw 0;
+  }
+  .pgs-splash-pic {
+    width: 18cqw;
+  }
+  .pgs-splash-letter {
+    width: 11cqw;
+    height: 11cqw;
+    font-size: 7cqw;
+  }
+  .pgs-host {
+    display: none;
+  }
+  .pgs-picture {
+    width: min(64cqw, 38cqh);
+  }
+  .pgs-option {
+    width: min(24cqw, 16cqh);
+    font-size: min(15cqw, 10cqh);
+  }
+  .pgs-options {
+    gap: 5cqw;
+  }
+  .pgs-done-title {
+    font-size: 7cqw;
+  }
+}

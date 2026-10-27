@@ -7449,76 +7449,6 @@
       "text": "The same! It balances!",
       "speak": "The same! It balances!"
     },
-    "faw-welcome": {
-      "file": "/audio/find-another-way/welcome.mp3",
-      "text": "Find another way! Help the bunny.",
-      "speak": "Find another way! Help the bunny."
-    },
-    "faw-done": {
-      "file": "/audio/find-another-way/done.mp3",
-      "text": "You can always find a way!",
-      "speak": "You can always find a way!"
-    },
-    "faw-mode-blocked": {
-      "file": "/audio/find-another-way/mode-blocked.mp3",
-      "text": "Oh no, blocked! Find another way.",
-      "speak": "Oh no, blocked! Find another way."
-    },
-    "faw-mode-look": {
-      "file": "/audio/find-another-way/mode-look.mp3",
-      "text": "Look first! Find the open path.",
-      "speak": "Look first! Find the open path."
-    },
-    "faw-ask-go": {
-      "file": "/audio/find-another-way/ask-go.mp3",
-      "text": "Help bunny get to the carrots!",
-      "speak": "Help bunny get to the carrots!"
-    },
-    "faw-blocked": {
-      "file": "/audio/find-another-way/blocked.mp3",
-      "text": "Oh! It's blocked. Let's find another way.",
-      "speak": "Oh! It's blocked. Let's find another way."
-    },
-    "faw-found": {
-      "file": "/audio/find-another-way/found.mp3",
-      "text": "You found another way!",
-      "speak": "You found another way!"
-    },
-    "faw-ask-look": {
-      "file": "/audio/find-another-way/ask-look.mp3",
-      "text": "Which way is open? Look first!",
-      "speak": "Which way is open? Look first!"
-    },
-    "ytt-welcome": {
-      "file": "/audio/your-turn/welcome.mp3",
-      "text": "Your turn, my turn! Let's take turns.",
-      "speak": "Your turn, my turn! Let's take turns."
-    },
-    "ytt-intro-ruby": {
-      "file": "/audio/your-turn/intro-ruby.mp3",
-      "text": "Roll the ball to Ruby!",
-      "speak": "Roll the ball to Ruby!"
-    },
-    "ytt-intro-around": {
-      "file": "/audio/your-turn/intro-around.mp3",
-      "text": "Who says my turn? Roll to them!",
-      "speak": "Who says my turn? Roll to them!"
-    },
-    "ytt-my-turn": {
-      "file": "/audio/your-turn/my-turn.mp3",
-      "text": "My turn!",
-      "speak": "My turn!"
-    },
-    "ytt-wait": {
-      "file": "/audio/your-turn/wait.mp3",
-      "text": "Wait, my turn.",
-      "speak": "Wait, my turn."
-    },
-    "ytt-done": {
-      "file": "/audio/your-turn/done.mp3",
-      "text": "You took turns so well!",
-      "speak": "You took turns so well!"
-    },
     "arp-welcome": {
       "file": "/audio/animal-repair/welcome.mp3",
       "text": "Welcome to the toy repair shop!",
@@ -7568,41 +7498,6 @@
       "file": "/audio/animal-repair/find-right.mp3",
       "text": "Now find the right one!",
       "speak": "Now find the right one!"
-    },
-    "fmb-welcome": {
-      "file": "/audio/find-my-baby/welcome.mp3",
-      "text": "Let's help the mummies find their babies!",
-      "speak": "Let's help the mummies find their babies!"
-    },
-    "fmb-done": {
-      "file": "/audio/find-my-baby/done.mp3",
-      "text": "Every baby is back with Mummy!",
-      "speak": "Every baby is back with Mummy!"
-    },
-    "fmb-mode-prints": {
-      "file": "/audio/find-my-baby/mode-prints.mp3",
-      "text": "Follow the footprints to the baby!",
-      "speak": "Follow the footprints to the baby!"
-    },
-    "fmb-mode-colour": {
-      "file": "/audio/find-my-baby/mode-colour.mp3",
-      "text": "Find the baby in Mummy's colour!",
-      "speak": "Find the baby in Mummy's colour!"
-    },
-    "fmb-where-baby": {
-      "file": "/audio/find-my-baby/where-baby.mp3",
-      "text": "Where is my baby?",
-      "speak": "Where is my baby?"
-    },
-    "fmb-follow": {
-      "file": "/audio/find-my-baby/follow.mp3",
-      "text": "Follow the footprints!",
-      "speak": "Follow the footprints!"
-    },
-    "fmb-ask-colour": {
-      "file": "/audio/find-my-baby/ask-colour.mp3",
-      "text": "Find the baby with the same colour!",
-      "speak": "Find the baby with the same colour!"
     },
     "skc-welcome": {
       "file": "/audio/sock-case/welcome.mp3",
@@ -7794,51 +7689,6 @@
       "text": "Fill the tank with",
       "speak": "Fill the tank with"
     },
-    "mgf-welcome": {
-      "file": "/audio/magic-flower/welcome.mp3",
-      "text": "Magic Flower! Let's grow a flower.",
-      "speak": "Magic Flower! Let's grow a flower."
-    },
-    "mgf-step-seed": {
-      "file": "/audio/magic-flower/step-seed.mp3",
-      "text": "Tap the seeds!",
-      "speak": "Tap the seeds!"
-    },
-    "mgf-step-water": {
-      "file": "/audio/magic-flower/step-water.mp3",
-      "text": "Water the seeds!",
-      "speak": "Water the seeds!"
-    },
-    "mgf-sprout": {
-      "file": "/audio/magic-flower/sprout.mp3",
-      "text": "A little sprout!",
-      "speak": "A little sprout!"
-    },
-    "mgf-step-sun": {
-      "file": "/audio/magic-flower/step-sun.mp3",
-      "text": "Tap the cloud!",
-      "speak": "Tap the cloud!"
-    },
-    "mgf-step-leaves": {
-      "file": "/audio/magic-flower/step-leaves.mp3",
-      "text": "Tap the leaves!",
-      "speak": "Tap the leaves!"
-    },
-    "mgf-step-bloom": {
-      "file": "/audio/magic-flower/step-bloom.mp3",
-      "text": "Tap the bud!",
-      "speak": "Tap the bud!"
-    },
-    "mgf-paint": {
-      "file": "/audio/magic-flower/paint.mp3",
-      "text": "Let's paint the flower!",
-      "speak": "Let's paint the flower!"
-    },
-    "mgf-done": {
-      "file": "/audio/magic-flower/done.mp3",
-      "text": "What a beautiful garden!",
-      "speak": "What a beautiful garden!"
-    },
     "ftf-welcome": {
       "file": "/audio/feed-the-fish/welcome.mp3",
       "text": "Feed the Fish! Let's feed them.",
@@ -8015,6 +7865,26 @@
     "tys-add-3-2-ball": {
       "file": "/audio/tiny-toy-shop/add-3-2-ball.mp3",
       "text": "3 balls and 2 balls. How many balls?"
+    },
+    "instr-odd-sound": {
+      "file": "/audio/instructions/odd-sound.mp3",
+      "text": "Which one starts with a different sound?",
+      "speak": "Which one starts with a different sound?"
+    },
+    "instr-click-starting-sound": {
+      "file": "/audio/instructions/click-starting-sound.mp3",
+      "text": "Can you click the starting sound of",
+      "speak": "Can you click the starting sound of"
+    },
+    "instr-find-starts-with": {
+      "file": "/audio/instructions/find-starts-with.mp3",
+      "text": "Find something that starts with",
+      "speak": "Find something that starts with"
+    },
+    "name-ant": {
+      "file": "/audio/names/ant.mp3",
+      "text": "ant",
+      "speak": "ant"
     }
   },
   "edgeVoice": {

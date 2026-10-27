@@ -16,7 +16,7 @@ const WORD_CLIPS: Readonly<Record<string, string>> = {
   alligator: "treat-word-alligator",
   almond: "treat-word-almond",
   anchor: "treat-word-anchor",
-  ant: "treat-word-ant",
+  ant: "name-ant",
   apple: "name-apple",
   astronaut: "treat-word-astronaut",
   bag: "word-bag",
