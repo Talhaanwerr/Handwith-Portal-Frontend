@@ -154,9 +154,10 @@ function LibraryPlayContent() {
     );
   }
 
+  // Full-viewport shell so PlayLab games get a real height chain (h-full → 100dvh).
   return (
-    <div className="flex min-h-[70vh] flex-col gap-3">
-      <div className="flex items-center justify-between gap-3">
+    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+      <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 bg-white px-4 py-2.5">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-stone-900">{item.title}</p>
           <p className="text-xs text-stone-500">Playing in library</p>
@@ -166,14 +167,16 @@ function LibraryPlayContent() {
         </Button>
       </div>
 
-      <div className="relative min-h-[60vh] flex-1 overflow-hidden rounded-2xl border border-stone-200 bg-white">
+      <div className="relative min-h-0 flex-1">
         {playable.kind === "playlab" ? (
-          <GamePlayer gameId={playable.gameId} />
+          <div className="absolute inset-0">
+            <GamePlayer gameId={playable.gameId} />
+          </div>
         ) : (
           <iframe
             title={item.title}
             src={playable.url}
-            className="h-full min-h-[60vh] w-full border-0"
+            className="h-full w-full border-0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />

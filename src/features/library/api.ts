@@ -14,6 +14,7 @@ export type LibraryContentItem = {
   difficulty: string;
   duration: string;
   playCount: number;
+  isFeatured?: boolean;
   tags: { id: string; category: string; slug: string; label: string }[];
 };
 
@@ -27,6 +28,8 @@ export type BrowseParams = {
   difficulty?: string;
   duration?: string;
   tagId?: string;
+  featured?: boolean;
+  minPlayCount?: number;
   sortBy?: string;
   sortOrder?: string;
 };
@@ -131,6 +134,35 @@ export type ChildDashboardPayload = {
   recommended: LibraryContentItem[];
 };
 
+export type ChildMonthlyReportPayload = {
+  child: { id: string; name: string };
+  month: string;
+  monthLabel: string;
+  tier: "FREE" | "PREMIUM";
+  premiumRequired: boolean;
+  upgradeHint: string | null;
+  report: {
+    totalSessions: number;
+    totalTimeSecs: number;
+    previousMonth: {
+      totalSessions: number;
+      totalTimeSecs: number;
+      sessionsDelta: number;
+      timeDeltaSecs: number;
+    };
+    skillBreakdown: { skill: string; seconds: number; percent: number }[];
+    mostImprovedArea: string | null;
+    topGames: {
+      id: string;
+      title: string;
+      type: string;
+      thumbnailUrl: string | null;
+      plays: number;
+    }[];
+    encouragement: string;
+  } | null;
+};
+
 export const INTEREST_OPTIONS = [
   "Communication",
   "Motor Skills",
@@ -175,6 +207,11 @@ export const libraryApi = {
 
   childDashboard: (childId: string) =>
     apiClient.get<ApiEnvelope<ChildDashboardPayload>>(`/library/children/${childId}/dashboard`),
+
+  childReport: (childId: string, month: string) =>
+    apiClient.get<ApiEnvelope<ChildMonthlyReportPayload>>(`/library/children/${childId}/report`, {
+      params: { month },
+    }),
 
   startSession: (body: { childProfileId: string; contentItemId: string }) =>
     apiClient.post<ApiEnvelope<LibrarySession>>("/library/sessions/start", body),

@@ -68,7 +68,7 @@ function At({
 }) {
   return (
     <div
-      className="absolute"
+      className="absolute [&>svg]:block [&>svg]:h-auto [&>svg]:w-full"
       style={{
         left: `${x}%`,
         top: `${y}%`,

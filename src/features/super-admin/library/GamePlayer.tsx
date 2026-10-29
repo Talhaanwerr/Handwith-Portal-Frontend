@@ -1,6 +1,8 @@
 "use client";
 
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from "react";
+import "@/playlab/playlab.css";
+import { cn } from "@/lib/utils";
 
 const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "letter-tracing": lazy(() =>
@@ -80,23 +82,36 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
 
 interface GamePlayerProps {
   gameId: string;
+  className?: string;
 }
 
 /**
  * Loads a PlayLab game only in the browser (Howler/canvas). Uses React.lazy
  * inside a Client Component instead of next/dynamic `{ ssr: false }`, which
  * Next.js 16 rejects even when the parent page is a Server Component.
+ *
+ * Imports playlab.css so games work outside the `/play` layout (library / therapy).
+ * Parent must give this element a real height (`h-full` chain or absolute fill).
  */
-export function GamePlayer({ gameId }: GamePlayerProps) {
+export function GamePlayer({ gameId, className }: GamePlayerProps) {
   const Game = GAME_COMPONENTS[gameId];
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-white">
+    <div
+      className={cn(
+        "pl-shell font-rounded relative h-full w-full overflow-hidden bg-white antialiased",
+        className
+      )}
+    >
       {Game ? (
         <Suspense fallback={null}>
           <Game />
         </Suspense>
-      ) : null}
+      ) : (
+        <div className="flex h-full items-center justify-center text-sm text-stone-500">
+          Game not found: {gameId}
+        </div>
+      )}
     </div>
   );
 }

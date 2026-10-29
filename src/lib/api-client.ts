@@ -54,8 +54,20 @@ function normalizePath(path: string): string {
   return path.split("?")[0] ?? path;
 }
 
+/**
+ * Paths that must use the library JWT (+ /library/auth/refresh on 401).
+ * Super Admin APIs also live under /library/* (content, users, admin/analytics)
+ * but authenticate with the portal JWT — do not treat those as library-scoped.
+ */
 function isLibraryApiPath(path: string): boolean {
-  return normalizePath(path).startsWith("/library/");
+  const normalized = normalizePath(path);
+  return (
+    normalized.startsWith("/library/auth/") ||
+    normalized === "/library/children" ||
+    normalized.startsWith("/library/children/") ||
+    normalized === "/library/sessions" ||
+    normalized.startsWith("/library/sessions/")
+  );
 }
 
 /**
