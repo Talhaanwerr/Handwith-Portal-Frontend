@@ -1,0 +1,16 @@
+{
+  "default": [
+    "Look at the towers standing side by side.",
+    "Listen, then tap the tower that answers."
+  ],
+  "modules": {
+    "tallshort": [
+      "Listen: is it the taller or the shorter tower?",
+      "Tap that tower to give it a gold star."
+    ],
+    "order": [
+      "Find the shortest tower and tap it first.",
+      "Then tap the middle one, then the tallest."
+    ]
+  }
+}

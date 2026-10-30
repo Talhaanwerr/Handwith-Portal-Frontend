@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ftf-welcome",
+    "text": "Feed the Fish! Let's feed them.",
+    "file": "/audio/feed-the-fish/welcome.mp3"
+  },
+  {
+    "id": "ftf-tap",
+    "text": "Tap the water to feed the fish!",
+    "file": "/audio/feed-the-fish/tap.mp3"
+  },
+  {
+    "id": "ftf-asleep",
+    "text": "All the fish are asleep!",
+    "file": "/audio/feed-the-fish/asleep.mp3"
+  },
+  {
+    "id": "ftf-feed-red",
+    "text": "Feed the red fish!",
+    "file": "/audio/feed-the-fish/feed-red.mp3"
+  },
+  {
+    "id": "ftf-feed-yellow",
+    "text": "Feed the yellow fish!",
+    "file": "/audio/feed-the-fish/feed-yellow.mp3"
+  },
+  {
+    "id": "ftf-feed-orange",
+    "text": "Feed the orange fish!",
+    "file": "/audio/feed-the-fish/feed-orange.mp3"
+  },
+  {
+    "id": "ftf-feed-purple",
+    "text": "Feed the purple fish!",
+    "file": "/audio/feed-the-fish/feed-purple.mp3"
+  },
+  {
+    "id": "ftf-done",
+    "text": "Every fish is full and happy!",
+    "file": "/audio/feed-the-fish/done.mp3"
+  }
+]

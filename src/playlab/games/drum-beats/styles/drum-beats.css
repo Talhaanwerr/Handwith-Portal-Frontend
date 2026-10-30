@@ -1,0 +1,157 @@
+/**
+ * Drum Beats — the drum and its row of dots, in Tiny Toy Shop's plain room.
+ * The sum strip and the board are Apple Basket's (`apa-*`). Sized in the
+ * `ng` container's units, like every NgShell game.
+ */
+
+.drb-play {
+  --drb-drum: min(40cqh, 26cqw);
+  --drb-dot: min(13cqh, 9cqw);
+}
+
+.drb-scene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqw;
+}
+
+/** The drum: one huge button. */
+.drb-drum {
+  width: var(--drb-drum);
+  height: var(--drb-drum);
+  padding: 4%;
+  border: 0.8cqh solid transparent;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, #ffffff 0 58%, #fbeedd 100%);
+  box-shadow: 0 1.4cqh 0 rgba(120, 70, 20, 0.22);
+  cursor: default;
+}
+/** Waiting for a beat: a gold ring that pulses. */
+.drb-drum.drb-drum--live {
+  border-color: #ffc93c;
+  cursor: pointer;
+  animation: drb-ring 1.3s ease-in-out infinite;
+}
+@keyframes drb-ring {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(255, 201, 60, 0.7),
+      0 1.4cqh 0 rgba(120, 70, 20, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2.6cqh rgba(255, 201, 60, 0),
+      0 1.4cqh 0 rgba(120, 70, 20, 0.22);
+  }
+}
+/** Resting between the two parts: dimmed. */
+.drb-drum:disabled {
+  opacity: 0.7;
+}
+
+/**
+ * The dots: blue places for the first beats, red places for the "more"
+ * beats — both dashed and empty to start, so the two parts of the sum are
+ * on show before a single beat.
+ */
+.drb-dots {
+  display: flex;
+  gap: 1.6cqh;
+  padding: 2.4cqh 2.8cqh;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1cqh 0 rgba(120, 70, 20, 0.15);
+}
+.drb-dot {
+  display: grid;
+  place-items: center;
+  width: var(--drb-dot);
+  height: var(--drb-dot);
+  border: 0.6cqh dashed #8fbfe6;
+  border-radius: 50%;
+  background: #eef6fd;
+}
+.drb-dot.drb-dot--more {
+  border-color: #f0a29b;
+  background: #fdf0ef;
+}
+.drb-dot.drb-dot--blue,
+.drb-dot.drb-dot--red {
+  border-style: solid;
+}
+.drb-dot.drb-dot--blue {
+  border-color: #1f6c9c;
+  background: linear-gradient(#5fb2ea, #2f8fcb);
+}
+.drb-dot.drb-dot--red {
+  border-color: #b83a34;
+  background: linear-gradient(#f2827a, #e8574f);
+}
+.drb-dot-num {
+  font-size: calc(var(--drb-dot) * 0.52);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.3cqh 0 rgba(0, 0, 0, 0.25);
+}
+
+/* ── A module in miniature (its home card's own size container) ──────────── */
+
+.drb-mini {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqw;
+}
+.drb-mini-drum {
+  display: block;
+  width: 40cqh;
+  height: 40cqh;
+}
+.drb-mini-dots {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 40cqw;
+  gap: 3cqh;
+}
+.drb-mini-dot {
+  display: block;
+  width: 13cqh;
+  height: 13cqh;
+  border-radius: 50%;
+}
+.drb-mini-dot.drb-dot--blue {
+  background: #2f8fcb;
+}
+.drb-mini-dot.drb-dot--red {
+  background: #e8574f;
+}
+
+/* ── A phone held sideways ───────────────────────────────────────────────── */
+
+@container ng (max-height: 520px) {
+  .drb-play {
+    --drb-drum: min(44cqh, 24cqw);
+    --drb-dot: min(14cqh, 8cqw);
+  }
+}
+
+/* ── A phone held upright: drum above the dots ───────────────────────────── */
+
+@container ng (orientation: portrait) {
+  .drb-play {
+    --drb-drum: min(56cqw, 30cqh);
+    --drb-dot: 13cqw;
+  }
+  .drb-scene {
+    flex-direction: column;
+    gap: 5cqh;
+  }
+  .drb-dots {
+    gap: 2cqw;
+    padding: 2cqh 3cqw;
+  }
+}

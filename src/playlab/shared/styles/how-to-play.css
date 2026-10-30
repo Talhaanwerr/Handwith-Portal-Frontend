@@ -1,24 +1,35 @@
 /* "How to Play" card — shared by every game (HowToPlay.tsx). Prefix htp-.
-   Big on purpose: about twice the first version, in dark green. */
+
+   It must always fit: never a scrollbar, on any screen. So nothing here is
+   sized from the screen's width alone (a wide but short screen — a phone held
+   sideways, a small laptop — made the text big and the card scroll). The
+   stage is a size container and every size is in `cqmin`: a share of its
+   SHORTER side, so the card and its words grow and shrink with whichever side
+   is tight. Floors keep the words readable and the buttons ≥ 44 px; ceilings
+   stop it getting silly on a big monitor. */
 
 .htp-stage {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 16px;
+  padding: clamp(8px, 3cqmin, 24px);
   background: linear-gradient(160deg, #fff7e3 0%, #e9f4ff 100%);
+  container-type: size;
+  container-name: htp;
 }
 .htp-card {
   --htp-green: #0d5c36;
   --htp-green-deep: #08402a;
   position: relative;
   box-sizing: border-box;
-  width: min(100%, 800px);
+  /* wide enough for a line on one or two rows; wider on a big screen, where
+     the words are bigger; never wider than the stage */
+  width: min(100%, max(760px, 92cqmin), 1000px);
   max-height: 100%;
   overflow-y: auto;
-  padding: clamp(24px, 5vw, 56px) clamp(18px, 4.5vw, 52px) clamp(22px, 4.5vw, 48px);
-  border-radius: clamp(26px, 4vw, 48px);
+  padding: clamp(12px, 5cqmin, 48px) clamp(14px, 5cqmin, 48px) clamp(14px, 5cqmin, 44px);
+  border-radius: clamp(18px, 5cqmin, 44px);
   background: #fff;
   box-shadow:
     0 24px 70px rgba(20, 50, 40, 0.28),
@@ -28,12 +39,12 @@
 }
 .htp-close {
   position: absolute;
-  top: clamp(10px, 2vw, 20px);
-  right: clamp(10px, 2vw, 20px);
+  top: clamp(6px, 2cqmin, 18px);
+  right: clamp(6px, 2cqmin, 18px);
   display: grid;
   place-items: center;
-  width: clamp(52px, 8vw, 88px);
-  height: clamp(52px, 8vw, 88px);
+  width: clamp(44px, 8.5cqmin, 76px);
+  height: clamp(44px, 8.5cqmin, 76px);
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -55,26 +66,27 @@
   outline-offset: 3px;
 }
 .htp-game {
-  margin: 0 0 6px;
-  font-size: clamp(16px, 2.4vw, 28px);
+  margin: 0 0 0.3em;
+  font-size: clamp(12px, 2.8cqmin, 24px);
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #4f7a62;
 }
 .htp-heading {
-  margin: 0 0 clamp(14px, 3vw, 30px);
-  padding: 0 clamp(56px, 9vw, 96px);
+  margin: 0 0 clamp(8px, 3cqmin, 26px);
+  /* clear of the ✕ on both sides, so the heading stays centred */
+  padding: 0 clamp(46px, 9.5cqmin, 84px);
   color: var(--htp-green);
-  font-size: clamp(34px, 6.4vw, 68px);
+  font-size: clamp(22px, 7.4cqmin, 60px);
   font-weight: 900;
   line-height: 1.08;
 }
 .htp-steps {
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 2vw, 20px);
-  margin: 0 0 clamp(20px, 4vw, 40px);
+  gap: clamp(6px, 2cqmin, 18px);
+  margin: 0 0 clamp(10px, 4cqmin, 34px);
   padding: 0;
   list-style: none;
   text-align: left;
@@ -82,27 +94,28 @@
 .htp-step {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 2.4vw, 24px);
-  padding: clamp(12px, 2.2vw, 22px) clamp(14px, 2.8vw, 28px);
-  border-radius: clamp(18px, 3vw, 32px);
+  gap: clamp(8px, 2.4cqmin, 22px);
+  padding: clamp(6px, 2.2cqmin, 20px) clamp(10px, 3cqmin, 26px);
+  border-radius: clamp(14px, 3.4cqmin, 30px);
   background: #eef7f1;
 }
 .htp-num {
   display: grid;
   place-items: center;
   flex: none;
-  width: clamp(40px, 6vw, 68px);
-  height: clamp(40px, 6vw, 68px);
+  width: clamp(28px, 6.6cqmin, 60px);
+  height: clamp(28px, 6.6cqmin, 60px);
   border-radius: 50%;
   background: var(--htp-green);
   color: #fff;
-  font-size: clamp(22px, 3.6vw, 38px);
+  font-size: clamp(16px, 3.8cqmin, 34px);
   font-weight: 900;
 }
 .htp-line {
-  font-size: clamp(22px, 3.7vw, 40px);
+  font-size: clamp(16px, 4.4cqmin, 36px);
   font-weight: 800;
   line-height: 1.25;
+  text-wrap: pretty;
 }
 .htp-steps:has(.htp-step:only-child) .htp-step {
   justify-content: center;
@@ -112,23 +125,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(8px, 1.6vw, 16px);
-  min-width: clamp(200px, 36vw, 340px);
-  min-height: clamp(68px, 11vw, 112px);
-  padding: 0 clamp(30px, 5vw, 60px);
+  gap: clamp(6px, 1.6cqmin, 14px);
+  min-width: clamp(150px, 36cqmin, 320px);
+  min-height: clamp(48px, 11.5cqmin, 100px);
+  padding: 0 clamp(24px, 5cqmin, 54px);
   border: 0;
   border-radius: 999px;
   background: var(--htp-green);
-  box-shadow: 0 8px 0 var(--htp-green-deep);
+  box-shadow: 0 clamp(4px, 1cqmin, 8px) 0 var(--htp-green-deep);
   color: #fff;
   font-family: inherit;
-  font-size: clamp(32px, 5.4vw, 56px);
+  font-size: clamp(22px, 6cqmin, 50px);
   font-weight: 900;
   cursor: pointer;
 }
 .htp-play:active {
-  transform: translateY(5px);
-  box-shadow: 0 3px 0 var(--htp-green-deep);
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--htp-green-deep);
 }
 .htp-play svg {
   width: 0.9em;
@@ -136,47 +149,11 @@
   fill: currentColor;
 }
 
-/* Sideways phones: the card has to fit in ~320px of height. */
-@media (max-height: 480px) {
-  .htp-stage {
-    padding: 8px;
-  }
-  .htp-card {
-    padding: 14px 18px;
-    border-radius: 22px;
-  }
-  .htp-heading {
-    margin-bottom: 8px;
-    font-size: 26px;
-  }
+/* The very shortest stages (a small phone held sideways): the game's name
+   goes, so the heading, both lines and Play still fit with room to spare. */
+@container htp (max-height: 360px) {
   .htp-game {
     display: none;
-  }
-  .htp-steps {
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-  .htp-step {
-    padding: 6px 12px;
-  }
-  .htp-num {
-    width: 30px;
-    height: 30px;
-    font-size: 17px;
-  }
-  .htp-line {
-    font-size: 18px;
-  }
-  .htp-play {
-    min-height: 52px;
-    font-size: 24px;
-    box-shadow: 0 4px 0 var(--htp-green-deep);
-  }
-  .htp-close {
-    width: 44px;
-    height: 44px;
-    top: 6px;
-    right: 6px;
   }
 }
 

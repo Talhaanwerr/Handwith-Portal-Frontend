@@ -1,0 +1,319 @@
+/**
+ * Tallest Tower — the board. The towers are the shared Burj pieces
+ * (`bjk-floor`, `bjk-spire`, `bjk-podium`, `bjk-glow`, styled in
+ * shared/styles/dubai.css) sized from `--bjk-f` (a floor's height) and `--bjk-u`
+ * (the width unit), set here on `.bjt-board`.
+ *
+ * Every tower on a stage shares one floor height AND one spire height
+ * (`--bjt-s`), so only the floors make one tower taller than another. Both
+ * come from the round's tallest tower (`--bjt-n` floors, set by the round)
+ * and the room the stage has (`--bjt-h`, less `--bjt-x` under a tower on the
+ * stand), in the `ng` container's units.
+ */
+
+.apa-game .bjt-play .ng-main {
+  inset: 0;
+  display: block;
+}
+
+.bjt-board {
+  --bjt-n: 6;
+  /* the height a tower may fill, and what stands under it besides the sand */
+  --bjt-h: 97cqh;
+  --bjt-x: 0px;
+  --bjt-top: 1cqh;
+  /* a floor is never under 40 px (two six-floor towers on a 568 × 320 phone) */
+  --bjk-f: max(40px, min(calc(80cqh / (var(--bjt-n) + 1.7)), 20cqh, 11cqw));
+  --bjk-u: max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75));
+  --bjt-s: max(
+    0px,
+    min(
+      calc(var(--bjk-f) * var(--bjt-sk, 2.4)),
+      calc(var(--bjt-h) - var(--bjt-n) * var(--bjk-f) - var(--bjk-u) * 0.5 - var(--bjt-x))
+    )
+  );
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── One whole tower, one big button ─────────────────────────────────────── */
+
+.bjt-tower {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.bjt-tower.bjt-tower--live {
+  cursor: pointer;
+}
+.bjt-spire-slot {
+  position: relative;
+  display: flex;
+  flex: none;
+  justify-content: center;
+  width: calc(var(--bjk-u) * 2);
+  height: var(--bjt-s);
+}
+.bjt-floors {
+  display: flex;
+  flex: none;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+/** The glow behind a tower: pulsing for a hint, steady for a right pick. */
+.bjt-halo {
+  position: absolute;
+  z-index: -1;
+  left: calc(var(--bjk-u) * -0.7);
+  right: calc(var(--bjk-u) * -0.7);
+  top: calc(var(--bjt-s) * 0.5);
+  bottom: calc(var(--bjk-u) * -0.1);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 228, 120, 0.95),
+    rgba(255, 206, 90, 0.6) 55%,
+    rgba(255, 200, 80, 0)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.bjt-tower--hint .bjt-halo {
+  animation: bjt-pulse 1.3s ease-in-out infinite;
+}
+.bjt-tower--happy .bjt-halo {
+  opacity: 1;
+}
+@keyframes bjt-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* Burj Khalifa's warm halo, behind a lit tower at dusk */
+.bjt-tower .bjt-glow {
+  z-index: -1;
+}
+
+/** The gold star on a right tower's spire (never off the top of the stage). */
+.bjt-star {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  display: block;
+  width: calc(var(--bjk-f) * 1.15);
+  height: calc(var(--bjk-f) * 1.15);
+  margin-left: calc(var(--bjk-f) * -0.575);
+  pointer-events: none;
+}
+/** A lit spire's tip, twinkling. */
+.bjt-shine {
+  position: absolute;
+  top: calc(var(--bjk-f) * -0.32);
+  left: 50%;
+  z-index: 2;
+  display: block;
+  width: calc(var(--bjk-f) * 0.9);
+  height: calc(var(--bjk-f) * 0.9);
+  margin-left: calc(var(--bjk-f) * -0.45);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fffbe8 0 16%,
+    rgba(255, 222, 130, 0.9) 30%,
+    rgba(255, 190, 90, 0) 70%
+  );
+  animation: bjt-twinkle 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes bjt-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* ── Tall or Short?: two towers on the sand ──────────────────────────────── */
+
+/* a column per tower, centred on its line; the spires keep clear of the
+   star trail (top centre) and the pills (top corners) */
+.bjt-col {
+  position: absolute;
+  top: var(--bjt-top);
+  bottom: 2cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  translate: -50% 0;
+}
+.bjt-col--left {
+  left: 29cqw;
+}
+.bjt-col--right {
+  left: 69cqw;
+}
+
+/* ── Line Them Up: the jumbled row, and the stand beside it ──────────────── */
+
+.bjt-play--order .bjt-board {
+  /* everything stays under the pills and the trail */
+  --bjt-top: max(66px, 2cqh);
+  --bjt-h: calc(98cqh - var(--bjt-top));
+  --bjt-x: calc(var(--bjk-u) * 0.75);
+  --bjk-f: max(36px, min(calc(var(--bjt-h) / (var(--bjt-n) + 1.6)), 20cqh, 11cqw));
+  /* three towers to a half of the stage */
+  --bjk-u: min(5cqw, max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
+}
+.bjt-row,
+.bjt-stand {
+  position: absolute;
+  top: var(--bjt-top);
+  bottom: 2cqh;
+  display: flex;
+}
+.bjt-row {
+  left: 1cqw;
+  width: 47cqw;
+  justify-content: space-evenly;
+}
+.bjt-stand {
+  left: 51cqw;
+  right: 1cqw;
+  flex-direction: column;
+}
+.bjt-stand-places {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  justify-content: space-evenly;
+  /* the plinth the three places stand on */
+  border-bottom: calc(var(--bjk-u) * 0.3) solid #e8c9a2;
+  border-radius: 0 0 calc(var(--bjk-u) * 0.1) calc(var(--bjk-u) * 0.1);
+  box-shadow: 0 calc(var(--bjk-u) * 0.08) 0 #b98f62;
+}
+/** The gold ramp under the stand: thin on the short side, thick on the tall. */
+.bjt-ramp {
+  display: block;
+  flex: none;
+  height: calc(var(--bjk-u) * 0.4);
+  margin: calc(var(--bjk-u) * 0.06) 4% 0;
+  background: linear-gradient(to bottom right, transparent 50%, #f2c55c 50%);
+}
+.bjt-place {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: calc(var(--bjk-u) * 2.9);
+}
+.bjt-mover {
+  display: block;
+  flex: none;
+}
+/** An empty place on the stand: a dashed pad, glowing when it is next. */
+.bjt-pad {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  height: calc(var(--bjk-u) * 0.5);
+  border: max(2px, calc(var(--bjk-u) * 0.06)) dashed rgba(255, 255, 255, 0.75);
+  border-bottom: 0;
+  border-radius: calc(var(--bjk-u) * 0.12) calc(var(--bjk-u) * 0.12) 0 0;
+  background: rgba(255, 255, 255, 0.16);
+}
+.bjt-place--next .bjt-pad {
+  border-color: #ffd34d;
+  animation: bjt-pad 1.4s ease-in-out infinite;
+}
+@keyframes bjt-pad {
+  0%,
+  100% {
+    background-color: rgba(255, 211, 77, 0.15);
+  }
+  50% {
+    background-color: rgba(255, 211, 77, 0.55);
+  }
+}
+
+/* ── A module in miniature (the card's picture box is its own container) ── */
+
+.bjt-mini {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bjt-mini svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── A phone held upright ────────────────────────────────────────────────── */
+
+@container ng (orientation: portrait) {
+  .apa-game .bjt-play .ng-main {
+    inset: 124px 3cqw 2cqh;
+  }
+  /* Tall or Short?: the two towers side by side, the width is the limit */
+  .bjt-board {
+    --bjt-top: 0px;
+    --bjt-h: calc(98cqh - 124px);
+    --bjk-f: min(calc(64cqh / (var(--bjt-n) + 2.4)), 22cqw);
+    --bjk-u: min(14cqw, max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
+  }
+  .bjt-col {
+    bottom: 0;
+  }
+  .bjt-col--left {
+    left: 26%;
+  }
+  .bjt-col--right {
+    left: 74%;
+  }
+
+  /* Line Them Up: the row and the stand still side by side on the sand
+     (nothing may stand in the sky), so the towers go slim — a place is
+     still at least 2.9 units (≥ 55 px) wide, a big enough button */
+  .bjt-play--order .bjt-board {
+    --bjt-top: 0px;
+    --bjt-h: calc(98cqh - 124px);
+    --bjk-f: min(calc(var(--bjt-h) / (var(--bjt-n) + 2.4)), 13cqw);
+    --bjk-u: min(4.9cqw, max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
+    /* and a shorter spire, to suit the slim towers */
+    --bjt-sk: 1.6;
+  }
+  .bjt-row {
+    left: 0;
+    width: 49%;
+  }
+  .bjt-stand {
+    left: 51%;
+    right: 0;
+  }
+}

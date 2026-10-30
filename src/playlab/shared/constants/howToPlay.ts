@@ -117,6 +117,38 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
     "Look at the picture and think of the word it shows.",
     "Then drag letter bricks on, one by one, to spell it.",
   ],
+  "burj-lift": {
+    default: [
+      "Look at the friend waiting in the glass lift.",
+      "Help them ride the lift to the right floor.",
+    ],
+    modules: {
+      updown: [
+        "Look at the picture in the friend's bubble.",
+        "Press up or down to ride to that floor.",
+      ],
+      match: [
+        "Look at the colour of the friend's balloon.",
+        "Tap the floor that has the same colour.",
+      ],
+    },
+  },
+  "burj-towers": {
+    default: [
+      "Look at the towers standing side by side.",
+      "Listen, then tap the tower that answers.",
+    ],
+    modules: {
+      tallshort: [
+        "Listen: is it the taller or the shorter tower?",
+        "Tap that tower to give it a gold star.",
+      ],
+      order: [
+        "Find the shortest tower and tap it first.",
+        "Then tap the middle one, then the tallest.",
+      ],
+    },
+  },
   "car-garage": {
     default: [
       "Look at the car in the garage and see what it needs.",
@@ -133,10 +165,6 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
-  "car-wash": [
-    "Look at the muddy car that needs a good wash.",
-    "Then rub the car with your finger to wash it clean.",
-  ],
   "color-paint": [
     "Listen and tap the crayon that the voice asks for.",
     "Then paint the picture with your finger using that colour.",
@@ -228,6 +256,10 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
   "feed-the-fish": [
     "Look at the hungry fish swimming in the water.",
     "Then tap the water to drop some food for them.",
+  ],
+  "drum-beats": [
+    "Tap the big drum as many times as the voice says.",
+    "Then tap it again for some more, and count them all.",
   ],
   "feed-the-shark": {
     default: [
@@ -481,6 +513,20 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
     "Look at the letter and the pictures next to it.",
     "Then drag each letter to the picture that it matches.",
   ],
+  "plane-seats": {
+    default: ["Look at the number on the ticket.", "Tap the seat with that number."],
+    modules: {
+      number: ["Look at the number on the ticket.", "Tap the seat with that number."],
+      sums: ["Count the dots on the ticket.", "Tap the seat with that number."],
+    },
+  },
+  "plane-trip": {
+    default: ["Look at the bag on the belt.", "Tap the friend with the same bag."],
+    modules: {
+      bags: ["Look at the bag on the belt.", "Tap the friend with the same bag."],
+      pack: ["Look at the thing to pack.", "Tap the sunny or snowy suitcase."],
+    },
+  },
   "pond-numbers": {
     default: [
       "Count the dots or the frogs that you can see.",
@@ -630,19 +676,6 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
-  "teddy-seesaw": {
-    default: [
-      "Look carefully at the bears on the seesaw.",
-      "Then tap or add bears to make it match.",
-    ],
-    modules: {
-      tip: ["Count the bears that are sitting on each side.", "Then tap the side that goes down."],
-      balance: [
-        "Count the bears on each side of the seesaw.",
-        "Then tap + or - to make the seesaw level.",
-      ],
-    },
-  },
   "tiny-toy-shop": {
     default: [
       "Look carefully at all of the toys in the shop.",
@@ -692,6 +725,8 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "brick-pattern-wall",
   "brick-plus-tower",
   "brick-spell-words",
+  "burj-lift",
+  "burj-towers",
   "car-garage",
   "color-paint",
   "color-shape-friends",
@@ -699,6 +734,8 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "cvc-match",
   "dino-dig",
   "door-count",
+  "drum-beats",
+  "feed-the-fish",
   "feed-the-shark",
   "find-the-mouse",
   "food-sort",
@@ -720,6 +757,8 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "on-off",
   "pirate-match",
   "phonics-show",
+  "plane-seats",
+  "plane-trip",
   "pond-numbers",
   "rocket-countdown",
   "sesame-activities",
@@ -732,7 +771,7 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "sort-two-ways",
   "space-letters",
   "tangram-town",
-  "teddy-seesaw",
   "tiny-toy-shop",
+  "whats-inside",
   "word-quiz",
 ]);

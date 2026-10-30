@@ -10,6 +10,7 @@
 /* @import must appear before all other rules (CSS spec) */
 @import "./shared/styles/utilities.css";
 @import "./shared/styles/how-to-play.css";
+@import "./shared/styles/dubai.css";
 @import "./games/letter-tracing/styles/letter-tracing.css";
 @import "./games/jungle-spy/styles/jungle-spy.css";
 @import "./games/letter-hunt/styles/letter-hunt.css";
@@ -46,6 +47,12 @@
 @import "./games/phonics-show/styles/phonics-show.css";
 @import "./games/sound-show/styles/sound-show.css";
 @import "./games/odd-sound/styles/odd-sound.css";
+@import "./games/number-groups/styles/sum-parts.css";
+@import "./games/drum-beats/styles/drum-beats.css";
+@import "./games/burj-lift/styles/burj-lift.css";
+@import "./games/burj-towers/styles/burj-towers.css";
+@import "./games/plane-seats/styles/plane-seats.css";
+@import "./games/plane-trip/styles/plane-trip.css";
 /* Math Maze */
 @import "./games/math-maze/styles/math-maze.css";
 /* Sorting Food */
@@ -68,8 +75,12 @@
 @import "./games/number-hunt/styles/number-hunt.css";
 @import "./games/brick-lab/styles/brick-lab.css";
 @import "./games/sock-case/styles/sock-case.css";
+@import "./games/whats-inside/styles/whats-inside.css";
 @import "./games/animal-repair/styles/animal-repair.css";
 @import "./games/car-garage/styles/car-garage.css";
+@import "./games/feed-the-fish/styles/feed-the-fish.css";
+@import "./games/birthday-party/styles/birthday-party.css";
+@import "./games/rocket-countdown/styles/rocket-countdown.css";
 @import "./games/shadow-match/styles/shadow-match.css";
 @import "./games/silly-robot/styles/silly-robot.css";
 @import "./games/number-train/styles/number-train.css";

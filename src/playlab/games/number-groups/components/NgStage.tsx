@@ -3,7 +3,7 @@
 import { memo, type ReactNode, type RefObject } from "react";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { playClickSound } from "@shared/audio/sfx";
-import { Teacher } from "@games/door-count/components/Teacher";
+import { NgGuide } from "@games/number-groups/components/NgGuide";
 import { Picture } from "@games/blend-read/components/PictureArt";
 import { ROUND_COUNT } from "@games/number-groups/constants/kit";
 
@@ -66,7 +66,7 @@ export function NgStage({
 const StageTeacher = memo(function StageTeacher({ solved, say }: { solved: boolean; say: string }) {
   return (
     <div className="ng-teacher-slot" aria-hidden="true">
-      <Teacher cheer={solved} say={say} />
+      <NgGuide cheer={solved} say={say} />
     </div>
   );
 });

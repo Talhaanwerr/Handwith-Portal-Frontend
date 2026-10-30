@@ -90,6 +90,21 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "odd-sound": lazy(() =>
     import("@games/odd-sound/OddSoundGame").then((m) => ({ default: m.OddSoundGame }))
   ),
+  "drum-beats": lazy(() =>
+    import("@games/drum-beats/DrumBeatsGame").then((m) => ({ default: m.DrumBeatsGame }))
+  ),
+  "burj-lift": lazy(() =>
+    import("@games/burj-lift/BurjLiftGame").then((m) => ({ default: m.BurjLiftGame }))
+  ),
+  "burj-towers": lazy(() =>
+    import("@games/burj-towers/TallestTowerGame").then((m) => ({ default: m.TallestTowerGame }))
+  ),
+  "plane-seats": lazy(() =>
+    import("@games/plane-seats/PlaneSeatsGame").then((m) => ({ default: m.PlaneSeatsGame }))
+  ),
+  "plane-trip": lazy(() =>
+    import("@games/plane-trip/PlaneTripGame").then((m) => ({ default: m.PlaneTripGame }))
+  ),
   "math-maze": lazy(() =>
     import("@games/math-maze/MathMazeGame").then((m) => ({ default: m.MathMazeGame }))
   ),
@@ -185,6 +200,22 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   ),
   "sock-case": lazy(() =>
     import("@games/sock-case/SockCaseGame").then((m) => ({ default: m.SockCaseGame }))
+  ),
+  "whats-inside": lazy(() =>
+    import("@games/whats-inside/WhatsInsideGame").then((m) => ({ default: m.WhatsInsideGame }))
+  ),
+  "birthday-party": lazy(() =>
+    import("@games/birthday-party/BirthdayPartyGame").then((m) => ({
+      default: m.BirthdayPartyGame,
+    }))
+  ),
+  "rocket-countdown": lazy(() =>
+    import("@games/rocket-countdown/RocketCountdownGame").then((m) => ({
+      default: m.RocketCountdownGame,
+    }))
+  ),
+  "feed-the-fish": lazy(() =>
+    import("@games/feed-the-fish/FeedTheFishGame").then((m) => ({ default: m.FeedTheFishGame }))
   ),
   "car-garage": lazy(() =>
     import("@games/car-garage/CarGarageGame").then((m) => ({ default: m.CarGarageGame }))

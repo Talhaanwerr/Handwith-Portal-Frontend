@@ -7404,51 +7404,6 @@
       "text": "Look again!",
       "speak": "Look again!"
     },
-    "tsw-welcome": {
-      "file": "/audio/teddy-seesaw/welcome.mp3",
-      "text": "Teddy's Wobbly Seesaw!",
-      "speak": "Teddy's Wobbly Seesaw!"
-    },
-    "tsw-done": {
-      "file": "/audio/teddy-seesaw/done.mp3",
-      "text": "Wow! You are a seesaw star!",
-      "speak": "Wow! You are a seesaw star!"
-    },
-    "tsw-mode-tip": {
-      "file": "/audio/teddy-seesaw/mode-tip.mp3",
-      "text": "Which side goes down?",
-      "speak": "Which side goes down?"
-    },
-    "tsw-mode-balance": {
-      "file": "/audio/teddy-seesaw/mode-balance.mp3",
-      "text": "Make it balance!",
-      "speak": "Make it balance!"
-    },
-    "tsw-ask-tip": {
-      "file": "/audio/teddy-seesaw/ask-tip.mp3",
-      "text": "Which side will go down? Tap it!",
-      "speak": "Which side will go down? Tap it!"
-    },
-    "tsw-right": {
-      "file": "/audio/teddy-seesaw/right.mp3",
-      "text": "Yes! That side has more bears.",
-      "speak": "Yes! That side has more bears."
-    },
-    "tsw-heavier": {
-      "file": "/audio/teddy-seesaw/heavier.mp3",
-      "text": "Look! This side was heavier. It has more bears.",
-      "speak": "Look! This side was heavier. It has more bears."
-    },
-    "tsw-ask-balance": {
-      "file": "/audio/teddy-seesaw/ask-balance.mp3",
-      "text": "Make both sides the same!",
-      "speak": "Make both sides the same!"
-    },
-    "tsw-same": {
-      "file": "/audio/teddy-seesaw/same.mp3",
-      "text": "The same! It balances!",
-      "speak": "The same! It balances!"
-    },
     "arp-welcome": {
       "file": "/audio/animal-repair/welcome.mp3",
       "text": "Welcome to the toy repair shop!",
@@ -7729,41 +7684,6 @@
       "text": "Every fish is full and happy!",
       "speak": "Every fish is full and happy!"
     },
-    "mcw-welcome": {
-      "file": "/audio/car-wash/welcome.mp3",
-      "text": "Welcome to the car wash!",
-      "speak": "Welcome to the car wash!"
-    },
-    "mcw-spray": {
-      "file": "/audio/car-wash/spray.mp3",
-      "text": "Spray the mud!",
-      "speak": "Spray the mud!"
-    },
-    "mcw-scrub": {
-      "file": "/audio/car-wash/scrub.mp3",
-      "text": "Scrub, scrub, scrub!",
-      "speak": "Scrub, scrub, scrub!"
-    },
-    "mcw-rinse": {
-      "file": "/audio/car-wash/rinse.mp3",
-      "text": "Now rinse it off!",
-      "speak": "Now rinse it off!"
-    },
-    "mcw-shine": {
-      "file": "/audio/car-wash/shine.mp3",
-      "text": "Make it shine!",
-      "speak": "Make it shine!"
-    },
-    "mcw-mystery": {
-      "file": "/audio/car-wash/mystery.mp3",
-      "text": "What colour is under the mud?",
-      "speak": "What colour is under the mud?"
-    },
-    "mcw-done": {
-      "file": "/audio/car-wash/done.mp3",
-      "text": "Every car is clean and shiny!",
-      "speak": "Every car is clean and shiny!"
-    },
     "bcg-welcome": {
       "file": "/audio/car-garage/welcome.mp3",
       "text": "Welcome to the garage! Let's build cars.",
@@ -7885,6 +7805,246 @@
       "file": "/audio/names/ant.mp3",
       "text": "ant",
       "speak": "ant"
+    },
+    "drb-welcome": {
+      "file": "/audio/drum-beats/welcome.mp3",
+      "text": "Welcome to Drum Beats!",
+      "speak": "Welcome to Drum Beats!",
+      "speakUntilRecorded": true
+    },
+    "drb-mode-little": {
+      "file": "/audio/drum-beats/mode-little.mp3",
+      "text": "Little beats! Tap the drum.",
+      "speak": "Little beats! Tap the drum.",
+      "speakUntilRecorded": true
+    },
+    "drb-mode-big": {
+      "file": "/audio/drum-beats/mode-big.mp3",
+      "text": "Big beats! Tap the drum.",
+      "speak": "Big beats! Tap the drum.",
+      "speakUntilRecorded": true
+    },
+    "drb-tap-1": {
+      "file": "/audio/drum-beats/tap-1.mp3",
+      "text": "Tap the drum one time!",
+      "speak": "Tap the drum one time!",
+      "speakUntilRecorded": true
+    },
+    "drb-tap-2": {
+      "file": "/audio/drum-beats/tap-2.mp3",
+      "text": "Tap the drum two times!",
+      "speak": "Tap the drum two times!",
+      "speakUntilRecorded": true
+    },
+    "drb-tap-3": {
+      "file": "/audio/drum-beats/tap-3.mp3",
+      "text": "Tap the drum three times!",
+      "speak": "Tap the drum three times!",
+      "speakUntilRecorded": true
+    },
+    "drb-tap-4": {
+      "file": "/audio/drum-beats/tap-4.mp3",
+      "text": "Tap the drum four times!",
+      "speak": "Tap the drum four times!",
+      "speakUntilRecorded": true
+    },
+    "drb-more-2": {
+      "file": "/audio/drum-beats/more-2.mp3",
+      "text": "Now two more!",
+      "speak": "Now two more!",
+      "speakUntilRecorded": true
+    },
+    "drb-more-3": {
+      "file": "/audio/drum-beats/more-3.mp3",
+      "text": "Now three more!",
+      "speak": "Now three more!",
+      "speakUntilRecorded": true
+    },
+    "pls-welcome": {
+      "file": "/audio/plane-seats/welcome.mp3",
+      "text": "Welcome aboard Plane Seats!",
+      "speak": "Welcome aboard Plane Seats!",
+      "speakUntilRecorded": true
+    },
+    "pls-done": {
+      "file": "/audio/plane-seats/done.mp3",
+      "text": "Everyone is in their seat!",
+      "speak": "Everyone is in their seat!",
+      "speakUntilRecorded": true
+    },
+    "pls-mode-number": {
+      "file": "/audio/plane-seats/mode-number.mp3",
+      "text": "Seat numbers! Find the seat on the ticket.",
+      "speak": "Seat numbers! Find the seat on the ticket.",
+      "speakUntilRecorded": true
+    },
+    "pls-mode-sums": {
+      "file": "/audio/plane-seats/mode-sums.mp3",
+      "text": "Ticket sums! Add them up to find the seat.",
+      "speak": "Ticket sums! Add them up to find the seat.",
+      "speakUntilRecorded": true
+    },
+    "pls-find": {
+      "file": "/audio/plane-seats/find.mp3",
+      "text": "Find the seat with this number!",
+      "speak": "Find the seat with this number!",
+      "speakUntilRecorded": true
+    },
+    "pls-add": {
+      "file": "/audio/plane-seats/add.mp3",
+      "text": "Add up the ticket. Find the seat!",
+      "speak": "Add up the ticket. Find the seat!",
+      "speakUntilRecorded": true
+    },
+    "bjl-welcome": {
+      "file": "/audio/burj-lift/welcome.mp3",
+      "text": "Welcome to the Burj Lift!",
+      "speak": "Welcome to the Burj Lift!",
+      "speakUntilRecorded": true
+    },
+    "bjl-done": {
+      "file": "/audio/burj-lift/done.mp3",
+      "text": "Everyone got to their floor!",
+      "speak": "Everyone got to their floor!",
+      "speakUntilRecorded": true
+    },
+    "bjl-mode-updown": {
+      "file": "/audio/burj-lift/mode-updown.mp3",
+      "text": "Up or Down? Take everyone to their floor.",
+      "speak": "Up or Down? Take everyone to their floor.",
+      "speakUntilRecorded": true
+    },
+    "bjl-mode-match": {
+      "file": "/audio/burj-lift/mode-match.mp3",
+      "text": "Picture Floors! Match the balloon to its floor.",
+      "speak": "Picture Floors! Match the balloon to its floor.",
+      "speakUntilRecorded": true
+    },
+    "bjl-up-or-down": {
+      "file": "/audio/burj-lift/up-or-down.mp3",
+      "text": "Up or down?",
+      "speak": "Up or down?",
+      "speakUntilRecorded": true
+    },
+    "bjl-going-up": {
+      "file": "/audio/burj-lift/going-up.mp3",
+      "text": "Going up!",
+      "speak": "Going up!",
+      "speakUntilRecorded": true
+    },
+    "bjl-going-down": {
+      "file": "/audio/burj-lift/going-down.mp3",
+      "text": "Going down!",
+      "speak": "Going down!",
+      "speakUntilRecorded": true
+    },
+    "bjt-welcome": {
+      "file": "/audio/burj-towers/welcome.mp3",
+      "text": "Welcome to Tallest Tower!",
+      "speak": "Welcome to Tallest Tower!",
+      "speakUntilRecorded": true
+    },
+    "bjt-done": {
+      "file": "/audio/burj-towers/done.mp3",
+      "text": "You know tall and short!",
+      "speak": "You know tall and short!",
+      "speakUntilRecorded": true
+    },
+    "bjt-mode-tallshort": {
+      "file": "/audio/burj-towers/mode-tallshort.mp3",
+      "text": "Tall or Short? Find the tall tower and the short one.",
+      "speak": "Tall or Short? Find the tall tower and the short one.",
+      "speakUntilRecorded": true
+    },
+    "bjt-mode-order": {
+      "file": "/audio/burj-towers/mode-order.mp3",
+      "text": "Line Them Up! Put the towers in order.",
+      "speak": "Line Them Up! Put the towers in order.",
+      "speakUntilRecorded": true
+    },
+    "bjt-which-taller": {
+      "file": "/audio/burj-towers/which-taller.mp3",
+      "text": "Which tower is taller?",
+      "speak": "Which tower is taller?",
+      "speakUntilRecorded": true
+    },
+    "bjt-which-shorter": {
+      "file": "/audio/burj-towers/which-shorter.mp3",
+      "text": "Which tower is shorter?",
+      "speak": "Which tower is shorter?",
+      "speakUntilRecorded": true
+    },
+    "bjt-order": {
+      "file": "/audio/burj-towers/order.mp3",
+      "text": "Put them in order, from short to tall!",
+      "speak": "Put them in order, from short to tall!",
+      "speakUntilRecorded": true
+    },
+    "bjt-in-order": {
+      "file": "/audio/burj-towers/in-order.mp3",
+      "text": "Short, taller, tallest!",
+      "speak": "Short, taller, tallest!",
+      "speakUntilRecorded": true
+    },
+    "ptr-welcome": {
+      "file": "/audio/plane-trip/welcome.mp3",
+      "text": "Welcome to Plane Trip!",
+      "speak": "Welcome to Plane Trip!",
+      "speakUntilRecorded": true
+    },
+    "ptr-done": {
+      "file": "/audio/plane-trip/done.mp3",
+      "text": "Have a happy trip!",
+      "speak": "Have a happy trip!",
+      "speakUntilRecorded": true
+    },
+    "ptr-mode-bags": {
+      "file": "/audio/plane-trip/mode-bags.mp3",
+      "text": "Bag match! Give each bag to its owner.",
+      "speak": "Bag match! Give each bag to its owner.",
+      "speakUntilRecorded": true
+    },
+    "ptr-mode-pack": {
+      "file": "/audio/plane-trip/mode-pack.mp3",
+      "text": "Pack for the trip! Sunny or snowy?",
+      "speak": "Pack for the trip! Sunny or snowy?",
+      "speakUntilRecorded": true
+    },
+    "ptr-whose": {
+      "file": "/audio/plane-trip/whose.mp3",
+      "text": "Whose bag is this?",
+      "speak": "Whose bag is this?",
+      "speakUntilRecorded": true
+    },
+    "ptr-yours": {
+      "file": "/audio/plane-trip/yours.mp3",
+      "text": "Here's your bag!",
+      "speak": "Here's your bag!",
+      "speakUntilRecorded": true
+    },
+    "ptr-where": {
+      "file": "/audio/plane-trip/where.mp3",
+      "text": "Where does it go?",
+      "speak": "Where does it go?",
+      "speakUntilRecorded": true
+    },
+    "ptr-sunny": {
+      "file": "/audio/plane-trip/sunny.mp3",
+      "text": "The sunny suitcase!",
+      "speak": "The sunny suitcase!",
+      "speakUntilRecorded": true
+    },
+    "ptr-snowy": {
+      "file": "/audio/plane-trip/snowy.mp3",
+      "text": "The snowy suitcase!",
+      "speak": "The snowy suitcase!",
+      "speakUntilRecorded": true
+    },
+    "ptr-takeoff": {
+      "file": "/audio/plane-trip/takeoff.mp3",
+      "text": "All packed! Off we go!",
+      "speak": "All packed! Off we go!",
+      "speakUntilRecorded": true
     }
   },
   "edgeVoice": {

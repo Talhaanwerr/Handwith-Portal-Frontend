@@ -1,0 +1,7 @@
+{
+  "default": ["Look at the number on the ticket.", "Tap the seat with that number."],
+  "modules": {
+    "number": ["Look at the number on the ticket.", "Tap the seat with that number."],
+    "sums": ["Count the dots on the ticket.", "Tap the seat with that number."]
+  }
+}

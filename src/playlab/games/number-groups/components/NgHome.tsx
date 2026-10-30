@@ -9,7 +9,7 @@ import { playClickSound } from "@shared/audio/sfx";
 import { clipText, playClip, stopVoice } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
-import { Teacher } from "@games/door-count/components/Teacher";
+import { NgGuide } from "@games/number-groups/components/NgGuide";
 import type { ModuleInfo } from "@games/number-groups/constants/kit";
 
 /**
@@ -50,7 +50,7 @@ export function NgHome<Id extends string>({
       {world}
 
       <div className="ng-teacher-slot ng-teacher-slot--home" aria-hidden="true">
-        <Teacher cheer={false} say={clipText("mouse-pick-one")} />
+        <NgGuide cheer={false} say={clipText("mouse-pick-one")} />
       </div>
 
       <div className="ng-home-col">

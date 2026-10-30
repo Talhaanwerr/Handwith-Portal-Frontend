@@ -24,6 +24,10 @@ interface ClipDef {
   speak?: string;
   /** This clip IS another clip: same words, already recorded elsewhere. */
   alias?: string;
+  /** Not recorded yet: until its MP3 lands, say it with the browser's voice
+   *  (the Edge voice in Edge) instead of a silence. Remove the flag when the
+   *  recording is installed. */
+  speakUntilRecorded?: boolean;
 }
 
 const RAW: Record<string, ClipDef> = manifest.clips as Record<string, ClipDef>;
@@ -55,8 +59,9 @@ const CLIPS: Record<string, ClipDef> = new Proxy(RAW, {
 const cache = new Map<ClipId, Howl>();
 /** Whether a missing MP3 may fall back to browser speech. OFF: the portal
  *  speaks only with real recordings, so a missing clip is a short silence,
- *  never a synthesised voice. `setSpeechFallback(true)` exists for local
- *  debugging only — no game ships with it on. */
+ *  never a synthesised voice — except a clip flagged `speakUntilRecorded`.
+ *  `setSpeechFallback(true)` exists for local debugging only — no game ships
+ *  with it on. */
 let speechFallback = false;
 export function setSpeechFallback(enabled: boolean): void {
   speechFallback = enabled;
@@ -83,7 +88,7 @@ function spokenText(def: ClipDef): string {
 function playSpoken(def: ClipDef): Promise<void> {
   return new Promise((resolve) => {
     const text = spokenText(def);
-    if (!text || !speechFallback) {
+    if (!text || !(speechFallback || def.speakUntilRecorded)) {
       setTimeout(resolve, 200);
       return;
     }
@@ -144,9 +149,15 @@ export function preloadClips(ids: ClipId[]): void {
  *  each part so a stop really ends the whole line, not just the clip that
  *  happened to be playing. */
 let generation = 0;
+/** Which run of queued lines the voice is in. Every stop starts a new run;
+ *  a line `sayAfter` queued starting up is NOT a stop, so it keeps the run it
+ *  belongs to — else "Fill the tank with" + "two" lost the "two": the first
+ *  line's own start ended the queue it was the head of. */
+let queueRun = 0;
 
 export function stopVoice(): void {
   generation++;
+  queueRun = generation;
   const playing = current;
   settleCurrent?.();
   settleCurrent = null;
@@ -181,10 +192,12 @@ export function playClip(id: ClipId): Promise<void> {
  * queued line can never turn up on the wrong screen.
  */
 export function sayAfter(id: ClipId): Promise<void> {
-  const token = generation;
+  const run = queueRun;
   const line = speaking.then(() => {
-    if (generation !== token) return;
-    return playClip(id);
+    if (queueRun !== run) return;
+    const play = playClip(id);
+    queueRun = run;
+    return play;
   });
   speaking = line;
   return line;

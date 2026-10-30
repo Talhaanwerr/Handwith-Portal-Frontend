@@ -1,0 +1,618 @@
+/**
+ * Plane Trip — class prefix `ptr-`. Count & Match's shell (NgShell), so
+ * everything is sized in the `ng` container's units; the teacher is hidden
+ * by the shared `.apa-game` wrapper. The passengers are Plane Seats'
+ * PaxFigure (its `pls-pax-*` rules live in plane-seats.css).
+ *
+ * The airport and the board share their sizes, so whatever the screen the
+ * passengers and suitcases stand on the terminal floor:
+ *   --ptr-base   from the stage's bottom to the board's bottom
+ *   --ptr-floor  the floor's height (each module works its own out)
+ */
+
+/* the title screen and the star card: a plain floor (a round's module sets
+   its own; declared on the wrapper so the airport inside a round inherits
+   the round's value instead of resetting it) */
+.ptr-game {
+  --ptr-floor: 34cqh;
+}
+.ptr-airport,
+.ptr-play {
+  --ptr-lift: 0px;
+  --ptr-base: calc(3cqh + var(--ptr-lift));
+  --ptr-plane-w: min(40cqw, 70cqh);
+}
+
+/* Bag Match: a passenger column, the belt's bag, the belt */
+.ptr-play--bags {
+  --ptr-u: min(19cqw, 30cqh);
+  --ptr-b: min(22cqh, 14cqw);
+  --ptr-belt-h: calc(var(--ptr-b) * 0.92 + 3cqh);
+  --ptr-g: 4cqh;
+  --ptr-owners-gap: 4cqw;
+  --ptr-floor: calc(var(--ptr-base) + var(--ptr-belt-h) + var(--ptr-g) + var(--ptr-u) * 0.62);
+}
+/* Pack for the Trip: a case's width, the thing on the plate */
+.ptr-play--pack {
+  --ptr-w: min(28cqw, 40cqh);
+  --ptr-i: min(24cqh, 15cqw);
+  --ptr-g: 3cqh;
+  --ptr-cases-gap: 8cqw;
+  --ptr-floor: calc(var(--ptr-base) + var(--ptr-w) * 0.3);
+}
+
+/* ── The airport ─────────────────────────────────────────────────────────── */
+
+.ptr-airport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #dfe7ef;
+}
+.ptr-air-sky {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: var(--ptr-floor);
+  background: linear-gradient(180deg, #62bdf2 0%, #a9dcfa 55%, #e2f4ff 100%);
+}
+.ptr-air-cloud {
+  position: absolute;
+  display: block;
+  aspect-ratio: 120 / 50;
+}
+.ptr-air-cloud svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ptr-air-cloud--a {
+  top: 14cqh;
+  left: 60cqw;
+  width: 15cqw;
+}
+.ptr-air-cloud--b {
+  top: 24cqh;
+  left: 30cqw;
+  width: 10cqw;
+  opacity: 0.85;
+}
+/** The apron outside: far grass, then grey tarmac with a yellow line. */
+.ptr-air-apron {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--ptr-floor);
+  height: 15cqh;
+  border-top: 1.6cqh solid #8ccb5a;
+  background:
+    repeating-linear-gradient(90deg, #f5c84c 0 4cqw, transparent 4cqw 8cqw) 0 62% / 100% 0.8cqh
+      no-repeat,
+    linear-gradient(#a3abb6, #bcc4ce);
+}
+.ptr-air-plane {
+  position: absolute;
+  left: 4cqw;
+  bottom: calc(var(--ptr-floor) + 5cqh);
+  display: block;
+  width: var(--ptr-plane-w);
+  aspect-ratio: 260 / 104;
+}
+.ptr-plane-art,
+.ptr-suitcase,
+.ptr-item-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/** The terminal's glass wall: a frame along the top, mullions, a glint. */
+.ptr-air-glass {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: var(--ptr-floor);
+  border-top: 2.6cqh solid #d3dbe5;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 38%,
+      rgba(255, 255, 255, 0.2) 38% 44%,
+      transparent 44% 70%,
+      rgba(255, 255, 255, 0.14) 70% 73%,
+      transparent 73%
+    ),
+    repeating-linear-gradient(90deg, transparent 0 calc(25% - 1cqw), #e8edf3 calc(25% - 1cqw) 25%);
+  box-shadow: inset 0 -1.8cqh 0 #c5ced9;
+}
+/** The terminal floor: warm shiny tiles. */
+.ptr-air-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--ptr-floor);
+  background:
+    repeating-linear-gradient(90deg, rgba(140, 120, 90, 0.16) 0 2px, transparent 2px 12cqw),
+    linear-gradient(#efe8dc, #d8cebd);
+  box-shadow: inset 0 1.4cqh 1.6cqh rgba(80, 60, 30, 0.16);
+}
+
+/* ── The board ───────────────────────────────────────────────────────────── */
+
+.ptr-board {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ptr-g);
+  padding-bottom: var(--ptr-lift);
+}
+
+/* ── Bag Match: the passengers ───────────────────────────────────────────── */
+
+.ptr-owners {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: var(--ptr-owners-gap);
+}
+.ptr-owner {
+  position: relative;
+  display: block;
+  width: var(--ptr-u);
+  height: calc(var(--ptr-u) * 1.32);
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ptr-owner.ptr-owner--live {
+  cursor: pointer;
+}
+.ptr-owner-fig {
+  position: absolute;
+  left: 2%;
+  top: 0;
+  display: block;
+  width: 80%;
+  height: calc(var(--ptr-u) * 0.8);
+}
+/** The tag, held up beside them. */
+.ptr-owner-tag {
+  position: absolute;
+  right: 0;
+  top: calc(var(--ptr-u) * 0.28);
+  display: block;
+  width: 46%;
+  height: calc(var(--ptr-u) * 0.55);
+  rotate: 7deg;
+}
+/** Where their suitcase stands, at their feet. */
+.ptr-owner-bag {
+  position: absolute;
+  left: 10%;
+  bottom: 0;
+  display: block;
+  width: 60%;
+  height: calc(var(--ptr-u) * 0.55);
+}
+.ptr-owner--happy .ptr-owner-fig {
+  animation: ptr-hop 0.5s ease-out 1;
+}
+@keyframes ptr-hop {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  45% {
+    translate: 0 -3cqh;
+  }
+}
+/** The hint (after a miss, or a long wait): a gold glow round the owner. */
+.ptr-owner-glow,
+.ptr-case-glow {
+  position: absolute;
+  inset: -4%;
+  border-radius: 4cqh;
+  opacity: 0;
+  pointer-events: none;
+}
+.ptr-owner--hint .ptr-owner-glow,
+.ptr-case--hint .ptr-case-glow {
+  opacity: 1;
+  background: rgba(255, 214, 90, 0.4);
+  box-shadow:
+    0 0 0 0.7cqh #ffc93c,
+    0 0 3cqh 1cqh rgba(255, 201, 60, 0.7);
+  animation: ptr-glow 1.2s ease-in-out infinite;
+}
+@keyframes ptr-glow {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.05;
+  }
+}
+
+.ptr-tag {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ptr-tag-card {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ptr-tag-bag {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 30%;
+  bottom: 8%;
+  display: block;
+}
+.ptr-bag {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Bag Match: the baggage belt ─────────────────────────────────────────── */
+
+.ptr-belt {
+  position: relative;
+  width: min(100%, 92cqw);
+  height: var(--ptr-belt-h);
+  flex: none;
+}
+.ptr-belt-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 0.5cqh, transparent 0.5cqh 4cqh),
+    linear-gradient(#5c6574, #3d4450);
+  box-shadow:
+    inset 0 0.8cqh 0 #7c8696,
+    0 1.2cqh 0 #2a2f38;
+}
+.ptr-belt.ptr-belt--moving .ptr-belt-band {
+  animation: ptr-belt 0.6s linear infinite;
+}
+@keyframes ptr-belt {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      -4cqh 0,
+      0 0;
+  }
+}
+.ptr-belt-load {
+  position: absolute;
+  inset: 0 0 18% 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.ptr-belt-spot {
+  width: var(--ptr-b);
+  height: calc(var(--ptr-b) * 0.92);
+}
+
+/* ── Pack for the Trip ───────────────────────────────────────────────────── */
+
+/** The plate the next thing to pack pops up on. */
+.ptr-plate {
+  position: relative;
+  display: grid;
+  width: calc(var(--ptr-i) * 1.25);
+  height: calc(var(--ptr-i) * 1.15);
+  flex: none;
+  place-items: center;
+}
+.ptr-plate-disc {
+  position: absolute;
+  inset: 0;
+  border: 0.8cqh solid #ffffff;
+  border-radius: 4cqh;
+  background: radial-gradient(circle at 50% 45%, #ffffff 0 45%, #eef3f8 100%);
+  box-shadow:
+    0 1.2cqh 0 #c5ced9,
+    0 2.4cqh 3cqh rgba(30, 50, 80, 0.18);
+}
+/** Between two things (and once all are packed) the card fades back. */
+.ptr-plate-disc {
+  transition: opacity 0.3s ease;
+}
+.ptr-plate.ptr-plate--empty .ptr-plate-disc {
+  opacity: 0;
+}
+.ptr-item {
+  position: relative;
+  display: block;
+  width: calc(var(--ptr-w) * 0.34);
+  height: calc(var(--ptr-w) * 0.34);
+  flex: none;
+}
+.ptr-item.ptr-item--big {
+  width: var(--ptr-i);
+  height: var(--ptr-i);
+}
+.ptr-cases {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: var(--ptr-cases-gap);
+}
+
+/* one open suitcase */
+.ptr-case {
+  --ptr-c: #f7a73b;
+  --ptr-ce: #c9771b;
+  --ptr-cl: #ffe2a6;
+  --ptr-cli: #fff1cf;
+  position: relative;
+  display: block;
+  width: var(--ptr-w);
+  height: calc(var(--ptr-w) * 0.95);
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ptr-case.ptr-case--snowy {
+  --ptr-c: #5fa8e8;
+  --ptr-ce: #3b7fc0;
+  --ptr-cl: #cfe6fb;
+  --ptr-cli: #eef7ff;
+}
+.ptr-case.ptr-case--live {
+  cursor: pointer;
+}
+/** The lid, standing open: its lining and the trip's big sticker. */
+.ptr-case-lid {
+  position: absolute;
+  left: 7%;
+  top: 0;
+  display: grid;
+  width: 86%;
+  height: 46%;
+  place-items: center;
+  transform-origin: 50% 100%;
+  border: calc(var(--ptr-w) * 0.035) solid var(--ptr-c);
+  border-bottom: 0;
+  border-radius: calc(var(--ptr-w) * 0.12) calc(var(--ptr-w) * 0.12) 0 0;
+  background: var(--ptr-cli);
+}
+.ptr-case-sticker {
+  display: block;
+  width: calc(var(--ptr-w) * 0.3);
+  height: calc(var(--ptr-w) * 0.3);
+  padding: 3%;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0.6cqh 0 rgba(0, 0, 0, 0.12);
+}
+.ptr-case-base {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5%;
+  height: 52%;
+}
+.ptr-case-lining {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 0;
+  height: 80%;
+  border-radius: calc(var(--ptr-w) * 0.04) calc(var(--ptr-w) * 0.04) 0 0;
+  background: var(--ptr-cl);
+}
+.ptr-case-load {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 14%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4%;
+}
+.ptr-case-front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34%;
+  border-radius: calc(var(--ptr-w) * 0.03) calc(var(--ptr-w) * 0.03) calc(var(--ptr-w) * 0.1)
+    calc(var(--ptr-w) * 0.1);
+  background: linear-gradient(var(--ptr-c), var(--ptr-c)) padding-box;
+  box-shadow:
+    inset 0 calc(var(--ptr-w) * -0.04) 0 rgba(0, 0, 0, 0.14),
+    0 calc(var(--ptr-w) * 0.035) 0 var(--ptr-ce);
+}
+.ptr-case-front::before,
+.ptr-case-front::after {
+  content: "";
+  position: absolute;
+  top: 22%;
+  width: 12%;
+  height: 26%;
+  border-radius: calc(var(--ptr-w) * 0.02);
+  background: #e9eef5;
+  box-shadow: 0 0.4cqh 0 #9aa6b8;
+}
+.ptr-case-front::before {
+  left: 20%;
+}
+.ptr-case-front::after {
+  right: 20%;
+}
+/** Shut: the closed top over everything, with a handle and the sticker. */
+.ptr-case-shut {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -12%;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--ptr-w) * 0.1);
+  background: var(--ptr-c);
+  box-shadow:
+    inset 0 calc(var(--ptr-w) * -0.04) 0 rgba(0, 0, 0, 0.14),
+    0 calc(var(--ptr-w) * 0.035) 0 var(--ptr-ce);
+}
+.ptr-case-shut::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--ptr-w) * -0.07);
+  left: 38%;
+  width: 24%;
+  height: calc(var(--ptr-w) * 0.1);
+  border: calc(var(--ptr-w) * 0.025) solid #4a5260;
+  border-bottom: 0;
+  border-radius: calc(var(--ptr-w) * 0.05) calc(var(--ptr-w) * 0.05) 0 0;
+}
+.ptr-case-shut-sticker {
+  display: block;
+  width: calc(var(--ptr-w) * 0.24);
+  height: calc(var(--ptr-w) * 0.24);
+  padding: 3%;
+  border-radius: 50%;
+  background: #ffffff;
+}
+/** Two little wheels under each case. */
+.ptr-case::before,
+.ptr-case::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: calc(var(--ptr-w) * 0.08);
+  height: calc(var(--ptr-w) * 0.08);
+  border-radius: 50%;
+  background: #333a46;
+}
+.ptr-case::before {
+  left: 18%;
+}
+.ptr-case::after {
+  right: 18%;
+}
+
+/* ── A module in miniature (its home card's own size container) ──────────── */
+
+.ptr-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqh;
+}
+.ptr-mini-tag {
+  display: block;
+  width: 40cqh;
+  height: 48cqh;
+  rotate: -6deg;
+}
+.ptr-mini-bag {
+  display: block;
+  width: 56cqh;
+  height: 52cqh;
+}
+.ptr-mini-side {
+  display: flex;
+  align-items: center;
+  gap: 2cqh;
+  padding: 4cqh;
+  border-radius: 7cqh;
+}
+.ptr-mini-side--sunny {
+  background: #ffe2a6;
+}
+.ptr-mini-side--snowy {
+  background: #cfe6fb;
+}
+.ptr-mini-pic {
+  display: block;
+  width: 21cqh;
+  height: 21cqh;
+}
+
+/* ── A phone held sideways ───────────────────────────────────────────────── */
+
+@container ng (max-height: 520px) {
+  .ptr-play--bags {
+    --ptr-u: min(19cqw, 31cqh);
+    --ptr-b: min(21cqh, 13cqw);
+    --ptr-g: 2cqh;
+  }
+  .ptr-play--pack {
+    --ptr-w: min(26cqw, 40cqh);
+    --ptr-i: min(25cqh, 14cqw);
+    --ptr-g: 2cqh;
+  }
+}
+
+/* ── A phone held upright ────────────────────────────────────────────────── */
+
+@container ng (orientation: portrait) {
+  .ptr-airport,
+  .ptr-play {
+    --ptr-lift: 8cqh;
+    --ptr-base: calc(4cqh + var(--ptr-lift));
+    --ptr-plane-w: 70cqw;
+  }
+  .ptr-play--bags {
+    --ptr-u: min(29cqw, 18cqh);
+    --ptr-b: min(30cqw, 16cqh);
+    --ptr-g: 5cqh;
+    --ptr-owners-gap: 2cqw;
+  }
+  .ptr-play--pack {
+    --ptr-w: min(42cqw, 26cqh);
+    --ptr-i: min(36cqw, 22cqh);
+    --ptr-g: 5cqh;
+    --ptr-cases-gap: 6cqw;
+  }
+  .ptr-air-cloud--a {
+    top: 20cqh;
+    width: 26cqw;
+  }
+  .ptr-air-cloud--b {
+    top: 30cqh;
+    left: 10cqw;
+    width: 18cqw;
+  }
+}
+@media (orientation: portrait) {
+  /* the teacher is hidden: the board may use the bottom of the screen */
+  .ptr-game .ng-main {
+    bottom: 4cqh;
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "pls-welcome",
+    "file": "/audio/plane-seats/welcome.mp3",
+    "text": "Welcome aboard Plane Seats!"
+  },
+  {
+    "id": "pls-done",
+    "file": "/audio/plane-seats/done.mp3",
+    "text": "Everyone is in their seat!"
+  },
+  {
+    "id": "pls-mode-number",
+    "file": "/audio/plane-seats/mode-number.mp3",
+    "text": "Seat numbers! Find the seat on the ticket."
+  },
+  {
+    "id": "pls-mode-sums",
+    "file": "/audio/plane-seats/mode-sums.mp3",
+    "text": "Ticket sums! Add them up to find the seat."
+  },
+  {
+    "id": "pls-find",
+    "file": "/audio/plane-seats/find.mp3",
+    "text": "Find the seat with this number!"
+  },
+  {
+    "id": "pls-add",
+    "file": "/audio/plane-seats/add.mp3",
+    "text": "Add up the ticket. Find the seat!"
+  }
+]

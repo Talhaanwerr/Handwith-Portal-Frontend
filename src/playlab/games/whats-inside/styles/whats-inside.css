@@ -1,0 +1,292 @@
+/**
+ * What's Inside? — class prefix `wsi-` (grepped clear across src/playlab;
+ * every game's CSS loads on every play page, so nothing here is bare).
+ *
+ * The root, the screens, the chrome (teacher, star trail, pills) and the
+ * cross are Count & Match's (`ng-`, number-groups.css); the cove is Pirate
+ * Match's (`pm-`, `pp-`). Only the beach, the layered chest, the toys and
+ * the picture cards are styled here. Sized in container units of the shared
+ * `.ng-root`; portrait at the bottom.
+ *
+ * One dial per board: the chest's width `--wsi-c`. The toy is half of it
+ * (`TOY_SHARE` in WhereRound.tsx reads the same share).
+ */
+
+.wsi-world {
+  position: absolute;
+  inset: 0;
+}
+/* the beach: the Pirate theme's sandy mound, stretched along the bottom */
+.wsi-shore {
+  position: absolute;
+  left: -22cqw;
+  right: -22cqw;
+  bottom: -2cqh;
+  transform: scaleY(0.46);
+  transform-origin: 50% 100%;
+}
+.wsi-shore svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ─── The chest, in its layers ─────────────────────────────────────────── */
+.wsi-play,
+.wsi-board--where,
+.wsi-mini-chest {
+  --wsi-toy: calc(var(--wsi-c) * 0.5);
+}
+.wsi-chest {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.wsi-chest-lid,
+.wsi-chest-inside,
+.wsi-chest-body {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+/* the hinge: (32, 104) of the 220 × 190 drawing */
+.wsi-chest-lid {
+  transform-origin: 14.545% 54.737%;
+}
+.wsi-chest-inside {
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+.wsi-chest-inside.is-open {
+  opacity: 1;
+}
+/* everything below the rim is hidden: only what rises over it shows */
+.wsi-chest-mouth {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  top: -140%;
+  bottom: 45.263%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.wsi-toy {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  display: block;
+  width: var(--wsi-toy);
+  height: var(--wsi-toy);
+  margin-left: calc(var(--wsi-toy) * -0.5);
+}
+.wsi-toy img,
+.wsi-toy svg,
+.wsi-hopper img,
+.wsi-card-pic img,
+.wsi-card-pic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.wsi-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.wsi-sparkles {
+  position: absolute;
+  left: calc(50% - var(--wsi-c) * 0.5);
+  top: calc(var(--wsi-c) * -0.3);
+  z-index: 0;
+  display: block;
+  width: var(--wsi-c);
+  height: var(--wsi-c);
+  pointer-events: none;
+}
+
+/* ─── The boards ───────────────────────────────────────────────────────── */
+.wsi-board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Peek & Guess: the chest, the picture cards under it */
+.wsi-play--peek {
+  --wsi-c: min(40cqh, 26cqw);
+  --wsi-card: min(23cqh, 14cqw);
+}
+.wsi-board--peek {
+  gap: 3cqh;
+}
+.wsi-chest-spot {
+  position: relative;
+  flex: none;
+  width: var(--wsi-c);
+  height: calc(var(--wsi-c) * 0.8636);
+  margin-top: calc(var(--wsi-c) * 0.24);
+}
+.wsi-choices {
+  display: flex;
+  justify-content: center;
+  gap: 4cqw;
+}
+.wsi-card {
+  position: relative;
+  display: block;
+  width: var(--wsi-card);
+  height: var(--wsi-card);
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 0.8cqh solid #f4e6c4;
+  border-radius: 22%;
+  background: #ffffff;
+  box-shadow:
+    0 1.1cqh 0 #c9a96c,
+    0 2cqh 2.4cqh rgba(20, 50, 70, 0.28);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.wsi-card:disabled {
+  cursor: default;
+}
+.wsi-card-pic {
+  position: absolute;
+  inset: 12%;
+  display: block;
+}
+.wsi-card.is-wrong .wsi-card-pic {
+  opacity: 0.4;
+}
+.wsi-card.is-right {
+  border-color: #8fd07e;
+  box-shadow:
+    0 1.1cqh 0 #5faf3a,
+    0 2cqh 2.4cqh rgba(20, 50, 70, 0.28);
+}
+
+/* Where Did It Go?: the toy's starting spot above a row of chests; each
+   place is exactly one slot wide, so a swap moves a chest by its own width */
+.wsi-board--where {
+  --wsi-c: min(34cqh, calc(62cqw / (var(--wsi-n, 3) * 1.15)));
+  gap: 2cqh;
+}
+.wsi-start {
+  position: relative;
+  z-index: 4;
+  display: block;
+  flex: none;
+  width: var(--wsi-toy);
+  height: var(--wsi-toy);
+}
+.wsi-hopper {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.wsi-row {
+  display: flex;
+  justify-content: center;
+}
+.wsi-slot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  width: calc(var(--wsi-c) * 1.15);
+  padding-top: calc(var(--wsi-c) * 0.22);
+}
+.wsi-slot.is-front {
+  z-index: 2;
+}
+.wsi-chest-btn {
+  position: relative;
+  display: block;
+  width: var(--wsi-c);
+  height: calc(var(--wsi-c) * 0.8636);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.wsi-chest-btn:disabled {
+  cursor: default;
+}
+.wsi-chest-btn.is-wrong .wsi-chest {
+  opacity: 0.6;
+}
+.wsi-chest-btn .ng-cross {
+  inset: 34% 26% 14% 26%;
+}
+
+/* ─── Each module in miniature (inside the shared `.ng-mini` box, whose
+   picture area is the container: cqh/cqw here are that area's) ──────────── */
+.wsi-mini-chest {
+  position: absolute;
+  bottom: 8%;
+  display: block;
+  height: calc(var(--wsi-c) * 0.8636);
+  width: var(--wsi-c);
+}
+.wsi-mini-chest--big {
+  --wsi-c: min(64cqh, 40cqw);
+  left: calc(50% - var(--wsi-c) * 0.5);
+}
+.wsi-mini-chest--l,
+.wsi-mini-chest--m,
+.wsi-mini-chest--r {
+  --wsi-c: min(46cqh, 27cqw);
+}
+.wsi-mini-chest--l {
+  left: calc(50% - var(--wsi-c) * 1.6);
+}
+.wsi-mini-chest--m {
+  left: calc(50% - var(--wsi-c) * 0.5);
+}
+.wsi-mini-chest--r {
+  left: calc(50% + var(--wsi-c) * 0.6);
+}
+.wsi-mini-q {
+  position: absolute;
+  right: 8%;
+  top: 6%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(30cqh, 18cqw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #c06a12;
+  font-size: min(24cqh, 14cqw);
+  line-height: 1;
+  box-shadow: 0 min(2cqh, 1.2cqw) 0 #e4ce9e;
+}
+
+/* ─── Portrait: the chest(s) on top, the cards below; a taller beach ──── */
+@media (orientation: portrait) {
+  .wsi-shore {
+    transform: scaleY(0.8);
+  }
+  .wsi-play--peek {
+    --wsi-c: min(60cqw, 28cqh);
+    --wsi-card: min(26cqw, 13cqh);
+  }
+  .wsi-board--peek {
+    gap: 5cqh;
+  }
+  .wsi-board--where {
+    --wsi-c: min(22cqh, calc(88cqw / (var(--wsi-n, 3) * 1.15)));
+    gap: 4cqh;
+  }
+}
