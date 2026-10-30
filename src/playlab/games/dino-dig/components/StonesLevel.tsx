@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
@@ -9,6 +10,7 @@ import { AlphabetStrip } from "@games/dino-dig/components/AlphabetStrip";
 import { displayLetter, type LetterCase } from "@games/dino-dig/store/dinoStore";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { useScheduler } from "@shared/hooks/useScheduler";
+import { useAfterVoice } from "@shared/hooks/useAfterVoice";
 import { cssVars } from "@shared/styles/cssVars";
 import { playClickSound, playCorrectSound, playIncorrectSound, playChime } from "@shared/audio/sfx";
 import { playClip, playSequence, preloadClips, clipText, stopVoice } from "@shared/audio/voice";
@@ -37,8 +39,6 @@ interface StonesLevelProps {
 const DROP_SLOP_PX = 30;
 /** The dino's hop across the finished bridge. */
 const HOP_MS = 1700;
-/** Cheer window after the hop — praise clips run up to ~2.3s (measured). */
-const CHEER_MS = 2600;
 
 /** Praise for a crossing, from the ONE shared rotation — seeded by the
  *  crossing index so the seven crossings never repeat back-to-back. This used
@@ -85,6 +85,7 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
   const [rootRef, dims] = useElementSize();
   const targetRefs = useRef<Map<string, HTMLElement>>(new Map());
   const schedule = useScheduler();
+  const { thenAfter } = useAfterVoice();
   /** Steps already landed — guards a double onAnimationComplete, which would
    *  double the sound and double-schedule the crossing (skipping one). */
   const landedRef = useRef(-1);
@@ -94,7 +95,7 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
    * announcement effect below.
    */
   const confirmRef = useRef<Promise<void>>(Promise.resolve());
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   /** The letter the gap is waiting for; null once the bridge is complete. */
   const next = placedCount < group.length ? group[placedCount] : null;
@@ -185,12 +186,12 @@ export function StonesLevel({ crossing, letterCase, onCrossingDone }: StonesLeve
         schedule(() => {
           setCelebrating(true);
           playChime();
-          void playClip(cheerForCrossing(crossing));
+          // the next crossing waits for the whole cheer, not a guessed delay
+          thenAfter([cheerForCrossing(crossing)], onCrossingDone);
         }, 500 + HOP_MS);
-        schedule(onCrossingDone, 500 + HOP_MS + CHEER_MS);
       }
     },
-    [placedCount, group.length, crossing, onCrossingDone, schedule]
+    [placedCount, group.length, crossing, onCrossingDone, schedule, thenAfter]
   );
 
   const endDrag = useCallback(

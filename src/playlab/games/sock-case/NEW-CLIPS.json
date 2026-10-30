@@ -1,0 +1,39 @@
+[
+  {
+    "id": "skc-welcome",
+    "text": "Detective time! Let's solve the sock case!",
+    "file": "/audio/sock-case/welcome.mp3"
+  },
+  {
+    "id": "skc-done",
+    "text": "Case solved! Every sock has a partner.",
+    "file": "/audio/sock-case/done.mp3"
+  },
+  {
+    "id": "skc-mode-pair",
+    "text": "Find the Pair. Find the matching sock.",
+    "file": "/audio/sock-case/mode-pair.mp3"
+  },
+  {
+    "id": "skc-mode-odd",
+    "text": "The Odd Sock. Which sock has no partner?",
+    "file": "/audio/sock-case/mode-odd.mp3"
+  },
+  {
+    "id": "skc-find-pair",
+    "text": "Find the sock that matches!",
+    "file": "/audio/sock-case/find-pair.mp3"
+  },
+  { "id": "skc-pair", "text": "They match! A pair!", "file": "/audio/sock-case/pair.mp3" },
+  {
+    "id": "skc-odd-ask",
+    "text": "Which sock has no partner?",
+    "file": "/audio/sock-case/odd-ask.mp3"
+  },
+  { "id": "skc-case-solved", "text": "Case solved!", "file": "/audio/sock-case/case-solved.mp3" },
+  {
+    "id": "skc-has-partner",
+    "text": "That one has a partner!",
+    "file": "/audio/sock-case/has-partner.mp3"
+  }
+]

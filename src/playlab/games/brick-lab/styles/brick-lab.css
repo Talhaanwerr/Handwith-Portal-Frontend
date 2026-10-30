@@ -1,0 +1,1879 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BRICK LAB — the brick engine and its five games (Brick Lab, Color Sort
+   Factory, Number Tower, Build Steps, Pattern Wall). Prefix: bk-.
+   The bricks themselves are SVG drawn by engine/BrickArt; this sheet lays out
+   the board, tray, camera controls, HUDs and the factory.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.bk-root,
+.bk-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.bk-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.bk-loose,
+.bk-model {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bk-leave {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #9a3412;
+  font-size: 13px;
+  box-shadow: 0 4px 14px rgba(60, 40, 20, 0.16);
+}
+
+/* ── Title screen and star card ──────────────────────────────────────── */
+
+.bk-splash,
+.bk-done {
+  position: absolute;
+  inset: 0;
+}
+.bk-splash-col {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 64px 16px 18px;
+  overflow-y: auto;
+}
+.bk-splash-hero {
+  width: min(52vh, 72vw, 400px);
+  height: min(40vh, 56vw, 300px);
+  min-height: 120px;
+}
+.bk-title {
+  margin: 0;
+  color: #b4231a;
+  font-size: clamp(30px, 7vmin, 60px);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-shadow:
+    0 3px 0 #fff,
+    0 6px 16px rgba(120, 40, 20, 0.22);
+}
+.bk-tagline {
+  margin: 0;
+  color: #5a4632;
+  font-size: clamp(14px, 2.8vmin, 20px);
+  text-align: center;
+}
+.bk-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  margin-top: 8px;
+  padding: 6px 30px 6px 10px;
+  border: 0;
+  border-radius: 9999px;
+  background: linear-gradient(#ffd84a, #f5b81c);
+  color: #6b3d00;
+  font-size: clamp(22px, 4.4vmin, 32px);
+  box-shadow:
+    inset 0 -5px 0 rgba(150, 80, 0, 0.28),
+    inset 0 3px 0 rgba(255, 255, 255, 0.6),
+    0 8px 20px rgba(120, 70, 0, 0.28);
+  cursor: pointer;
+}
+.bk-play-brick {
+  display: block;
+  width: 54px;
+  height: 54px;
+}
+
+.bk-done-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: min(92vw, 360px);
+  padding: 12px 18px 18px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 50px rgba(60, 40, 20, 0.28);
+}
+.bk-done-card .bk-model {
+  width: min(240px, 40vh);
+  height: min(200px, 34vh);
+}
+.bk-done-cheer {
+  margin: 0;
+  color: #b4231a;
+  font-size: clamp(26px, 5.4vmin, 40px);
+}
+.bk-done-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.bk-btn {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff;
+  color: #5a4632;
+  font-size: 17px;
+  box-shadow:
+    inset 0 -3px 0 rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(60, 40, 20, 0.16);
+  cursor: pointer;
+}
+.bk-btn--go {
+  background: linear-gradient(#4fc768, #2f9e4a);
+  color: #fff;
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 60, 20, 0.28),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    0 6px 14px rgba(20, 90, 40, 0.3);
+}
+.bk-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+@media (max-height: 520px) {
+  .bk-splash-col {
+    gap: 2px;
+    padding-top: 44px;
+  }
+  .bk-splash-hero {
+    height: 34vh;
+    min-height: 90px;
+  }
+  .bk-play {
+    min-height: 50px;
+    margin-top: 4px;
+  }
+  .bk-play-brick {
+    width: 42px;
+    height: 42px;
+  }
+  .bk-done-card .bk-model {
+    height: 26vh;
+  }
+  .bk-done-card {
+    padding: 6px 14px 12px;
+  }
+}
+
+/* ── The board ───────────────────────────────────────────────────────── */
+
+.bk-board {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: row-reverse;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.bk-scene {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  cursor: grab;
+}
+.bk-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.bk-board--locked .bk-scene,
+.bk-board--locked .bk-tray {
+  pointer-events: none;
+}
+
+.bk-brick {
+  cursor: grab;
+}
+.bk-brick--lifted {
+  opacity: 0;
+}
+.bk-brick--selected {
+  filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px rgba(255, 210, 60, 0.95));
+}
+.bk-shadows polygon {
+  fill: rgba(18, 40, 60, 0.26);
+}
+.bk-shadows .bk-shadow-wide {
+  fill: rgba(18, 40, 60, 0.12);
+}
+.bk-drop--0 {
+  animation: bk-drop-a 0.34s cubic-bezier(0.32, 1.55, 0.55, 1) both;
+}
+.bk-drop--1 {
+  animation: bk-drop-b 0.34s cubic-bezier(0.32, 1.55, 0.55, 1) both;
+}
+@keyframes bk-drop-a {
+  from {
+    transform: translateY(var(--bk-lift, -12px));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes bk-drop-b {
+  from {
+    transform: translateY(var(--bk-lift, -12px));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.bk-ghost-face {
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-dasharray: 7 4;
+}
+.bk-ghost--ghost-ok .bk-ghost-face {
+  fill: rgba(255, 255, 255, 0.34);
+  stroke: #ffffff;
+}
+.bk-ghost--ghost-ok .bk-ghost-face--top {
+  fill: rgba(255, 255, 255, 0.5);
+}
+.bk-ghost--ghost-bad .bk-ghost-face {
+  fill: rgba(255, 70, 70, 0.28);
+  stroke: #e0322b;
+}
+.bk-ghost--hint {
+  opacity: 0.5;
+}
+.bk-ghost--hint .bk-ghost-face {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+.bk-landing .bk-ghost--ghost-ok .bk-ghost-face {
+  stroke: #26b54a;
+  fill: rgba(80, 230, 120, 0.25);
+}
+.bk-ghost {
+  animation: bk-breathe 1.6s ease-in-out infinite;
+}
+.bk-landing .bk-ghost {
+  animation: none;
+}
+@keyframes bk-breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.bk-mark {
+  fill: rgba(255, 255, 255, 0.55);
+  stroke: #24476e;
+  stroke-width: 3;
+  stroke-dasharray: 8 5;
+  stroke-linejoin: round;
+  animation: bk-breathe 1.4s ease-in-out infinite;
+}
+.bk-bump {
+  fill: none;
+  stroke: rgba(235, 80, 70, 0.85);
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bk-bump 0.5s ease-out both;
+}
+@keyframes bk-bump {
+  from {
+    transform: scale(0.4);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* The brick in the hand while it is off the plate. */
+.bk-held {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  width: var(--bk-hs, 0px);
+  height: var(--bk-hs, 0px);
+  pointer-events: none;
+  transform: translate3d(
+    calc(var(--bk-hx, 0px) - var(--bk-hs, 0px) / 2),
+    calc(var(--bk-hy, 0px) - var(--bk-hs, 0px) * 0.8),
+    0
+  );
+}
+.bk-held--hidden {
+  visibility: hidden;
+}
+
+.bk-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.bk-overlay > * {
+  pointer-events: auto;
+}
+.bk-win {
+  position: absolute;
+  inset: 0;
+  pointer-events: none !important;
+}
+
+/* Turn / take-off, floating over the tapped brick. */
+.bk-tools {
+  position: absolute;
+  left: var(--bk-tx);
+  top: var(--bk-ty);
+  z-index: 15;
+  display: flex;
+  gap: 8px;
+  margin: -64px 0 0 -52px;
+}
+.bk-tool,
+.bk-cam-btn,
+.bk-tray-turn {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #3a4a5c;
+  box-shadow:
+    inset 0 -3px 0 rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(30, 40, 60, 0.2);
+  cursor: pointer;
+}
+.bk-tool--off {
+  color: #c0392b;
+}
+.bk-flip {
+  transform: scaleX(-1);
+}
+
+.bk-cam {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 12;
+  display: flex;
+  gap: 8px;
+}
+
+/* ── The tray: a column on the left in landscape, a strip in portrait ── */
+
+.bk-tray {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  --bk-item: clamp(60px, 10.5vh, 92px);
+  /* One column, as wide as the tray, the bricks sharing its whole height. */
+  width: clamp(112px, 15vw, 170px);
+  padding: 72px 10px 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: linear-gradient(90deg, rgba(255, 252, 245, 0.96), rgba(255, 248, 235, 0.9));
+  border-right: 3px solid rgba(214, 170, 110, 0.55);
+  box-shadow: 6px 0 22px rgba(80, 50, 20, 0.12);
+  scrollbar-width: thin;
+}
+.bk-tray > * {
+  flex-shrink: 0;
+}
+.bk-tray > button,
+.bk-tray > .bk-swatches {
+  align-self: center;
+}
+.bk-tray-row {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+.bk-tray-item {
+  position: relative;
+  flex: 1 1 0;
+  width: 100%;
+  min-height: var(--bk-item);
+  max-height: 190px;
+  padding: 6px;
+  border: 0;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 40%, #fff, #f4ece0);
+  box-shadow:
+    inset 0 -3px 0 rgba(120, 80, 30, 0.12),
+    0 3px 8px rgba(80, 50, 20, 0.14);
+  cursor: grab;
+  /* A swipe along the tray scrolls it; a pull towards the board drags. */
+  touch-action: pan-y;
+}
+.bk-tray-item:active {
+  cursor: grabbing;
+}
+.bk-tray-turn--on {
+  background: #ffe9a8;
+  color: #7a4b00;
+}
+.bk-swatches {
+  display: grid;
+  /* As many per row as the tray is wide; never wider than the tray. */
+  grid-template-columns: repeat(auto-fill, minmax(26px, 1fr));
+  width: 100%;
+  gap: 6px;
+}
+.bk-swatch {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  background: var(--bk-sw, #ccc);
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.18),
+    inset 0 3px 0 rgba(255, 255, 255, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}
+.bk-swatch--on {
+  outline: 3px solid #2b2b2b;
+  outline-offset: 1px;
+}
+.bk-c--red {
+  --bk-sw: #c91a09;
+}
+.bk-c--orange {
+  --bk-sw: #fe8a18;
+}
+.bk-c--yellow {
+  --bk-sw: #f5cd2f;
+}
+.bk-c--green {
+  --bk-sw: #25a244;
+}
+.bk-c--teal {
+  --bk-sw: #36aebf;
+}
+.bk-c--blue {
+  --bk-sw: #0a5bc4;
+}
+.bk-c--purple {
+  --bk-sw: #7e3fb5;
+}
+.bk-c--pink {
+  --bk-sw: #f27bb0;
+}
+.bk-c--white {
+  --bk-sw: #f2f3f2;
+}
+.bk-c--black {
+  --bk-sw: #2a3138;
+}
+
+@media (orientation: portrait) {
+  .bk-board {
+    flex-direction: column;
+  }
+  .bk-tray {
+    flex-direction: row;
+    width: auto;
+    height: clamp(96px, 16vh, 124px);
+    padding: 8px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: 0;
+    border-top: 3px solid rgba(214, 170, 110, 0.55);
+    box-shadow: 0 -6px 22px rgba(80, 50, 20, 0.12);
+  }
+  .bk-tray {
+    --bk-item: clamp(64px, 12vh, 92px);
+  }
+  .bk-tray-row {
+    flex-direction: row;
+  }
+  .bk-tray-item {
+    flex: 0 0 var(--bk-item);
+    width: var(--bk-item);
+    height: var(--bk-item);
+    max-height: none;
+    touch-action: pan-x;
+  }
+  .bk-swatches {
+    grid-template-columns: repeat(5, 30px);
+    width: auto;
+  }
+  .bk-swatch {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .bk-cam-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .bk-cam {
+    gap: 6px;
+  }
+  .bk-tray {
+    --bk-item: 60px;
+    padding-top: 64px;
+  }
+  .bk-swatches {
+    gap: 5px;
+  }
+  .bk-swatch {
+    border-width: 2px;
+    border-radius: 8px;
+  }
+}
+
+/* ── HUDs over the scene ─────────────────────────────────────────────── */
+
+.bk-hud {
+  position: absolute;
+  top: 70px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bk-count {
+  min-width: 52px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #3a4a5c;
+  font-size: 26px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(30, 40, 60, 0.14);
+}
+
+.bk-pip {
+  border: 0;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: var(--bk-sw, #ccc);
+  opacity: 0.25;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18);
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+}
+.bk-pip--on {
+  opacity: 1;
+}
+.bk-pip--now {
+  opacity: 0.85;
+  transform: scale(1.25);
+  outline: 3px solid #fff;
+}
+
+.bk-tower-card {
+  position: absolute;
+  top: 66px;
+  left: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  transform: translateX(-50%);
+  padding: 6px 16px 8px 8px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 6px 18px rgba(30, 40, 60, 0.18);
+}
+.bk-tower-goal {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(#5b8fd6, #3a6db8);
+  color: #fff;
+  font-size: 34px;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+}
+.bk-tower-pips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 170px;
+}
+.bk-tower-count {
+  display: grid;
+  place-items: center;
+  min-width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #eef4fc;
+  color: #3a6db8;
+  font-size: 36px;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.08);
+}
+.bk-tower-count--done {
+  background: #b9f0c4;
+  color: #12612a;
+  box-shadow: 0 0 0 4px #4cc46a;
+}
+/* Past the number: a soft amber, never red — "count again", not "wrong". */
+.bk-tower-count--over {
+  background: #ffe9c2;
+  color: #8a4b00;
+}
+.bk-tower-actions {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.bk-tower-off {
+  min-width: 64px;
+  min-height: 48px;
+  font-size: 20px;
+}
+.bk-tower-check {
+  min-height: 48px;
+  padding: 0 24px;
+  font-size: 22px;
+}
+.bk-tower-check--ready {
+  animation: bk-pulse 1.1s ease-in-out infinite;
+  box-shadow: 0 0 0 5px rgba(76, 196, 106, 0.55);
+}
+@keyframes bk-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.07);
+  }
+}
+@media (max-height: 520px) {
+  .bk-tower-card {
+    top: 8px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 4px 10px 4px 4px;
+  }
+  .bk-tower-actions {
+    flex-basis: auto;
+    gap: 6px;
+  }
+  .bk-tower-goal,
+  .bk-tower-count {
+    min-width: 42px;
+    width: auto;
+    height: 42px;
+    font-size: 26px;
+  }
+  .bk-tower-pips {
+    max-width: 110px;
+    gap: 3px;
+  }
+  .bk-tower-off,
+  .bk-tower-check {
+    min-height: 44px;
+    font-size: 17px;
+    padding: 0 12px;
+  }
+  .bk-tower-off {
+    min-width: 48px;
+  }
+}
+
+.bk-booklet {
+  position: absolute;
+  top: 68px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 6px 18px rgba(30, 40, 60, 0.18);
+}
+.bk-booklet .bk-model {
+  width: clamp(92px, 22vmin, 150px);
+  height: clamp(92px, 22vmin, 150px);
+}
+.bk-booklet-steps {
+  display: flex;
+  gap: 5px;
+}
+
+/* ── Color Sort Factory ──────────────────────────────────────────────── */
+
+.bk-factory {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 64px 12px 10px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.bk-factory-progress {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+}
+.bk-belt-wrap {
+  position: relative;
+  width: min(100%, 760px);
+  height: clamp(110px, 38vh, 300px);
+  flex: 0 0 auto;
+}
+.bk-hopper {
+  position: absolute;
+  left: 0;
+  bottom: 22%;
+  z-index: 2;
+  width: clamp(54px, 11vw, 96px);
+  height: 82%;
+  border-radius: 16px 16px 8px 8px;
+  background: linear-gradient(90deg, #7e8ea3, #b9c6d6 45%, #8494a8);
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.18),
+    0 6px 14px rgba(30, 40, 60, 0.25);
+}
+.bk-hopper-mouth {
+  position: absolute;
+  right: -2px;
+  bottom: 8px;
+  width: 64%;
+  height: 46%;
+  border-radius: 10px 0 0 10px;
+  background: #2c3644;
+}
+.bk-hopper-light {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: #6ee07c;
+  box-shadow: 0 0 10px #6ee07c;
+}
+.bk-belt {
+  position: absolute;
+  left: 4%;
+  right: 0;
+  bottom: 10%;
+  height: 26%;
+  min-height: 30px;
+  border-radius: 9999px;
+  background: #3b4352;
+  box-shadow: 0 8px 16px rgba(20, 30, 40, 0.3);
+  overflow: hidden;
+}
+.bk-belt-top {
+  position: absolute;
+  inset: 4px 10px auto;
+  height: 55%;
+  border-radius: 9999px;
+  background: repeating-linear-gradient(90deg, #5c6678 0 22px, #4a5364 22px 26px);
+  background-size: 26px 100%;
+}
+.bk-belt-rollers {
+  position: absolute;
+  inset: auto 10px 3px;
+  height: 30%;
+  background: radial-gradient(circle, #9aa6b8 0 38%, transparent 40%) 0 50% / 26px 100% repeat-x;
+}
+.bk-belt--run .bk-belt-top {
+  animation: bk-belt 0.85s ease-out both;
+}
+@keyframes bk-belt {
+  from {
+    background-position: -130px 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+.bk-belt-brick {
+  position: absolute;
+  left: 50%;
+  bottom: 16%;
+  z-index: 3;
+  width: clamp(96px, 30vh, 230px);
+  height: clamp(96px, 30vh, 230px);
+  margin-left: calc(clamp(96px, 30vh, 230px) / -2);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+}
+.bk-belt-brick--away > * {
+  opacity: 0.18;
+}
+.bk-factory-ghost > * {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  left: -65px;
+  top: -80px;
+}
+
+.bk-bins {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(8px, 3vw, 28px);
+  width: 100%;
+  flex: 0 0 auto;
+}
+.bk-crate {
+  position: relative;
+  width: clamp(104px, 20vw, 240px);
+  aspect-ratio: 4 / 3;
+  max-height: 30vh;
+  transition: transform 0.2s;
+}
+.bk-crate--lit {
+  transform: translateY(-6px) scale(1.06);
+}
+.bk-crate-back,
+.bk-crate-front {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.bk-crate-load {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: -6%;
+  height: 46%;
+}
+.bk-crate-brick {
+  position: absolute;
+  bottom: 0;
+  width: 46%;
+  height: 100%;
+}
+.bk-crate-brick--0 {
+  left: 0;
+}
+.bk-crate-brick--1 {
+  left: 30%;
+}
+.bk-crate-brick--2 {
+  left: 54%;
+}
+.bk-crate-brick--3 {
+  left: 16%;
+  bottom: 22%;
+}
+.bk-crate-count {
+  fill: #3a4a5c;
+  font-family: inherit;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+@media (orientation: portrait) {
+  .bk-crate {
+    width: clamp(70px, 22vw, 150px);
+  }
+}
+
+/* ── Letter bricks (Spell Bricks) ────────────────────────────────────── */
+
+/* The picture has its own big area at the top of the scene (column: picture,
+   then the letter spots under it). Sizes match spellInset() in the game. */
+.bk-spell-card {
+  --bk-pic: clamp(120px, 26dvh, 230px);
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(100% - 200px);
+  padding: 10px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 6px 18px rgba(30, 40, 60, 0.18);
+  transform: translateX(-50%);
+}
+.bk-spell-pic {
+  display: grid;
+  place-items: center;
+  width: var(--bk-pic);
+  height: var(--bk-pic);
+  padding: 10px;
+  border: 0;
+  border-radius: 20px;
+  background: #fff4e0;
+  cursor: pointer;
+}
+.bk-spell-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.bk-spell-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bk-spell-hear {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: #24476e;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+}
+.bk-spell-hear:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.bk-spell-hear svg {
+  width: 26px;
+  height: 26px;
+}
+.bk-spell-word {
+  display: flex;
+  gap: 6px;
+}
+.bk-spell-letter {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 50px;
+  border: 3px dashed #c9b994;
+  border-radius: 12px;
+  background: #fffaf0;
+  color: #23324a;
+  font-family: inherit;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+.bk-spell-letter--on {
+  border: 0;
+  background: var(--bk-sw, #ccc);
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.18);
+}
+.bk-spell-letter--now {
+  border-color: #24476e;
+  animation: bk-breathe 1.4s ease-in-out infinite;
+}
+@media (max-height: 520px) {
+  .bk-spell-card {
+    --bk-pic: 92px;
+    top: 6px;
+    flex-direction: row;
+    gap: 10px;
+    padding: 6px 10px 6px 6px;
+    border-radius: 22px;
+  }
+  .bk-spell-hear {
+    width: 40px;
+    height: 40px;
+  }
+  .bk-spell-letter {
+    width: 34px;
+    height: 40px;
+    font-size: 24px;
+  }
+}
+
+/* ── Module cards, round dots, snap ring, small HUD buttons ─────────── */
+
+.bk-modules {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 28px);
+  margin-top: 8px;
+}
+.bk-module {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: clamp(160px, 34vmin, 300px);
+  padding: 10px 10px 14px;
+  border: 0;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #24476e;
+  font-size: clamp(17px, 3vmin, 24px);
+  box-shadow:
+    inset 0 -5px 0 rgba(60, 80, 120, 0.12),
+    0 10px 26px rgba(40, 50, 80, 0.2);
+  cursor: pointer;
+}
+.bk-module-model {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 0.82;
+}
+.bk-module-label {
+  padding: 4px 16px;
+  border-radius: 9999px;
+  background: linear-gradient(#ffd84a, #f5b81c);
+  color: #6b3d00;
+  box-shadow: inset 0 -3px 0 rgba(150, 80, 0, 0.25);
+}
+
+.bk-rounds {
+  position: absolute;
+  left: 12px;
+  bottom: 14px;
+  display: flex;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 3px 10px rgba(30, 40, 60, 0.14);
+  pointer-events: none;
+}
+.bk-round {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #d5dbe5;
+  transition:
+    transform 0.25s,
+    background 0.25s;
+}
+.bk-round--done {
+  background: #3dab72;
+}
+.bk-round--now {
+  background: #f5b81c;
+  transform: scale(1.35);
+}
+.bk-factory .bk-rounds {
+  bottom: auto;
+  top: 70px;
+}
+
+.bk-snapring {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bk-snapring 0.45s ease-out both;
+}
+@keyframes bk-snapring {
+  from {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.bk-hud-small {
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+@media (max-height: 520px) {
+  .bk-module {
+    width: clamp(130px, 40vh, 190px);
+    padding: 6px 8px 10px;
+  }
+  .bk-modules {
+    margin-top: 2px;
+  }
+}
+
+/* ── First Sound ─────────────────────────────────────────────────────── */
+
+.bk-sound-card {
+  --bk-pic: clamp(120px, 26dvh, 230px);
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  padding: 10px 20px 8px;
+  border: 0;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 22px rgba(30, 40, 60, 0.2);
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.bk-sound-pic {
+  display: grid;
+  place-items: center;
+  width: var(--bk-pic);
+  height: var(--bk-pic);
+  padding: 10px;
+  border-radius: 20px;
+  background: #fff4e0;
+}
+.bk-sound-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.bk-sound-word {
+  color: #23324a;
+  font-size: 40px;
+  letter-spacing: 0.04em;
+}
+.bk-sound-first {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  height: 52px;
+  margin-right: 2px;
+  border: 3px dashed #24476e;
+  border-radius: 12px;
+  color: #24476e;
+  animation: bk-breathe 1.4s ease-in-out infinite;
+}
+.bk-sound-first--on {
+  border: 0;
+  background: #3dab72;
+  color: #fff;
+  animation: none;
+}
+
+/* ── ABC Tower ───────────────────────────────────────────────────────── */
+
+.bk-abc-card {
+  position: absolute;
+  top: 62px;
+  left: 50%;
+  display: flex;
+  gap: 6px;
+  width: max-content;
+  padding: 8px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 18px rgba(30, 40, 60, 0.18);
+  transform: translateX(-50%);
+}
+.bk-abc-cell {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 46px;
+  border: 3px dashed #c9c2dc;
+  border-radius: 12px;
+  color: #24476e;
+  font-family: inherit;
+  font-size: 28px;
+  font-weight: 900;
+}
+.bk-abc-cell--on {
+  border: 0;
+  background: var(--bk-sw, #ccc);
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.18);
+}
+.bk-abc-cell--now {
+  border-color: #24476e;
+  animation: bk-breathe 1.4s ease-in-out infinite;
+}
+
+@media (max-height: 520px) {
+  .bk-sound-card,
+  .bk-abc-card {
+    top: 8px;
+    padding: 4px 12px 4px 4px;
+  }
+  .bk-sound-card {
+    --bk-pic: 92px;
+    flex-direction: row;
+    gap: 12px;
+  }
+  .bk-sound-word {
+    font-size: 26px;
+  }
+  .bk-sound-first {
+    min-width: 32px;
+    height: 38px;
+  }
+  .bk-abc-cell {
+    width: 32px;
+    height: 36px;
+    font-size: 22px;
+  }
+}
+
+/* Brick Lab's colours: a bar of paint pots along the bottom of the play
+   area, left of the camera buttons — the tray keeps its height for bricks. */
+.bk-swatches--bar {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 12;
+  grid-template-columns: repeat(10, 44px);
+  gap: 8px;
+  width: auto;
+  padding: 8px 10px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 14px rgba(30, 40, 60, 0.18);
+}
+.bk-swatches--bar .bk-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+@media (max-width: 900px), (max-height: 520px) {
+  .bk-swatches--bar {
+    grid-template-columns: repeat(5, 36px);
+    gap: 6px;
+    padding: 6px 8px;
+  }
+  .bk-swatches--bar .bk-swatch {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* QA 2026-10-14 — phone fixes.
+   Sideways phones: the word cards sit centred in the gap BETWEEN the two
+   pills (the Back pill is narrower than Back to Games), not under them. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .bk-spell-card,
+  .bk-abc-card,
+  .bk-sound-card {
+    left: calc(50% - 22px);
+  }
+  .bk-spell-letter {
+    width: 30px;
+  }
+  .bk-abc-card {
+    gap: 4px;
+    padding: 4px 6px;
+  }
+  .bk-abc-cell {
+    width: 28px;
+    height: 32px;
+    font-size: 19px;
+    border-width: 2px;
+  }
+}
+/* Upright phones: the round dots and Brick Lab's colour bar sit above the
+   camera buttons, not beside them. */
+@media (orientation: portrait) {
+  .bk-rounds,
+  .bk-swatches--bar {
+    bottom: 68px;
+  }
+}
+/* A tray brick may shrink to 56px so a full tray (Brick Lab's eight sizes)
+   fits a desktop screen; below that the tray scrolls. */
+.bk-tray-item {
+  min-height: min(var(--bk-item), 56px);
+}
+
+/* A falling celebration brick: a 2x2 seen from the front, studs on top. */
+.bk-cbrick {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 72%;
+  margin-top: 28%;
+  border-radius: 3px;
+  background: var(--bk-sw);
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.22),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
+}
+.bk-cbrick::before,
+.bk-cbrick::after {
+  content: "";
+  position: absolute;
+  top: -22%;
+  width: 28%;
+  height: 24%;
+  border-radius: 3px 3px 1px 1px;
+  background: var(--bk-sw);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+.bk-cbrick::before {
+  left: 14%;
+}
+.bk-cbrick::after {
+  right: 14%;
+}
+
+/* Brick rain: transform-only falls (see RoundWin.tsx). */
+.bk-rain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bk-rain-drop {
+  position: absolute;
+  left: var(--bk-rx);
+  top: -60px;
+  width: 34px;
+  height: 34px;
+  animation: bk-rain var(--bk-rt) linear var(--bk-rd) both;
+}
+@keyframes bk-rain {
+  from {
+    transform: translateY(0) rotate(0deg) scale(var(--bk-rs));
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(110vh) rotate(var(--bk-rr)) scale(var(--bk-rs));
+    opacity: 0;
+  }
+}
+.bk-stamp-at {
+  position: absolute;
+  right: 12%;
+  top: 18%;
+  width: 0;
+  height: 0;
+}
+.bk-chip {
+  position: absolute;
+  left: var(--bk-rx);
+  top: -24px;
+  width: 10px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--bk-chip);
+  animation: bk-rain var(--bk-rt) linear var(--bk-rd) both;
+}
+.bk-chip--tall {
+  width: 6px;
+  height: 14px;
+}
+
+/* ── Plus Tower / Take Away Tower: the sum card ─────────────────────── */
+
+.bk-sum-card {
+  position: absolute;
+  top: 62px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  padding: 8px 14px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 22px rgba(30, 40, 60, 0.2);
+  transform: translateX(-50%);
+}
+.bk-sum-part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 16px;
+}
+.bk-sum-part--now {
+  background: #fff3c4;
+  box-shadow: inset 0 0 0 3px #f5c542;
+}
+.bk-sum-num {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: var(--bk-sw, #888);
+  color: #fff;
+  font-size: 34px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+}
+.bk-sum-num--take {
+  background: #e05252;
+}
+.bk-sum-pips {
+  display: flex;
+  gap: 4px;
+}
+.bk-sum-sign {
+  color: #3a4a5c;
+  font-size: 38px;
+  line-height: 1;
+}
+.bk-sum-answer {
+  display: grid;
+  place-items: center;
+  min-width: 56px;
+  height: 56px;
+  border: 3px dashed #24476e;
+  border-radius: 16px;
+  color: #24476e;
+  font-size: 36px;
+}
+.bk-sum-answer--done {
+  border: 0;
+  background: #3dab72;
+  color: #fff;
+}
+.bk-pip--gone {
+  opacity: 0.18;
+}
+.bk-pip--take {
+  --bk-sw: #e05252;
+}
+@media (max-height: 520px) {
+  .bk-sum-card {
+    top: 8px;
+    left: calc(50% - 22px);
+    gap: 6px;
+    padding: 4px 10px;
+  }
+  .bk-sum-num {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
+  .bk-sum-sign {
+    font-size: 26px;
+  }
+  .bk-sum-answer {
+    min-width: 40px;
+    height: 40px;
+    font-size: 26px;
+  }
+  .bk-sum-part {
+    padding: 2px 4px;
+  }
+  .bk-sum-pips .bk-pip {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Tray brick names ("Small red", "Big white") and white-brick visibility. */
+.bk-tray-name {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  left: 4px;
+  padding: 1px 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #3a2d1e;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  pointer-events: none;
+}
+/* A white brick on the near-white tray card: give the tile a darker backing
+   and the brick itself a clear outline, without changing its colour. */
+.bk-tray-item--white {
+  background: radial-gradient(circle at 50% 40%, #aebccb, #8797aa);
+}
+
+/* White stays white — it just gets a visible edge wherever it sits on a pale
+   surface (step pips, colour swatches, falling confetti bricks). */
+.bk-pip.bk-c--white,
+.bk-swatch.bk-c--white {
+  outline: 2px solid #7f8fa3;
+  outline-offset: -2px;
+}
+.bk-cbrick.bk-c--white {
+  outline: 2px solid #7f8fa3;
+}
+.bk-pip--now.bk-c--white {
+  outline-color: #3a4b66;
+}
+
+/* ── Copy the Design (guided Brick Lab) ───────────────────────────────── */
+
+.bk-pick {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 70px 16px 16px;
+  overflow-y: auto;
+}
+.bk-pick-title {
+  margin: 0;
+  color: #7a2a14;
+  font-size: clamp(22px, 3.4vw, 34px);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+}
+.bk-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: min(100%, 880px);
+}
+.bk-pick-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 8px 10px;
+  border: 0;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.08),
+    0 6px 14px rgba(60, 40, 20, 0.18);
+  color: #3a2d1e;
+  cursor: pointer;
+}
+.bk-pick-card--done {
+  background: #effbe9;
+}
+.bk-pick-model {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.bk-pick-model .bk-model {
+  width: 100%;
+  height: 100%;
+}
+.bk-pick-name {
+  font-size: 18px;
+  line-height: 1.1;
+}
+.bk-pick-kind {
+  font-size: 13px;
+  color: #6a7b95;
+}
+.bk-pick-star {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  color: #f2b11a;
+  font-size: 30px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+}
+@media (max-width: 760px) {
+  .bk-pick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-height: 520px) and (min-width: 761px) {
+  .bk-pick {
+    padding-top: 56px;
+  }
+  .bk-pick-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .bk-pick-model {
+    aspect-ratio: 1.5;
+  }
+  .bk-pick-name {
+    font-size: 15px;
+  }
+  .bk-pick-kind {
+    display: none;
+  }
+}
+
+/* The reference picture stays on screen while the child builds. */
+.bk-ref {
+  position: absolute;
+  top: 62px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: clamp(140px, 30vh, 250px);
+  padding: 6px 8px 8px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 6px 18px rgba(30, 40, 60, 0.2);
+}
+.bk-ref .bk-model {
+  width: 100%;
+  height: auto;
+}
+.bk-ref-title {
+  color: #24476e;
+  font-size: 16px;
+}
+.bk-ref-name {
+  color: #6a7b95;
+  font-size: 13px;
+}
+.bk-copy-msg {
+  position: absolute;
+  top: 66px;
+  left: 50%;
+  max-width: calc(100% - 420px);
+  margin: 0;
+  padding: 8px 18px;
+  border-radius: 18px;
+  background: #fff1c9;
+  box-shadow: 0 4px 12px rgba(30, 40, 60, 0.18);
+  color: #7a4b00;
+  font-size: 18px;
+  text-align: center;
+  transform: translateX(-50%);
+}
+.bk-copy-actions {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  display: flex;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+.bk-copy-check {
+  min-height: 48px;
+  padding: 0 24px;
+  font-size: 20px;
+}
+@media (max-height: 520px) {
+  .bk-ref {
+    top: 52px;
+    width: 104px;
+    padding: 4px 6px 6px;
+  }
+  .bk-ref-name {
+    display: none;
+  }
+  .bk-copy-msg {
+    top: 8px;
+    max-width: calc(100% - 520px);
+    font-size: 15px;
+  }
+}
+@media (orientation: portrait) {
+  .bk-copy-actions {
+    bottom: 76px;
+  }
+  .bk-copy-msg {
+    max-width: calc(100% - 160px);
+    top: 200px;
+  }
+}
+
+/* Cards under the two pills on narrow upright screens; tucked to the left of
+   the pills on short sideways screens (tray on the left, pill on the right). */
+@media (max-width: 700px) and (min-height: 521px) {
+  .bk-spell-card,
+  .bk-sound-card {
+    top: 64px;
+  }
+  .bk-tower-card {
+    top: 66px;
+  }
+}
+@media (max-height: 520px) {
+  .bk-spell-card,
+  .bk-sound-card,
+  .bk-tower-card {
+    left: 8px;
+    max-width: calc(100% - 160px);
+    transform: none;
+  }
+  .bk-tower-pips {
+    display: none;
+  }
+  .bk-ref {
+    top: 64px;
+  }
+}
+
+@media (max-height: 520px) {
+  .bk-copy-actions {
+    bottom: 10px;
+    left: 120px;
+    gap: 6px;
+    transform: none;
+  }
+  .bk-copy-actions .bk-btn {
+    min-height: 44px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
+  .bk-copy-actions .bk-copy-check {
+    font-size: 16px;
+  }
+  .bk-copy-clear {
+    display: none;
+  }
+}
+
+.bk-copy-actions .bk-btn {
+  white-space: nowrap;
+}
+@media (max-width: 700px) and (min-height: 521px) {
+  .bk-ref {
+    width: 150px;
+  }
+  .bk-copy-msg {
+    top: 66px;
+    left: 8px;
+    max-width: calc(100% - 180px);
+    transform: none;
+    font-size: 15px;
+  }
+}
+
+/* ABC Tower, 10 letters: one row of small cells, tucked left of the pill. */
+.bk-abc-card {
+  flex-wrap: wrap;
+  max-width: calc(100% - 200px);
+}
+@media (max-height: 520px) {
+  .bk-abc-card {
+    left: 8px;
+    gap: 3px;
+    max-width: calc(100% - 150px);
+    padding: 4px 6px;
+    transform: none;
+  }
+  .bk-abc-cell {
+    width: 22px;
+    height: 28px;
+    border-width: 2px;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+}
+
+/* Number Tower: the two buttons sit big at the bottom centre, under the
+   tower, where a small hand reaches them — not squeezed into the top card. */
+.bk-tower-dock {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transform: translateX(-50%);
+}
+.bk-tower-dock .bk-tower-off {
+  min-width: 88px;
+  min-height: 76px;
+  font-size: 30px;
+}
+.bk-tower-dock .bk-tower-check {
+  min-height: 84px;
+  padding: 0 48px;
+  font-size: 36px;
+  white-space: nowrap;
+}
+@media (max-height: 520px) {
+  .bk-tower-dock {
+    bottom: 8px;
+    gap: 10px;
+  }
+  .bk-tower-dock .bk-tower-off {
+    min-width: 64px;
+    min-height: 56px;
+    font-size: 22px;
+  }
+  .bk-tower-dock .bk-tower-check {
+    min-height: 60px;
+    padding: 0 28px;
+    font-size: 26px;
+  }
+}
+@media (orientation: portrait) {
+  .bk-tower-dock {
+    bottom: 76px;
+  }
+}
+/* Short sideways phones: the dock moves to the right edge, above the camera
+   buttons, so it never covers them. */
+@media (max-height: 520px) {
+  .bk-tower-dock {
+    right: 10px;
+    bottom: 62px;
+    left: auto;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 8px;
+    transform: none;
+  }
+}

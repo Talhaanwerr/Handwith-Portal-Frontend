@@ -7,7 +7,8 @@ import { CelebrationSparkles } from "@shared/components/animations/Sparkles";
 import { useElementSize } from "@shared/hooks/useElementSize";
 import { playCelebrationSound } from "@shared/audio/sfx";
 import { playClip, clipText, stopVoice } from "@shared/audio/voice";
-import { LOWERCASE } from "@games/magnet-match/constants/letters";
+import { LOWERCASE, caseLetter } from "@games/magnet-match/constants/letters";
+import { useMagnetStore } from "@games/magnet-match/store/magnetStore";
 import { ChefArt } from "@games/magnet-match/components/MagnetArt";
 import { KitchenBackdrop } from "@games/magnet-match/components/KitchenBackdrop";
 
@@ -17,6 +18,7 @@ interface MagnetCompleteProps {
 }
 
 export function MagnetComplete({ onPlayAgain, onExitPortal }: MagnetCompleteProps) {
+  const letterCase = useMagnetStore((s) => s.letterCase);
   // The shared hook, not a hand-rolled measure: this screen carried its own
   // copy that measured once on mount, so a device rotated during the finale
   // left the confetti sized for the previous orientation. useElementSize
@@ -89,7 +91,7 @@ export function MagnetComplete({ onPlayAgain, onExitPortal }: MagnetCompleteProp
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.35 + i * 0.03, type: "spring", stiffness: 260, damping: 18 }}
               >
-                {l}
+                {caseLetter(l, letterCase)}
               </motion.span>
             ))}
           </motion.div>

@@ -1,8 +1,12 @@
+/** The Library's filter pills: what a game mainly teaches. */
+export type GameCategory = "literacy" | "cognitive" | "numbers";
+
 /** Metadata every game in the Library provides for its card. */
 export interface GameMeta {
   id: string;
   title: string;
   description: string;
+  category: GameCategory;
   /** Emoji/glyph shown prominently on the card */
   glyph: string;
   /** Route suffix relative to PlayLab origin, e.g. "/games/letter-tracing" */

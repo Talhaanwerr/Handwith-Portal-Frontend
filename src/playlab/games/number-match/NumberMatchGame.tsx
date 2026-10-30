@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { GameStage } from "@shared/components/game/GameStage";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useGameSession } from "@shared/hooks/useGameSession";
 import { useScheduler } from "@shared/hooks/useScheduler";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound, playFanfare } from "@shared/audio/sfx";
@@ -57,6 +58,7 @@ const TURN_MS = 3000;
  */
 export function NumberMatchGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, done, setScreen, start, nextRound, restart } = useMatchStore();
   /** The friends are mid-jump: this round has been won. */
   const [cheer, setCheer] = useState(false);
@@ -71,6 +73,12 @@ export function NumberMatchGame() {
    * pending "next round" can never fire onto the screen that replaced it.
    */
   const genRef = useRef(0);
+  // leaving the game also invalidates anything still in flight
+  useEffect(() => {
+    return () => {
+      genRef.current += 1;
+    };
+  }, []);
   const interrupt = useCallback(() => {
     genRef.current += 1;
     stopVoice();
@@ -116,7 +124,7 @@ export function NumberMatchGame() {
     setCheer(true);
     // queued behind the last number's name, so "Three!" is not cut off by
     // "Well done!"
-    void sayAfter(cheerFor(done));
+    const cheerLine = sayAfter(cheerFor(done));
 
     schedule(() => {
       if (!alive()) return;
@@ -143,11 +151,15 @@ export function NumberMatchGame() {
       return;
     }
 
-    schedule(() => {
+    // the next round waits for the sticker AND for the whole cheer to be said
+    void Promise.all([
+      cheerLine,
+      new Promise((resolve) => setTimeout(resolve, CHEER_MS + REWARD_MS)),
+    ]).then(() => {
       if (!alive()) return;
       setReward(false);
       nextRound();
-    }, CHEER_MS + REWARD_MS);
+    });
   }, [done, schedule, nextRound]);
 
   const say = cheer ? clipText(cheerFor(done)) : undefined;
@@ -170,11 +182,13 @@ export function NumberMatchGame() {
                 <motion.div key="home" className="nm-screen-wrap" {...PAGE_TRANSITION}>
                   <MatchHome
                     done={done}
-                    onStart={open}
-                    onRestart={() => {
-                      interrupt();
-                      restart();
-                    }}
+                    onStart={() => gate(open)}
+                    onRestart={() =>
+                      gate(() => {
+                        interrupt();
+                        restart();
+                      })
+                    }
                   />
                 </motion.div>
               )}

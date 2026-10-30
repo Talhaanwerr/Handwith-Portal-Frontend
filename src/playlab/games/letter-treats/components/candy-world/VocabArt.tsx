@@ -19,6 +19,7 @@
 
 import { F, Spec, Shade } from "@games/letter-treats/components/candy-world/CandyDefs";
 import { ANIMAL_ART } from "@shared/components/illustrations/AnimalArt";
+import { fluentSrc } from "@shared/constants/fluent3d";
 
 type Art = () => React.ReactElement;
 
@@ -890,18 +891,6 @@ const Pizza: Art = () => (
     <circle cx="60" cy="52" r="5" fill={F.red} />
     <circle cx="48" cy="64" r="4" fill={F.red} />
     <Hi x={40} y={32} rx={4} ry={3} />
-  </Svg>
-);
-const Pig: Art = () => (
-  <Svg>
-    <ellipse cx="50" cy="56" rx="32" ry="28" fill={F.pink} />
-    <path d="M24 30 Q22 14 36 18 Q40 28 38 34 Z M76 30 Q78 14 64 18 Q60 28 62 34 Z" fill={F.pink} />
-    <ellipse cx="50" cy="64" rx="14" ry="10" fill={F.pinkDeep} />
-    <circle cx="45" cy="64" r="3" fill={F.redDeep} opacity="0.6" />
-    <circle cx="55" cy="64" r="3" fill={F.redDeep} opacity="0.6" />
-    <Eye x={38} y={48} />
-    <Eye x={62} y={48} />
-    <Hi x={36} y={36} rx={7} ry={4} />
   </Svg>
 );
 const Panda: Art = () => (
@@ -2329,7 +2318,7 @@ const Zucchini: Art = () => (
   </Svg>
 );
 
-export const VOCAB_ART: Record<string, Art> = {
+const DRAWN_ART: Record<string, Art> = {
   banana: Banana,
   grapes: Grapes,
   icecream: IceCream,
@@ -2428,11 +2417,8 @@ export const VOCAB_ART: Record<string, Art> = {
   pizza: Pizza,
   // P is a penguin, drawn once in the shared AnimalArt and reused here — the
   // same call letter-tracing's AnchorArt makes, so the portal never grows a
-  // second, slightly-different penguin. Pig stays registered below: nothing in
-  // the vocabulary asks for it today, but the drawing is good and a data edit
-  // can bring it back without touching this file.
+  // second, slightly-different penguin.
   penguin: ANIMAL_ART.penguin,
-  pig: Pig,
   panda: Panda,
   quilt: Quilt,
   question: Question,
@@ -2469,3 +2455,29 @@ export const VOCAB_ART: Record<string, Art> = {
   zip: Zip,
   zipper: Zip,
 };
+
+/**
+ * A Fluent Emoji 3D picture as an Art: the 100 x 100 box every drawing here
+ * fills, with the same soft shadow pool under it.
+ */
+const fluentArt = (src: string): Art =>
+  function FluentVocabArt() {
+    return (
+      <svg viewBox="0 0 100 100" className="h-full w-full">
+        <Shade x={50} y={93} rx={28} ry={5} />
+        <image href={src} x="4" y="2" width="92" height="92" preserveAspectRatio="xMidYMid meet" />
+      </svg>
+    );
+  };
+
+/**
+ * The portal's vocabulary pictures. Every word that has a Fluent Emoji 3D
+ * picture uses it (all the games that draw from this registry follow); a word
+ * without one keeps the drawing above.
+ */
+export const VOCAB_ART: Record<string, Art> = Object.fromEntries(
+  Object.entries(DRAWN_ART).map(([word, drawn]) => {
+    const src = fluentSrc(word, true);
+    return [word, src ? fluentArt(src) : drawn];
+  })
+);

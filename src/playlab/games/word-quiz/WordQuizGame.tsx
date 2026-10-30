@@ -8,6 +8,7 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useQuizStore, type QuizScreen } from "@games/word-quiz/store/quizStore";
 import { TOTAL_QUESTIONS, scoreOf } from "@games/word-quiz/constants/questions";
 import { QuestionScreen } from "@games/word-quiz/components/QuestionScreen";
@@ -33,6 +34,7 @@ function toBucket(screen: QuizScreen): "menu" | "play" {
  */
 export function WordQuizGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, index, answers, best, setScreen, start, answer, bank } = useQuizStore();
 
   const score = scoreOf(answers);
@@ -69,7 +71,7 @@ export function WordQuizGame() {
         <AnimatePresence mode="wait">
           {screen === "splash" && (
             <motion.div key="splash" className="absolute inset-0" {...PAGE_TRANSITION}>
-              <SplashScreen best={best} onStart={start} onExitPortal={exitPortal} />
+              <SplashScreen best={best} onStart={() => gate(start)} onExitPortal={exitPortal} />
             </motion.div>
           )}
 

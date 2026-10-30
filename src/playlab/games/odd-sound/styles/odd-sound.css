@@ -1,0 +1,183 @@
+/**
+ * Odd Sound Out — Level 3 on Phonics Game Show's stage.
+ *
+ * The root is also `.pgs-root`, so the studio, the lit sign, the title
+ * screen, the pills, the progress row and the finish card are all Phonics
+ * Game Show's styles (and its `pgs` container units). This file owns only
+ * the round: the shared letter on the sign and four picture cards.
+ */
+
+/** The sign above, the four pictures below. */
+.odd-board {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.6cqh;
+}
+.odd-sign .pgs-sign-screen {
+  padding: 0.6cqh 4cqh;
+}
+/** The letter three of the pictures start with — tap it: the four words again. */
+.odd-hear {
+  min-width: 16cqh;
+  border: 0;
+  background: none;
+  font-size: 16cqh;
+  line-height: 1.05;
+  color: #ffffff;
+  text-shadow: 0 0.8cqh 0 #10276b;
+  cursor: pointer;
+}
+
+.odd-pictures {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: min(3cqh, 3cqw);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/** A picture on a fat white card with a lip — the thing to tap. */
+.odd-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(27cqh, 17cqw);
+  aspect-ratio: 1;
+  min-width: 64px;
+  padding: 2.2cqh;
+  border: 0.8cqh solid var(--odd-rim, #c9a7e8);
+  border-radius: 3.4cqh;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -1.4cqh 0 rgba(60, 30, 120, 0.07),
+    0 1.2cqh 0 var(--odd-lip, #8f63c7);
+  transition:
+    translate 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.odd-card:disabled {
+  cursor: default;
+}
+.odd-card:active:not(:disabled) {
+  translate: 0 1cqh;
+}
+/** The card whose word is being said right now lifts and lights. */
+.odd-card.odd-card--named {
+  --odd-rim: #ffc93c;
+  --odd-lip: #c48a2a;
+  translate: 0 -2cqh;
+}
+.odd-card.odd-card--right {
+  --odd-rim: #34a95a;
+  --odd-lip: #1c7a45;
+  translate: 0 -1.4cqh;
+}
+.odd-card.odd-card--wrong {
+  --odd-rim: #d14545;
+  --odd-lip: #9e2a2a;
+  background: #ffe4e4;
+  animation: odd-shake 0.4s ease-out;
+}
+.odd-card.odd-card--wrong::after {
+  content: "✕";
+  position: absolute;
+  top: -1.8cqh;
+  right: -1.8cqh;
+  display: grid;
+  place-items: center;
+  width: 6.4cqh;
+  height: 6.4cqh;
+  min-width: 22px;
+  min-height: 22px;
+  border: 0.5cqh solid #ffffff;
+  border-radius: 50%;
+  background: #d63c3c;
+  font-size: 3.4cqh;
+  line-height: 1;
+  color: #ffffff;
+  box-shadow: 0 0.5cqh 1cqh rgba(120, 20, 20, 0.35);
+}
+@keyframes odd-shake {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  25% {
+    translate: -8px 0;
+  }
+  50% {
+    translate: 7px 0;
+  }
+  75% {
+    translate: -4px 0;
+  }
+}
+/** After the answer: every card's first letter on an orange key — the odd one green. */
+.odd-tag {
+  position: absolute;
+  left: 50%;
+  bottom: -3.6cqh;
+  display: grid;
+  place-items: center;
+  width: 8cqh;
+  height: 8cqh;
+  translate: -50% 0;
+  border: 0.5cqh solid #c9600f;
+  border-radius: 1.8cqh;
+  background: linear-gradient(#ffad4d, #ff8a1f);
+  font-size: 5.4cqh;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0.4cqh 0 #b4560c;
+  box-shadow: 0 0.6cqh 0 #a84c08;
+}
+.odd-tag.odd-tag--odd {
+  border-color: #1c7a45;
+  background: linear-gradient(#7fe0a0, #34a95a);
+  text-shadow: 0 0.4cqh 0 #14592f;
+  box-shadow: 0 0.6cqh 0 #14592f;
+}
+
+/* ── A phone held sideways: sign beside a two-by-two grid ────────────────── */
+
+@container pgs (max-height: 520px) and (min-aspect-ratio: 3 / 2) {
+  .odd-screen.pgs-screen {
+    padding-left: 10cqw;
+    padding-right: 10cqw;
+  }
+  .odd-board {
+    flex-direction: row;
+    gap: 5cqw;
+  }
+  .odd-pictures {
+    grid-template-columns: repeat(4, auto);
+    gap: 3cqh;
+  }
+  .odd-card {
+    width: min(30cqh, 15cqw);
+  }
+  .odd-hear {
+    font-size: 22cqh;
+  }
+}
+
+/* ── A phone held upright: a two-by-two grid ─────────────────────────────── */
+
+@container pgs (orientation: portrait) {
+  /* the extra row gap leaves room for the letter tags under the top row */
+  .odd-pictures {
+    grid-template-columns: repeat(2, auto);
+    gap: 6cqh 5cqw;
+  }
+  .odd-card {
+    width: min(38cqw, 23cqh);
+  }
+  .odd-hear {
+    font-size: min(12cqh, 22cqw);
+  }
+}

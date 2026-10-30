@@ -9,6 +9,7 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { toRootPoint, type RootPoint } from "@shared/utils/pointer";
 import { playClickSound, playFanfare, playClinkSound, playStarPop } from "@shared/audio/sfx";
 import { clipText, playClip, sayAfter, stopVoice } from "@shared/audio/voice";
@@ -74,6 +75,7 @@ const KEY_LINE_MS = 1100;
  */
 export function DoorCountGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, moduleId, progress, setScreen, openModule, nextLevel, restartModule } =
     useDoorStore();
   /** The teacher is mid-jump: this door has been answered. */
@@ -246,7 +248,7 @@ export function DoorCountGame() {
             <AnimatePresence mode="wait" initial={false}>
               {screen === "home" && (
                 <motion.div key="home" className="dc-screen-wrap" {...PAGE_TRANSITION}>
-                  <DoorHome progress={progress} onOpen={open} />
+                  <DoorHome progress={progress} onOpen={(id) => gate(() => open(id), id)} />
                 </motion.div>
               )}
 

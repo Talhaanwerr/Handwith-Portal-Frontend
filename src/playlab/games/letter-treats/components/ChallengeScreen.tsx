@@ -7,15 +7,13 @@ import { playClickSound, playCorrectSound } from "@shared/audio/sfx";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { CelebrationOverlay } from "@shared/components/game/CelebrationOverlay";
 import { useElementSize } from "@shared/hooks/useElementSize";
+import { useAfterVoice } from "@shared/hooks/useAfterVoice";
 import { letterData, letterPair, TREAT_LETTERS } from "@games/letter-treats/constants/alphabet";
 import { buildChallenge, ROUNDS_PER_LETTER } from "@games/letter-treats/constants/challenge";
 import { CandyScene, Bee } from "@games/letter-treats/components/CandyScene";
 import { TreatArt } from "@games/letter-treats/components/TreatArt";
 import { Sparkle, CANDY } from "@games/letter-treats/components/candy-world/CandyArt";
 
-/** Pause after a correct pick before the next question - long enough for the
- *  sparkle and "Great job!" to land, short enough that a 3-year-old stays. */
-const NEXT_ROUND_MS = 1500;
 /** One praise line, one retry line, one finish line - all recorded clips.
  *  Nothing else talks on this screen. */
 const PRAISE_CLIP = "cheer-great-job";
@@ -65,6 +63,7 @@ export function ChallengeScreen({ letter, onBack, onNextLetter, onLetters }: Cha
   const [shakeId, setShakeId] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [beeMood, setBeeMood] = useState<"idle" | "cheer" | "point">("point");
+  const { thenAfter } = useAfterVoice();
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const later = useCallback((fn: () => void, ms: number) => {
@@ -103,8 +102,7 @@ export function ChallengeScreen({ letter, onBack, onNextLetter, onLetters }: Cha
       setSolved(true);
       setBeeMood("cheer");
       playCorrectSound();
-      void playClip(PRAISE_CLIP);
-      later(() => {
+      thenAfter([PRAISE_CLIP], () => {
         if (roundIndex + 1 >= ROUNDS_PER_LETTER) {
           setDone(true);
           void playClip(DONE_CLIP);
@@ -113,7 +111,7 @@ export function ChallengeScreen({ letter, onBack, onNextLetter, onLetters }: Cha
           setBeeMood("point");
           setRoundIndex((i) => i + 1);
         }
-      }, NEXT_ROUND_MS);
+      });
     } else {
       setShakeId(id);
       later(() => setShakeId(null), 450);

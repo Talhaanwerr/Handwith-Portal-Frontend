@@ -38,7 +38,7 @@ export function TitleScreen({ onPlay }: TitleScreenProps) {
         onPlay();
       }}
     >
-      <ClassroomScene />
+      <ClassroomScene calm />
 
       <div className="pl-screen-scroll pl-safe-center flex flex-col items-center gap-7 px-6 py-8">
         <motion.div

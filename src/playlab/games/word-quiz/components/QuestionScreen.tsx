@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { QuizPicture } from "@games/word-quiz/components/QuizArt";
 import { IceScene } from "@games/word-quiz/components/IceScene";
@@ -8,10 +8,11 @@ import { QuizProgress } from "@games/word-quiz/components/QuizProgress";
 import { QUESTIONS, TOTAL_QUESTIONS } from "@games/word-quiz/constants/questions";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useScheduler } from "@shared/hooks/useScheduler";
+import { useAfterVoice } from "@shared/hooks/useAfterVoice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { wordClip } from "@shared/audio/wordClips";
 import { playClip, sayAfter } from "@shared/audio/voice";
-import { playClickSound, playPlaceSound } from "@shared/audio/sfx";
+import { playClickSound, playCorrectSound, playIncorrectSound } from "@shared/audio/sfx";
 
 /** How long the chosen tile stays lit before the next question slides in —
  *  long enough to see which one was pressed, short enough not to be a wait. */
@@ -29,20 +30,22 @@ interface QuestionScreenProps {
 /**
  * ONE QUESTION — the picture on one side, three words on the other.
  *
- * Tapping a word IS the answer: it lights up, says itself, and the next
- * question arrives. There is no Check button and no second step, because for
- * a three-year-old a confirm press is a second puzzle stacked on top of the
- * reading one, and the reading is the thing being taught.
- *
- * Nothing is marked right or wrong here. No tick, no buzzer, no red — the
- * whole verdict waits for the review at the end, which is what lets a child
- * who got one wrong carry on without stopping.
+ * Tapping a word IS the answer. The right word turns green, says itself, and
+ * the next question arrives once it has been said. A wrong word is shown at
+ * once — it turns red, shakes, is crossed out and "Try again!" is said — and
+ * the child simply picks again; it can't be picked twice. The review at the
+ * end still records the child's FIRST pick, so the score stays honest.
  */
 export function QuestionScreen({ index, onAnswer, onBack, onExitPortal }: QuestionScreenProps) {
   const question = QUESTIONS[index];
-  /** The tile just pressed, lit while the question turns over. */
+  /** The right tile once it is found, lit while the question turns over. */
   const [chosen, setChosen] = useState<string | null>(null);
+  /** Wrong tiles already tried on this question. */
+  const [wrong, setWrong] = useState<readonly string[]>([]);
+  /** The first word tapped — what the review scores. */
+  const first = useRef<string | null>(null);
   const schedule = useScheduler();
+  const { thenAfter } = useAfterVoice();
   useSayOnEnter(index === 0 ? ["instr-snow-tap-word"] : []);
 
   // a child still looking at the picture after a while gets the ask again
@@ -54,18 +57,30 @@ export function QuestionScreen({ index, onAnswer, onBack, onExitPortal }: Questi
 
   const answer = useCallback(
     (word: string) => {
-      if (chosen) return; // this question is already on its way out
+      if (chosen || wrong.includes(word)) return; // on its way out, or already tried
+      if (first.current === null) first.current = word;
+      if (word !== question.word) {
+        // wrong: say so straight away, and let the child try another word
+        setWrong((w) => [...w, word]);
+        playIncorrectSound();
+        void playClip("instr-try-again");
+        return;
+      }
       setChosen(word);
-      playPlaceSound();
-      // say the word they picked, when the portal has a recording of it
+      playCorrectSound();
       const said = wordClip(word);
-      if (said) void playClip(said);
-      schedule(() => {
+      const picked = first.current;
+      const next = () => {
         setChosen(null);
-        onAnswer(word);
-      }, ADVANCE_MS);
+        setWrong([]);
+        first.current = null;
+        onAnswer(picked);
+      };
+      // the next picture waits until the right word has been said
+      if (said) thenAfter([said], next);
+      else schedule(next, ADVANCE_MS);
     },
-    [chosen, schedule, onAnswer]
+    [chosen, wrong, question.word, schedule, thenAfter, onAnswer]
   );
 
   return (
@@ -126,9 +141,10 @@ export function QuestionScreen({ index, onAnswer, onBack, onExitPortal }: Questi
                   type="button"
                   className={`wq-option font-rounded font-black ${
                     chosen === word ? "wq-option--chosen" : ""
-                  }`}
+                  } ${wrong.includes(word) ? "wq-option--wrong" : ""}`}
                   onClick={() => answer(word)}
-                  disabled={chosen !== null}
+                  disabled={chosen !== null || wrong.includes(word)}
+                  aria-label={wrong.includes(word) ? `${word}, not this one` : word}
                 >
                   <span className="wq-option-word">{word}</span>
                   <span className="wq-option-tick" aria-hidden="true" />

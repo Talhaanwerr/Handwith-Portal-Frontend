@@ -6,7 +6,8 @@
  * Follows the platform's zero-asset audio philosophy (see sfx.ts): the music
  * is COMPOSED PROCEDURALLY at runtime — a soft marimba-style pentatonic
  * arpeggio over a slow I–vi–IV–I–V–I progression — rendered once into an
- * in-memory WAV and looped by Howler. No file to ship, nothing to load.
+ * in-memory WAV (composed a bar at a time in idle moments, see
+ * prepareMusic) and looped by Howler. No file to ship, nothing to load.
  *
  * Seamlessness is guaranteed by construction: notes are written into the
  * buffer with WRAPAROUND, so a note-tail that runs past the end continues at
@@ -25,6 +26,7 @@
  */
 
 import { Howl } from "howler";
+import { whenIdle, type IdleBudget } from "@shared/utils/idle";
 
 const RATE = 22050;
 const BPM = 84;
@@ -63,36 +65,44 @@ function addNote(
   }
 }
 
-function composeLoop(): Float32Array {
+/** One note of the loop: where it starts (in samples) and how it sounds. */
+interface Note {
+  start: number;
+  freq: number;
+  dur: number;
+  vel: number;
+}
+
+/** Every note of the loop, bar by bar. Composing them one at a time (see
+ *  prepareMusic) keeps each piece of work to a few milliseconds. */
+function loopNotes(): Note[] {
   const beat = 60 / BPM;
   const eighth = beat / 2;
-  const barSec = beat * 4;
-  const total = Math.floor(BARS.length * barSec * RATE);
-  const out = new Float32Array(total);
-
-  BARS.forEach((bar, b) => {
-    const barStart = b * barSec;
-    // soft bass on beats 1 and 3
-    addNote(out, Math.floor(barStart * RATE), bar.bass, 1.4, 0.14);
-    addNote(out, Math.floor((barStart + 2 * beat) * RATE), bar.bass * 1.5, 1.1, 0.09);
+  const at = (sec: number) => Math.floor(sec * RATE);
+  return BARS.flatMap((bar, b) => {
+    const barStart = b * beat * 4;
+    const notes: Note[] = [
+      // soft bass on beats 1 and 3
+      { start: at(barStart), freq: bar.bass, dur: 1.4, vel: 0.14 },
+      { start: at(barStart + 2 * beat), freq: bar.bass * 1.5, dur: 1.1, vel: 0.09 },
+    ];
     // lilting up-down eighth-note arpeggio, tiny velocity variation
-    const contour = [0, 1, 2, 3, 2, 3, 1, 2];
-    contour.forEach((tone, i) => {
+    [0, 1, 2, 3, 2, 3, 1, 2].forEach((tone, i) => {
       const vel = 0.115 + (i % 2 === 0 ? 0.02 : 0) + (i === 0 ? 0.015 : 0);
-      addNote(out, Math.floor((barStart + i * eighth) * RATE), bar.tones[tone], 0.55, vel);
+      notes.push({ start: at(barStart + i * eighth), freq: bar.tones[tone], dur: 0.55, vel });
     });
     // a sparse high "bell" every other bar for sparkle
     if (b % 2 === 1) {
-      addNote(out, Math.floor((barStart + 3 * beat) * RATE), bar.tones[3] * 2, 0.9, 0.045);
+      notes.push({ start: at(barStart + 3 * beat), freq: bar.tones[3] * 2, dur: 0.9, vel: 0.045 });
     }
+    return notes;
   });
-
-  // gentle soft-clip so summed voices can never crackle
-  for (let i = 0; i < total; i++) out[i] = Math.tanh(out[i] * 1.4) * 0.62;
-  return out;
 }
 
-function toWavDataURI(pcm: Float32Array): string {
+/** The finished loop as a WAV blob URL: gentle soft-clip so summed voices can
+ *  never crackle, then 16-bit PCM. A blob URL rather than a base64 data URI —
+ *  the buffer is ~750 KB and encoding it to a string was most of the cost. */
+function toWavUrl(pcm: Float32Array): string {
   const samples = pcm.length;
   const buf = new ArrayBuffer(44 + samples * 2);
   const view = new DataView(buf);
@@ -112,53 +122,90 @@ function toWavDataURI(pcm: Float32Array): string {
   [0x64, 0x61, 0x74, 0x61].forEach((c, i) => view.setUint8(36 + i, c));
   u32(40, samples * 2);
   for (let i = 0; i < samples; i++) {
-    view.setInt16(44 + i * 2, Math.max(-1, Math.min(1, pcm[i])) * 32767, true);
+    const v = Math.tanh(pcm[i] * 1.4) * 0.62;
+    view.setInt16(44 + i * 2, Math.max(-1, Math.min(1, v)) * 32767, true);
   }
-  const bytes = new Uint8Array(buf);
-  // chunked btoa-safe encoding (the buffer is ~700KB)
-  let bin = "";
-  const CHUNK = 0x8000;
-  for (let i = 0; i < bytes.length; i += CHUNK) {
-    bin += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
-  }
-  return "data:audio/wav;base64," + btoa(bin);
+  return URL.createObjectURL(new Blob([buf], { type: "audio/wav" }));
 }
 
 let track: Howl | null = null;
+/** The loop is meant to be playing (set by startMusic, cleared by stopMusic)
+ *  — the source of truth, not Howler's `playing()`, which is still true
+ *  during a fade-out and still false while a fresh track loads. */
 let started = false;
 let ducked = false;
+/** startMusic() was called before the loop finished composing. */
+let wanted = false;
+let preparing = false;
 
-function getTrack(): Howl | null {
-  if (typeof window === "undefined") return null;
-  if (!track) {
-    try {
-      track = new Howl({
-        src: [toWavDataURI(composeLoop())],
-        format: ["wav"],
-        loop: true,
-        volume: MUSIC_VOLUME,
-        html5: false,
-      });
-    } catch {
-      return null;
+/**
+ * Composes the loop in the background — a few notes per idle moment, then
+ * the WAV — so the first screen after a game's title never freezes while
+ * ~17 s of audio is synthesised (measured at about 2 s of blocked main thread
+ * on a throttled phone when it was done in one go). Called by
+ * `useGameSession` as a game opens; idempotent.
+ */
+export function prepareMusic(): void {
+  if (typeof window === "undefined" || track || preparing) return;
+  preparing = true;
+  const beat = 60 / BPM;
+  const out = new Float32Array(Math.floor(BARS.length * beat * 4 * RATE));
+  const notes = loopNotes();
+  const step = (budget: IdleBudget) => {
+    do {
+      const n = notes.shift();
+      if (n) addNote(out, n.start, n.freq, n.dur, n.vel);
+    } while (notes.length > 0 && budget.timeRemaining() > 4);
+    if (notes.length > 0) {
+      whenIdle(step, 1500);
+      return;
     }
-  }
-  return track;
+    whenIdle(() => {
+      preparing = false;
+      try {
+        track = new Howl({
+          src: [toWavUrl(out)],
+          format: ["wav"],
+          loop: true,
+          volume: MUSIC_VOLUME,
+          html5: false,
+        });
+      } catch {
+        return; // a later startMusic() will try again
+      }
+      if (wanted) startMusic();
+    }, 1500);
+  };
+  whenIdle(step, 1500);
 }
 
 /** Start the shared background loop. Idempotent — safe to call on every
- *  screen change; a second call while playing is a no-op, so two tracks can
- *  never overlap. */
+ *  screen change; a second call while it is meant to be playing is a no-op,
+ *  so two loops can never overlap. */
 export function startMusic(): void {
-  const t = getTrack();
-  if (!t || t.playing()) return;
+  if (started) return;
+  const t = track;
+  if (!t) {
+    // still composing: play the moment it is ready
+    wanted = true;
+    prepareMusic();
+    return;
+  }
+  wanted = false;
   started = true;
-  t.volume(ducked ? DUCKED_VOLUME : MUSIC_VOLUME);
+  const volume = ducked ? DUCKED_VOLUME : MUSIC_VOLUME;
+  if (t.playing()) {
+    // caught during stopMusic's fade-out (a game→game hop): bring it back up
+    t.fade(t.volume(), volume, 200);
+    return;
+  }
+  t.volume(volume);
   t.play();
 }
 
 /** Fade out and stop — call when a game unmounts. */
 export function stopMusic(): void {
+  wanted = false;
   if (!track || !started) return;
   started = false;
   const t = track;

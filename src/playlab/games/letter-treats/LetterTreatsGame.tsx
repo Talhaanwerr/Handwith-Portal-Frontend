@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { GameStage } from "@shared/components/game/GameStage";
@@ -61,7 +62,7 @@ export function LetterTreatsGame() {
   const bucket = toBucket(screen);
 
   // Browser speech is off portal-wide now (voice.ts); only the stop is left.
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   const handlePop = useCallback(
     (popped: string) => {

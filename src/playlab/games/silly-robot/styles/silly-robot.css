@@ -1,0 +1,310 @@
+/**
+ * Fix the Silly Robot — class prefix `srb-` (grepped clear across
+ * src/playlab). The root, screens, chrome, tray pieces and cross are Count &
+ * Match's (`ng-`, number-groups.css); the site is Word Site's (`cv-`); the
+ * dot faces are Pond Numbers' (`pn-`), restyled here under `srb-` wrappers.
+ * Sized in container units of the shared `.ng-root`; portrait at the bottom.
+ */
+
+.srb-world {
+  position: absolute;
+  inset: 0;
+}
+
+/* ─── The board: the robot, and the ground or the answers beside him ───── */
+.srb-play--fix,
+.srb-play--peek {
+  --srb-robot: min(64cqh, 40cqw);
+  --srb-p: min(12.5cqw, 25cqh);
+  --srb-n: min(23cqh, 11cqw);
+}
+.srb-board {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3cqw;
+  width: 100%;
+  height: 100%;
+}
+.srb-play--peek .srb-board {
+  align-items: center;
+}
+.srb-robot-slot {
+  position: relative;
+  flex: none;
+  height: var(--srb-robot);
+  aspect-ratio: 100 / 124;
+}
+
+/* ─── The robot ────────────────────────────────────────────────────────── */
+.srb-robot {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 90%;
+}
+.srb-robot-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.srb-belly,
+.srb-gap {
+  position: absolute;
+  left: var(--srb-x);
+  top: var(--srb-y);
+  width: var(--srb-w);
+  height: var(--srb-h);
+}
+.srb-belly {
+  overflow: hidden;
+  border-radius: 16%;
+}
+.srb-gap {
+  pointer-events: none;
+}
+.srb-gap-line {
+  animation: srb-gap-pulse 1.4s ease-in-out infinite alternate;
+}
+@keyframes srb-gap-pulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+
+/* the tummy's dots: Pond Numbers' die face, glowing on a dark screen */
+.srb-screen-dots {
+  position: absolute;
+  inset: 0;
+  display: block;
+  height: 96%;
+  aspect-ratio: 1;
+  margin: auto;
+}
+.srb-screen-dots .pn-card-face--dots {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.srb-screen-dots .pn-dot {
+  width: 22%;
+  height: 22%;
+  margin-left: -11%;
+  margin-top: -11%;
+  box-shadow: 0 0 1.2cqh rgba(124, 240, 200, 0.75);
+}
+
+/* Quick Look's shutter over the screen */
+.srb-shutter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(180deg, #3d8fc9 0 18%, #2e7fd6 18% 22%);
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+.srb-shutter.is-shut {
+  opacity: 1;
+}
+.srb-shutter-q {
+  color: #ffffff;
+  font-size: calc(var(--srb-robot) * 0.17);
+  line-height: 1;
+}
+
+/* ─── Fix the Robot: the spare parts on the ground ─────────────────────── */
+.srb-ground {
+  display: flex;
+  align-items: flex-end;
+  gap: 2cqw;
+  padding-bottom: 1cqh;
+}
+.srb-piece {
+  width: var(--srb-p);
+  height: calc(var(--srb-p) * 1.55);
+}
+.ng-carried.srb-piece {
+  left: calc(var(--srb-p) * -0.5);
+  top: calc(var(--srb-p) * -0.775);
+}
+.srb-spare-art {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.srb-spare-part {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  margin-bottom: -6%;
+  overflow: visible;
+}
+.srb-spare-card {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.srb-spare-card .pn-card-face--dots {
+  border-width: 0.8cqh;
+  box-shadow:
+    0 0.9cqh 0 #e0a93a,
+    0 1.6cqh 2cqh rgba(60, 40, 20, 0.22);
+}
+.srb-spare-card .pn-dot {
+  width: 23%;
+  height: 23%;
+  margin-left: -11.5%;
+  margin-top: -11.5%;
+}
+.srb-piece.is-wrong .srb-spare-art {
+  opacity: 0.45;
+}
+.srb-piece:disabled {
+  cursor: default;
+}
+
+/* ─── Quick Look: the numerals and Peek again ──────────────────────────── */
+.srb-answers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4cqh;
+}
+.srb-nums {
+  display: flex;
+  gap: 2.5cqw;
+}
+.srb-num {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--srb-n);
+  height: var(--srb-n);
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 0.9cqh solid #f08a24;
+  border-radius: 22%;
+  background: #ffffff;
+  color: #c06a12;
+  font-size: calc(var(--srb-n) * 0.62);
+  line-height: 1;
+  box-shadow: 0 1cqh 0 #c06a12;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.srb-num:disabled {
+  cursor: default;
+}
+.srb-num.is-wrong .srb-num-digit {
+  opacity: 0.4;
+}
+.srb-num.is-right {
+  border-color: #2b8a57;
+  background: #3dab72;
+  color: #ffffff;
+  box-shadow: 0 1cqh 0 #2b8a57;
+}
+.srb-peek {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0 4cqh;
+  border: 0;
+  border-radius: 999px;
+  background: #2e7fd6;
+  color: #ffffff;
+  font-size: max(15px, 5cqh);
+  box-shadow: 0 0.8cqh 0 #1f5fa6;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.srb-peek:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.srb-peek-eye {
+  display: block;
+  width: 1.8em;
+  height: 1.2em;
+}
+.srb-cast-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f08a24;
+  font-size: 12cqh;
+}
+
+/* ─── Home-card miniatures ─────────────────────────────────────────────── */
+.srb-mini-robot {
+  position: absolute;
+  left: 12%;
+  top: 4%;
+  height: 92%;
+  aspect-ratio: 100 / 124;
+}
+.srb-mini-spare {
+  position: absolute;
+  right: 12%;
+  bottom: 6%;
+  height: 62%;
+  aspect-ratio: 1 / 1.55;
+}
+.srb-mini-spare .pn-card-face--dots {
+  border-width: 0.6cqh;
+  box-shadow: 0 0.6cqh 0 #e0a93a;
+}
+.srb-mini-num {
+  position: absolute;
+  right: 12%;
+  top: 26%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32%;
+  aspect-ratio: 1;
+  border: min(1.6cqh, 1cqw) solid #f08a24;
+  border-radius: 22%;
+  background: #ffffff;
+  color: #c06a12;
+  font-size: min(30cqh, 18cqw);
+  line-height: 1;
+}
+
+/* ─── Portrait: the robot on top, his parts or the answers below ──────── */
+@media (orientation: portrait) {
+  .srb-play--fix,
+  .srb-play--peek {
+    --srb-robot: min(38cqh, 62cqw);
+    --srb-p: min(24cqw, 14cqh);
+    --srb-n: min(22cqw, 12cqh);
+  }
+  .srb-board,
+  .srb-play--peek .srb-board {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5cqh;
+  }
+  .srb-answers {
+    gap: 2.5cqh;
+  }
+}

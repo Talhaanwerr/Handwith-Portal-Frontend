@@ -1,0 +1,64 @@
+[
+  {
+    "id": "tys-welcome",
+    "text": "Welcome to the Tiny Toy Shop!",
+    "file": "/audio/tiny-toy-shop/welcome.mp3"
+  },
+  {
+    "id": "tys-done",
+    "text": "Every friend got their toys. Thank you, shopkeeper!",
+    "file": "/audio/tiny-toy-shop/done.mp3"
+  },
+  { "id": "tys-mode-pick", "text": "Pick the toys!", "file": "/audio/tiny-toy-shop/mode-pick.mp3" },
+  { "id": "tys-mode-add", "text": "Add them up!", "file": "/audio/tiny-toy-shop/mode-add.mp3" },
+  {
+    "id": "tys-ask-ruby-1-train",
+    "text": "Ruby wants 1 train.",
+    "file": "/audio/tiny-toy-shop/ask-ruby-1-train.mp3"
+  },
+  {
+    "id": "tys-ask-bo-2-ball",
+    "text": "Bo wants 2 balls.",
+    "file": "/audio/tiny-toy-shop/ask-bo-2-ball.mp3"
+  },
+  {
+    "id": "tys-ask-ruby-3-bear",
+    "text": "Ruby wants 3 teddy bears.",
+    "file": "/audio/tiny-toy-shop/ask-ruby-3-bear.mp3"
+  },
+  {
+    "id": "tys-ask-bo-4-drum",
+    "text": "Bo wants 4 drums.",
+    "file": "/audio/tiny-toy-shop/ask-bo-4-drum.mp3"
+  },
+  {
+    "id": "tys-pick-wrong",
+    "text": "Oops, not that toy. Try again!",
+    "file": "/audio/tiny-toy-shop/pick-wrong.mp3"
+  },
+  {
+    "id": "tys-add-1-1-ball",
+    "text": "1 ball and 1 ball. How many balls?",
+    "file": "/audio/tiny-toy-shop/add-1-1-ball.mp3"
+  },
+  {
+    "id": "tys-add-2-1-drum",
+    "text": "2 drums and 1 drum. How many drums?",
+    "file": "/audio/tiny-toy-shop/add-2-1-drum.mp3"
+  },
+  {
+    "id": "tys-add-1-3-bear",
+    "text": "1 teddy bear and 3 teddy bears. How many teddy bears?",
+    "file": "/audio/tiny-toy-shop/add-1-3-bear.mp3"
+  },
+  {
+    "id": "tys-add-2-3-horse",
+    "text": "2 horses and 3 horses. How many horses?",
+    "file": "/audio/tiny-toy-shop/add-2-3-horse.mp3"
+  },
+  {
+    "id": "tys-add-wrong",
+    "text": "Let's count again. Try another number!",
+    "file": "/audio/tiny-toy-shop/add-wrong.mp3"
+  }
+]

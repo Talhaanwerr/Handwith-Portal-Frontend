@@ -732,3 +732,47 @@
     width: clamp(64px, 20vw, 110px);
   }
 }
+
+/* The right word, found: green. */
+.wq-option.wq-option--chosen {
+  --wq-tile: #7ad67f;
+  --wq-rim: #2f8f3c;
+  filter: none;
+}
+/* A wrong word: red at once, a short shake, a cross; it can't be picked again. */
+.wq-option.wq-option--wrong {
+  --wq-tile: #ffb4b4;
+  --wq-rim: #d14545;
+  position: relative;
+  filter: none;
+  animation: wq-shake 0.4s ease-out;
+}
+.wq-option.wq-option--wrong .wq-option-word {
+  text-decoration: line-through;
+  text-decoration-thickness: 0.12em;
+  text-decoration-color: #d14545;
+}
+@keyframes wq-shake {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  25% {
+    translate: -8px 0;
+  }
+  50% {
+    translate: 7px 0;
+  }
+  75% {
+    translate: -4px 0;
+  }
+}
+
+/* Real animal photos: fill the picture card. */
+.wq-picture .wq-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: clamp(12px, 2.4vmin, 26px);
+}

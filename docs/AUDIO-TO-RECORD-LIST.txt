@@ -1,0 +1,164 @@
+LINES TO RECORD
+===============
+
+
+SHADOW MATCH MYSTERY
+  1. Whose shadow is it? Drag it to its shadow!
+  2. Not that one. Look at the shape!
+  3. Which shadow is longer?
+  4. Which shadow is shorter?
+  5. Yes! That one is longer.
+  6. Yes! That one is shorter.
+  7. Look again!
+
+TEDDY'S WOBBLY SEESAW
+  8. Teddy's Wobbly Seesaw!
+  9. Wow! You are a seesaw star!
+ 10. Which side goes down?
+ 11. Make it balance!
+ 12. Which side will go down? Tap it!
+ 13. Yes! That side has more bears.
+ 14. Look! This side was heavier. It has more bears.
+ 15. Make both sides the same!
+ 16. The same! It balances!
+
+WHICH WAY?
+ 17. Which way? Let's go!
+ 18. Go up!
+ 19. Go down!
+ 20. Go forward!
+ 21. Go back!
+ 22. Up!
+ 23. Down!
+ 24. Forward!
+ 25. Back!
+ 26. You know which way to go!
+
+THE MISSING SOCK CASE
+ 27. Detective time! Let's solve the sock case!
+ 28. Case solved! Every sock has a partner.
+ 29. Find the Pair. Find the matching sock.
+ 30. The Odd Sock. Which sock has no partner?
+ 31. Find the sock that matches!
+ 32. They match! A pair!
+ 33. Which sock has no partner?
+ 34. Case solved!
+ 35. That one has a partner!
+
+FIND ANOTHER WAY
+ 36. Find another way! Help the bunny.
+ 37. You can always find a way!
+ 38. Oh no, blocked! Find another way.
+ 39. Look first! Find the open path.
+ 40. Help bunny get to the carrots!
+ 41. Oh! It's blocked. Let's find another way.
+ 42. You found another way!
+ 43. Which way is open? Look first!
+
+WHAT'S INSIDE?
+ 44. Treasure chests! What's inside?
+ 45. You found every toy!
+ 46. Peek and Guess. What's in the chest?
+ 47. Where Did It Go? Watch the chests!
+ 48. What's inside? Tap your guess.
+ 49. Look! Now you can see more.
+ 50. Empty! Try another chest.
+ 51. Where is the ball?
+ 52. Where is the drum?
+ 53. Where is the train?
+ 54. Where is the dog?
+
+THE MESSY CAR WASH
+ 55. Welcome to the car wash!
+ 56. Spray the mud!
+ 57. Scrub, scrub, scrub!
+ 58. Now rinse it off!
+ 59. Make it shine!
+ 60. What colour is under the mud?
+ 61. Every car is clean and shiny!
+
+SILLY ANIMAL REPAIR SHOP
+ 62. Welcome to the toy repair shop!
+ 63. All the toys are fixed. Thank you!
+ 64. What's missing? Find the lost part.
+ 65. Silly mix-up! Find the silly part.
+ 66. Oh no! The ears came off. Find them!
+ 67. Oh no! The nose came off. Find it!
+ 68. Oh no! The tail came off. Find it!
+ 69. Oh no! The mane came off. Find it!
+ 70. Oh, silly! Tap the silly part.
+ 71. Now find the right one!
+
+FIND MY BABY
+ 72. Let's help the mummies find their babies!
+ 73. Every baby is back with Mummy!
+ 74. Follow the footprints to the baby!
+ 75. Find the baby in Mummy's colour!
+ 76. Where is my baby?
+ 77. Follow the footprints!
+ 78. Find the baby with the same colour!
+
+BUILD-A-CAR GARAGE
+ 79. Welcome to the garage! Let's build cars.
+ 80. All the cars are ready. Beep beep!
+ 81. Build the Car. One part at a time.
+ 82. Missing Part. Find the part that fits.
+ 83. Put the body on the lift!
+ 84. Now the wheels. Count them!
+ 85. Now put the roof on!
+ 86. Now the windows!
+ 87. Oh no! Which part is missing?
+ 88. That does not go on a car!
+
+YOUR TURN, MY TURN
+ 89. Your turn, my turn! Let's take turns.
+ 90. Roll the ball to Ruby!
+ 91. Who says my turn? Roll to them!
+ 92. My turn!
+ 93. Wait, my turn.
+ 94. You took turns so well!
+
+MAGIC FLOWER
+ 95. Magic Flower! Let's grow a flower.
+ 96. Tap the seeds!
+ 97. Water the seeds!
+ 98. A little sprout!
+ 99. Tap the cloud!
+100. Tap the leaves!
+101. Tap the bud!
+102. Let's paint the flower!
+103. What a beautiful garden!
+
+FEED THE FISH
+104. Feed the Fish! Let's feed them.
+105. Tap the water to feed the fish!
+106. All the fish are asleep!
+107. Feed the red fish!
+108. Feed the yellow fish!
+109. Feed the orange fish!
+110. Feed the purple fish!
+111. Every fish is full and happy!
+
+BIRTHDAY PARTY
+112. It's a birthday party!
+113. What a happy party!
+114. One for each!
+115. Candles on the cake!
+116. Give each friend one cupcake!
+117. This friend has one!
+118. Everyone has one!
+119. How many cupcakes?
+120. I am
+121. Put the candles on the cake!
+122. Blow them out!
+
+ROCKET COUNTDOWN
+123. Rocket Countdown!
+124. You flew to the stars!
+125. Count down!
+126. Fuel the rocket!
+127. Count down from
+128. Blast off!
+129. Fill the tank with
+
+TOTAL: 129

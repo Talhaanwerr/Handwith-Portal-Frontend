@@ -1,0 +1,746 @@
+/**
+ * Sort Two Ways — class prefix `stw-` (grepped clear across src/playlab;
+ * every game's CSS loads on every play page, so nothing here is bare).
+ *
+ * The scene is Jigsaw Fun's playroom, reused as is (its `jf-world` rules are
+ * global). On it: a checked board holding two grey trays stacked top and
+ * bottom, and beside it the teacher's bubble over the bank of four white
+ * round buttons and the teacher himself. Sized in container units of
+ * `.stw-root`; portrait at the bottom.
+ */
+
+.stw-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  container-name: stw;
+}
+.stw-layer,
+.stw-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.stw-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ─── The things (ThingArt) ────────────────────────────────────────────── */
+.stw-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+.stw-art > svg,
+.stw-art > img,
+.stw-art > div {
+  display: block;
+  flex: none;
+  width: 100%;
+  height: 100%;
+}
+/* a small thing is the same drawing in a smaller box */
+.stw-art--small {
+  width: 58%;
+  height: 58%;
+}
+/* Letter Treats' trainer is drawn low in its box: lift and enlarge it */
+.stw-art--trainer > svg {
+  transform: translateY(-14%) scale(1.3);
+}
+/* the sweets sit a little inside their box, like the shapes do */
+.stw-art--peppermint,
+.stw-art--gumdrop {
+  padding: 6%;
+}
+/** A place still to fill: the same drawing with its colour taken out. */
+.stw-silhouette {
+  filter: brightness(0);
+  opacity: 0.72;
+}
+/** The blue shoes: the red drawings turned blue. */
+.stw-tint--blue {
+  filter: hue-rotate(218deg) saturate(1.15);
+}
+
+/* ─── The teacher (Key Quest's; his classes are global, so every rule is
+   restated under this game's slot and never written bare) ──────────────── */
+.stw-teacher-slot {
+  position: relative;
+  flex: none;
+  pointer-events: none;
+}
+.stw-teacher-slot .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.stw-teacher-slot .dc-teacher-photo,
+.stw-break-teacher .dc-teacher-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  mix-blend-mode: multiply;
+}
+.stw-teacher-slot .dc-teacher-shadow,
+.stw-break-teacher .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 0;
+  width: 52%;
+  height: 2.6cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 55, 20, 0.42), transparent 70%);
+}
+.stw-teacher-slot .dc-teacher-says,
+.stw-break-teacher .dc-teacher-says {
+  position: absolute;
+  left: 4%;
+  bottom: 96%;
+  z-index: 1;
+  translate: none;
+  padding: 1.1cqh 2.4cqh;
+  white-space: nowrap;
+  border-radius: 2.6cqh;
+  background: #ffffff;
+  font-size: clamp(13px, 5.2cqh, 30px);
+  line-height: 1.1;
+  color: #8a5a2e;
+  box-shadow: 0 0.8cqh 1.8cqh rgba(80, 50, 20, 0.22);
+}
+.stw-teacher-slot .dc-teacher-says::after,
+.stw-break-teacher .dc-teacher-says::after {
+  content: "";
+  position: absolute;
+  left: 22%;
+  bottom: -1.4cqh;
+  width: 0;
+  height: 0;
+  border-left: 1.3cqh solid transparent;
+  border-right: 1.3cqh solid transparent;
+  border-top: 1.6cqh solid #ffffff;
+}
+/* the break: the teacher rising over the dimmed board */
+.stw-break-teacher {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.stw-break-teacher .dc-teacher {
+  position: absolute;
+  inset: 0;
+}
+.stw-break-teacher .dc-teacher-says {
+  left: 50%;
+  bottom: 92%;
+  translate: -50% 0;
+  width: max-content;
+  max-width: 90cqw;
+  white-space: normal;
+  text-align: center;
+  font-size: clamp(15px, 6cqh, 34px);
+}
+.stw-break-teacher .dc-teacher-says::after {
+  left: calc(50% - 1.3cqh);
+}
+
+/* ─── Chrome ───────────────────────────────────────────────────────────── */
+.stw-leave {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #8a5a2e;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(80, 50, 20, 0.16);
+  cursor: pointer;
+}
+.stw-trail {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1cqh;
+  min-height: 44px;
+  padding: 0.6cqh 1.8cqh;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0.6cqh 1.4cqh rgba(80, 50, 20, 0.16);
+}
+.stw-trail-item {
+  display: block;
+  width: clamp(20px, 6.4cqh, 40px);
+  height: clamp(20px, 6.4cqh, 40px);
+  opacity: 0.22;
+  transition: opacity 0.3s;
+}
+.stw-trail-item.is-done {
+  opacity: 1;
+}
+.stw-trail-item.is-now {
+  opacity: 0.6;
+  animation: stw-now 1.4s ease-in-out infinite;
+}
+@keyframes stw-now {
+  50% {
+    transform: translateY(-14%) scale(1.1);
+  }
+}
+
+/* ─── A board: the two trays, the bubble, the bank, the teacher ────────── */
+.stw-play {
+  /* one unit sizes everything on the board: a slot in a tray */
+  --slot: min(21cqh, 11cqw);
+  --btn: calc(var(--slot) * 1.06);
+}
+.stw-main {
+  position: absolute;
+  z-index: 3;
+  left: 2cqw;
+  right: 1.5cqw;
+  top: max(66px, 17cqh);
+  bottom: 3cqh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 2.4cqw;
+}
+
+/* the checked board the trays lie on (the reference's checkerboard) */
+.stw-board {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--slot) * 0.16);
+  padding: calc(var(--slot) * 0.16);
+  border: calc(var(--slot) * 0.06) solid #ffffff;
+  border-radius: calc(var(--slot) * 0.3);
+  background: repeating-conic-gradient(#fff4e2 0 25%, #f1d7b4 0 50%) 0 0 / calc(var(--slot) * 0.36)
+    calc(var(--slot) * 0.36);
+  box-shadow:
+    0 calc(var(--slot) * 0.1) 0 #c99a62,
+    0 calc(var(--slot) * 0.2) calc(var(--slot) * 0.3) rgba(80, 50, 20, 0.25);
+}
+/* a grey tray: thin dark outline, sunk in, a soft shadow under it */
+.stw-tray {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--slot) * 0.1);
+  padding: calc(var(--slot) * 0.14) calc(var(--slot) * 0.2);
+  border: 2px solid #4b515e;
+  border-radius: calc(var(--slot) * 0.24);
+  background: linear-gradient(180deg, #c3c9d3, #d5dae2 40%, #cdd2db);
+  box-shadow:
+    inset 0 calc(var(--slot) * 0.08) calc(var(--slot) * 0.12) rgba(30, 36, 50, 0.3),
+    inset 0 calc(var(--slot) * -0.04) 0 rgba(255, 255, 255, 0.45),
+    0 calc(var(--slot) * 0.06) calc(var(--slot) * 0.1) rgba(60, 40, 20, 0.28);
+  transition: box-shadow 0.15s;
+}
+.stw-tray--lit {
+  box-shadow:
+    inset 0 calc(var(--slot) * 0.08) calc(var(--slot) * 0.12) rgba(30, 36, 50, 0.3),
+    0 0 0 calc(var(--slot) * 0.07) #ffd93d,
+    0 calc(var(--slot) * 0.06) calc(var(--slot) * 0.2) rgba(255, 190, 40, 0.6);
+}
+.stw-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--slot);
+  height: var(--slot);
+}
+.stw-slot-art {
+  display: flex;
+  width: 88%;
+  height: 88%;
+}
+
+/* the teacher's bubble over the bank, and the row the bank and he share */
+.stw-side {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2.4cqh;
+}
+/* the break sends up the teacher in the middle; this one steps aside */
+/* (visibility, not opacity: Framer writes the bubble's opacity inline) */
+.stw-side.is-away .stw-bubble,
+.stw-side.is-away .stw-teacher-slot {
+  visibility: hidden;
+}
+.stw-bubble {
+  position: relative;
+  max-width: calc(var(--btn) * 2 + var(--slot) * 2.2);
+  margin: 0;
+  padding: 1.2cqh 2.6cqh;
+  border-radius: 2.8cqh;
+  background: #ffffff;
+  font-size: clamp(14px, min(5.4cqh, 2.9cqw), 32px);
+  line-height: 1.12;
+  text-align: center;
+  color: #8a5a2e;
+  box-shadow:
+    0 0.7cqh 0 #e8cda8,
+    0 1.2cqh 2cqh rgba(80, 50, 20, 0.2);
+}
+/* the tail points down at the teacher */
+.stw-bubble::after {
+  content: "";
+  position: absolute;
+  right: calc(var(--slot) * 0.8);
+  bottom: -1.6cqh;
+  width: 0;
+  height: 0;
+  border-left: 1.4cqh solid transparent;
+  border-right: 1.4cqh solid transparent;
+  border-top: 1.8cqh solid #ffffff;
+}
+.stw-side-row {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--slot) * 0.12);
+}
+.stw-teacher-slot--play {
+  width: calc(var(--slot) * 1.9);
+  height: calc(var(--slot) * 2.1);
+  margin-right: calc(var(--slot) * -0.3);
+}
+
+/* the bank: four white round buttons, two by two */
+.stw-bank {
+  display: grid;
+  grid-template-columns: repeat(2, var(--btn));
+  gap: calc(var(--slot) * 0.16);
+}
+.stw-source {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn);
+  height: var(--btn);
+  padding: 0;
+  border: calc(var(--slot) * 0.05) solid #f3e6d3;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 32%, #ffffff 55%, #f6efe6);
+  box-shadow:
+    0 calc(var(--slot) * 0.08) 0 #d6b98f,
+    0 calc(var(--slot) * 0.14) calc(var(--slot) * 0.2) rgba(80, 50, 20, 0.25);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.stw-source-art {
+  display: flex;
+  width: 74%;
+  height: 74%;
+  pointer-events: none;
+}
+.stw-source.is-carried .stw-source-art,
+.stw-source.is-used .stw-source-art {
+  visibility: hidden;
+}
+/* an emptied button: a shallow white socket, nothing to pick up */
+.stw-source.is-used {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 calc(var(--slot) * 0.05) calc(var(--slot) * 0.1) rgba(80, 50, 20, 0.2);
+  cursor: default;
+}
+.stw-source:disabled {
+  cursor: default;
+}
+
+/* the thing under the finger, and a thing gliding home */
+.stw-ghost-art {
+  display: flex;
+  width: calc(var(--slot) * 0.88);
+  height: calc(var(--slot) * 0.88);
+  margin-left: calc(var(--slot) * -0.44);
+  margin-top: calc(var(--slot) * -0.44);
+}
+.stw-glide {
+  position: absolute;
+  z-index: 35;
+  display: flex;
+  pointer-events: none;
+}
+.stw-cast {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.stw-cast .stw-art--small {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The title screen ─────────────────────────────────────────────────── */
+.stw-teacher-slot--home,
+.stw-teacher-slot--done {
+  position: absolute;
+  left: 0.5cqw;
+  bottom: 4cqh;
+  z-index: 4;
+  width: min(40cqh, 19cqw);
+  height: min(46cqh, 22cqw);
+}
+.stw-home-col {
+  position: absolute;
+  left: 20cqw;
+  right: 2cqw;
+  top: 0;
+  bottom: 3cqh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 4cqh;
+  padding-top: 60px;
+}
+.stw-title-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  padding: 1.2cqh 4cqh;
+  border-radius: 4cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.1cqh 0 #e8b77e,
+    0 2.4cqh 3.4cqh rgba(80, 50, 20, 0.2);
+}
+.stw-title {
+  margin: 0;
+  font-size: clamp(22px, min(8.4cqh, 5.4cqw), 64px);
+  line-height: 1.05;
+  color: #8a5a2e;
+  white-space: nowrap;
+}
+.stw-subtitle {
+  margin: 0;
+  font-size: clamp(11px, min(3.6cqh, 2.2cqw), 22px);
+  line-height: 1.2;
+  color: #a2784c;
+}
+.stw-modes {
+  display: flex;
+  gap: 2.4cqw;
+}
+.stw-mode {
+  --accent: #2e7fd6;
+  --accent-deep: #1d5fa8;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1cqh;
+  width: min(24cqw, 50cqh);
+  height: min(56cqh, 31cqw);
+  padding: 1.6cqh 1.6cqh 2cqh;
+  border: 0.8cqh solid var(--accent);
+  border-radius: 4cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 var(--accent-deep),
+    0 2.4cqh 3.4cqh rgba(80, 50, 20, 0.2);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.stw-mode--animals {
+  --accent: #3dab72;
+  --accent-deep: #2b8a57;
+}
+.stw-mode--sweets {
+  --accent: #e5484d;
+  --accent-deep: #b8363a;
+}
+.stw-mode-name {
+  font-size: clamp(13px, min(5.2cqh, 2.6cqw), 32px);
+  line-height: 1.05;
+  white-space: nowrap;
+  color: var(--accent-deep);
+}
+.stw-mode-tag {
+  font-size: clamp(10px, min(3cqh, 1.6cqw), 18px);
+  line-height: 1.1;
+  text-align: center;
+  color: #6b5a48;
+}
+.stw-mode-stars {
+  display: flex;
+  margin-top: auto;
+}
+.stw-mode-go {
+  position: absolute;
+  top: -2.4cqh;
+  right: -2.4cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8cqh;
+  height: 8cqh;
+  min-width: 26px;
+  min-height: 26px;
+  padding-left: 0.4cqh;
+  border: 0.5cqh solid #ffffff;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: clamp(10px, 3.4cqh, 20px);
+  box-shadow: 0 0.6cqh 1cqh rgba(0, 0, 0, 0.2);
+}
+
+/* a little board: two grey trays with their things sorted */
+.stw-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+  width: 100%;
+  padding: 5%;
+  border-radius: 2cqh;
+  background: repeating-conic-gradient(#fff4e2 0 25%, #f1d7b4 0 50%) 0 0 / 2.4cqh 2.4cqh;
+}
+.stw-mini-tray {
+  display: flex;
+  justify-content: center;
+  gap: 4%;
+  padding: 4% 5%;
+  border: 1.5px solid #4b515e;
+  border-radius: 1.4cqh;
+  background: linear-gradient(180deg, #c3c9d3, #d5dae2 40%, #cdd2db);
+  box-shadow: inset 0 0.5cqh 0.8cqh rgba(30, 36, 50, 0.3);
+}
+.stw-mini-slot {
+  display: flex;
+  flex: none;
+  width: 27%;
+  aspect-ratio: 1;
+}
+
+/* ─── The finish ───────────────────────────────────────────────────────── */
+.stw-done-center {
+  position: absolute;
+  left: 20cqw;
+  right: 2cqw;
+  top: 0;
+  bottom: 2cqh;
+  z-index: 5;
+  display: flex;
+  align-items: safe center;
+  justify-content: center;
+  padding-top: 8px;
+}
+.stw-done-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6cqh;
+  width: min(70cqw, 128cqh);
+  padding: 3.4cqh 4cqh 3.4cqh;
+  border-radius: 4.6cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 #e8b77e,
+    0 3cqh 4cqh rgba(80, 50, 20, 0.22);
+  text-align: center;
+}
+.stw-done-title {
+  margin: 0;
+  font-size: clamp(18px, min(7.6cqh, 4.6cqw), 50px);
+  line-height: 1.05;
+  color: #8a5a2e;
+}
+.stw-done-sub {
+  margin: 0;
+  font-size: clamp(11px, 3.4cqh, 20px);
+  color: #a2784c;
+}
+.stw-done-ways {
+  display: flex;
+  justify-content: center;
+  gap: 4cqh;
+}
+.stw-done-way {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqh;
+  width: min(30cqh, 19cqw);
+}
+.stw-mini--done {
+  padding: 4%;
+}
+.stw-done-rule {
+  font-size: clamp(10px, 3cqh, 18px);
+  color: #6b5a48;
+}
+.stw-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.6cqh;
+}
+.stw-done-btn {
+  min-height: 44px;
+  padding: 1.2cqh 3cqh;
+  border: 0;
+  border-radius: 9999px;
+  background: #fbeedd;
+  color: #8a5a2e;
+  font-size: clamp(13px, 4.2cqh, 24px);
+  box-shadow: 0 0.7cqh 0 #ecd3b1;
+  cursor: pointer;
+}
+.stw-done-btn--go {
+  background: #3dab72;
+  color: #ffffff;
+  box-shadow: 0 0.7cqh 0 #2b8a57;
+}
+
+/* ─── Portrait: the trays on top, the bubble and bank under them ───────── */
+@media (orientation: portrait) {
+  .stw-trail {
+    top: 68px;
+  }
+  .stw-play {
+    --slot: min(23cqw, 10.6cqh);
+  }
+  .stw-main {
+    left: 3cqw;
+    right: 3cqw;
+    top: 124px;
+    bottom: 2cqh;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 2cqh;
+  }
+  .stw-side {
+    align-items: center;
+  }
+  .stw-bubble {
+    max-width: 92cqw;
+    font-size: clamp(15px, 5.2cqw, 28px);
+  }
+  .stw-teacher-slot--play {
+    width: calc(var(--slot) * 1.8);
+    height: calc(var(--slot) * 2);
+    margin-right: 0;
+  }
+
+  .stw-teacher-slot--home,
+  .stw-teacher-slot--done {
+    left: 1cqw;
+    bottom: 1cqh;
+    width: min(20cqh, 36cqw);
+    height: min(22cqh, 40cqw);
+  }
+  .stw-teacher-slot--home .dc-teacher-says,
+  .stw-teacher-slot--done .dc-teacher-says {
+    left: 92%;
+    bottom: 50%;
+    font-size: clamp(13px, 4.6cqw, 24px);
+  }
+  .stw-teacher-slot--home .dc-teacher-says::after,
+  .stw-teacher-slot--done .dc-teacher-says::after {
+    left: -1.2cqh;
+    bottom: 30%;
+    border-top: 1.3cqh solid transparent;
+    border-bottom: 1.3cqh solid transparent;
+    border-right: 1.6cqh solid #ffffff;
+    border-left: 0;
+  }
+  .stw-home-col,
+  .stw-done-center {
+    left: 4cqw;
+    right: 4cqw;
+    bottom: 24cqh;
+    padding-top: 66px;
+  }
+  .stw-home-col {
+    gap: 2.4cqh;
+  }
+  .stw-title {
+    font-size: clamp(22px, 8.6cqw, 44px);
+  }
+  .stw-subtitle {
+    font-size: clamp(11px, 3.6cqw, 18px);
+  }
+  .stw-modes {
+    flex-direction: column;
+    gap: 2.4cqh;
+  }
+  .stw-mode {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    grid-template-rows: auto auto auto;
+    align-content: center;
+    column-gap: 4cqw;
+    row-gap: 0.6cqh;
+    width: min(88cqw, 60cqh);
+    height: min(15cqh, 40cqw);
+    padding: 1.2cqh 3cqw;
+  }
+  .stw-mode .stw-mini {
+    grid-row: 1 / span 3;
+    align-self: center;
+  }
+  .stw-mode-name {
+    font-size: clamp(14px, 4.8cqw, 26px);
+    white-space: normal;
+    text-align: left;
+    justify-self: start;
+  }
+  .stw-mode {
+    padding-right: 7cqw;
+  }
+  .stw-mode-go {
+    top: 50%;
+    right: -3cqw;
+    width: 11cqw;
+    height: 11cqw;
+    margin-top: -5.5cqw;
+  }
+  .stw-mode-tag {
+    font-size: clamp(11px, 3.4cqw, 18px);
+    text-align: left;
+  }
+  .stw-mode-stars {
+    margin-top: 0;
+  }
+  .stw-done-card {
+    width: 92cqw;
+  }
+  .stw-done-title {
+    font-size: clamp(20px, 7.4cqw, 40px);
+  }
+  .stw-done-way {
+    width: 34cqw;
+  }
+}

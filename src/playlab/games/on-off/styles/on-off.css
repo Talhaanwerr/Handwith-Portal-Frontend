@@ -1,0 +1,712 @@
+/**
+ * On & Off — class prefix `oo-` (grepped clear across src/playlab; every
+ * game's CSS loads on every play page, so nothing here is bare).
+ *
+ * THE UNIT. `--u` is one stage-derived length (see constants/scenes.ts):
+ *   landscape  min(1cqh, 0.62cqw)      portrait  min(1cqw, 0.46cqh)
+ * and `--oo-lift` raises the whole composition (teacher included) by half
+ * of any height the stage has beyond the design's 100u / 217u, so a tablet
+ * or a tall phone gets the scene in its middle.
+ * Scene pieces are placed by `.oo-at` from custom properties the component
+ * sets per box — x from the stage's centre line, y up from its bottom edge,
+ * width and height, all in u, one set per orientation — so the layout that
+ * renders is exactly the one `checkScenes()` proves.
+ *
+ * The worlds are other games' (OoArt.tsx). Each already has a knob for its
+ * floor height; it is set here, under `.oo-root`, so furniture stands on
+ * the floor. Nothing behind the scene moves.
+ */
+
+.oo-root {
+  --u: min(1cqh, 0.62cqw);
+  --oo-lift: max(0px, (100cqh - 100 * var(--u)) * 0.5);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  container-name: oo;
+  background: #ffe7ad;
+}
+.oo-layer,
+.oo-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+/* the floor depth below the baseline, in u: a round sets its scene's own
+   (OoRound → OoStage), the title and finish use these */
+.oo-screen {
+  --oo-floor-l: 30;
+  --oo-floor-p: 104;
+  --oo-floor: var(--oo-floor-l);
+}
+.oo-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ─── Placement ────────────────────────────────────────────────────────── */
+.oo-at {
+  position: absolute;
+  left: calc(50cqw + var(--oo-lx) * var(--u));
+  top: calc(100cqh - var(--oo-lift) + var(--oo-ly) * var(--u));
+  width: calc(var(--oo-lw) * var(--u));
+  height: calc(var(--oo-lh) * var(--u));
+}
+
+/* ─── The worlds (other games' art, their floor knobs set for this game) ─ */
+.oo-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.oo-root .oo-bg--room {
+  --csf-floor-h: calc(var(--oo-lift) + var(--oo-floor) * var(--u));
+  --csf-wainscot-h: calc(12 * var(--u));
+}
+.oo-root .oo-bg--playroom .jf-table {
+  height: calc(var(--oo-lift) + var(--oo-floor) * var(--u));
+}
+.oo-root .oo-bg--dining,
+.oo-root .oo-bg--park {
+  --sa-floor: calc(var(--oo-lift) + var(--oo-floor) * var(--u));
+}
+
+/* ─── The scene: surface, bubble, silhouette, thing ────────────────────── */
+.oo-surface {
+  z-index: 2;
+  pointer-events: none;
+}
+.oo-surface svg,
+.oo-surface img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* the tree's crown spills past its viewBox, as it does in Street Pals */
+.oo-surface svg {
+  overflow: visible;
+}
+/* Numbers 1 – 5's table-and-chair, cropped to the table alone: the box
+   shows viewBox x 116 – 400, y 76 – 194 (284 × 118) of the 400 × 200
+   drawing, so the table fills it. Margins in % are of the box's width. */
+.oo-surface--table {
+  overflow: hidden;
+}
+.oo-surface.oo-surface--table .cn-table-svg {
+  position: absolute;
+  left: calc(-100% * 116 / 284);
+  top: 0;
+  width: calc(100% * 400 / 284);
+  height: auto;
+  aspect-ratio: 2;
+  margin-top: calc(-100% * 76 / 284);
+}
+
+.oo-bubble {
+  z-index: 3;
+  border: calc(1.3 * var(--u)) solid #ffffff;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #ffffff 0%, #f4f8ff 55%, #dfe9fb 100%);
+  box-shadow:
+    0 0 0 calc(0.9 * var(--u)) rgba(126, 160, 222, 0.35),
+    0 calc(1.3 * var(--u)) 0 rgba(90, 116, 170, 0.28),
+    0 calc(2.6 * var(--u)) calc(3.6 * var(--u)) rgba(30, 40, 80, 0.22);
+  cursor: grab;
+  touch-action: none;
+}
+
+.oo-shadow {
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+}
+.oo-shadow img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0);
+  opacity: 0.78;
+}
+.oo-shadow.is-filled {
+  opacity: 0;
+}
+
+.oo-thing {
+  z-index: 5;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.oo-thing img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.oo-thing.is-lifted {
+  visibility: hidden;
+}
+.oo-thing:disabled {
+  cursor: default;
+}
+
+.oo-ghost-art {
+  position: absolute;
+  left: var(--oo-gx);
+  top: var(--oo-gy);
+  display: block;
+  width: var(--oo-gs);
+  height: var(--oo-gs);
+  transform-origin: var(--oo-go);
+  animation: oo-pickup 0.16s ease-out;
+}
+.oo-ghost-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes oo-pickup {
+  from {
+    transform: scale(var(--oo-gk));
+  }
+}
+
+/* ─── The teacher and his bubble (Key Quest's teacher; his classes are
+   global, so every rule is restated under this game's slot) ───────────── */
+.oo-teacher-slot {
+  position: absolute;
+  left: calc(0.5 * var(--u));
+  bottom: calc(var(--oo-lift) + 1.5 * var(--u));
+  z-index: 6;
+  width: calc(25 * var(--u));
+  height: calc(52 * var(--u));
+  pointer-events: none;
+}
+.oo-teacher-slot .dc-teacher {
+  position: absolute;
+  inset: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+}
+.oo-teacher-slot .dc-teacher-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  mix-blend-mode: multiply;
+}
+.oo-teacher-slot .dc-teacher-shadow {
+  position: absolute;
+  left: 18%;
+  bottom: 0;
+  width: 58%;
+  height: calc(2.6 * var(--u));
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(60, 50, 20, 0.42), transparent 70%);
+}
+
+.oo-says {
+  position: absolute;
+  left: calc(1 * var(--u));
+  bottom: calc(var(--oo-lift) + 56 * var(--u));
+  z-index: 7;
+  max-width: calc(53 * var(--u));
+  padding: calc(1.2 * var(--u)) calc(2.2 * var(--u));
+  border-radius: calc(3 * var(--u));
+  background: #ffffff;
+  color: #6a3f1c;
+  font-size: calc(4.6 * var(--u));
+  line-height: 1.12;
+  text-wrap: balance;
+  transform-origin: 12% 100%;
+  box-shadow:
+    0 calc(0.8 * var(--u)) 0 rgba(160, 110, 50, 0.25),
+    0 calc(1.6 * var(--u)) calc(2.4 * var(--u)) rgba(80, 50, 20, 0.2);
+  pointer-events: none;
+}
+.oo-says::after {
+  content: "";
+  position: absolute;
+  left: calc(8 * var(--u));
+  bottom: calc(-1.8 * var(--u));
+  border-left: calc(1.6 * var(--u)) solid transparent;
+  border-right: calc(1.6 * var(--u)) solid transparent;
+  border-top: calc(2 * var(--u)) solid #ffffff;
+}
+.oo-says.is-done {
+  color: #237a4b;
+}
+.oo-says-cheer {
+  white-space: nowrap;
+}
+.oo-word {
+  display: inline-block;
+  padding: 0.04em 0.26em 0.08em;
+  border-radius: 0.28em;
+  font-style: normal;
+  font-size: 1.28em;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  vertical-align: -0.06em;
+}
+.oo-word--on {
+  background: #2f9e5b;
+  box-shadow: 0 0.12em 0 #1f7442;
+}
+.oo-word--off {
+  background: #e5484d;
+  box-shadow: 0 0.12em 0 #b8363a;
+}
+
+/* ─── Chrome ───────────────────────────────────────────────────────────── */
+.oo-leave {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #8a5a2e;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(80, 50, 20, 0.16);
+  cursor: pointer;
+}
+.oo-trail {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1cqh;
+  min-height: 44px;
+  padding: 0.6cqh 1.8cqh;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0.6cqh 1.4cqh rgba(80, 50, 20, 0.18);
+}
+.oo-trail-item {
+  display: block;
+  width: clamp(20px, 6.4cqh, 40px);
+  height: clamp(20px, 6.4cqh, 40px);
+  opacity: 0.22;
+  transition: opacity 0.3s;
+}
+.oo-trail-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.oo-trail-item.is-done {
+  opacity: 1;
+}
+.oo-trail-item.is-now {
+  opacity: 0.6;
+  animation: oo-now 1.4s ease-in-out infinite;
+}
+@keyframes oo-now {
+  50% {
+    transform: translateY(-14%) scale(1.1);
+  }
+}
+
+/* ─── The title screen ─────────────────────────────────────────────────── */
+.oo-says--home {
+  bottom: calc(var(--oo-lift) + 55 * var(--u));
+}
+.oo-home-col {
+  position: absolute;
+  left: calc(27 * var(--u));
+  right: 2cqw;
+  top: 0;
+  bottom: 4cqh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 4cqh;
+  padding-top: 56px;
+}
+.oo-title-plate {
+  display: flex;
+  align-items: center;
+  gap: 2cqh;
+  max-width: 100%;
+  padding: 1.4cqh 3.2cqh;
+  border-radius: 5cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.1cqh 0 #f0b64a,
+    0 2.4cqh 3.4cqh rgba(80, 50, 20, 0.2);
+}
+.oo-title {
+  margin: 0;
+  font-size: clamp(22px, min(9cqh, 5.6cqw), 70px);
+  line-height: 1.05;
+  color: #8a5a2e;
+  white-space: nowrap;
+}
+.oo-title-on {
+  color: #2f9e5b;
+}
+.oo-title-off {
+  color: #e5484d;
+}
+.oo-title-icon {
+  display: block;
+  flex: none;
+  width: 9cqh;
+  height: 9cqh;
+}
+.oo-title-icon img,
+.oo-mini img,
+.oo-done-thing img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* the one Play card: the game in miniature, ON and OFF side by side */
+.oo-play-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1cqh;
+  width: min(62cqw, 108cqh);
+  height: min(58cqh, 46cqw);
+  padding: 2.2cqh 2.2cqh 1.8cqh;
+  border: 0.9cqh solid #e59a4b;
+  border-radius: 4.4cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.3cqh 0 #b9732e,
+    0 2.6cqh 3.6cqh rgba(80, 50, 20, 0.2);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.oo-play-minis {
+  display: flex;
+  gap: 2cqh;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+.oo-play-name {
+  font-size: clamp(18px, min(8cqh, 4.6cqw), 50px);
+  line-height: 1;
+  color: #8a4b14;
+}
+.oo-play-stars {
+  display: flex;
+  justify-content: center;
+}
+.oo-play-go {
+  position: absolute;
+  top: -2.6cqh;
+  right: -2.6cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10cqh;
+  height: 10cqh;
+  min-width: 32px;
+  min-height: 32px;
+  padding-left: 0.5cqh;
+  border: 0.6cqh solid #ffffff;
+  border-radius: 50%;
+  background: #2f9e5b;
+  color: #ffffff;
+  font-size: clamp(12px, 4.2cqh, 26px);
+  box-shadow: 0 0.6cqh 1cqh rgba(0, 0, 0, 0.2);
+}
+
+/* a mini scene: a bedroom corner with the teddy going on / off */
+.oo-mini {
+  position: relative;
+  display: block;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 2.6cqh;
+  background:
+    linear-gradient(180deg, transparent 0 66%, #fffaf0 66% 69%, transparent 69%),
+    linear-gradient(180deg, #ffe7ad 0 66%, #e3a867 66% 100%);
+  box-shadow: inset 0 -0.8cqh 0 rgba(140, 80, 30, 0.25);
+}
+.oo-mini > span {
+  position: absolute;
+  display: block;
+  aspect-ratio: 1;
+}
+.oo-mini-bed {
+  left: 8%;
+  bottom: -6%;
+  height: 88%;
+}
+.oo-mini-teddy,
+.oo-mini-shadow {
+  height: 34%;
+}
+.oo-mini-shadow img {
+  filter: brightness(0);
+  opacity: 0.75;
+}
+.oo-mini-arrow {
+  height: 34%;
+}
+.oo-mini-arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.oo-mini-word {
+  position: absolute;
+  left: 5%;
+  top: 7%;
+  font-size: clamp(11px, 4.2cqh, 26px);
+}
+/* ON: the teddy up top, its silhouette on the mattress */
+.oo-mini--on .oo-mini-teddy {
+  right: 8%;
+  top: 6%;
+}
+.oo-mini--on .oo-mini-shadow {
+  left: 30%;
+  bottom: 22%;
+}
+.oo-mini--on .oo-mini-arrow {
+  right: 30%;
+  top: 14%;
+  transform: scaleX(-1);
+}
+/* OFF: the teddy on the mattress, its silhouette on the floor */
+.oo-mini--off .oo-mini-teddy {
+  left: 30%;
+  bottom: 22%;
+}
+.oo-mini--off .oo-mini-shadow {
+  right: 5%;
+  bottom: 4%;
+}
+.oo-mini--off .oo-mini-arrow {
+  left: 52%;
+  top: 8%;
+}
+
+/* ─── The finish ───────────────────────────────────────────────────────── */
+.oo-done-center {
+  position: absolute;
+  left: calc(26 * var(--u));
+  right: 2cqw;
+  top: 0;
+  bottom: 3cqh;
+  z-index: 8;
+  display: flex;
+  align-items: safe center;
+  justify-content: center;
+  padding-top: 48px;
+}
+.oo-done-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6cqh;
+  width: min(64cqw, 120cqh);
+  padding: 3.6cqh 4cqh 3.6cqh;
+  border-radius: 4.6cqh;
+  background: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 #f0b64a,
+    0 3cqh 4cqh rgba(80, 50, 20, 0.22);
+  text-align: center;
+}
+.oo-done-title {
+  margin: 0;
+  font-size: clamp(20px, 8.4cqh, 54px);
+  line-height: 1.05;
+  color: #237a4b;
+}
+.oo-done-sub {
+  margin: 0;
+  font-size: clamp(13px, 4.6cqh, 26px);
+  line-height: 1.2;
+  color: #6a5a4a;
+}
+.oo-done-things {
+  display: flex;
+  justify-content: center;
+  gap: 1.4cqh;
+}
+.oo-done-thing {
+  display: block;
+  width: clamp(26px, 9cqh, 64px);
+  height: clamp(26px, 9cqh, 64px);
+}
+.oo-done-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.6cqh;
+  margin-top: 0.4cqh;
+}
+.oo-done-btn {
+  min-height: 44px;
+  padding: 1.2cqh 3cqh;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff1d6;
+  color: #8a5a2e;
+  font-size: clamp(13px, 4.2cqh, 24px);
+  box-shadow: 0 0.7cqh 0 #efd3a0;
+  cursor: pointer;
+}
+.oo-done-btn--go {
+  background: #2f9e5b;
+  color: #ffffff;
+  box-shadow: 0 0.7cqh 0 #1f7442;
+}
+
+/* ─── Portrait: the scene on top, the bubble lower right, the teacher in
+   the bottom-left corner with his words beside him ──────────────────── */
+@media (orientation: portrait) {
+  .oo-root {
+    --u: min(1cqw, 0.46cqh);
+    --oo-lift: max(0px, (100cqh - 217 * var(--u)) * 0.5);
+  }
+  .oo-screen {
+    --oo-floor: var(--oo-floor-p);
+  }
+  .oo-at {
+    left: calc(50cqw + var(--oo-px) * var(--u));
+    top: calc(100cqh - var(--oo-lift) + var(--oo-py) * var(--u));
+    width: calc(var(--oo-pw) * var(--u));
+    height: calc(var(--oo-ph) * var(--u));
+  }
+  .oo-root .oo-bg--room {
+    --csf-wainscot-h: calc(10 * var(--u));
+  }
+  .oo-trail {
+    top: 68px;
+    gap: 1.4cqw;
+  }
+  .oo-teacher-slot {
+    left: calc(0.5 * var(--u));
+    bottom: calc(var(--oo-lift) + 1 * var(--u));
+    width: calc(26 * var(--u));
+    height: calc(46 * var(--u));
+  }
+  .oo-says {
+    left: calc(29 * var(--u));
+    right: calc(2 * var(--u));
+    bottom: calc(var(--oo-lift) + 4 * var(--u));
+    max-width: none;
+    width: fit-content;
+    font-size: calc(5 * var(--u));
+    transform-origin: 0 60%;
+  }
+  .oo-says::after {
+    left: calc(-1.8 * var(--u));
+    bottom: calc(2.4 * var(--u));
+    border-top: calc(1.6 * var(--u)) solid transparent;
+    border-bottom: calc(1.6 * var(--u)) solid transparent;
+    border-right: calc(2 * var(--u)) solid #ffffff;
+    border-left: 0;
+  }
+
+  .oo-says--home {
+    bottom: calc(var(--oo-lift) + 18 * var(--u));
+  }
+  .oo-home-col,
+  .oo-done-center {
+    left: 4cqw;
+    right: 4cqw;
+    bottom: calc(50 * var(--u));
+    padding-top: 64px;
+  }
+  .oo-title {
+    font-size: clamp(22px, 10cqw, 44px);
+  }
+  .oo-title-icon {
+    width: 11cqw;
+    height: 11cqw;
+  }
+  /* portrait: the two minis stack, each as wide as the card */
+  .oo-play-card {
+    width: min(88cqw, 64cqh);
+    height: min(46cqh, 100cqw);
+    padding: 1.4cqh 1.4cqh 1.2cqh;
+    gap: 0.8cqh;
+  }
+  .oo-play-minis {
+    flex-direction: column;
+    align-items: center;
+    gap: 1cqh;
+  }
+  /* kept to the landscape card's proportions, so the teddy, the arrow and
+     the silhouette stay close together */
+  .oo-play-minis .oo-mini {
+    aspect-ratio: 1.45;
+    max-width: 100%;
+  }
+  /* a tablet held upright has the width for them side by side again */
+  @container oo (min-aspect-ratio: 3/5) {
+    .oo-play-card {
+      height: 40cqh;
+    }
+    .oo-play-minis {
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .oo-play-minis .oo-mini {
+      aspect-ratio: auto;
+    }
+  }
+  .oo-play-name {
+    font-size: clamp(18px, 9cqw, 44px);
+  }
+  .oo-play-go {
+    top: -1.8cqh;
+    right: -1.8cqh;
+    width: 12cqw;
+    height: 12cqw;
+    font-size: clamp(12px, 5cqw, 24px);
+  }
+  .oo-mini-word {
+    font-size: clamp(11px, 4.4cqw, 22px);
+  }
+  .oo-trail-item {
+    width: clamp(18px, 7cqw, 34px);
+    height: clamp(18px, 7cqw, 34px);
+  }
+  .oo-done-card {
+    width: 92cqw;
+  }
+  .oo-done-title {
+    font-size: clamp(20px, 8cqw, 40px);
+  }
+  .oo-done-sub {
+    font-size: clamp(13px, 4.6cqw, 22px);
+  }
+  .oo-done-thing {
+    width: 11cqw;
+    height: 11cqw;
+  }
+}

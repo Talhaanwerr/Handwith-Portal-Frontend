@@ -1,0 +1,323 @@
+/**
+ * Number Hunt — class prefix `nh-` (grepped clear across src/playlab; every
+ * game's CSS loads on every play page, so nothing here is bare).
+ *
+ * Only Number Hunt's own modules, worlds and miniatures live here. The root,
+ * the screens, the chrome (teacher, star trail, pills), the carried pieces and
+ * tray, GroupFace, the title screen and the star card are Count & Match's,
+ * shared from @games/number-groups and styled in number-groups.css (`ng-`).
+ * Sized in container units of the shared `.ng-root`; portrait at the bottom.
+ */
+
+/* ─── Berry's room (Color & Shape Friends' playroom, given its variables) ─ */
+.nh-csf {
+  --csf-floor-h: 30cqh;
+  --csf-wainscot-h: clamp(24px, 12cqh, 110px);
+  position: absolute;
+  inset: 0;
+}
+/* the art shelf stands where the teacher does; the room is calmer without it */
+.nh-csf .csf-artshelf,
+.nh-csf .csf-window {
+  display: none;
+}
+
+/* ─── The classroom (Blend & Seek's, bare) ─────────────────────────────── */
+.nh-classroom {
+  position: absolute;
+  inset: 0;
+  background: #fbe9d6;
+}
+
+/* ─── Find the Number ──────────────────────────────────────────────────── */
+.nh-play--find {
+  --nh-o: min(31cqh, 17cqw);
+}
+.nh-find-board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--nh-o));
+  grid-auto-rows: var(--nh-o);
+  gap: 3cqh 5cqw;
+  align-content: center;
+  justify-content: center;
+}
+.nh-obj {
+  position: relative;
+  display: block;
+  width: var(--nh-o);
+  height: var(--nh-o);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 55%,
+    rgba(255, 255, 255, 0.85) 0 58%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.nh-obj:disabled {
+  cursor: default;
+}
+.nh-obj-pic {
+  position: absolute;
+  inset: 10% 14% 18% 10%;
+  display: block;
+}
+.nh-obj-pic img,
+.nh-obj-pic svg,
+.nh-mini-obj img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.8cqh 0.5cqh rgba(60, 40, 20, 0.22));
+}
+.nh-obj-tag {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46%;
+  aspect-ratio: 1;
+  border: 0.7cqh solid #2e7fd6;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1f5fa6;
+  font-size: calc(var(--nh-o) * 0.3);
+  line-height: 1;
+  box-shadow: 0 0.8cqh 0 #1f5fa6;
+}
+.nh-obj.is-found {
+  box-shadow: 0 0 0 1cqh rgba(255, 217, 61, 0.85);
+  background: radial-gradient(circle, #fff6c8 0 60%, rgba(255, 246, 200, 0) 72%);
+}
+.nh-obj.is-found .nh-obj-tag {
+  border-color: #2f8f4f;
+  background: #2f8f4f;
+  color: #ffffff;
+  box-shadow: 0 0.8cqh 0 #1f6a37;
+}
+.nh-obj.is-wrong .nh-obj-pic,
+.nh-obj.is-wrong .nh-obj-tag {
+  opacity: 0.4;
+}
+
+/* ─── Group Boxes ──────────────────────────────────────────────────────── */
+.nh-play--boxes {
+  --nh-q: min(32cqh, 16cqw);
+}
+.nh-boxes-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqh;
+  width: 100%;
+  height: 100%;
+}
+.nh-tray--qcards {
+  gap: 3cqw;
+  border-radius: 3cqh;
+  padding: 1.4cqh 2.6cqw;
+}
+.nh-piece--qcard {
+  width: var(--nh-q);
+  height: var(--nh-q);
+}
+.ng-carried.nh-piece--qcard {
+  left: calc(var(--nh-q) * -0.5);
+  top: calc(var(--nh-q) * -0.5);
+}
+
+/* a quantity card: Key Quest's things on a white card, or Pond Numbers' dots */
+.nh-qcard {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.nh-qcard-face {
+  position: absolute;
+  inset: 0;
+  border: 0.9cqh solid #ffd466;
+  border-radius: 13%;
+  background: #ffffff;
+  box-shadow:
+    0 1cqh 0 #e0a93a,
+    0 1.8cqh 2.4cqh rgba(60, 40, 20, 0.22);
+}
+.nh-qcard-face .ng-gface {
+  inset: 4%;
+}
+/* Pond Numbers' dots, a size up */
+.nh-qcard--dots .pn-dot {
+  width: 25%;
+  height: 25%;
+  margin-left: -12.5%;
+  margin-top: -12.5%;
+}
+/* Pond Numbers' dot card, in this game's colours */
+.nh-qcard--dots .pn-card-face--dots {
+  border-width: 0.9cqh;
+  border-color: #d9c8f5;
+  box-shadow:
+    0 1cqh 0 #a98be0,
+    0 1.8cqh 2.4cqh rgba(60, 40, 20, 0.22);
+}
+
+.nh-bins {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3cqw;
+}
+.nh-bin {
+  position: relative;
+  width: calc(var(--nh-q) * 1.24);
+  height: calc(var(--nh-q) * 1.22);
+}
+.nh-bin-back {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 30%;
+  height: 22%;
+  border-radius: 2cqh 2cqh 0 0;
+  background: var(--nh-bin-edge);
+}
+.nh-bin-slot {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--nh-q);
+  height: var(--nh-q);
+  margin-left: calc(var(--nh-q) * -0.5);
+  border: 0.6cqh dashed rgba(90, 60, 30, 0.35);
+  border-radius: 13%;
+  background: rgba(255, 255, 255, 0.45);
+}
+.nh-bin.is-full .nh-bin-slot {
+  border-color: transparent;
+  background: none;
+}
+.nh-bin.is-lit .nh-bin-slot {
+  border-color: #f0b429;
+  background: rgba(255, 236, 160, 0.6);
+}
+.nh-bin-front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44%;
+  border-radius: 0.8cqh 0.8cqh 2.4cqh 2.4cqh;
+  background: var(--nh-bin);
+  box-shadow:
+    inset 0 0.8cqh 0 rgba(255, 255, 255, 0.3),
+    0 1.2cqh 0 var(--nh-bin-edge),
+    0 2cqh 2.4cqh rgba(60, 40, 20, 0.25);
+}
+.nh-bin-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--nh-q) * 0.42);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--nh-bin-edge);
+  font-size: calc(var(--nh-q) * 0.32);
+  line-height: 1;
+  box-shadow: inset 0 -0.5cqh 0 rgba(0, 0, 0, 0.1);
+}
+
+/* ─── Each module in miniature (inside the shared `.ng-mini` box, whose
+   picture area is the container: cqh/cqw here are that area's) ──────────── */
+.nh-mini-obj {
+  position: absolute;
+  left: 8%;
+  top: 6%;
+  height: 58%;
+  aspect-ratio: 1;
+}
+.nh-mini-obj--b {
+  left: auto;
+  right: 10%;
+  top: 34%;
+}
+.nh-mini-obj .nh-obj-tag {
+  width: 50%;
+  right: -8%;
+  bottom: -6%;
+  border-width: min(1.6cqh, 1cqw);
+  font-size: min(16cqh, 10cqw);
+  box-shadow: 0 min(1.6cqh, 1cqw) 0 #1f5fa6;
+}
+.nh-mini-qcard {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  height: 56%;
+  aspect-ratio: 1;
+  translate: -50% 0;
+}
+.nh-mini-qcard .pn-card-face--dots {
+  border-width: min(2cqh, 1.2cqw);
+}
+.nh-mini-bin {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 6%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36%;
+  border-radius: 6% 6% 16% 16%;
+  background: #f08a24;
+  color: #ffffff;
+  font-size: min(24cqh, 15cqw);
+  line-height: 1;
+  box-shadow: 0 min(2.4cqh, 1.5cqw) 0 #c06a12;
+}
+
+/* ─── Portrait ─────────────────────────────────────────────────────────── */
+@media (orientation: portrait) {
+  .nh-play--find {
+    --nh-o: min(38cqw, 15cqh);
+  }
+  .nh-find-board {
+    grid-template-columns: repeat(2, var(--nh-o));
+    gap: 2.4cqh 10cqw;
+  }
+
+  /* upright: the cards in a column on the left, the boxes in a column on
+     the right — room for both to be big */
+  .nh-play--boxes {
+    --nh-q: min(33cqw, 14.5cqh);
+  }
+  .nh-boxes-board {
+    flex-direction: row;
+    gap: 6cqw;
+  }
+  .nh-tray--qcards {
+    flex-direction: column;
+    gap: 2.4cqh;
+    padding: 2cqh 2.4cqw;
+  }
+  .nh-bins {
+    flex-direction: column;
+    gap: 2cqh;
+  }
+}

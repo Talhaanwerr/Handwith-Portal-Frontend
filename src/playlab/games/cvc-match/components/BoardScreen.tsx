@@ -176,7 +176,7 @@ export function BoardScreen({
 
   return (
     <div ref={rootRef} className="cv-board">
-      <SiteScene cheer={cheer} />
+      <SiteScene cheer={cheer} calm />
 
       <NavPillButton
         label="Back"

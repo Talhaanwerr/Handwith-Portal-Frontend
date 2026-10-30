@@ -186,6 +186,13 @@ export function MazeBoard({ maze, onMiss, onWon, onBack, onExitPortal }: MazeBoa
   const rootRef = useRef<HTMLDivElement>(null);
   const cellRefs = useRef<Map<string, HTMLElement>>(new Map());
   const schedule = useScheduler();
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
 
   const next = path[done];
   const last: Pos = done > 0 ? path[done - 1] : start;
@@ -268,10 +275,13 @@ export function MazeBoard({ maze, onMiss, onWon, onBack, onExitPortal }: MazeBoa
         setWon(true);
         schedule(() => {
           playCelebrationSound();
-          void sayAfter(cheerFor(maze.id));
+          const cheer = sayAfter(cheerFor(maze.id));
           setBreakOn(true);
+          // the end waits for the whole cheer AND the figure's break
+          void Promise.all([cheer, new Promise((r) => setTimeout(r, BREAK_MS))]).then(() => {
+            if (alive.current) onWon();
+          });
         }, 450);
-        schedule(onWon, 450 + BREAK_MS);
       } else if (step === half) {
         playCorrectSound();
         schedule(() => {
@@ -428,7 +438,14 @@ export function MazeBoard({ maze, onMiss, onWon, onBack, onExitPortal }: MazeBoa
         </div>
       </div>
 
-      {hand && !locked && <TeachingHand fx={hand.x} fy={hand.y} tx={hand.x} ty={hand.y} />}
+      {/* The shared guide hand, drawn at twice its usual size: on the busy
+          maze the small one was easy to miss. `display: contents` keeps its
+          coordinates on the board root. */}
+      {hand && !locked && (
+        <div className="mz-hand-big">
+          <TeachingHand fx={hand.x} fy={hand.y} tx={hand.x} ty={hand.y} />
+        </div>
+      )}
 
       <AnimatePresence>
         {breakOn && (

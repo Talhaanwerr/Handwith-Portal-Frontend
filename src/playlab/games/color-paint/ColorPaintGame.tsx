@@ -8,6 +8,7 @@ import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { stopVoice } from "@shared/audio/voice";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { usePaintStore, type PaintScreen } from "@games/color-paint/store/paintStore";
 import { ACTIVITIES } from "@games/color-paint/constants/activities";
 import { PaintSplash } from "@games/color-paint/components/PaintSplash";
@@ -33,6 +34,7 @@ function toStep(screen: PaintScreen): string {
  */
 export function ColorPaintGame() {
   const router = useRouter();
+  const { gate } = useHowToPlay();
   const { screen, index, setScreen, advance, restart } = usePaintStore();
 
   const handlePop = useCallback(
@@ -69,7 +71,7 @@ export function ColorPaintGame() {
       <AnimatePresence mode="wait">
         {screen === "splash" && (
           <motion.div key="splash" className="absolute inset-0" {...PAGE_TRANSITION}>
-            <PaintSplash onPlay={() => setScreen("intro")} />
+            <PaintSplash onPlay={() => gate(() => setScreen("intro"))} />
           </motion.div>
         )}
         {screen === "intro" && (

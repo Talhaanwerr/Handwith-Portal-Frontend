@@ -1,6 +1,7 @@
 "use client";
 
-import { MAGNET_COLORS } from "@games/magnet-match/constants/letters";
+import { MAGNET_COLORS, caseLetter } from "@games/magnet-match/constants/letters";
+import { useMagnetStore } from "@games/magnet-match/store/magnetStore";
 import { cssVars } from "@shared/styles/cssVars";
 
 /**
@@ -159,6 +160,10 @@ export function PuzzleMagnet({
   size: string;
 }) {
   const c = MAGNET_COLORS[colorIndex % MAGNET_COLORS.length];
+  const shown = caseLetter(
+    letter,
+    useMagnetStore((s) => s.letterCase)
+  );
   return (
     // `size` is already a complete CSS length (a var()/calc() tied to
     // --mm-pot), so it is passed through verbatim — appending "px" here
@@ -194,7 +199,7 @@ export function PuzzleMagnet({
               fill="#8A8A96"
               fontFamily="Nunito, sans-serif"
             >
-              {letter}
+              {shown}
             </text>
           </>
         ) : (
@@ -219,7 +224,7 @@ export function PuzzleMagnet({
               fill="rgba(0,0,0,0.22)"
               fontFamily="Nunito, sans-serif"
             >
-              {letter}
+              {shown}
             </text>
             <text
               x="50"
@@ -231,7 +236,7 @@ export function PuzzleMagnet({
               fill="white"
               fontFamily="Nunito, sans-serif"
             >
-              {letter}
+              {shown}
             </text>
           </>
         )}

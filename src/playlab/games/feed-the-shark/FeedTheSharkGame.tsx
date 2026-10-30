@@ -7,6 +7,7 @@ import { GameStage } from "@shared/components/game/GameStage";
 import { useGameSession } from "@shared/hooks/useGameSession";
 import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
+import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { useSharkStore, type SharkScreen } from "@games/feed-the-shark/store/sharkStore";
 import { TOTAL_ROUNDS } from "@games/feed-the-shark/constants/letters";
 import { SharkSplash } from "@games/feed-the-shark/components/SharkSplash";
@@ -22,7 +23,8 @@ function toBucket(screen: SharkScreen): "menu" | "play" {
 
 export function FeedTheSharkGame() {
   const router = useRouter();
-  const { screen, roundIndex, setScreen, nextRound, resetProgress } = useSharkStore();
+  const { screen, roundIndex, mode, setScreen, nextRound, resetProgress } = useSharkStore();
+  const { gate } = useHowToPlay();
 
   // Back button: from gameplay, retreat to the splash instead of exiting
   // straight to the portal.
@@ -65,7 +67,7 @@ export function FeedTheSharkGame() {
         {screen === "splash" && (
           <motion.div key="splash" className="absolute inset-0" {...PAGE_TRANSITION}>
             <SharkSplash
-              onStart={handleStart}
+              onStart={() => gate(handleStart, mode)}
               onExitPortal={() => router.push(PORTAL_ROUTE)}
               hasProgress={hasProgress}
             />

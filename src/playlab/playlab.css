@@ -9,6 +9,7 @@
 
 /* @import must appear before all other rules (CSS spec) */
 @import "./shared/styles/utilities.css";
+@import "./shared/styles/how-to-play.css";
 @import "./games/letter-tracing/styles/letter-tracing.css";
 @import "./games/jungle-spy/styles/jungle-spy.css";
 @import "./games/letter-hunt/styles/letter-hunt.css";
@@ -42,10 +43,37 @@
 @import "./games/sort-it/styles/sort-it.css";
 /* Picture Words */
 @import "./games/word-quiz/styles/word-quiz.css";
+@import "./games/phonics-show/styles/phonics-show.css";
+@import "./games/sound-show/styles/sound-show.css";
+@import "./games/odd-sound/styles/odd-sound.css";
 /* Math Maze */
 @import "./games/math-maze/styles/math-maze.css";
 /* Sorting Food */
 @import "./games/food-sort/styles/food-sort.css";
+/* Rainbow Shapes */
+@import "./games/color-shape-friends/styles/color-shape-friends.css";
+/* Play Street Pals */
+@import "./games/sesame-activities/styles/sesame-activities.css";
+/* Where Is the Mouse? */
+@import "./games/find-the-mouse/styles/find-the-mouse.css";
+/* Pond Numbers */
+@import "./games/pond-numbers/styles/pond-numbers.css";
+/* Jigsaw Fun (its celebration classes are shared with Tangram Town) */
+@import "./games/jigsaw-fun/styles/jigsaw-fun.css";
+/* Tangram Town */
+@import "./games/tangram-town/styles/tangram-town.css";
+@import "./games/on-off/styles/on-off.css";
+@import "./games/sort-two-ways/styles/sort-two-ways.css";
+@import "./games/number-groups/styles/number-groups.css";
+@import "./games/number-hunt/styles/number-hunt.css";
+@import "./games/brick-lab/styles/brick-lab.css";
+@import "./games/sock-case/styles/sock-case.css";
+@import "./games/animal-repair/styles/animal-repair.css";
+@import "./games/car-garage/styles/car-garage.css";
+@import "./games/shadow-match/styles/shadow-match.css";
+@import "./games/silly-robot/styles/silly-robot.css";
+@import "./games/number-train/styles/number-train.css";
+@import "./games/tiny-toy-shop/styles/tiny-toy-shop.css";
 
 /* Scoped base rules (canvas behaviour, scrollbar, reduced-motion) */
 .pl-shell canvas {

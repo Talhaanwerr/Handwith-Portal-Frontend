@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSpaceStore, displayLetter } from "@games/space-letters/store/spaceStore";
@@ -184,7 +185,7 @@ export function SpaceLevel() {
   const targetRefs = useRef<Map<PieceKey, HTMLElement>>(new Map());
   const looseRefs = useRef<Map<PieceKey, HTMLElement>>(new Map());
   const schedule = useScheduler();
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   const letterKey = currentLetter.toLowerCase();
 

@@ -30,7 +30,7 @@ export function LevelMenu({ progress, onBack, onPick }: LevelMenuProps) {
 
   return (
     <div className="br-screen pl-screen-shell">
-      <ClassroomScene />
+      <ClassroomScene calm />
 
       <NavPillButton
         label="Back to Games"

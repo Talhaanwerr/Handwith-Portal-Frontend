@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useStopVoiceOnLeave } from "@shared/hooks/useStopVoiceOnLeave";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOceanStore, displayLetter, stagesFor } from "@games/ocean-abc/store/oceanStore";
@@ -136,7 +137,7 @@ export function OceanLevel() {
   const [rootRef, dims] = useElementSize();
   const dragRootRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => () => stopVoice(), []);
+  useStopVoiceOnLeave();
 
   // The letter's name on arrival, then the stage's own cue. One sequence, so
   // the two lines never talk over each other.

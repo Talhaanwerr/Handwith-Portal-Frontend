@@ -1,0 +1,65 @@
+## Words - just the word, no letter sounds
+
+* apple
+* ball
+* banana
+* box
+* bus
+* cake
+* car
+* cat
+* cup
+* dog
+* drum
+* egg
+* fan
+* flag
+* fox
+* frog
+* grapes
+* hat
+* hen
+* house
+* jam
+* jar
+* jelly
+* jet
+* juice
+* lemon
+* lion
+* milk
+* mouse
+* nest
+* net
+* nut
+* orange
+* pen
+* penguin
+* pineapple
+* pizza
+* queen
+* shoe
+* six
+* snake
+* soup
+* sun
+* train
+* van
+* water
+* whale
+* zip
+* zucchini
+
+## Food Sort - Module Starts
+
+* Let's sort by colour! Put each food with its colour.
+* Let's sort by shape! Put each one with its shape.
+* Let's sort by size! Find where each one fits.
+* Let's sort the kitchen! Where does each one go?
+
+## Food Sort - Kitchen Tables
+
+* Is it food or a toy?
+* Do we drink it or eat it?
+* Is it hot or cold?
+* Is it fruit or a treat?
