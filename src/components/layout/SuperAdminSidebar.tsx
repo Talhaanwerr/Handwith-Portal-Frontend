@@ -13,6 +13,7 @@ import {
   LogOut,
   X,
   Library,
+  ChartColumn,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -33,6 +34,11 @@ const NAV_ITEMS: NavItem[] = [
   // { href: "/super-admin/feature-flags", labelKey: "featureFlags", icon: Flag },
   { href: "/super-admin/audit-logs", labelKey: "auditLogs", icon: ScrollText },
   { href: "/super-admin/library", labelKey: "library", icon: Library },
+  {
+    href: "/super-admin/library/analytics",
+    labelKey: "libraryAnalytics",
+    icon: ChartColumn,
+  },
   { href: "/super-admin/settings", labelKey: "settings", icon: Settings },
 ];
 
@@ -68,7 +74,12 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
       {/* Nav */}
       <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
         {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => {
-          const isActive = pathname === href || pathname.startsWith(href + "/");
+          const isActive =
+            href === "/super-admin/library"
+              ? pathname === href ||
+                (pathname.startsWith(`${href}/`) &&
+                  !pathname.startsWith("/super-admin/library/analytics"))
+              : pathname === href || pathname.startsWith(`${href}/`);
           return (
             <Link
               key={href}

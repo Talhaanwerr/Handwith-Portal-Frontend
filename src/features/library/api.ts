@@ -14,6 +14,7 @@ export type LibraryContentItem = {
   difficulty: string;
   duration: string;
   playCount: number;
+  isFeatured?: boolean;
   tags: { id: string; category: string; slug: string; label: string }[];
 };
 
@@ -27,6 +28,8 @@ export type BrowseParams = {
   difficulty?: string;
   duration?: string;
   tagId?: string;
+  featured?: boolean;
+  minPlayCount?: number;
   sortBy?: string;
   sortOrder?: string;
 };
@@ -66,6 +69,100 @@ export type CompleteSessionInput = {
   durationSecs?: number | null;
 };
 
+export type HistoryParams = {
+  page?: number;
+  limit?: number;
+  from?: string;
+  to?: string;
+  type?: string;
+  skillTagId?: string;
+};
+
+export type HistoryRecord = {
+  id: string;
+  playedAt: string;
+  endedAt: string | null;
+  durationSecs: number | null;
+  score: number | null;
+  completionPct: number | null;
+  sessionNumber: number;
+  content: LibraryContentItem;
+};
+
+export type ChildHistoryPayload = {
+  items: HistoryRecord[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+  tier: "FREE" | "PREMIUM";
+  historyWindowDays: number | null;
+  truncated: boolean;
+  upgradeHint: string | null;
+};
+
+export type ChildDashboardPayload = {
+  child: {
+    id: string;
+    name: string;
+    primaryInterests: string[] | null;
+    therapyChildId: string | null;
+  };
+  tier: "FREE" | "PREMIUM";
+  stats: {
+    totalPlays: number;
+    timeThisWeekSecs: number;
+    streakDays: number;
+  };
+  continuePlaying: {
+    sessionId: string;
+    incomplete: boolean;
+    content: LibraryContentItem;
+  } | null;
+  recentlyPlayed: {
+    id: string;
+    playedAt: string;
+    durationSecs: number | null;
+    score: number | null;
+    completionPct: number | null;
+    content: LibraryContentItem;
+  }[];
+  recommended: LibraryContentItem[];
+};
+
+export type ChildMonthlyReportPayload = {
+  child: { id: string; name: string };
+  month: string;
+  monthLabel: string;
+  tier: "FREE" | "PREMIUM";
+  premiumRequired: boolean;
+  upgradeHint: string | null;
+  report: {
+    totalSessions: number;
+    totalTimeSecs: number;
+    previousMonth: {
+      totalSessions: number;
+      totalTimeSecs: number;
+      sessionsDelta: number;
+      timeDeltaSecs: number;
+    };
+    skillBreakdown: { skill: string; seconds: number; percent: number }[];
+    mostImprovedArea: string | null;
+    topGames: {
+      id: string;
+      title: string;
+      type: string;
+      thumbnailUrl: string | null;
+      plays: number;
+    }[];
+    encouragement: string;
+  } | null;
+};
+
 export const INTEREST_OPTIONS = [
   "Communication",
   "Motor Skills",
@@ -102,6 +199,19 @@ export const libraryApi = {
 
   deleteChild: (id: string) =>
     apiClient.delete<ApiEnvelope<{ message: string }>>(`/library/children/${id}`),
+
+  childHistory: (childId: string, params?: HistoryParams) =>
+    apiClient.get<ApiEnvelope<ChildHistoryPayload>>(`/library/children/${childId}/history`, {
+      params,
+    }),
+
+  childDashboard: (childId: string) =>
+    apiClient.get<ApiEnvelope<ChildDashboardPayload>>(`/library/children/${childId}/dashboard`),
+
+  childReport: (childId: string, month: string) =>
+    apiClient.get<ApiEnvelope<ChildMonthlyReportPayload>>(`/library/children/${childId}/report`, {
+      params: { month },
+    }),
 
   startSession: (body: { childProfileId: string; contentItemId: string }) =>
     apiClient.post<ApiEnvelope<LibrarySession>>("/library/sessions/start", body),

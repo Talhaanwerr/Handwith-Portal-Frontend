@@ -11,41 +11,76 @@ import { Loader2, CheckCircle2, AlertCircle, Mail } from "lucide-react";
 
 type Status = "pending" | "verifying" | "success" | "error";
 
+/** One in-flight verify per token — survives Strict Mode remount. */
+const verifyPromises = new Map<string, Promise<void>>();
+
+async function clearLocalLibrarySession() {
+  const { libraryTokenManager } = await import("@/lib/library-token");
+  const { clearLibrarySessionCookie } = await import("@/lib/library-session-cookie");
+  libraryTokenManager.clearAll();
+  clearLibrarySessionCookie();
+  try {
+    const { useLibraryAuthStore } = await import("@/features/library/auth-store");
+    useLibraryAuthStore.getState().clearSession();
+  } catch {
+    // Store may be unavailable outside provider; cookie/token clear is enough.
+  }
+}
+
+function verifyEmailOnce(token: string): Promise<void> {
+  const existing = verifyPromises.get(token);
+  if (existing) return existing;
+
+  const promise = libraryAuthApi
+    .verifyEmail(token)
+    .then(async () => {
+      // Require a fresh login after verify — no auto session / setup-child shortcut.
+      await clearLocalLibrarySession();
+    })
+    .catch((err) => {
+      verifyPromises.delete(token);
+      throw err;
+    });
+
+  verifyPromises.set(token, promise);
+  return promise;
+}
+
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const pending = searchParams.get("pending") === "1";
+  const alreadyVerified = searchParams.get("verified") === "1";
 
-  const [status, setStatus] = useState<Status>(token ? "verifying" : pending ? "pending" : "error");
+  const [status, setStatus] = useState<Status>(
+    alreadyVerified ? "success" : token ? "verifying" : pending ? "pending" : "error"
+  );
   const [errorMessage, setErrorMessage] = useState("Invalid or expired verification link.");
   const [isResending, setIsResending] = useState(false);
   const [resendMessage, setResendMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || alreadyVerified) return;
+    let cancelled = false;
 
-    libraryAuthApi
-      .verifyEmail(token)
-      .then(async () => {
-        // Restore in-memory access token from the httpOnly refresh cookie if present.
-        try {
-          const refresh = await libraryAuthApi.refresh();
-          if (refresh.data?.accessToken) {
-            const { libraryTokenManager } = await import("@/lib/library-token");
-            libraryTokenManager.setAccessToken(refresh.data.accessToken);
-          }
-        } catch {
-          // Cookie may be missing (opened email on another device) — user can log in.
-        }
-        setStatus("success");
+    verifyEmailOnce(token)
+      .then(() => {
+        if (cancelled) return;
+        // Full navigation so header drops unverified Log out / Verify chrome.
+        window.location.replace(`${ROUTES.LIBRARY_VERIFY_EMAIL}?verified=1`);
       })
       .catch((err) => {
+        if (cancelled) return;
         setErrorMessage(
           err instanceof ApiError ? err.message : "Verification failed. Please try again."
         );
         setStatus("error");
       });
-  }, [token]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token, alreadyVerified]);
 
   async function handleResend() {
     setIsResending(true);
@@ -79,8 +114,8 @@ function VerifyEmailContent() {
         </div>
         <h2 className="text-lg font-semibold text-stone-900">Check your email</h2>
         <p className="text-sm text-stone-500">
-          We sent a verification link. Open it to activate your library account, then add a child
-          profile.
+          We sent a verification link. Open it to activate your library account, then sign in to add
+          a child profile.
         </p>
         {resendMessage && <p className="text-sm text-stone-600">{resendMessage}</p>}
         <Button variant="outline" disabled={isResending} onClick={handleResend}>
@@ -107,17 +142,12 @@ function VerifyEmailContent() {
           <CheckCircle2 className="h-6 w-6 text-green-600" />
         </div>
         <h2 className="text-lg font-semibold text-stone-900">Email verified!</h2>
-        <p className="text-sm text-stone-500">Next, add a child profile so you can track play.</p>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Link href={ROUTES.LIBRARY_SETUP_CHILD}>
-            <Button className="mt-2">Set up child profile</Button>
-          </Link>
-          <Link href={ROUTES.LIBRARY_LOGIN}>
-            <Button variant="outline" className="mt-2">
-              Sign in
-            </Button>
-          </Link>
-        </div>
+        <p className="text-sm text-stone-500">
+          Sign in to continue, then you can add a child profile and start playing.
+        </p>
+        <Link href={ROUTES.LIBRARY_LOGIN}>
+          <Button className="mt-2">Sign in</Button>
+        </Link>
       </div>
     );
   }

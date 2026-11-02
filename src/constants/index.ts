@@ -24,6 +24,13 @@ export const ROUTES = {
   LIBRARY_HISTORY: "/library/history",
   LIBRARY_CHILDREN: "/library/children",
   LIBRARY_SETUP_CHILD: "/library/setup-child",
+  LIBRARY_REPORT: "/library/report",
+  SUPER_ADMIN_LIBRARY_ANALYTICS: "/super-admin/library/analytics",
+  THERAPY_CHILDREN: "/therapy/children",
+  THERAPY_HOMEWORK: "/therapy/homework",
+  THERAPY_CLASSWORK: "/therapy/classwork",
+  THERAPY_MY_HOMEWORK: "/therapy/my-homework",
+  THERAPY_REPORTS: "/therapy/reports",
 } as const;
 
 export const USER_ROLES = {

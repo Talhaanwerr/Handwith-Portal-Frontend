@@ -16,7 +16,13 @@
     "auditLogs": "Audit Logs",
     "superAdmin": "Super Admin",
     "platformMgmt": "Platform management",
-    "library": "Library"
+    "library": "Library",
+    "libraryAnalytics": "Library Analytics",
+    "therapyChildren": "Therapy Children",
+    "therapyHomework": "Homework",
+    "therapyClasswork": "Classwork",
+    "myHomework": "My Homework",
+    "therapyReports": "Library Reports"
   },
   "common": {
     "save": "Save Changes",

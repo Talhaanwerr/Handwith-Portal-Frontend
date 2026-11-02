@@ -1,5 +1,7 @@
 "use client";
 
+import "@/playlab/playlab.css";
+import { cn } from "@/lib/utils";
 import {
   lazy,
   Suspense,
@@ -224,6 +226,7 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
 
 interface GamePlayerProps {
   gameId: string;
+  className?: string;
 }
 
 /**
@@ -238,7 +241,7 @@ interface GamePlayerProps {
  * music or narration starts behind it. Either way nothing starts until the
  * child presses Play.
  */
-export function GamePlayer({ gameId }: GamePlayerProps) {
+export function GamePlayer({ gameId, className }: GamePlayerProps) {
   const Game = GAME_COMPONENTS[gameId];
   const steps = howToPlayFor(gameId);
   const title = GAMES.find((g) => g.id === gameId)?.title;
@@ -249,7 +252,12 @@ export function GamePlayer({ gameId }: GamePlayerProps) {
   const started = gated || startedId === gameId || !steps;
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-white">
+    <div
+      className={cn(
+        "pl-shell font-rounded relative h-full w-full overflow-hidden bg-white antialiased",
+        className
+      )}
+    >
       {Game ? (
         started ? (
           <HowToPlayProvider gameId={gameId} title={title}>

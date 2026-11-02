@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ROUTES } from "@/constants";
+import { GAMES } from "@/constants/games";
+import { GAME_SCENE_ICONS } from "@shared/components/icons/GameSceneIcons";
 import type { LibraryContentItem } from "../api";
 import { TYPE_LABELS, labelOrRaw } from "../labels";
 import { cn } from "@/lib/utils";
@@ -11,6 +13,10 @@ type Props = {
 
 export function LibraryContentCard({ item, className }: Props) {
   const skillTags = item.tags.filter((t) => t.category === "SKILL_AREA").slice(0, 3);
+  const gameMeta =
+    item.type === "GAME" && item.fileId ? GAMES.find((g) => g.id === item.fileId) : undefined;
+  const SceneIcon =
+    item.fileId && GAME_SCENE_ICONS[item.fileId] ? GAME_SCENE_ICONS[item.fileId] : null;
 
   return (
     <Link
@@ -20,7 +26,10 @@ export function LibraryContentCard({ item, className }: Props) {
         className
       )}
     >
-      <div className="relative aspect-[16/10] bg-stone-100">
+      <div
+        className="relative aspect-[16/10] bg-stone-100"
+        style={!item.thumbnailUrl && gameMeta ? { backgroundColor: gameMeta.colors.bg } : undefined}
+      >
         {item.thumbnailUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -28,6 +37,16 @@ export function LibraryContentCard({ item, className }: Props) {
             alt=""
             className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
           />
+        ) : SceneIcon ? (
+          <div className="flex h-full items-center justify-center p-4" aria-hidden>
+            <div className="aspect-square h-[78%] max-h-28 w-auto transition-transform duration-300 group-hover:scale-105 [&_svg]:block [&_svg]:h-auto [&_svg]:w-full">
+              <SceneIcon />
+            </div>
+          </div>
+        ) : gameMeta ? (
+          <div className="flex h-full items-center justify-center text-5xl" aria-hidden>
+            {gameMeta.glyph}
+          </div>
         ) : (
           <div className="flex h-full items-center justify-center text-xs font-medium tracking-wide text-stone-400 uppercase">
             {labelOrRaw(TYPE_LABELS, item.type)}

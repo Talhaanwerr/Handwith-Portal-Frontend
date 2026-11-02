@@ -20,7 +20,10 @@ type LibraryAuthState = {
 
 function applySession(accessToken: string, user: LibraryAuthUser) {
   libraryTokenManager.setAccessToken(accessToken);
-  setLibrarySessionCookie({ tier: user.tier as LibraryTier });
+  setLibrarySessionCookie({
+    tier: user.tier as LibraryTier,
+    emailVerified: user.emailVerified,
+  });
 }
 
 export const useLibraryAuthStore = create<LibraryAuthState>((set) => ({
@@ -47,7 +50,8 @@ export const useLibraryAuthStore = create<LibraryAuthState>((set) => ({
       applySession(accessToken, user);
       set({ user });
       if (typeof window !== "undefined") {
-        window.location.href = redirect || ROUTES.LIBRARY_DASHBOARD;
+        const path = redirect || ROUTES.LIBRARY_DASHBOARD;
+        window.location.assign(new URL(path, window.location.origin).href);
       }
     } finally {
       set({ isLoading: false });
@@ -63,7 +67,9 @@ export const useLibraryAuthStore = create<LibraryAuthState>((set) => ({
       applySession(accessToken, user);
       set({ user });
       if (typeof window !== "undefined") {
-        window.location.href = `${ROUTES.LIBRARY_VERIFY_EMAIL}?pending=1`;
+        window.location.assign(
+          new URL(`${ROUTES.LIBRARY_VERIFY_EMAIL}?pending=1`, window.location.origin).href
+        );
       }
     } finally {
       set({ isLoading: false });
@@ -79,7 +85,7 @@ export const useLibraryAuthStore = create<LibraryAuthState>((set) => ({
       clearLibrarySessionCookie();
       set({ user: null, isLoading: false });
       if (typeof window !== "undefined") {
-        window.location.href = ROUTES.LIBRARY;
+        window.location.assign(new URL(ROUTES.LIBRARY, window.location.origin).href);
       }
     }
   },

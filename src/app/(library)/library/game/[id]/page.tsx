@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ROUTES } from "@/constants";
+import { GAMES } from "@/constants/games";
 import { libraryApi } from "@/features/library/api";
 import { LibraryContentCard } from "@/features/library/components/LibraryContentCard";
 import { ChildSelectModal } from "@/features/library/components/ChildSelectModal";
@@ -23,6 +24,7 @@ import { parseLibrarySessionCookie } from "@/lib/library-session-cookie";
 import { libraryTokenManager } from "@/lib/library-token";
 import { Button } from "@/components/ui/button";
 import { ApiError } from "@/lib/api-error";
+import { GAME_SCENE_ICONS } from "@shared/components/icons/GameSceneIcons";
 
 function readLibraryTierFromCookie(): "FREE" | "PREMIUM" | null {
   if (typeof document === "undefined") return null;
@@ -170,6 +172,11 @@ export default function LibraryGameDetailPage() {
     );
   }
 
+  const gameMeta =
+    item.type === "GAME" && item.fileId ? GAMES.find((g) => g.id === item.fileId) : undefined;
+  const SceneIcon =
+    item.fileId && GAME_SCENE_ICONS[item.fileId] ? GAME_SCENE_ICONS[item.fileId] : null;
+
   return (
     <article className="mx-auto max-w-3xl space-y-8">
       <Link href={ROUTES.LIBRARY_BROWSE} className="text-sm text-stone-500 hover:text-stone-800">
@@ -178,10 +185,31 @@ export default function LibraryGameDetailPage() {
 
       <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-start">
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
+          <div
+            className="overflow-hidden rounded-2xl border border-stone-200 bg-stone-100"
+            style={
+              !item.thumbnailUrl && gameMeta ? { backgroundColor: gameMeta.colors.bg } : undefined
+            }
+          >
             {item.thumbnailUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={item.thumbnailUrl} alt="" className="aspect-[16/10] w-full object-cover" />
+            ) : SceneIcon ? (
+              <div
+                className="flex aspect-[16/10] w-full items-center justify-center p-8"
+                aria-hidden
+              >
+                <div className="aspect-square h-36 w-auto sm:h-44 [&_svg]:block [&_svg]:h-auto [&_svg]:w-full">
+                  <SceneIcon />
+                </div>
+              </div>
+            ) : gameMeta ? (
+              <div
+                className="flex aspect-[16/10] w-full items-center justify-center text-7xl"
+                aria-hidden
+              >
+                {gameMeta.glyph}
+              </div>
             ) : (
               <div className="flex aspect-[16/10] items-center justify-center text-sm text-stone-400">
                 {labelOrRaw(TYPE_LABELS, item.type)}
