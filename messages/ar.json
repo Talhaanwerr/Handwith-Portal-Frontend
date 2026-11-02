@@ -16,7 +16,13 @@
     "auditLogs": "سجل التدقيق",
     "superAdmin": "المدير العام",
     "platformMgmt": "إدارة المنصة",
-    "library": "المكتبة"
+    "library": "المكتبة",
+    "libraryAnalytics": "تحليلات المكتبة",
+    "therapyChildren": "أطفال العلاج",
+    "therapyHomework": "الواجبات",
+    "therapyClasswork": "عمل الفصل",
+    "myHomework": "واجباتي",
+    "therapyReports": "تقارير المكتبة"
   },
   "common": {
     "save": "حفظ التغييرات",

@@ -37,6 +37,7 @@ const LIBRARY_PROTECTED_PREFIXES = [
   "/library/history",
   "/library/children",
   "/library/setup-child",
+  "/library/report",
 ];
 
 /** Always reachable (auth status handled per-route below). */
@@ -64,6 +65,7 @@ const PROTECTED_PREFIXES = [
   "/billing",
   "/reports",
   "/branches",
+  "/therapy",
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -138,7 +140,6 @@ export function proxy(request: NextRequest) {
   const portalSession = parseSessionCookie(cookieHeader);
   const librarySession = parseLibrarySessionCookie(cookieHeader);
   const isPortalAuthenticated = portalSession !== null;
-  const hasLibraryAccess = isPortalAuthenticated || librarySession !== null;
 
   // Static error / status pages
   if (isAlwaysAllowed(pathname)) {
@@ -150,9 +151,15 @@ export function proxy(request: NextRequest) {
     return withLibraryHeaders(request, isStandalone, needsRewrite ? pathname : undefined);
   }
 
-  // Content Library — dashboard etc. (portal JWT hint OR library-session)
+  // Content Library — dashboard etc. (portal JWT hint OR verified library-session)
   if (isLibraryProtected(pathname)) {
-    if (!hasLibraryAccess) {
+    const libraryVerified = librarySession != null && librarySession.emailVerified !== false;
+    const canAccessLibraryApp = isPortalAuthenticated || libraryVerified;
+    if (!canAccessLibraryApp) {
+      // Unverified register session → pending verify, not login.
+      if (librarySession && librarySession.emailVerified === false) {
+        return NextResponse.redirect(new URL("/library/verify-email?pending=1", request.url));
+      }
       const loginPath = isStandalone ? "/library/login" : "/login";
       const loginUrl = new URL(loginPath, request.url);
       loginUrl.searchParams.set("redirect", pathname);

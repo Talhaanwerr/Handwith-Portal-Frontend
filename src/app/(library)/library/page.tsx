@@ -56,12 +56,19 @@ function ContentRow({
 }
 
 export default function LibraryHomePage() {
-  const { isStandalone, authMode } = useLibrary();
+  const { authMode } = useLibrary();
   const showAuthCta = authMode === "anonymous";
 
   const featured = useQuery({
     queryKey: ["library", "browse", "featured"],
-    queryFn: () => libraryApi.browse({ page: 1, limit: 6, sortBy: "playCount", sortOrder: "desc" }),
+    queryFn: () =>
+      libraryApi.browse({
+        page: 1,
+        limit: 6,
+        featured: true,
+        sortBy: "createdAt",
+        sortOrder: "desc",
+      }),
   });
 
   const newest = useQuery({
@@ -71,14 +78,21 @@ export default function LibraryHomePage() {
 
   const mostPlayed = useQuery({
     queryKey: ["library", "browse", "most-played"],
-    queryFn: () => libraryApi.browse({ page: 1, limit: 6, sortBy: "playCount", sortOrder: "desc" }),
+    queryFn: () =>
+      libraryApi.browse({
+        page: 1,
+        limit: 6,
+        minPlayCount: 1,
+        sortBy: "playCount",
+        sortOrder: "desc",
+      }),
   });
 
   return (
     <div className="space-y-14">
       <section className="space-y-4">
         <p className="text-sm font-medium tracking-wide text-stone-500 uppercase">
-          {isStandalone ? "Handwith Content Library" : "Portal · Content Library"}
+          Handwith Content Library
         </p>
         <h1 className="max-w-2xl font-serif text-4xl leading-tight text-stone-900 md:text-5xl">
           Practice skills at home with games, activities, and videos
@@ -114,11 +128,11 @@ export default function LibraryHomePage() {
 
       <ContentRow
         title="Featured"
-        href={`${ROUTES.LIBRARY_BROWSE}?sort=playCount`}
+        href={ROUTES.LIBRARY_BROWSE}
         items={featured.data?.data?.items ?? []}
         isLoading={featured.isLoading}
         isError={featured.isError}
-        emptyText="No featured content yet. Popular items will appear here as families play."
+        emptyText="No featured content yet. Super Admin can mark items as Featured when creating or editing."
       />
 
       <ContentRow

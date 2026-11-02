@@ -16,6 +16,11 @@ import {
   // CreditCard,
   // Flag,
   Library,
+  Baby,
+  ClipboardList,
+  NotebookPen,
+  Gamepad2,
+  BarChart3,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -36,10 +41,38 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
   { href: "/library", labelKey: "library", icon: Library },
+  {
+    href: "/therapy/children",
+    labelKey: "therapyChildren",
+    icon: Baby,
+    permission: PERMISSIONS.THERAPY.READ,
+  },
+  {
+    href: "/therapy/homework",
+    labelKey: "therapyHomework",
+    icon: ClipboardList,
+    permission: PERMISSIONS.THERAPY.READ,
+  },
+  {
+    href: "/therapy/classwork",
+    labelKey: "therapyClasswork",
+    icon: NotebookPen,
+    permission: PERMISSIONS.THERAPY.READ,
+  },
+  {
+    href: "/therapy/my-homework",
+    labelKey: "myHomework",
+    icon: Gamepad2,
+  },
+  {
+    href: "/therapy/reports",
+    labelKey: "therapyReports",
+    icon: BarChart3,
+    permission: PERMISSIONS.THERAPY.READ,
+  },
   { href: "/users", labelKey: "users", icon: Users, permission: PERMISSIONS.USERS.READ },
   { href: "/roles", labelKey: "roles", icon: ShieldCheck, permission: PERMISSIONS.ROLES.READ },
   // { href: "/branches", labelKey: "branches", icon: GitBranch },
-  // { href: "/reports", labelKey: "reports", icon: BarChart3 },
   // { href: "/billing", labelKey: "billing", icon: CreditCard },
   {
     href: "/activity-logs",

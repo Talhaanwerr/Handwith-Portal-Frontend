@@ -96,6 +96,15 @@ export const PERMISSIONS = {
     UPDATE: "feature-flags:update",
     MANAGE: "feature-flags:manage",
   },
+
+  // ─── Therapy (Module 2 bridge) ──────────────────────────────────────────────
+  THERAPY: {
+    CREATE: "therapy:create",
+    READ: "therapy:read",
+    UPDATE: "therapy:update",
+    DELETE: "therapy:delete",
+    MANAGE: "therapy:manage",
+  },
 } as const;
 
 /** Union of every permission string — useful for typing props. */

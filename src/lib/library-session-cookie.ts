@@ -13,6 +13,8 @@ export type LibraryTier = "FREE" | "PREMIUM";
 export interface LibrarySessionPayload {
   kind: "library";
   tier: LibraryTier;
+  /** False after register until email is verified. Absent → treat as verified (legacy cookies). */
+  emailVerified?: boolean;
 }
 
 const COOKIE_NAME = "library-session";
@@ -22,7 +24,13 @@ const VALID_TIERS: ReadonlySet<string> = new Set(["FREE", "PREMIUM"]);
 
 export function setLibrarySessionCookie(payload: Omit<LibrarySessionPayload, "kind">): void {
   if (typeof document === "undefined") return;
-  const value = encodeURIComponent(JSON.stringify({ kind: "library", tier: payload.tier }));
+  const value = encodeURIComponent(
+    JSON.stringify({
+      kind: "library",
+      tier: payload.tier,
+      emailVerified: payload.emailVerified !== false,
+    })
+  );
   const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
   document.cookie = `${COOKIE_NAME}=${value}; Path=/; Max-Age=${COOKIE_MAX_AGE}; SameSite=Lax${secure}`;
 }
@@ -40,8 +48,18 @@ export function parseLibrarySessionCookie(cookieHeader: string): LibrarySessionP
     const parsed = JSON.parse(decodeURIComponent(match[1])) as Partial<LibrarySessionPayload>;
     if (parsed.kind !== "library") return null;
     if (!parsed.tier || !VALID_TIERS.has(parsed.tier)) return null;
-    return { kind: "library", tier: parsed.tier };
+    return {
+      kind: "library",
+      tier: parsed.tier,
+      emailVerified: parsed.emailVerified !== false,
+    };
   } catch {
     return null;
   }
+}
+
+/** Client helper: read current library-session cookie from document.cookie. */
+export function readLibrarySessionCookie(): LibrarySessionPayload | null {
+  if (typeof document === "undefined") return null;
+  return parseLibrarySessionCookie(document.cookie);
 }
