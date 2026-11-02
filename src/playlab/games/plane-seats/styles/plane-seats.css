@@ -1,0 +1,479 @@
+/**
+ * Plane Seats — class prefix `pls-`. Count & Match's shell (NgShell), so
+ * everything is sized in the `ng` container's units (1cqh = 1% of the
+ * stage's height). The teacher is hidden by Apple Basket's `.apa-game`.
+ *
+ * The cabin (CabinWorld) and the board share one set of sizes, so the
+ * seats' feet always stand on the carpet and the windows sit just over the
+ * headrests, on every screen:
+ *   --pls-s     one seat's width (its height is 1.2 × that)
+ *   --pls-p     a standing passenger (the aisle's height)
+ *   --pls-t     a boarding pass's height
+ *   --pls-aisle the aisle's height (a passenger, or upright a passenger
+ *               over their pass)
+ *   --pls-g     between the seats and the aisle
+ *   --pls-base  from the stage's bottom to the aisle's bottom
+ */
+
+.pls-cabin,
+.pls-play {
+  --pls-s: min(15cqw, 28cqh);
+  --pls-p: calc(var(--pls-s) * 0.9);
+  --pls-t: calc(var(--pls-s) * 0.78);
+  --pls-aisle: var(--pls-p);
+  --pls-g: 4cqh;
+  --pls-gap: 2.2cqw;
+  --pls-lift: 0px;
+  --pls-base: calc(3cqh + var(--pls-lift));
+  --pls-bins: 15cqh;
+  --pls-win: min(24cqh, 14cqw);
+  /* the carpet's top: just above the seats' feet */
+  --pls-floor: calc(var(--pls-base) + var(--pls-aisle) + var(--pls-g) + var(--pls-s) * 0.12);
+  /* the windows' bottom: a little way down behind the headrests */
+  --pls-win-bottom: calc(var(--pls-base) + var(--pls-aisle) + var(--pls-g) + var(--pls-s) * 0.85);
+}
+
+/* ── The cabin ───────────────────────────────────────────────────────────── */
+
+.pls-cabin {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e3dac8 0%, #f6f0e5 34%, #faf6ee 62%, #efe7d8 100%);
+}
+/** The wall curving in under the bins. */
+.pls-cabin-curve {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(140% 55% at 50% 0%, rgba(150, 128, 96, 0.22), transparent 70%),
+    radial-gradient(60% 90% at 0% 60%, rgba(150, 128, 96, 0.12), transparent 70%),
+    radial-gradient(60% 90% at 100% 60%, rgba(150, 128, 96, 0.12), transparent 70%);
+}
+.pls-cabin-bins {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  width: 100%;
+  height: var(--pls-bins);
+}
+.pls-cabin-windows {
+  position: absolute;
+  left: 2cqw;
+  right: 2cqw;
+  bottom: var(--pls-win-bottom);
+  height: var(--pls-win);
+  display: flex;
+  justify-content: space-evenly;
+}
+.pls-cabin-window {
+  display: block;
+  height: 100%;
+  aspect-ratio: 100 / 136;
+}
+.pls-cabin-window svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/** The skirting, where the wall meets the carpet. */
+.pls-cabin-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--pls-floor) - 0.2cqh);
+  height: 2cqh;
+  background: linear-gradient(#8d97a6, #6c7787);
+}
+/** The carpet: deep blue with a little pattern and two runner lines. */
+.pls-cabin-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--pls-floor);
+  background:
+    linear-gradient(
+      transparent 18%,
+      rgba(255, 255, 255, 0.1) 18% 21%,
+      transparent 21% 84%,
+      rgba(255, 255, 255, 0.1) 84% 87%,
+      transparent 87%
+    ),
+    radial-gradient(circle, rgba(255, 220, 140, 0.22) 0 0.45cqh, transparent 0.55cqh) 0 0 / 4cqh
+      4cqh,
+    linear-gradient(#4a63a8, #33478a);
+  box-shadow: inset 0 1.6cqh 2cqh rgba(10, 20, 60, 0.28);
+}
+
+/* ── The board: the row of seats, the aisle in front ─────────────────────── */
+
+.pls-board {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--pls-g);
+  padding-bottom: var(--pls-lift);
+}
+.pls-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--pls-gap);
+}
+.pls-aisle {
+  display: grid;
+  width: 100%;
+  height: var(--pls-aisle);
+  place-items: center;
+}
+.pls-boarding {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--pls-p) * 0.06);
+}
+.pls-pax-slot {
+  width: var(--pls-p);
+  height: var(--pls-p);
+  flex: none;
+}
+
+/* ── One seat ────────────────────────────────────────────────────────────── */
+
+.pls-seat {
+  position: relative;
+  display: block;
+  width: var(--pls-s);
+  height: calc(var(--pls-s) * 1.2);
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  transform-origin: 50% 100%;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.pls-seat.pls-seat--live {
+  cursor: pointer;
+}
+.pls-seat-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.pls-seat-front {
+  z-index: 2;
+}
+/** The number, printed big on the headrest cloth. */
+.pls-seat-num {
+  position: absolute;
+  z-index: 1;
+  left: 18%;
+  top: 5%;
+  display: grid;
+  width: 64%;
+  height: 31%;
+  place-items: center;
+  font-size: calc(var(--pls-s) * 0.34);
+  line-height: 1;
+  color: #1f4f94;
+  pointer-events: none;
+}
+/** Where a passenger sits: between the back and the cushion. */
+.pls-seat-spot {
+  position: absolute;
+  z-index: 1;
+  left: 19%;
+  top: 33.3%;
+  width: 62%;
+  height: calc(var(--pls-s) * 0.62);
+  pointer-events: none;
+}
+/** The hint (after a miss, or a long wait): a gold glow round the seat. */
+.pls-seat-ring {
+  position: absolute;
+  inset: -4% -6% 0;
+  border-radius: calc(var(--pls-s) * 0.22);
+  opacity: 0;
+  pointer-events: none;
+}
+.pls-seat.pls-seat--hint .pls-seat-ring {
+  opacity: 1;
+  background: rgba(255, 214, 90, 0.45);
+  box-shadow:
+    0 0 0 0.7cqh #ffc93c,
+    0 0 3cqh 1cqh rgba(255, 201, 60, 0.7);
+  animation: pls-hint 1.2s ease-in-out infinite;
+}
+.pls-seat.pls-seat--hint .pls-seat-num {
+  color: #c0750a;
+}
+@keyframes pls-hint {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.06;
+  }
+}
+
+/* ── A passenger ─────────────────────────────────────────────────────────── */
+
+.pls-pax {
+  display: block;
+  width: var(--pls-p);
+  height: var(--pls-p);
+}
+.pls-pax.pls-pax--seated {
+  width: 100%;
+  height: 100%;
+}
+.pls-pax-step {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/** Walking up the aisle: a little bob. */
+.pls-pax-step.pls-pax-step--walk {
+  animation: pls-walk 0.3s ease-in-out infinite;
+}
+@keyframes pls-walk {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -1.2cqh;
+  }
+}
+.pls-pax-fig {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pls-pax-body {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  height: 55%;
+}
+.pls-pax-head {
+  position: absolute;
+  left: 14%;
+  top: 0;
+  display: block;
+  width: 72%;
+  height: 72%;
+}
+/* ── The boarding pass ───────────────────────────────────────────────────── */
+
+.pls-ticket {
+  position: relative;
+  display: flex;
+  height: var(--pls-t);
+  flex: none;
+  rotate: -3deg;
+  border-radius: calc(var(--pls-t) * 0.14);
+  background: #ffffff;
+  box-shadow:
+    0 calc(var(--pls-t) * 0.07) 0 #c9c2b3,
+    0 calc(var(--pls-t) * 0.16) calc(var(--pls-t) * 0.2) rgba(20, 30, 60, 0.22);
+}
+.pls-ticket-stub {
+  display: flex;
+  width: calc(var(--pls-t) * 0.42);
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--pls-t) * 0.1);
+  border-radius: calc(var(--pls-t) * 0.14) 0 0 calc(var(--pls-t) * 0.14);
+  background: linear-gradient(#f4857a, #e15c4b);
+}
+.pls-plane-glyph {
+  display: block;
+  width: calc(var(--pls-t) * 0.28);
+  height: calc(var(--pls-t) * 0.28);
+  rotate: 90deg;
+}
+/** A little barcode. */
+.pls-ticket-code {
+  display: block;
+  width: calc(var(--pls-t) * 0.26);
+  height: calc(var(--pls-t) * 0.12);
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.85) 0 2px,
+    transparent 2px 4px,
+    rgba(255, 255, 255, 0.85) 4px 5px,
+    transparent 5px 7px
+  );
+}
+.pls-ticket-body {
+  display: grid;
+  min-width: calc(var(--pls-t) * 1.1);
+  place-items: center;
+  padding: 0 calc(var(--pls-t) * 0.18);
+  border-left: calc(var(--pls-t) * 0.03) dashed #d8cfbd;
+}
+.pls-ticket-num {
+  font-size: calc(var(--pls-t) * 0.72);
+  line-height: 1;
+  color: #1f4f94;
+}
+/** A used pass: a green tick stamped on its corner. */
+.pls-stamp {
+  position: absolute;
+  right: calc(var(--pls-t) * -0.14);
+  top: calc(var(--pls-t) * -0.14);
+  display: grid;
+  width: calc(var(--pls-t) * 0.4);
+  height: calc(var(--pls-t) * 0.4);
+  place-items: center;
+  border: calc(var(--pls-t) * 0.04) solid #ffffff;
+  border-radius: 50%;
+  background: #34a95a;
+  box-shadow: 0 calc(var(--pls-t) * 0.04) 0 #1c7a45;
+}
+.pls-stamp svg {
+  display: block;
+  width: 70%;
+  height: 70%;
+}
+
+/* the dot sum on a Ticket Sums pass */
+.pls-tsum {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--pls-t) * 0.08);
+}
+.pls-tsum-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--pls-t) * 0.04);
+}
+.pls-dots {
+  display: flex;
+  width: calc(var(--pls-t) * 0.42);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(var(--pls-t) * 0.05);
+}
+.pls-dot {
+  display: block;
+  width: calc(var(--pls-t) * 0.18);
+  height: calc(var(--pls-t) * 0.18);
+  border-radius: 50%;
+  background: #ef6f5e;
+  box-shadow: inset 0 calc(var(--pls-t) * -0.03) 0 rgba(0, 0, 0, 0.16);
+}
+.pls-tsum-num {
+  font-size: calc(var(--pls-t) * 0.27);
+  line-height: 1;
+  color: #1f4f94;
+}
+.pls-tsum-op {
+  font-size: calc(var(--pls-t) * 0.4);
+  line-height: 1;
+  color: #e07a1f;
+}
+.pls-tsum-answer {
+  display: grid;
+  width: calc(var(--pls-t) * 0.52);
+  height: calc(var(--pls-t) * 0.52);
+  place-items: center;
+  border: calc(var(--pls-t) * 0.035) dashed #b9c4d6;
+  border-radius: calc(var(--pls-t) * 0.12);
+  background: #f3f6fb;
+  font-size: calc(var(--pls-t) * 0.36);
+  line-height: 1;
+  color: #93a1b8;
+}
+.pls-tsum-answer.pls-tsum-answer--done {
+  border: calc(var(--pls-t) * 0.035) solid #1c7a45;
+  background: linear-gradient(#7fe0a0, #34a95a);
+  color: #ffffff;
+  text-shadow: 0 0.3cqh 0 #14592f;
+}
+
+/* ── A module in miniature (its home card's own size container) ──────────── */
+
+.pls-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqh;
+  --pls-s: 46cqh;
+  --pls-t: 32cqh;
+}
+.pls-mini.pls-mini--sums {
+  --pls-t: 40cqh;
+}
+.pls-mini .pls-ticket-body {
+  border-left-width: 1.4cqh;
+}
+
+/* ── A phone held sideways ───────────────────────────────────────────────── */
+
+@container ng (max-height: 520px) {
+  .pls-cabin,
+  .pls-play {
+    --pls-s: min(16cqw, 31cqh);
+    --pls-p: calc(var(--pls-s) * 0.85);
+    --pls-t: calc(var(--pls-s) * 0.75);
+    --pls-g: 2.5cqh;
+    --pls-win: 22cqh;
+  }
+}
+
+/* ── A phone held upright: the row across the middle; in the aisle the
+   passenger stands over their boarding pass ─────────────────────────────── */
+
+@container ng (orientation: portrait) {
+  .pls-cabin,
+  .pls-play {
+    --pls-s: min(17.6cqw, 11cqh);
+    --pls-p: min(30cqw, 15cqh);
+    --pls-t: min(22cqw, 11cqh);
+    --pls-aisle: calc(var(--pls-p) + var(--pls-t) + 2cqh);
+    --pls-g: 4cqh;
+    --pls-gap: 1cqw;
+    --pls-lift: 6cqh;
+    --pls-base: calc(4cqh + var(--pls-lift));
+    --pls-bins: 17cqh;
+    --pls-win: 40cqw;
+  }
+  .pls-cabin-window:nth-child(n + 4) {
+    display: none;
+  }
+  .pls-boarding {
+    flex-direction: column;
+    gap: 2cqh;
+  }
+  .pls-seat-num {
+    font-size: calc(var(--pls-s) * 0.4);
+  }
+}
+@media (orientation: portrait) {
+  /* the teacher is hidden: the board may use the bottom of the screen */
+  .pls-game .ng-main {
+    bottom: 4cqh;
+  }
+}

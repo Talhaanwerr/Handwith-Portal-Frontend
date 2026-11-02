@@ -11,6 +11,7 @@ import { ROUND_COUNT, type GameVoice, type ModuleInfo } from "@games/number-grou
 import type { ModuleScreen, ModuleStore } from "@games/number-groups/store/createModuleStore";
 import { NgHome } from "@games/number-groups/components/NgHome";
 import { NgComplete } from "@games/number-groups/components/NgComplete";
+import { GuideProvider, type GuideProps } from "@games/number-groups/components/NgGuide";
 import type { RoundProps } from "@games/number-groups/components/roundProps";
 
 /** GAME_DEV: no `mode="wait"` on the screen router; the leaving screen takes no taps. */
@@ -39,6 +40,7 @@ export function NgShell<Id extends string>({
   world,
   children,
   beforeStart,
+  guide,
 }: {
   title: string;
   /** The game's welcome and finish lines (clip ids). */
@@ -55,6 +57,9 @@ export function NgShell<Id extends string>({
   children?: ReactNode;
   /** See NgHome: lets a game ask something (a level) before a module starts. */
   beforeStart?: (m: Id, go: () => void) => boolean;
+  /** Who stands in the teacher's corner, with the bubble (default: the
+   *  teacher). A round can still put someone else there with GuideProvider. */
+  guide?: ComponentType<GuideProps>;
 }) {
   const router = useRouter();
   const { screen, module, round, misses, best } = store;
@@ -83,54 +88,56 @@ export function NgShell<Id extends string>({
 
   return (
     <GameStage>
-      <div className="ng-root">
-        {children}
-        <AnimatePresence>
-          {screen === "home" && (
-            <motion.div key="home" className="ng-layer" {...SCREEN}>
-              <NgHome
-                title={title}
-                welcomeClip={voice.welcome}
-                modules={modules}
-                Mini={Mini}
-                world={world}
-                best={best}
-                onPick={start}
-                beforeStart={beforeStart}
-                onExitPortal={exitPortal}
-              />
-            </motion.div>
-          )}
-          {screen === "play" && Round && round < ROUND_COUNT && (
-            <motion.div key={`${module}-${round}`} className="ng-layer" {...SCREEN}>
-              <Round
-                round={round}
-                title={title}
-                onDone={advance}
-                onMiss={miss}
-                onHome={toHome}
-                onExitPortal={exitPortal}
-              />
-            </motion.div>
-          )}
-          {screen === "complete" && info && (
-            <motion.div key="complete" className="ng-layer" {...SCREEN}>
-              <NgComplete
-                info={info}
-                mini={<Mini id={info.id} />}
-                world={world}
-                cheerSeed={modules.indexOf(info) + misses + 2}
-                doneClip={voice.done}
-                misses={misses}
-                onPlayAgain={restart}
-                onChoose={toHome}
-                onExitPortal={exitPortal}
-                onRecord={record}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <GuideProvider guide={guide}>
+        <div className="ng-root">
+          {children}
+          <AnimatePresence>
+            {screen === "home" && (
+              <motion.div key="home" className="ng-layer" {...SCREEN}>
+                <NgHome
+                  title={title}
+                  welcomeClip={voice.welcome}
+                  modules={modules}
+                  Mini={Mini}
+                  world={world}
+                  best={best}
+                  onPick={start}
+                  beforeStart={beforeStart}
+                  onExitPortal={exitPortal}
+                />
+              </motion.div>
+            )}
+            {screen === "play" && Round && round < ROUND_COUNT && (
+              <motion.div key={`${module}-${round}`} className="ng-layer" {...SCREEN}>
+                <Round
+                  round={round}
+                  title={title}
+                  onDone={advance}
+                  onMiss={miss}
+                  onHome={toHome}
+                  onExitPortal={exitPortal}
+                />
+              </motion.div>
+            )}
+            {screen === "complete" && info && (
+              <motion.div key="complete" className="ng-layer" {...SCREEN}>
+                <NgComplete
+                  info={info}
+                  mini={<Mini id={info.id} />}
+                  world={world}
+                  cheerSeed={modules.indexOf(info) + misses + 2}
+                  doneClip={voice.done}
+                  misses={misses}
+                  onPlayAgain={restart}
+                  onChoose={toHome}
+                  onExitPortal={exitPortal}
+                  onRecord={record}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </GuideProvider>
     </GameStage>
   );
 }

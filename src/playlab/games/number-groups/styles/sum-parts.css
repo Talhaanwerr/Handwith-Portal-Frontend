@@ -1,0 +1,229 @@
+/**
+ * The board pieces the newer NgShell games share (Drum Beats, Plane Seats,
+ * Plane Trip, Burj Lift, Tallest Tower): the picture sum,
+ * the counting pieces, the slots, the module-card minis, and the .apa-game
+ * wrapper that hides the teacher so the board takes the room. They began as
+ * Apple Basket's (hence apa-); the game itself was removed on 2026-10-29.
+ *
+ * Everything runs in Count & Match's shell, so it is sized in the `ng`
+ * container's units (1cqh = 1% of the stage's height).
+ */
+
+.apa-game {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.apa-game .ng-teacher-slot {
+  display: none;
+}
+.apa-game .ng-main {
+  left: 3cqw;
+}
+
+.apa-play {
+  /* one piece (an apple, a cupcake): big enough for a three-year-old's finger */
+  --apa-p: min(15cqh, 9.5cqw);
+}
+
+.apa-thing {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+/** The sum along the top, then the scene. */
+.apa-board {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqh;
+}
+
+/* ── The sum, in pictures ────────────────────────────────────────────────── */
+
+.apa-sum {
+  display: flex;
+  align-items: center;
+  gap: 2.4cqh;
+  padding: 1.6cqh 3.4cqh;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1cqh 0 rgba(60, 90, 30, 0.18);
+}
+.apa-sum-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4cqh;
+}
+.apa-sum-group {
+  display: flex;
+  gap: 0.4cqh;
+}
+.apa-sum-pic {
+  display: block;
+  width: 6cqh;
+  height: 6cqh;
+}
+.apa-sum-num {
+  font-size: 4.4cqh;
+  line-height: 1;
+  color: #3a5a1a;
+}
+.apa-sum-op {
+  font-size: 8cqh;
+  line-height: 1;
+  color: #e07a1f;
+}
+.apa-sum-answer {
+  display: grid;
+  place-items: center;
+  width: 11cqh;
+  height: 11cqh;
+  border: 0.6cqh dashed #b9c7a6;
+  border-radius: 2.4cqh;
+  background: #f6f9ef;
+  font-size: 7.4cqh;
+  line-height: 1;
+  color: #9aab84;
+}
+.apa-sum-answer.apa-sum-answer--done {
+  border: 0.6cqh solid #1c7a45;
+  background: linear-gradient(#7fe0a0, #34a95a);
+  color: #ffffff;
+  text-shadow: 0 0.4cqh 0 #14592f;
+}
+
+/* ── The pieces ──────────────────────────────────────────────────────────── */
+
+.apa-slot {
+  position: relative;
+  width: var(--apa-p);
+  height: var(--apa-p);
+  flex: none;
+}
+/** One apple (or cupcake) on a soft white disc — a button. */
+.apa-piece {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 14%;
+  border: 0.6cqh solid transparent;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #ffffff 0 60%, #f1f4ea 100%);
+  box-shadow: 0 0.8cqh 0 rgba(60, 80, 30, 0.2);
+  cursor: default;
+}
+/** Waiting to be tapped: a gold ring and a gentle bob. */
+.apa-piece.apa-piece--live {
+  border-color: #ffc93c;
+  cursor: pointer;
+  animation: apa-bob 1.6s ease-in-out infinite;
+}
+@keyframes apa-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -1.2cqh;
+  }
+}
+/** Counted: a green ring and its number. */
+.apa-piece.apa-piece--counted {
+  border-color: #34a95a;
+}
+.apa-badge {
+  position: absolute;
+  left: 50%;
+  /* sized from the piece, so the number never hides the apple on a phone */
+  top: calc(var(--apa-p) * -0.24);
+  display: grid;
+  place-items: center;
+  width: calc(var(--apa-p) * 0.46);
+  height: calc(var(--apa-p) * 0.46);
+  min-width: 24px;
+  min-height: 24px;
+  margin-left: calc(var(--apa-p) * -0.23);
+  border: 0.5cqh solid #ffffff;
+  border-radius: 50%;
+  background: #34a95a;
+  font-size: calc(var(--apa-p) * 0.3);
+  line-height: 1;
+  color: #ffffff;
+  box-shadow: 0 0.5cqh 1cqh rgba(0, 60, 20, 0.3);
+}
+
+/* ── A module in miniature (its home card) ───────────────────────────────── */
+
+.apa-mini {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 4%;
+}
+.apa-mini-row {
+  display: flex;
+  gap: 3%;
+}
+/* the card's picture box is its own size container (.ng-mode-pic), so these
+   units are shares of that box, not of the stage */
+.apa-mini-pic {
+  display: block;
+  width: min(30cqh, 13cqw);
+  height: min(30cqh, 13cqw);
+}
+.apa-mini-op {
+  font-size: 26cqh;
+  line-height: 1;
+  color: #e07a1f;
+}
+
+/* ── A phone held sideways ───────────────────────────────────────────────── */
+
+@container ng (max-height: 520px) {
+  .apa-play {
+    --apa-p: min(17cqh, 9cqw);
+  }
+  .apa-board {
+    gap: 4cqh;
+  }
+}
+
+/* ── A phone held upright ────────────────────────────────────────────────── */
+
+@container ng (orientation: portrait) {
+  .apa-play {
+    --apa-p: min(16cqw, 9cqh);
+  }
+  .apa-sum {
+    gap: 2.4cqw;
+    padding: 1.4cqh 3cqw;
+  }
+  .apa-sum-pic {
+    width: 5.4cqw;
+    height: 5.4cqw;
+  }
+  .apa-sum-num {
+    font-size: 6cqw;
+  }
+  .apa-sum-op {
+    font-size: 8cqw;
+  }
+  .apa-sum-answer {
+    width: 13cqw;
+    height: 13cqw;
+    font-size: 8cqw;
+  }
+}

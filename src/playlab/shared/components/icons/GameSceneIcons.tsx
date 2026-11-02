@@ -27,8 +27,17 @@ import { SockCaseIcon } from "@games/sock-case/components/SockCaseIcon";
 import { PhonicsShowIcon } from "@games/phonics-show/components/PhonicsShowIcon";
 import { SoundShowIcon } from "@games/sound-show/components/SoundShowIcon";
 import { OddSoundIcon } from "@games/odd-sound/components/OddSoundIcon";
+import { DrumBeatsIcon } from "@games/drum-beats/components/DrumBeatsIcon";
+import { BurjLiftIcon } from "@games/burj-lift/components/BurjLiftIcon";
+import { TallestTowerIcon } from "@games/burj-towers/components/TallestTowerIcon";
+import { PlaneSeatsIcon } from "@games/plane-seats/components/PlaneSeatsIcon";
+import { PlaneTripIcon } from "@games/plane-trip/components/PlaneTripIcon";
+import { WhatsInsideIcon } from "@games/whats-inside/components/WhatsInsideIcon";
 import { AnimalRepairIcon } from "@games/animal-repair/components/AnimalRepairIcon";
 import { CarGarageIcon } from "@games/car-garage/components/CarGarageIcon";
+import { FeedTheFishIcon } from "@games/feed-the-fish/components/FeedTheFishIcon";
+import { BirthdayPartyIcon } from "@games/birthday-party/components/BirthdayPartyIcon";
+import { RocketCountdownIcon } from "@games/rocket-countdown/components/RocketCountdownIcon";
 import { ShadowMatchIcon } from "@games/shadow-match/components/ShadowMatchIcon";
 import { SillyRobotIcon } from "@games/silly-robot/components/SillyRobotIcon";
 import { NumberTrainIcon } from "@games/number-train/components/NumberTrainIcon";
@@ -1607,6 +1616,11 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "phonics-show": PhonicsShowIcon,
   "sound-show": SoundShowIcon,
   "odd-sound": OddSoundIcon,
+  "drum-beats": DrumBeatsIcon,
+  "burj-lift": BurjLiftIcon,
+  "burj-towers": TallestTowerIcon,
+  "plane-seats": PlaneSeatsIcon,
+  "plane-trip": PlaneTripIcon,
   "math-maze": MathMazeIcon,
   "food-sort": FoodSortIcon,
   "find-the-mouse": FindTheMouseIcon,
@@ -1626,8 +1640,12 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "brick-spell-words": BrickSpellWordsIcon,
   "brick-plus-tower": BrickPlusTowerIcon,
   "sock-case": SockCaseIcon,
+  "whats-inside": WhatsInsideIcon,
   "animal-repair": AnimalRepairIcon,
   "car-garage": CarGarageIcon,
+  "feed-the-fish": FeedTheFishIcon,
+  "birthday-party": BirthdayPartyIcon,
+  "rocket-countdown": RocketCountdownIcon,
   "shadow-match": ShadowMatchIcon,
   "silly-robot": SillyRobotIcon,
   "number-train": NumberTrainIcon,

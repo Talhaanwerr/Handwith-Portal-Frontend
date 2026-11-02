@@ -1,0 +1,38 @@
+[
+  {
+    "id": "bjt-welcome",
+    "file": "/audio/burj-towers/welcome.mp3",
+    "text": "Welcome to Tallest Tower!"
+  },
+  { "id": "bjt-done", "file": "/audio/burj-towers/done.mp3", "text": "You know tall and short!" },
+  {
+    "id": "bjt-mode-tallshort",
+    "file": "/audio/burj-towers/mode-tallshort.mp3",
+    "text": "Tall or Short? Find the tall tower and the short one."
+  },
+  {
+    "id": "bjt-mode-order",
+    "file": "/audio/burj-towers/mode-order.mp3",
+    "text": "Line Them Up! Put the towers in order."
+  },
+  {
+    "id": "bjt-which-taller",
+    "file": "/audio/burj-towers/which-taller.mp3",
+    "text": "Which tower is taller?"
+  },
+  {
+    "id": "bjt-which-shorter",
+    "file": "/audio/burj-towers/which-shorter.mp3",
+    "text": "Which tower is shorter?"
+  },
+  {
+    "id": "bjt-order",
+    "file": "/audio/burj-towers/order.mp3",
+    "text": "Put them in order, from short to tall!"
+  },
+  {
+    "id": "bjt-in-order",
+    "file": "/audio/burj-towers/in-order.mp3",
+    "text": "Short, taller, tallest!"
+  }
+]

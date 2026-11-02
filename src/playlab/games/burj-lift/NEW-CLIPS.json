@@ -1,0 +1,21 @@
+[
+  {
+    "id": "bjl-welcome",
+    "file": "/audio/burj-lift/welcome.mp3",
+    "text": "Welcome to the Burj Lift!"
+  },
+  { "id": "bjl-done", "file": "/audio/burj-lift/done.mp3", "text": "Everyone got to their floor!" },
+  {
+    "id": "bjl-mode-updown",
+    "file": "/audio/burj-lift/mode-updown.mp3",
+    "text": "Up or Down? Take everyone to their floor."
+  },
+  {
+    "id": "bjl-mode-match",
+    "file": "/audio/burj-lift/mode-match.mp3",
+    "text": "Picture Floors! Match the balloon to its floor."
+  },
+  { "id": "bjl-up-or-down", "file": "/audio/burj-lift/up-or-down.mp3", "text": "Up or down?" },
+  { "id": "bjl-going-up", "file": "/audio/burj-lift/going-up.mp3", "text": "Going up!" },
+  { "id": "bjl-going-down", "file": "/audio/burj-lift/going-down.mp3", "text": "Going down!" }
+]

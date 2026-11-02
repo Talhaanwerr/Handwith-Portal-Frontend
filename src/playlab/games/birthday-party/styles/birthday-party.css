@@ -1,0 +1,783 @@
+/**
+ * Birthday Party — class prefix `bdc-` (grepped clear across src/playlab;
+ * every game's CSS loads on every play page, so nothing here is bare).
+ *
+ * Only Birthday Party's own boards, props and miniatures live here. The
+ * shell, the chrome (teacher, star trail, pills), the title screen and the
+ * star card are Count & Match's (`ng-`, number-groups.css); the world is
+ * Letter Treats' Candy Land (`lt-wash`, `ltw-`, letter-treats.css). Sized in
+ * container units of the shared `.ng-root`; portrait at the bottom.
+ */
+
+/* ─── The world ────────────────────────────────────────────────────────── */
+.bdc-world {
+  position: absolute;
+  inset: 0;
+}
+
+/* ─── Party hats, heads, the birthday friend ───────────────────────────── */
+.bdc-head,
+.bdc-friend-fig {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bdc-head-art,
+.bdc-friend-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.bdc-head-art svg,
+.bdc-friend-art svg,
+.bdc-hat svg,
+.bdc-badge svg,
+.bdc-candle-stick,
+.bdc-flame svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* the brim rests on the line --bdc-hat-y; the box is square, so a margin in
+   % of its width is also % of its height */
+.bdc-hat {
+  position: absolute;
+  left: var(--bdc-hat-x);
+  top: var(--bdc-hat-y);
+  z-index: 1;
+  display: block;
+  width: 30%;
+  aspect-ratio: 40 / 52;
+  margin-left: -15%;
+  margin-top: -36%;
+  transform: rotate(var(--bdc-hat-r));
+  transform-origin: 50% 100%;
+}
+
+/* ─── The age badge ────────────────────────────────────────────────────── */
+.bdc-badge {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 100 / 120;
+}
+.bdc-badge-num {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13%;
+  height: 51%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b8363a;
+  font-size: calc(var(--bdc-fw) * 0.4);
+  line-height: 1;
+}
+
+/* ─── Shared pieces (the tray, the carried piece) ──────────────────────── */
+.bdc-tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6cqw;
+  padding: 1.2cqh 2.6cqw;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 0.9cqh 0 rgba(194, 69, 122, 0.28),
+    0 1.6cqh 2.4cqh rgba(120, 40, 80, 0.18);
+  transition: opacity 0.4s ease;
+}
+.bdc-tray.is-done {
+  opacity: 0.55;
+}
+.bdc-piece {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.bdc-piece:disabled {
+  cursor: default;
+}
+.bdc-piece.is-away {
+  visibility: hidden;
+}
+.bdc-piece img,
+.bdc-carried img,
+.bdc-plate-cake img,
+.bdc-mini img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.bdc-carried {
+  position: absolute;
+  display: block;
+}
+/* lifted: a soft shadow under the thing in the finger (no filter on a
+   moving thing) */
+.bdc-carried--lifted::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -14%;
+  z-index: -1;
+  height: 12%;
+  border-radius: 50%;
+  background: rgba(80, 30, 60, 0.22);
+}
+
+/* ─── One for Each ─────────────────────────────────────────────────────── */
+.bdc-play--each {
+  --bdc-c: max(48px, min(17cqh, 9cqw));
+  --bdc-num: max(56px, min(24cqh, 13cqw));
+}
+.bdc-each-board {
+  --bdc-s: min(calc(72cqw / (var(--bdc-n) + 1)), 26cqh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+  width: 100%;
+  height: 100%;
+}
+.bdc-party {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  padding-bottom: calc(var(--bdc-s) * 0.24);
+}
+.bdc-seats {
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+}
+.bdc-seat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--bdc-s);
+}
+/* the head sits behind the table, the plate on it, the cupcake in front */
+.bdc-seat-head {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: var(--bdc-s);
+  height: var(--bdc-s);
+}
+.bdc-table {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--bdc-s) * 0.8);
+  bottom: 0;
+  z-index: 2;
+  display: block;
+}
+.bdc-table > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: block;
+}
+.bdc-table-top {
+  top: 0;
+  height: calc(var(--bdc-s) * 0.52);
+  border-radius: 2.6cqh 2.6cqh 0.6cqh 0.6cqh;
+  background: linear-gradient(180deg, #fff1f7 0%, #ffd6e8 100%);
+  box-shadow: inset 0 0.6cqh 0 rgba(255, 255, 255, 0.85);
+}
+.bdc-table-cloth {
+  top: calc(var(--bdc-s) * 0.5);
+  bottom: 0;
+  border-radius: 0 0 2.6cqh 2.6cqh;
+  background:
+    conic-gradient(from 135deg at 50% 0, #ffd93d 90deg, transparent 0) 0 0 /
+      calc(var(--bdc-s) * 0.3) calc(var(--bdc-s) * 0.15) repeat-x,
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 16%, transparent 18%) 0 0 /
+      calc(var(--bdc-s) * 0.24) calc(var(--bdc-s) * 0.24),
+    #ff8fb8;
+  box-shadow:
+    inset 0 -1cqh 0 rgba(190, 60, 110, 0.35),
+    0 1.4cqh 2cqh rgba(120, 40, 80, 0.2);
+}
+.bdc-plate {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: calc(var(--bdc-s) * 0.98);
+  height: calc(var(--bdc-s) * 0.5);
+  margin-top: calc(var(--bdc-s) * -0.16);
+}
+.bdc-plate-dish {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 84%;
+  filter: drop-shadow(0 0.6cqh 0.5cqh rgba(120, 40, 80, 0.22));
+}
+.bdc-plate-dish svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bdc-plate.is-lit .bdc-plate-dish {
+  filter: drop-shadow(0 0 1.4cqh rgba(255, 200, 40, 0.95));
+}
+.bdc-plate-cake {
+  position: absolute;
+  left: 50%;
+  bottom: 30%;
+  display: block;
+  width: calc(var(--bdc-s) * 0.66);
+  height: calc(var(--bdc-s) * 0.66);
+  margin-left: calc(var(--bdc-s) * -0.33);
+}
+/* counted aloud after a wrong number: a gold ring and a little hop */
+.bdc-plate.is-counted .bdc-plate-cake {
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.9cqh rgba(255, 217, 61, 0.9);
+  background: rgba(255, 246, 200, 0.7);
+  animation: bdc-hop 0.45s ease-out;
+}
+
+.bdc-under {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: max(var(--bdc-num), calc(var(--bdc-c) + 2.4cqh));
+}
+.bdc-piece--cupcake {
+  width: var(--bdc-c);
+  height: var(--bdc-c);
+}
+.bdc-piece.bdc-piece--cupcake img {
+  filter: drop-shadow(0 0.7cqh 0.5cqh rgba(120, 40, 80, 0.25));
+}
+.bdc-carried.bdc-piece--cupcake {
+  left: calc(var(--bdc-c) * -0.5);
+  top: calc(var(--bdc-c) * -0.5);
+}
+
+/* the question: three big numbers */
+.bdc-choices {
+  display: flex;
+  justify-content: center;
+  gap: 4cqw;
+}
+.bdc-num {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bdc-num);
+  height: var(--bdc-num);
+  padding: 0;
+  border: 0;
+  border-radius: 26%;
+  background: #ffffff;
+  color: #c2457a;
+  font-size: calc(var(--bdc-num) * 0.62);
+  line-height: 1;
+  box-shadow:
+    0 1.2cqh 0 #f3b3cf,
+    0 2cqh 2.6cqh rgba(120, 40, 80, 0.22);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.bdc-num:disabled {
+  cursor: default;
+}
+.bdc-num.is-right {
+  background: #3dab72;
+  color: #ffffff;
+  box-shadow:
+    0 1.2cqh 0 #2b8a57,
+    0 2cqh 2.6cqh rgba(40, 80, 50, 0.22);
+}
+.bdc-num.is-wrong {
+  color: rgba(194, 69, 122, 0.4);
+}
+
+/* the cheer's rain: a head keeps its hat */
+.bdc-cast-head .bdc-head {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Candles on the Cake ──────────────────────────────────────────────── */
+.bdc-play--candles {
+  --bdc-fw: min(24cqh, 14cqw);
+  --bdc-cw: min(calc(72cqw - var(--bdc-fw)), 120cqh);
+  --bdc-ch: min(26cqh, calc(var(--bdc-cw) * 0.387));
+  --bdc-p: calc(var(--bdc-cw) * 0.88 / 6);
+  --bdc-tw: max(48px, min(14cqh, 7.4cqw));
+}
+/* the friend stands right of the cake, away from the teacher and his bubble */
+.bdc-candles-board {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqw;
+  width: 100%;
+  height: 100%;
+}
+.bdc-cake-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4cqh;
+}
+
+/* the cake: candles stand in a row on the line across its top */
+.bdc-cake {
+  position: relative;
+  width: var(--bdc-cw);
+  padding-top: max(0px, calc(var(--bdc-p) * 1.86 - var(--bdc-ch) * 0.345));
+}
+.bdc-cake-art {
+  display: block;
+  width: 100%;
+  height: var(--bdc-ch);
+  filter: drop-shadow(0 1.2cqh 1.2cqh rgba(120, 40, 80, 0.2));
+}
+.bdc-cake.is-lit .bdc-cake-art {
+  filter: drop-shadow(0 0 1.6cqh rgba(255, 200, 40, 0.9));
+}
+.bdc-spots {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: calc(var(--bdc-ch) * 0.655);
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.bdc-spot {
+  position: relative;
+  display: block;
+  flex: 0 0 var(--bdc-p);
+  height: calc(var(--bdc-p) * 1.86);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.bdc-spot.has-candle:not(:disabled) {
+  cursor: pointer;
+}
+.bdc-spot-seat {
+  position: absolute;
+  left: 11%;
+  bottom: 0;
+  display: block;
+  width: 78%;
+  aspect-ratio: 40 / 70;
+}
+.bdc-spot.is-counted .bdc-spot-seat {
+  border-radius: 1.4cqh;
+  box-shadow: 0 0 0 0.8cqh rgba(255, 217, 61, 0.9);
+  background: rgba(255, 246, 200, 0.7);
+  animation: bdc-hop 0.45s ease-out;
+}
+
+/* a candle: the stick fills its box; the flame and the puff sit on top */
+.bdc-candle {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bdc-flame {
+  position: absolute;
+  left: 0;
+  bottom: 92%;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: 40 / 48;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.bdc-flame-flicker {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 85%;
+  animation: bdc-flicker 1.8s ease-in-out infinite;
+}
+.bdc-puff {
+  position: absolute;
+  left: 50%;
+  bottom: 96%;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.bdc-puff-bit {
+  --bdc-pb: calc(var(--bdc-p, 40px) * 0.42);
+  position: absolute;
+  left: calc(var(--bdc-pb) * -0.5);
+  top: calc(var(--bdc-pb) * -0.5);
+  width: var(--bdc-pb);
+  height: var(--bdc-pb);
+  border-radius: 50%;
+  background: rgba(236, 236, 246, 0.92);
+  opacity: 0;
+  animation: bdc-puff 1.1s ease-out forwards;
+}
+.bdc-puff-bit:nth-child(2) {
+  --bdc-dx: calc(var(--bdc-p, 40px) * -0.32);
+  animation-delay: 0.12s;
+}
+.bdc-puff-bit:nth-child(3) {
+  --bdc-dx: calc(var(--bdc-p, 40px) * 0.3);
+  animation-delay: 0.24s;
+}
+
+/* the candles in the tray: the button is the finger's target, the candle
+   inside is its home (it flies onto the cake at its own size) */
+.bdc-tray--candles {
+  gap: 1cqw;
+  padding: 1.2cqh 1.6cqw;
+}
+.bdc-candle-btn {
+  display: grid;
+  place-items: center;
+  width: var(--bdc-tw);
+  height: calc(var(--bdc-tw) * 1.33);
+}
+.bdc-piece--candle {
+  display: block;
+  width: calc(var(--bdc-tw) * 0.76);
+  height: calc(var(--bdc-tw) * 1.33);
+}
+.bdc-carried.bdc-piece--candle {
+  left: calc(var(--bdc-tw) * -0.38);
+  top: calc(var(--bdc-tw) * -0.665);
+}
+
+/* the birthday friend, their badge, and Done */
+.bdc-friend {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3cqh;
+  width: var(--bdc-fw);
+}
+.bdc-friend-stage {
+  position: relative;
+  width: var(--bdc-fw);
+  height: var(--bdc-fw);
+}
+.bdc-friend-badge {
+  position: absolute;
+  right: -6%;
+  bottom: -18%;
+  z-index: 2;
+  display: block;
+  width: 64%;
+}
+.bdc-friend-says {
+  position: absolute;
+  left: -40%;
+  right: -40%;
+  bottom: 104%;
+  z-index: 3;
+  width: max-content;
+  max-width: 30cqw;
+  margin: 0 auto;
+  padding: 0.8cqh 2cqh;
+  border-radius: 2.4cqh;
+  background: #ffffff;
+  color: #c2457a;
+  font-size: clamp(14px, 5cqh, 30px);
+  line-height: 1.1;
+  white-space: nowrap;
+  box-shadow: 0 0.8cqh 1.8cqh rgba(120, 40, 80, 0.25);
+}
+.bdc-done-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: max(52px, 15cqh);
+}
+.bdc-done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6cqw;
+  min-width: max(64px, var(--bdc-fw));
+  min-height: max(52px, 15cqh);
+  padding: 0 2cqh;
+  border: 0;
+  border-radius: 9999px;
+  background: #3dab72;
+  color: #ffffff;
+  font-size: clamp(15px, 5.6cqh, 34px);
+  line-height: 1;
+  box-shadow:
+    0 1cqh 0 #2b8a57,
+    0 1.8cqh 2.4cqh rgba(40, 80, 50, 0.25);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.bdc-done svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+.bdc-cast-candle .bdc-candle-stick {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Each module in miniature (inside the shared `.ng-mini` box, whose
+   picture area is the container) ─────────────────────────────────────── */
+.bdc-mini-seat {
+  position: absolute;
+  bottom: 6%;
+  width: 38%;
+  height: 88%;
+}
+.bdc-mini-seat--0 {
+  left: 9%;
+}
+.bdc-mini-seat--1 {
+  right: 9%;
+}
+.bdc-mini-head {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 0;
+  aspect-ratio: 1;
+}
+.bdc-mini-plate {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  aspect-ratio: 140 / 60;
+}
+.bdc-mini-plate svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bdc-mini-cupcake {
+  position: absolute;
+  left: 24%;
+  right: 24%;
+  bottom: 16%;
+  aspect-ratio: 1;
+}
+.bdc-mini-cake {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 6%;
+  height: 90%;
+}
+.bdc-mini-cake .bdc-cake-art {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+}
+.bdc-mini-candles {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: calc(50% * 0.655);
+  height: 42%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+}
+.bdc-mini-candle {
+  position: relative;
+  display: block;
+  height: 72%;
+  aspect-ratio: 40 / 70;
+}
+
+/* ─── Motion: slow, few, soft ──────────────────────────────────────────── */
+@keyframes bdc-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-12%);
+  }
+}
+@keyframes bdc-flicker {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(0.94, 1.06);
+  }
+}
+@keyframes bdc-puff {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--bdc-dx, 0px), calc(var(--bdc-p, 40px) * -1.3)) scale(1.3);
+  }
+}
+
+/* ─── Portrait ─────────────────────────────────────────────────────────── */
+@media (orientation: portrait) {
+  .bdc-play--each {
+    --bdc-c: max(48px, min(22cqw, 10cqh));
+    --bdc-num: max(56px, min(24cqw, 11cqh));
+  }
+  .bdc-each-board {
+    --bdc-s: min(calc(94cqw / (var(--bdc-n) + 1)), 20cqh);
+    gap: 4cqh;
+  }
+  .bdc-tray {
+    max-width: calc(var(--bdc-c) * 3 + 2 * 3.2cqw + 2 * 4cqw);
+    gap: 1.6cqh 3.2cqw;
+    padding: 1.4cqh 4cqw;
+    border-radius: 5cqw;
+  }
+
+  .bdc-play--candles {
+    --bdc-fw: min(28cqw, 13cqh);
+    --bdc-cw: 92cqw;
+    --bdc-ch: min(15cqh, calc(var(--bdc-cw) * 0.387));
+    --bdc-tw: max(48px, min(13cqw, 8cqh));
+  }
+  /* upright: the friend and Done on top, the cake, the tray */
+  .bdc-candles-board {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3cqh;
+  }
+  .bdc-friend {
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+    gap: 10cqw;
+  }
+  .bdc-done-slot {
+    width: auto;
+    min-width: max(96px, 26cqw);
+  }
+  .bdc-done {
+    font-size: clamp(16px, 6cqw, 30px);
+  }
+  .bdc-friend-says {
+    font-size: clamp(14px, 5cqw, 26px);
+  }
+  .bdc-tray--candles {
+    gap: 1cqw;
+    padding: 1.2cqh 1.6cqw;
+    max-width: none;
+    border-radius: 9999px;
+  }
+}
+
+/* ── The number just said, big on the cake ────────────────────────────────
+   Candles on the cake while placing; while blowing, how many are still
+   burning — 4, 3, 2, 1 — so the countdown is seen as well as heard. */
+.bdc-tally {
+  position: absolute;
+  right: -3%;
+  bottom: calc(var(--bdc-ch) * 0.12);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: max(48px, 15cqh);
+  height: max(48px, 15cqh);
+  border: max(3px, 0.7cqh) solid #ffffff;
+  border-radius: 50%;
+  background: #e8457f;
+  color: #ffffff;
+  font-size: max(30px, 10cqh);
+  line-height: 1;
+  box-shadow:
+    0 0.9cqh 0 #a8255a,
+    0 1.4cqh 2.4cqh rgba(120, 30, 70, 0.3);
+  pointer-events: none;
+}
+
+/* ── The birthday friend as the guide ─────────────────────────────────────
+   In the teacher's corner and bigger than he was, saying his lines in his
+   bubble (the kit places .dc-teacher-says; only the colour is the party's). */
+.bdc-game {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.bdc-game .ng-teacher-slot {
+  width: min(58cqh, 26cqw);
+  height: min(58cqh, 26cqw);
+}
+.bdc-game .ng-main {
+  left: 27cqw;
+}
+.bdc-guide-fig {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.bdc-guide-badge {
+  position: absolute;
+  right: -6%;
+  bottom: -4%;
+  z-index: 2;
+  display: block;
+  width: 50%;
+}
+.bdc-guide .bdc-badge-num {
+  font-size: calc(min(58cqh, 26cqw) * 0.31);
+}
+.bdc-game .ng-teacher-slot .bdc-guide-says {
+  color: #c2457a;
+}
+@media (orientation: portrait) {
+  .bdc-game .ng-teacher-slot {
+    width: min(24cqh, 40cqw);
+    height: min(24cqh, 40cqw);
+  }
+  .bdc-game .ng-main {
+    left: 3cqw;
+  }
+  .bdc-guide .bdc-badge-num {
+    font-size: calc(min(24cqh, 40cqw) * 0.31);
+  }
+}

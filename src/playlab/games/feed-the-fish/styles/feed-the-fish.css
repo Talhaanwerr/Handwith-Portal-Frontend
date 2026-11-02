@@ -1,0 +1,700 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   FEED THE FISH — prefix ftf- (fs- is Feed the Shark's; grepped clear).
+   The water, light rays and seabed are Feed the Shark's (`fs-bg` and
+   OceanBackdrop, reused as they are). The stage is a size container, so
+   everything here is in cqh/cqw. A fish's place arrives as --ftf-x/--ftf-y
+   (written by the tank, not rendered); only transform and opacity move.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ftf-root,
+.ftf-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #3fa7dc;
+}
+
+/* ── The picker plates ───────────────────────────────────────────────── */
+
+.ftf-root .pl-cs-title {
+  color: #fff;
+  text-shadow: 0 3px 0 #1f6f9e;
+}
+.ftf-root .pl-cs-subtitle {
+  color: #eaf7ff;
+}
+.ftf-root .pl-cs-btn {
+  width: clamp(170px, 36vmin, 300px);
+  min-height: clamp(150px, 30vmin, 250px);
+  border: 0;
+  color: #fff;
+  box-shadow:
+    inset 0 -8px 0 rgba(0, 0, 0, 0.18),
+    inset 0 4px 0 rgba(255, 255, 255, 0.3),
+    0 12px 26px rgba(10, 40, 70, 0.3);
+}
+.ftf-root .pl-cs-btn--everyone {
+  background: linear-gradient(#ffa25c, #e8692a);
+}
+.ftf-root .pl-cs-btn--colour {
+  background: linear-gradient(#b48bea, #7d52c8);
+}
+.ftf-root .pl-cs-preview {
+  font-size: clamp(40px, 10vmin, 76px);
+}
+.ftf-root .pl-cs-label {
+  font-size: clamp(17px, 3.4vmin, 26px);
+}
+
+.ftf-leave {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1b4f8a;
+  font-size: 13px;
+  box-shadow: 0 4px 14px rgba(10, 40, 70, 0.18);
+}
+
+/* ── The aquarium ────────────────────────────────────────────────────── */
+
+.ftf-world {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ftf-water {
+  position: absolute;
+  inset: 0;
+}
+.ftf-surface {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 7%;
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+}
+.ftf-friend {
+  position: absolute;
+  display: block;
+  opacity: 0.88;
+}
+.ftf-friend-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ftf-friend--turtle {
+  left: 0;
+  top: 22%;
+  width: clamp(54px, min(15vh, 26vw), 130px);
+  height: clamp(54px, min(15vh, 26vw), 130px);
+  animation: ftf-cross 64s linear infinite;
+}
+.ftf-friend--turtle .ftf-friend-art {
+  transform: scaleX(-1);
+}
+.ftf-friend--jelly {
+  right: 5%;
+  top: 26%;
+  width: clamp(46px, min(13vh, 22vw), 110px);
+  height: clamp(46px, min(13vh, 22vw), 110px);
+  animation: ftf-float 7s ease-in-out infinite;
+}
+.ftf-friend--octo {
+  right: 24%;
+  bottom: clamp(20px, 5vh, 40px);
+  width: clamp(48px, min(13vh, 22vw), 112px);
+  height: clamp(48px, min(13vh, 22vw), 112px);
+  animation: ftf-float 5.5s ease-in-out -2s infinite;
+}
+@keyframes ftf-cross {
+  from {
+    transform: translateX(-30vw);
+  }
+  to {
+    transform: translateX(130vw);
+  }
+}
+@keyframes ftf-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14%);
+  }
+}
+
+.ftf-weed {
+  position: absolute;
+  left: var(--ftf-wx);
+  bottom: clamp(14px, 3vh, 26px);
+  width: clamp(40px, min(12vh, 14vw), 96px);
+  height: clamp(86px, min(27vh, 40vw), 210px);
+  margin-left: calc(clamp(40px, min(12vh, 14vw), 96px) / -2);
+}
+.ftf-weed svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ftf-frond {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: ftf-frond 4.6s ease-in-out infinite;
+}
+.ftf-frond--b {
+  animation-duration: 5.4s;
+  animation-delay: -1.6s;
+}
+.ftf-frond--c {
+  animation-duration: 4s;
+  animation-delay: -2.8s;
+}
+.ftf-weed--1 .ftf-frond,
+.ftf-weed--3 .ftf-frond {
+  animation-direction: reverse;
+}
+@keyframes ftf-frond {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+.ftf-bubbles {
+  position: absolute;
+  inset: 0;
+}
+.ftf-bubble {
+  position: absolute;
+  left: var(--ftf-bx);
+  bottom: -4%;
+  width: calc(1.6vh * var(--ftf-bs) + 4px);
+  height: calc(1.6vh * var(--ftf-bs) + 4px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: inset -1px -1px 0 rgba(255, 255, 255, 0.85);
+  animation: ftf-rise var(--ftf-bd) linear var(--ftf-bl) infinite;
+}
+@keyframes ftf-rise {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(1.4vh, -55vh);
+  }
+  100% {
+    transform: translate(0, -112vh);
+    opacity: 0.2;
+  }
+}
+
+/* ── The play stage ──────────────────────────────────────────────────── */
+
+.ftf-stage {
+  --ftf-fw: clamp(64px, min(21cqh, 19cqw), 170px);
+  --ftf-fl: clamp(20px, 5cqh, 36px);
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ftf-tank {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+/* A fish: placed at (0,0), centred by margins, moved by its transform. */
+.ftf-fish {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--ftf-fw);
+  height: calc(var(--ftf-fw) * 0.7);
+  margin: calc(var(--ftf-fw) * -0.35) 0 0 calc(var(--ftf-fw) * -0.5);
+  transform: translate(var(--ftf-x, -300px), var(--ftf-y, 50cqh));
+  transition: transform var(--ftf-d, 0s) cubic-bezier(0.45, 0.05, 0.4, 1);
+  pointer-events: none;
+}
+.ftf-fish-bob,
+.ftf-fish-grow,
+.ftf-fish-face,
+.ftf-fish-wiggle {
+  position: absolute;
+  inset: 0;
+}
+.ftf-fish-bob {
+  animation: ftf-bob 2.8s ease-in-out infinite;
+}
+.ftf-fish--asleep .ftf-fish-bob {
+  animation: ftf-doze 5s ease-in-out infinite;
+}
+@keyframes ftf-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5%) rotate(-2deg);
+  }
+}
+@keyframes ftf-doze {
+  0%,
+  100% {
+    transform: translateY(0) rotate(6deg);
+  }
+  50% {
+    transform: translateY(-3%) rotate(8deg);
+  }
+}
+.ftf-fish-grow {
+  transform: scale(var(--ftf-grow, 1));
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ftf-fish-face {
+  transform: scaleX(var(--ftf-dir, 1));
+  transition: transform 0.35s ease-in-out;
+}
+.ftf-fish-wiggle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ftf-tail {
+  transform-box: fill-box;
+  transform-origin: 100% 50%;
+  animation: ftf-tail 0.9s ease-in-out infinite alternate;
+}
+.ftf-fish--asleep .ftf-tail {
+  animation-duration: 2.4s;
+}
+@keyframes ftf-tail {
+  from {
+    transform: rotate(-9deg);
+  }
+  to {
+    transform: rotate(9deg);
+  }
+}
+.ftf-mouth {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ftf-gulp 1.8s ease-in-out infinite;
+}
+.ftf-fish--eat .ftf-mouth {
+  animation: ftf-chomp 0.24s ease-in-out 3;
+}
+@keyframes ftf-gulp {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.7);
+  }
+}
+@keyframes ftf-chomp {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.15);
+  }
+}
+
+/* The little "hungry" bubble: one dot per bite still wanted. */
+.ftf-ask {
+  position: absolute;
+  left: 50%;
+  bottom: 96%;
+  display: flex;
+  gap: clamp(3px, 0.9cqh, 7px);
+  padding: clamp(4px, 1cqh, 8px) clamp(6px, 1.6cqh, 12px);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow:
+    inset 0 -2px 0 rgba(0, 0, 0, 0.06),
+    0 3px 8px rgba(10, 40, 70, 0.22);
+  transform: translateX(-50%);
+  animation: ftf-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+.ftf-ask::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  background: rgba(255, 255, 255, 0.94);
+  transform: rotate(45deg);
+}
+.ftf-ask-dot {
+  display: block;
+  width: clamp(10px, 2.6cqh, 18px);
+  height: clamp(10px, 2.6cqh, 18px);
+  border-radius: 50%;
+  background: #d5dbe5;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ftf-ask-dot--on {
+  background: #f08a45;
+  transform: scale(1.18);
+}
+@keyframes ftf-pop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* A nibble: three little bubbles out of the mouth. */
+.ftf-nibble {
+  position: absolute;
+  left: 84%;
+  top: 40%;
+  width: 0;
+  height: 0;
+}
+.ftf-nibble span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(6px, 1.6cqh, 12px);
+  height: clamp(6px, 1.6cqh, 12px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  opacity: 0;
+  animation: ftf-nib 0.75s ease-out both;
+}
+.ftf-nibble span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.ftf-nibble span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+@keyframes ftf-nib {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.5);
+  }
+  to {
+    opacity: 0;
+    transform: translate(clamp(10px, 3cqh, 24px), clamp(-30px, -7cqh, -14px)) scale(1.2);
+  }
+}
+
+.ftf-heart {
+  position: absolute;
+  left: 32%;
+  bottom: 86%;
+  display: block;
+  width: 36%;
+  height: 46%;
+  animation: ftf-heart 1.3s ease-out both;
+}
+.ftf-heart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes ftf-heart {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-10%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40%) scale(0.9);
+  }
+}
+
+.ftf-zz {
+  position: absolute;
+  left: 60%;
+  bottom: 70%;
+  width: 0;
+  height: 0;
+  color: #fff;
+  font-size: clamp(14px, 4cqh, 30px);
+  text-shadow: 0 2px 0 rgba(20, 70, 110, 0.4);
+}
+.ftf-zz span {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  animation: ftf-z 3.6s ease-in-out infinite;
+}
+.ftf-zz span:nth-child(2) {
+  animation-delay: 1.2s;
+}
+.ftf-zz span:nth-child(3) {
+  animation-delay: 2.4s;
+}
+@keyframes ftf-z {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(1.2em, -2.4em) scale(1.1);
+  }
+}
+
+/* ── Food flakes ─────────────────────────────────────────────────────── */
+
+.ftf-flake {
+  position: absolute;
+  left: var(--ftf-fx);
+  top: var(--ftf-fy);
+  z-index: 3;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.ftf-flake-sink {
+  position: absolute;
+  left: calc(var(--ftf-fl) * -0.5);
+  top: calc(var(--ftf-fl) * -0.5);
+  width: var(--ftf-fl);
+  height: var(--ftf-fl);
+  animation: ftf-sink var(--ftf-fd) linear forwards;
+  transition: opacity 0.6s;
+}
+.ftf-flake--fade .ftf-flake-sink {
+  opacity: 0;
+}
+@keyframes ftf-sink {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(var(--ftf-drop));
+  }
+}
+.ftf-flake-sway {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: ftf-sway 1.7s ease-in-out infinite alternate;
+}
+.ftf-flake-sway svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes ftf-sway {
+  from {
+    transform: translateX(-12%) rotate(-18deg);
+  }
+  to {
+    transform: translateX(12%) rotate(18deg);
+  }
+}
+.ftf-ripple {
+  position: absolute;
+  left: calc(var(--ftf-fl) * -1.2);
+  top: calc(var(--ftf-fl) * -0.5);
+  width: calc(var(--ftf-fl) * 2.4);
+  height: var(--ftf-fl);
+  border: clamp(2px, 0.5cqh, 4px) solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  opacity: 0;
+  animation: ftf-ripple 0.9s ease-out both;
+}
+@keyframes ftf-ripple {
+  from {
+    opacity: 1;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+/* ── Progress: a plate of big dots, and the colour to feed ───────────── */
+
+.ftf-top {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 14px rgba(10, 40, 70, 0.2);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.ftf-want {
+  display: block;
+  width: clamp(48px, 13cqh, 76px);
+  height: clamp(34px, 9cqh, 53px);
+}
+.ftf-want svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ftf-dots {
+  display: flex;
+  gap: clamp(7px, 1.8cqh, 12px);
+}
+.ftf-dot {
+  display: block;
+  width: clamp(16px, 4.6cqh, 26px);
+  height: clamp(16px, 4.6cqh, 26px);
+  border-radius: 50%;
+  background: #d5dbe5;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    background 0.3s;
+}
+.ftf-dot--done {
+  background: #3dab72;
+}
+.ftf-dot--now {
+  background: #f5b81c;
+  transform: scale(1.25);
+}
+
+/* ── Star card ───────────────────────────────────────────────────────── */
+
+.ftf-done {
+  position: absolute;
+  inset: 0;
+}
+.ftf-card-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 66px 16px 12px;
+  pointer-events: none;
+}
+.ftf-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: min(88vw, 360px);
+  padding: 14px 18px 18px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 18px 50px rgba(10, 40, 70, 0.3);
+  pointer-events: auto;
+}
+.ftf-card-hero {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  height: clamp(54px, 16vh, 96px);
+}
+.ftf-card-fish {
+  display: block;
+  width: clamp(70px, 21vh, 120px);
+  height: 100%;
+}
+.ftf-card-fish svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ftf-card-fish--pink {
+  margin-top: 4%;
+}
+.ftf-card-cheer {
+  margin: 0;
+  color: #1b4f8a;
+  font-size: clamp(24px, 5.2vmin, 40px);
+}
+.ftf-card-row {
+  display: flex;
+  gap: 12px;
+}
+.ftf-card-btn {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff;
+  color: #1b4f8a;
+  font-size: 17px;
+  box-shadow:
+    inset 0 -3px 0 rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(10, 40, 70, 0.16);
+  cursor: pointer;
+}
+.ftf-card-btn--go {
+  background: linear-gradient(#4fc768, #2f9e4a);
+  color: #fff;
+}
+.ftf-cast {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ftf-cast svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-height: 420px) {
+  .ftf-top {
+    top: 10px;
+    padding: 4px 12px;
+  }
+}
+/* too narrow for the plate between the two pills: it goes just under them */
+@media (max-width: 520px) {
+  .ftf-top {
+    top: 72px;
+  }
+}

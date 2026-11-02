@@ -1,0 +1,823 @@
+/**
+ * Rocket Countdown — class prefix `rkc-` (grepped clear across src/playlab;
+ * every game's CSS loads on every play page, so nothing here is bare).
+ *
+ * Only Rocket Countdown's own boards, props and miniatures live here. The
+ * shell, the chrome (teacher, star trail, pills), the title screen and the
+ * star card are Count & Match's (`ng-`, number-groups.css); the world is
+ * Space ABC's scene (`spl-scene`, space-letters.css). Sized in container
+ * units of the shared `.ng-root`; portrait at the bottom.
+ */
+
+/* ─── The world ────────────────────────────────────────────────────────── */
+.rkc-space {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #050814 0%, #0b1330 55%, #1b2b6b 100%);
+}
+/* The teacher is a drawing on white, blended into the world by `multiply`
+   — on a night sky that would turn him dark. He stands in front of a big
+   pale moon instead, so the blend has light to work with. */
+.ng-screen:has(.rkc-space) .ng-teacher-slot::before {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 2%;
+  bottom: 1%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 72% 66%, rgba(166, 182, 216, 0.55) 0 7%, transparent 8%),
+    radial-gradient(circle at 24% 70%, rgba(166, 182, 216, 0.45) 0 5%, transparent 6%),
+    radial-gradient(circle at 64% 22%, rgba(166, 182, 216, 0.4) 0 4%, transparent 5%),
+    radial-gradient(circle at 38% 34%, #ffffff 0 34%, #e6ecf8 64%, #cdd8ef 100%);
+  box-shadow: 0 0 3cqh rgba(200, 215, 255, 0.35);
+}
+.rkc-play svg {
+  overflow: visible;
+}
+.rkc-rocket-art svg,
+.rkc-star-art svg,
+.rkc-astronaut svg,
+.rkc-cell-art,
+.rkc-bar svg,
+.rkc-mini svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.rkc-planet img,
+.rkc-mini img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ─── The rocket on its launch pad ─────────────────────────────────────── */
+.rkc-pad-col {
+  position: relative;
+  z-index: 5;
+  align-self: flex-end;
+}
+.rkc-launch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--rkc-r) * 0.62);
+}
+.rkc-rocket {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: var(--rkc-r);
+  height: var(--rkc-r);
+  margin: 0 calc(var(--rkc-r) * -0.19);
+}
+.rkc-rocket-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+/* the fuel window, over the rocket's porthole */
+.rkc-window {
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24%;
+  aspect-ratio: 1;
+  margin-left: -12%;
+  border: calc(var(--rkc-r) * 0.02) solid #c9cfdd;
+  border-radius: 50%;
+  background: #0b1330;
+  color: #ffe27a;
+  font-size: calc(var(--rkc-r) * 0.16);
+  line-height: 1;
+  box-shadow: inset 0 0 calc(var(--rkc-r) * 0.03) rgba(91, 127, 255, 0.9);
+}
+/* the big flame, only in flight */
+.rkc-exhaust {
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  display: block;
+  width: 20%;
+  height: 34%;
+  margin-left: -10%;
+}
+.rkc-exhaust-flame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+  background: radial-gradient(
+    ellipse at 50% 18%,
+    #fff3a0 0 24%,
+    #ffa726 52%,
+    rgba(255, 120, 40, 0) 76%
+  );
+  transform-origin: 50% 0;
+  animation: rkc-burn 0.9s ease-in-out infinite alternate;
+}
+.rkc-pad {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: calc(var(--rkc-r) * 0.7);
+  height: calc(var(--rkc-r) * 0.22);
+  margin-top: calc(var(--rkc-r) * -0.2);
+}
+.rkc-pad > span {
+  position: absolute;
+}
+.rkc-pad-deck {
+  display: block;
+}
+.rkc-pad > .rkc-pad-deck {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30%;
+  border-radius: 1cqh;
+  background: linear-gradient(180deg, #dce4f5, #9fb2d8);
+}
+.rkc-pad-front {
+  left: 6%;
+  right: 6%;
+  top: 26%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5%;
+  border-radius: 0 0 1.2cqh 1.2cqh;
+  background: linear-gradient(180deg, #5a6a98, #3a4670);
+  box-shadow:
+    0 0.8cqh 0 #232b48,
+    0 1.4cqh 2cqh rgba(0, 0, 0, 0.35);
+}
+.rkc-lamp {
+  display: block;
+  width: calc(var(--rkc-r) * 0.075);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #2c3550;
+  box-shadow: inset 0 0.3cqh 0 rgba(0, 0, 0, 0.35);
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.rkc-lamp.is-on {
+  background: radial-gradient(circle at 40% 35%, #fff7c2, #ffd93d 60%, #f2b823);
+  box-shadow: 0 0 1.2cqh rgba(255, 217, 61, 0.85);
+}
+/* a puff of smoke from the pad, once per right star */
+.rkc-smoke {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  z-index: 3;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.rkc-smoke-bit {
+  --rkc-sb: calc(var(--rkc-r) * 0.16);
+  position: absolute;
+  left: calc(var(--rkc-sb) * -0.5);
+  top: calc(var(--rkc-sb) * -0.5);
+  width: var(--rkc-sb);
+  height: var(--rkc-sb);
+  border-radius: 50%;
+  background: rgba(230, 236, 248, 0.9);
+  opacity: 0;
+  animation: rkc-smoke 1.1s ease-out forwards;
+}
+.rkc-smoke-bit:nth-child(1) {
+  --rkc-dx: calc(var(--rkc-r) * -0.34);
+}
+.rkc-smoke-bit:nth-child(2) {
+  --rkc-dx: calc(var(--rkc-r) * -0.16);
+  animation-delay: 0.08s;
+}
+.rkc-smoke-bit:nth-child(3) {
+  --rkc-dx: calc(var(--rkc-r) * 0.16);
+  animation-delay: 0.08s;
+}
+.rkc-smoke-bit:nth-child(4) {
+  --rkc-dx: calc(var(--rkc-r) * 0.34);
+}
+
+/* the little stars behind a flying rocket */
+.rkc-streak {
+  position: absolute;
+  z-index: 20;
+  width: 3cqh;
+  height: 3cqh;
+  margin: -1.5cqh 0 0 -1.5cqh;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffffff 0 22%,
+    rgba(255, 230, 140, 0.8) 40%,
+    rgba(255, 230, 140, 0) 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: rkc-streak 1.3s ease-out var(--rkc-delay, 0s) forwards;
+}
+
+/* ─── Count Down ───────────────────────────────────────────────────────── */
+.rkc-play--count {
+  --rkc-r: min(68cqh, 26cqw);
+  --rkc-t: max(48px, min(20cqh, 10cqw));
+  --rkc-pl: min(26cqh, 15cqw);
+}
+.rkc-count-board {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 3cqw;
+  width: 100%;
+  height: 100%;
+}
+.rkc-tower {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  padding: 1.6cqh 0.8cqw;
+}
+.rkc-tower-mast {
+  position: absolute;
+  left: 50%;
+  top: -1cqh;
+  bottom: -2cqh;
+  display: block;
+  width: calc(var(--rkc-t) * 0.4);
+  margin-left: calc(var(--rkc-t) * -0.2);
+  border-radius: 0.8cqh 0.8cqh 0 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 calc(var(--rkc-t) * 0.1),
+      rgba(255, 255, 255, 0.9) calc(var(--rkc-t) * 0.1) calc(var(--rkc-t) * 0.15)
+    ),
+    #e5484d;
+  box-shadow:
+    inset calc(var(--rkc-t) * -0.06) 0 0 rgba(120, 20, 30, 0.35),
+    0 1cqh 2cqh rgba(0, 0, 0, 0.35);
+}
+.rkc-tower-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, var(--rkc-t));
+  grid-auto-rows: var(--rkc-t);
+  gap: 2.4cqh calc(var(--rkc-t) * 0.62);
+}
+.rkc-slot {
+  position: relative;
+  display: block;
+}
+/* each star sits on an arm of the tower */
+.rkc-slot::before {
+  content: "";
+  position: absolute;
+  top: 58%;
+  z-index: -1;
+  width: 66%;
+  height: 12%;
+  border-radius: 9999px;
+  background: #c9cfdd;
+  box-shadow: inset 0 -0.4cqh 0 rgba(60, 70, 110, 0.35);
+}
+.rkc-slot:nth-child(odd)::before {
+  left: 50%;
+}
+.rkc-slot:nth-child(even)::before {
+  right: 50%;
+}
+.rkc-star-btn {
+  width: var(--rkc-t);
+  height: var(--rkc-t);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.rkc-star-btn:disabled {
+  cursor: default;
+}
+.rkc-star {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.rkc-star-art {
+  position: absolute;
+  inset: -8%;
+  display: block;
+}
+.rkc-star-num {
+  position: absolute;
+  inset: 12% 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1f3f8f;
+  font-size: calc(var(--rkc-t) * 0.42);
+  line-height: 1;
+}
+.rkc-star-btn.is-counted .rkc-star {
+  opacity: 0.38;
+}
+/* after a wrong tap, the right star glows softly (slow, never a flash) */
+.rkc-star-btn.is-glow::after {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 150, 0.9), rgba(255, 240, 150, 0) 70%);
+  animation: rkc-glow 1.8s ease-in-out infinite;
+}
+
+/* the planet, and the astronaut waiting by it */
+.rkc-dest {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  width: calc(var(--rkc-pl) * 1.35);
+  height: calc(var(--rkc-pl) * 1.3);
+}
+.rkc-planet {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: var(--rkc-pl);
+  height: var(--rkc-pl);
+}
+.rkc-astronaut {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  width: calc(var(--rkc-pl) * 0.62);
+  height: calc(var(--rkc-pl) * 0.62);
+  animation: rkc-bob 4s ease-in-out infinite;
+}
+.rkc-astronaut.is-happy {
+  animation-duration: 1.6s;
+}
+
+/* ─── Fuel the Rocket ──────────────────────────────────────────────────── */
+.rkc-play--fuel {
+  --rkc-r: min(66cqh, 22cqw);
+  --rkc-c: max(48px, min(15cqh, 8cqw));
+  --rkc-tk: max(52px, min(15cqh, 9cqw));
+  --rkc-cd: min(34cqh, 24cqw);
+}
+.rkc-fuel-board {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqw;
+  width: 100%;
+  height: 100%;
+}
+.rkc-fuel-ship {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  align-self: stretch;
+}
+.rkc-fuel-ship .rkc-pad-col {
+  align-self: flex-end;
+}
+.rkc-tank {
+  position: relative;
+  display: block;
+  width: var(--rkc-tk);
+  height: min(62cqh, calc(var(--rkc-tk) * 4));
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.rkc-tank:disabled {
+  cursor: default;
+}
+.rkc-tank-pipe {
+  position: absolute;
+  right: 92%;
+  bottom: 16%;
+  display: block;
+  width: 2.6cqw;
+  height: 2.4cqh;
+  border-radius: 0.6cqh;
+  background: linear-gradient(180deg, #dce4f5, #8a9bc4);
+}
+.rkc-tank-glass {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.8cqh;
+  padding: 1cqh;
+  border: 0.8cqh solid #9fb2d8;
+  border-radius: 2.4cqh;
+  background: rgba(20, 30, 70, 0.6);
+  box-shadow:
+    inset 0 0 1.6cqh rgba(91, 127, 255, 0.45),
+    0 1cqh 0 #5a6a98,
+    0 1.6cqh 2.4cqh rgba(0, 0, 0, 0.35);
+}
+.rkc-tank.is-lit .rkc-tank-glass {
+  border-color: #ffd93d;
+}
+.rkc-gauge {
+  position: relative;
+  display: block;
+  flex: 1;
+  border-radius: 1cqh;
+  background: rgba(255, 255, 255, 0.08);
+}
+.rkc-gauge.is-full {
+  background: linear-gradient(180deg, #fff3a0, #ffd93d 45%, #f2b823);
+  box-shadow: 0 0 1.4cqh rgba(255, 217, 61, 0.6);
+}
+.rkc-gauge.is-counted {
+  box-shadow:
+    0 0 0 0.6cqh #ffffff,
+    0 0 1.6cqh rgba(255, 255, 255, 0.9);
+}
+.rkc-bar {
+  position: absolute;
+  inset: 12% 0;
+  display: block;
+}
+/* a wrong amount: the gauge glows softly, twice */
+.rkc-tank-flash {
+  position: absolute;
+  inset: -1cqh;
+  display: block;
+  border-radius: 3cqh;
+  box-shadow: 0 0 0 0.9cqh rgba(255, 170, 60, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  animation: rkc-flash 1.2s ease-in-out 2;
+}
+
+.rkc-fuel-controls {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+}
+.rkc-crate {
+  display: grid;
+  grid-template-columns: repeat(2, var(--rkc-c));
+  gap: 1.4cqh 1.4cqw;
+  padding: 1.6cqh 1.6cqw;
+  border-radius: 2.6cqh;
+  background: linear-gradient(180deg, #6b5a8e, #4a3e66);
+  box-shadow:
+    inset 0 0.6cqh 0 rgba(255, 255, 255, 0.18),
+    0 1cqh 0 #2f2745,
+    0 1.6cqh 2.4cqh rgba(0, 0, 0, 0.35);
+  transition: opacity 0.4s ease;
+}
+.rkc-crate.is-done {
+  opacity: 0.55;
+}
+.rkc-piece {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.rkc-piece:disabled {
+  cursor: default;
+}
+.rkc-piece.is-away {
+  visibility: hidden;
+}
+.rkc-piece--cell {
+  width: var(--rkc-c);
+  height: calc(var(--rkc-c) * 1.16);
+}
+/* the cell in the finger (Birthday Party's drag layer, restated here) */
+.rkc-play .bdc-carried {
+  position: absolute;
+  display: block;
+}
+.rkc-play .bdc-carried.rkc-piece--cell {
+  left: calc(var(--rkc-c) * -0.5);
+  top: calc(var(--rkc-c) * -0.58);
+}
+
+/* the Go! lever */
+.rkc-lever-slot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: max(64px, 12cqw);
+  height: max(112px, 40cqh);
+}
+.rkc-lever {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.rkc-lever:disabled {
+  cursor: default;
+}
+.rkc-lever-stick {
+  position: absolute;
+  left: 50%;
+  bottom: 28%;
+  display: block;
+  width: 12%;
+  height: 58%;
+  margin-left: -6%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #eef2fb, #9fb2d8);
+  transform: rotate(-22deg);
+  transform-origin: 50% 100%;
+  transition: transform 0.45s ease-in-out;
+}
+.rkc-lever.is-pulled .rkc-lever-stick {
+  transform: rotate(22deg);
+}
+.rkc-lever-knob {
+  position: absolute;
+  left: 50%;
+  top: -10%;
+  display: block;
+  width: 300%;
+  aspect-ratio: 1;
+  margin-left: -150%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 32%, #ff9a9e, #e5484d 60%, #b8363a);
+  box-shadow: 0 0.6cqh 0 #8c2a2a;
+}
+.rkc-lever-base {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34%;
+  border-radius: 2cqh;
+  background: #3dab72;
+  color: #ffffff;
+  font-size: clamp(16px, 6cqh, 36px);
+  line-height: 1;
+  box-shadow:
+    0 1cqh 0 #2b8a57,
+    0 1.6cqh 2.4cqh rgba(0, 0, 0, 0.35);
+}
+
+/* the countdown's big number */
+.rkc-countdown {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--rkc-cd);
+  height: var(--rkc-cd);
+  margin: calc(var(--rkc-cd) * -0.5) 0 0 calc(var(--rkc-cd) * -0.5);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1f5fa6;
+  font-size: calc(var(--rkc-cd) * 0.62);
+  line-height: 1;
+  box-shadow:
+    0 1.2cqh 0 #9fb2d8,
+    0 2cqh 3cqh rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+/* ─── Each module in miniature (inside the shared `.ng-mini` box) ──────── */
+.rkc-mini-rocket {
+  position: absolute;
+  left: 4%;
+  bottom: 4%;
+  display: block;
+  width: 46%;
+  height: 92%;
+}
+.rkc-mini-window {
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+  aspect-ratio: 1;
+  margin-left: -15%;
+  border-radius: 50%;
+  background: #0b1330;
+  color: #ffe27a;
+  font-size: min(14cqh, 8cqw);
+  line-height: 1;
+}
+.rkc-mini-stars,
+.rkc-mini-cells {
+  position: absolute;
+  right: 6%;
+  top: 8%;
+  bottom: 8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 30%;
+}
+.rkc-mini-star {
+  position: relative;
+  display: block;
+  height: 30%;
+  aspect-ratio: 1;
+  --rkc-t: min(26cqh, 18cqw);
+}
+.rkc-mini-cells {
+  flex-direction: row;
+  align-items: center;
+  width: 46%;
+}
+.rkc-mini-cell {
+  display: block;
+  width: 31%;
+  aspect-ratio: 60 / 70;
+}
+
+/* ─── Motion: slow, few, soft ──────────────────────────────────────────── */
+@keyframes rkc-burn {
+  from {
+    transform: scaleY(0.88);
+  }
+  to {
+    transform: scaleY(1.05);
+  }
+}
+@keyframes rkc-smoke {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--rkc-dx, 0px), calc(var(--rkc-r) * -0.1)) scale(1.5);
+  }
+}
+@keyframes rkc-streak {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes rkc-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes rkc-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-6%) rotate(4deg);
+  }
+}
+@keyframes rkc-flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ─── Portrait ─────────────────────────────────────────────────────────── */
+@media (orientation: portrait) {
+  .rkc-play--count {
+    --rkc-r: min(46cqw, 30cqh);
+    --rkc-t: max(48px, min(19cqw, 9cqh));
+    --rkc-pl: min(28cqw, 13cqh);
+  }
+  /* upright: the planet on top, the rocket and the tower under it */
+  .rkc-count-board {
+    display: grid;
+    grid-template-areas:
+      "dest dest"
+      "pad tower";
+    grid-template-columns: auto auto;
+    align-content: center;
+    justify-content: center;
+    gap: 3cqh 6cqw;
+  }
+  .rkc-count-board .rkc-pad-col {
+    grid-area: pad;
+  }
+  .rkc-count-board .rkc-tower {
+    grid-area: tower;
+  }
+  .rkc-count-board .rkc-dest {
+    grid-area: dest;
+    justify-self: end;
+  }
+
+  .rkc-play--fuel {
+    --rkc-r: min(44cqw, 28cqh);
+    --rkc-c: max(48px, min(17cqw, 8cqh));
+    --rkc-tk: max(52px, 15cqw);
+    --rkc-cd: 50cqw;
+  }
+  .rkc-fuel-board {
+    flex-direction: column;
+    gap: 4cqh;
+  }
+  .rkc-fuel-ship {
+    align-self: center;
+    gap: 6cqw;
+  }
+  .rkc-tank {
+    height: min(28cqh, calc(var(--rkc-tk) * 4));
+  }
+  .rkc-crate {
+    grid-template-columns: repeat(3, var(--rkc-c));
+  }
+  .rkc-lever-slot {
+    width: max(72px, 20cqw);
+    height: max(112px, 18cqh);
+  }
+  .rkc-lever-base {
+    font-size: clamp(16px, 6cqw, 30px);
+  }
+}
+
+/* No teacher on the stage: the game root hides the kit's teacher slot and
+   lets the play area use the room it leaves. */
+.rkc-game {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.rkc-game .ng-teacher-slot {
+  display: none;
+}
+.rkc-game .ng-main {
+  left: 3cqw;
+}

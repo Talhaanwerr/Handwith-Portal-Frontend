@@ -1,0 +1,53 @@
+[
+  {
+    "id": "wsi-welcome",
+    "text": "Treasure chests! What's inside?",
+    "file": "/audio/whats-inside/welcome.mp3"
+  },
+  { "id": "wsi-done", "text": "You found every toy!", "file": "/audio/whats-inside/done.mp3" },
+  {
+    "id": "wsi-mode-peek",
+    "text": "Peek and Guess. What's in the chest?",
+    "file": "/audio/whats-inside/mode-peek.mp3"
+  },
+  {
+    "id": "wsi-mode-where",
+    "text": "Where Did It Go? Watch the chests!",
+    "file": "/audio/whats-inside/mode-where.mp3"
+  },
+  {
+    "id": "wsi-peek-ask",
+    "text": "What's inside? Tap your guess.",
+    "file": "/audio/whats-inside/peek-ask.mp3"
+  },
+  {
+    "id": "wsi-peek-more",
+    "text": "Look! Now you can see more.",
+    "file": "/audio/whats-inside/peek-more.mp3"
+  },
+  {
+    "id": "wsi-empty",
+    "text": "Empty! Try another chest.",
+    "file": "/audio/whats-inside/empty.mp3"
+  },
+  {
+    "id": "wsi-where-ball",
+    "text": "Where is the ball?",
+    "file": "/audio/whats-inside/where-ball.mp3"
+  },
+  {
+    "id": "wsi-where-drum",
+    "text": "Where is the drum?",
+    "file": "/audio/whats-inside/where-drum.mp3"
+  },
+  {
+    "id": "wsi-where-train",
+    "text": "Where is the train?",
+    "file": "/audio/whats-inside/where-train.mp3"
+  },
+  {
+    "id": "wsi-where-dog",
+    "text": "Where is the dog?",
+    "file": "/audio/whats-inside/where-dog.mp3"
+  }
+]

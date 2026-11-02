@@ -38,6 +38,9 @@ Copy this file into new projects so the same mistakes are not repeated.
 
 12. A blend clip aliased by LETTER is not the same sound in every word. `a` in cake, `i` in mice, `c` in juice and `ch` in chef are long vowels, a soft c and "sh", so aliasing them to `phonics-a`, `phonics-i`, `phonics-c` or the `ch` recording teaches the wrong sound. Check the word, not just the letter, before aliasing a `blend-sound-*` clip.
 
+13. Never key two sibling elements from the same counter. On & Off keyed both its gliding piece and its `PieceBurst` by the same flight id, so a correct drop rendered two siblings with key `1` ("Encountered two children with the same key"). Namespace the keys (`glide-${id}`, `burst-${id}`).
+
+14. A queued voice line must not count its own start as a stop. `sayAfter` dropped every line queued behind another one ("Fill the tank with" never said the number): the first queued line's `playClip` called `stopVoice`, which bumped the generation the next queued line checked. Only a real stop (Back, a reaction, a new screen) may empty the queue.
 13. A CSS `@container` query can only style elements INSIDE the container it asks about. A game's chrome (the `NavPillButton`, and Shapes & Pictures' red help button) is rendered next to the canvas, not inside it, so container-query rules for it silently never apply — the button stayed in the corner it was supposed to leave on a tall screen. Query the viewport with `@media (max-aspect-ratio: 1 / 1)` for chrome, and keep `@container` for what is drawn inside the canvas.
 
 14. `UserMenu` must route by role. Super Admin My Profile and Settings must go to `/super-admin/profile` and `/super-admin/settings`. Never hardcode `/profile` or `/settings` for Super Admin or the tenant layout/sidebar will load.

@@ -1,0 +1,16 @@
+{
+  "default": [
+    "Look at the friend waiting in the glass lift.",
+    "Help them ride the lift to the right floor."
+  ],
+  "modules": {
+    "updown": [
+      "Look at the picture in the friend's bubble.",
+      "Press up or down to ride to that floor."
+    ],
+    "match": [
+      "Look at the colour of the friend's balloon.",
+      "Tap the floor that has the same colour."
+    ]
+  }
+}

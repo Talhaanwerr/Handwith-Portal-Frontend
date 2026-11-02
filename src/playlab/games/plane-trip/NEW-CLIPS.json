@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ptr-welcome",
+    "file": "/audio/plane-trip/welcome.mp3",
+    "text": "Welcome to Plane Trip!"
+  },
+  { "id": "ptr-done", "file": "/audio/plane-trip/done.mp3", "text": "Have a happy trip!" },
+  {
+    "id": "ptr-mode-bags",
+    "file": "/audio/plane-trip/mode-bags.mp3",
+    "text": "Bag match! Give each bag to its owner."
+  },
+  {
+    "id": "ptr-mode-pack",
+    "file": "/audio/plane-trip/mode-pack.mp3",
+    "text": "Pack for the trip! Sunny or snowy?"
+  },
+  { "id": "ptr-whose", "file": "/audio/plane-trip/whose.mp3", "text": "Whose bag is this?" },
+  { "id": "ptr-yours", "file": "/audio/plane-trip/yours.mp3", "text": "Here's your bag!" },
+  { "id": "ptr-where", "file": "/audio/plane-trip/where.mp3", "text": "Where does it go?" },
+  { "id": "ptr-sunny", "file": "/audio/plane-trip/sunny.mp3", "text": "The sunny suitcase!" },
+  { "id": "ptr-snowy", "file": "/audio/plane-trip/snowy.mp3", "text": "The snowy suitcase!" },
+  { "id": "ptr-takeoff", "file": "/audio/plane-trip/takeoff.mp3", "text": "All packed! Off we go!" }
+]

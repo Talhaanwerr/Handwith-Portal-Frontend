@@ -1,0 +1,41 @@
+[
+  {
+    "id": "bdc-welcome",
+    "text": "It's a birthday party!",
+    "file": "/audio/birthday-party/welcome.mp3"
+  },
+  { "id": "bdc-done", "text": "What a happy party!", "file": "/audio/birthday-party/done.mp3" },
+  { "id": "bdc-mode-each", "text": "One for each!", "file": "/audio/birthday-party/mode-each.mp3" },
+  {
+    "id": "bdc-mode-candles",
+    "text": "Candles on the cake!",
+    "file": "/audio/birthday-party/mode-candles.mp3"
+  },
+  {
+    "id": "bdc-ask-each",
+    "text": "Give each friend one cupcake!",
+    "file": "/audio/birthday-party/ask-each.mp3"
+  },
+  {
+    "id": "bdc-has-one",
+    "text": "This friend has one!",
+    "file": "/audio/birthday-party/has-one.mp3"
+  },
+  {
+    "id": "bdc-everyone",
+    "text": "Everyone has one!",
+    "file": "/audio/birthday-party/everyone.mp3"
+  },
+  {
+    "id": "bdc-how-many",
+    "text": "How many cupcakes?",
+    "file": "/audio/birthday-party/how-many.mp3"
+  },
+  { "id": "bdc-i-am", "text": "I am", "file": "/audio/birthday-party/i-am.mp3" },
+  {
+    "id": "bdc-ask-candles",
+    "text": "Put the candles on the cake!",
+    "file": "/audio/birthday-party/ask-candles.mp3"
+  },
+  { "id": "bdc-blow", "text": "Blow them out!", "file": "/audio/birthday-party/blow.mp3" }
+]

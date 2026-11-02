@@ -1,0 +1,524 @@
+/**
+ * Burj Lift — the board: Burj Khalifa's tower (its `bjk-` pieces, sized by
+ * `--bjk-f` / `--bjk-u` set here), a sign beside every floor, the glass lift
+ * on the tower's right side, and the call station with the two big buttons.
+ *
+ * The game runs in Count & Match's shell, so everything is sized in the `ng`
+ * container's units (1cqh = 1% of the stage's height). The board is laid out
+ * from ONE line, the tower's centre (`--bjl-tc`): the signs stand left of it,
+ * the lift's shaft right of it, in the tower's own units.
+ */
+
+/* the board takes the whole stage; its parts keep clear of the pills */
+.apa-game .bjl-play .ng-main {
+  inset: 0;
+  display: block;
+}
+.bjl-board {
+  /* one floor's height: six floors, the podium and the spire fit any
+     landscape stage, and floor six stays under the pills (a 568 × 320
+     phone: 38 px floors, floor six's top at 64 px) */
+  --bjk-f: min(12cqh, 9cqw);
+  --bjk-u: max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75));
+  /* the podium's height, the tower's centre line, the car, a sign, a button */
+  --bjl-pod: calc(var(--bjk-u) * 0.5);
+  --bjl-tc: 32cqw;
+  --bjl-cw: var(--bjk-u);
+  --bjl-ch: min(calc(var(--bjk-f) * 0.94), calc(var(--bjl-cw) * 1.3));
+  --bjl-sign: min(calc(var(--bjk-f) * 0.92), var(--bjk-u));
+  --bjl-bub: max(40px, min(var(--bjk-f), calc(var(--bjk-u) * 1.15)));
+  --bjl-btn: max(56px, min(21cqh, 12cqw, 140px));
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── The tower ───────────────────────────────────────────────────────────── */
+
+/** As wide as the podium, centred on the tower's centre line. */
+.bjl-rig {
+  position: absolute;
+  left: calc(var(--bjl-tc) - var(--bjk-u) * 1.45);
+  width: calc(var(--bjk-u) * 2.9);
+  top: 1.5cqh;
+  bottom: 2cqh;
+}
+.bjl-towerbox {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.bjl-towerbox .bjl-spire-slot {
+  flex: 0 1 calc(var(--bjk-f) * 2.4);
+}
+
+/* ── The signs: one row a floor, the sign at its left ───────────────────── */
+
+.bjl-rows {
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - var(--bjk-u) * 1.15 - var(--bjl-sign));
+  /* the rows reach right to the shaft, so a floor is one wide target */
+  right: calc(50% - var(--bjk-u) * 1.05);
+  bottom: var(--bjl-pod);
+  height: calc(var(--bjk-f) * 6);
+}
+.bjl-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--bjk-f) * var(--bjl-i));
+  display: flex;
+  align-items: center;
+  height: var(--bjk-f);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+.bjl-row.bjl-row--tap {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.bjl-row.bjl-row--tap:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: -3px;
+  border-radius: calc(var(--bjl-sign) * 0.22);
+}
+
+/** One sign: a white plate in a gold frame (a picture), or a colour. */
+.bjl-sign {
+  position: relative;
+  display: block;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--bjl-sign);
+  height: var(--bjl-sign);
+  /* (a % padding would be a share of the row's width, not the sign's) */
+  padding: calc(var(--bjl-sign) * 0.11);
+  border: max(2px, calc(var(--bjl-sign) * 0.07)) solid #e0a632;
+  border-radius: calc(var(--bjl-sign) * 0.22);
+  background: #ffffff;
+  box-shadow: 0 calc(var(--bjl-sign) * 0.08) 0 #b07415;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.bjl-sign-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bjl-sign.bjl-sign--colour {
+  padding: 0;
+  border-color: #ffffff;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.5) 0 18%, transparent 19%),
+    var(--bjl-face);
+  box-shadow: 0 calc(var(--bjl-sign) * 0.08) 0 var(--bjl-edge);
+}
+/** The passenger's floor, after a miss (or while the hand shows it). */
+.bjl-sign--hint::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--bjl-sign) * -0.2);
+  border: max(3px, calc(var(--bjl-sign) * 0.1)) solid #ffd34d;
+  border-radius: calc(var(--bjl-sign) * 0.32);
+  pointer-events: none;
+  animation: bjl-pulse 1.2s ease-in-out infinite;
+}
+/** Arrived: a green frame. */
+.bjl-sign.bjl-sign--reached {
+  border-color: #34a95a;
+  box-shadow:
+    0 calc(var(--bjl-sign) * 0.08) 0 #1c7a45,
+    0 0 0 calc(var(--bjl-sign) * 0.1) rgba(52, 169, 90, 0.45);
+}
+@keyframes bjl-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── The lift ────────────────────────────────────────────────────────────── */
+
+/** The shaft: from the sand to just over floor six, right of the tower. */
+.bjl-shaft {
+  position: absolute;
+  z-index: 3;
+  left: calc(50% + var(--bjk-u) * 1.05);
+  bottom: 0;
+  width: var(--bjl-cw);
+  height: calc(var(--bjl-pod) + var(--bjk-f) * 6.25);
+  pointer-events: none;
+}
+.bjl-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: max(3px, calc(var(--bjk-u) * 0.08));
+  border-radius: 2px;
+  background: linear-gradient(90deg, #8a6a2a, #f0d27a 45%, #8a6a2a);
+}
+.bjl-rail--l {
+  left: 0;
+}
+.bjl-rail--r {
+  right: 0;
+}
+.bjl-shaft-top {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: calc(var(--bjk-u) * -0.1);
+  height: calc(var(--bjk-u) * 0.14);
+  border-radius: 999px;
+  background: linear-gradient(#f3cf6e, #b98a2c);
+}
+/** A bracket from each floor's edge to the shaft. */
+.bjl-arm {
+  position: absolute;
+  right: calc(100% - 2px);
+  bottom: calc(var(--bjl-pod) + var(--bjk-f) * (var(--bjl-i) + 0.5));
+  width: calc(var(--bjk-u) * var(--bjl-reach) + 2px);
+  height: max(3px, calc(var(--bjk-f) * 0.07));
+  border-radius: 2px;
+  background: #b98a2c;
+}
+
+/** The car: its ride is a CSS tween of `translate` (its length set inline). */
+.bjl-car {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--bjl-pod);
+  z-index: 1;
+  height: var(--bjl-ch);
+  pointer-events: none;
+  transition-property: translate;
+  transition-timing-function: cubic-bezier(0.45, 0, 0.3, 1);
+}
+.bjl-car-cap {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 100%;
+  height: calc(var(--bjl-ch) * 0.13);
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(#f3cf6e, #c58a1e);
+}
+.bjl-car-cabin {
+  position: absolute;
+  inset: 0;
+  border: max(2px, calc(var(--bjk-u) * 0.07)) solid #e0a632;
+  border-radius: calc(var(--bjk-u) * 0.12);
+  background: linear-gradient(rgba(214, 240, 255, 0.92), rgba(160, 208, 240, 0.85));
+  box-shadow:
+    inset 0 0 0 max(1px, calc(var(--bjk-u) * 0.025)) #fff3c4,
+    0 calc(var(--bjk-f) * 0.06) 0 rgba(90, 55, 10, 0.35);
+}
+.bjl-car-back {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.35) 0 1px,
+    transparent 1px 33.3%
+  );
+}
+/** The passenger, standing on the cabin floor (framer moves it: no CSS
+    transform here). */
+.bjl-rider {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 3%;
+  z-index: 1;
+  display: block;
+  height: 84%;
+}
+.bjl-car-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 0 20%,
+    rgba(255, 255, 255, 0.5) 27%,
+    transparent 36%,
+    transparent 62%,
+    rgba(255, 255, 255, 0.3) 66%,
+    transparent 72%
+  );
+}
+.bjl-car-sill {
+  position: absolute;
+  top: 100%;
+  left: -8%;
+  right: -8%;
+  height: calc(var(--bjl-ch) * 0.1);
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(#e7b84c, #a8741a);
+}
+
+/** Up or Down?: the bubble beside the car shows the floor's picture. */
+.bjl-bubble {
+  position: absolute;
+  left: calc(100% + var(--bjk-u) * 0.24);
+  top: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: var(--bjl-bub);
+  height: var(--bjl-bub);
+  margin: auto 0;
+  border: max(2px, calc(var(--bjl-bub) * 0.06)) solid #e0a632;
+  border-radius: 28%;
+  background: #ffffff;
+  box-shadow: 0 calc(var(--bjl-bub) * 0.07) 0 rgba(120, 80, 20, 0.35);
+}
+.bjl-bubble::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  margin-top: calc(var(--bjl-bub) * -0.13);
+  border: calc(var(--bjl-bub) * 0.13) solid transparent;
+  border-right-color: #e0a632;
+}
+.bjl-bubble-pic {
+  display: block;
+  width: 78%;
+  height: 78%;
+}
+
+/** Picture Floors: the balloon, held up beside the car, bobbing. */
+.bjl-balloon {
+  position: absolute;
+  left: calc(100% + var(--bjk-u) * 0.06);
+  bottom: 0;
+  display: block;
+  width: calc(var(--bjk-u) * 0.62);
+  height: calc(var(--bjk-u) * 1.08);
+  animation: bjl-bob 1.8s ease-in-out infinite;
+}
+.bjl-balloon-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes bjl-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 calc(var(--bjk-u) * -0.06);
+  }
+}
+
+/* ── Beside the tower: who rides next, and the call station ─────────────── */
+
+.bjl-side {
+  position: absolute;
+  left: 58cqw;
+  right: 3cqw;
+  top: max(72px, 18cqh);
+  bottom: 3cqh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4cqw;
+}
+/* the queue takes the room left of the station, so the buttons never move
+   as it empties */
+.bjl-queue {
+  display: flex;
+  flex: 1 1 0;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.4cqh;
+  padding-bottom: 0.6cqh;
+}
+.bjl-queue-pic {
+  display: block;
+  width: min(14cqh, 8cqw);
+  height: min(14cqh, 8cqw);
+}
+.bjl-station {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+/** The brass panel holding the two buttons. */
+.bjl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4cqh;
+  padding: 1.8cqh;
+  border: 0.6cqh solid #e0a632;
+  border-radius: 3cqh;
+  background: linear-gradient(#fff8e6, #f1dcae);
+  box-shadow: 0 1cqh 0 #b07415;
+}
+.bjl-post {
+  display: block;
+  flex: 0 1 10cqh;
+  width: 2.6cqh;
+  min-height: 2cqh;
+  border-radius: 0 0 1cqh 1cqh;
+  background: linear-gradient(90deg, #8a6a2a, #f0d27a 45%, #8a6a2a);
+}
+
+/** One big chunky button: gold (up) or blue (down), a white arrow. */
+.bjl-go {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--bjl-btn);
+  height: var(--bjl-btn);
+  margin: 0;
+  padding: 0;
+  border: max(3px, calc(var(--bjl-btn) * 0.06)) solid #ffffff;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 32%, #ffd76a, #e3a12f 72%);
+  box-shadow: 0 calc(var(--bjl-btn) * 0.09) 0 #b07415;
+  color: #ffffff;
+  cursor: default;
+  opacity: 0.82;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    opacity 0.25s ease,
+    box-shadow 0.1s ease;
+}
+.bjl-go.bjl-go--down {
+  background: radial-gradient(circle at 50% 32%, #8fc0ff, #3a74d8 72%);
+  box-shadow: 0 calc(var(--bjl-btn) * 0.09) 0 #23479a;
+}
+.bjl-go.bjl-go--live {
+  cursor: pointer;
+  opacity: 1;
+}
+.bjl-go.bjl-go--live:active {
+  box-shadow: 0 calc(var(--bjl-btn) * 0.03) 0 #b07415;
+}
+.bjl-go.bjl-go--down.bjl-go--live:active {
+  box-shadow: 0 calc(var(--bjl-btn) * 0.03) 0 #23479a;
+}
+.bjl-go:focus-visible {
+  outline: 3px solid #2d4a7a;
+  outline-offset: 3px;
+}
+/** The right button, after a miss (or while the hand shows it): a gold halo. */
+.bjl-go--hint::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--bjl-btn) * -0.17);
+  border: max(3px, calc(var(--bjl-btn) * 0.07)) solid #ffd34d;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: bjl-pulse 1.2s ease-in-out infinite;
+}
+.bjl-arrow {
+  display: block;
+}
+.bjl-go-arrow {
+  width: 58%;
+  height: 58%;
+}
+
+/* ── A module in miniature (the card's picture box is its own container) ── */
+
+.bjl-mini {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bjl-mini svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── A phone held upright: the tower left, tall slender floors; the bubble
+   over the car; the station (or the queue) on the sand at the right ─────── */
+
+@container ng (orientation: portrait) {
+  .bjl-board {
+    --bjk-f: min(calc((100cqh - 110px) / 7.6), 22cqw);
+    --bjk-u: min(12cqw, max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
+    --bjl-tc: 34cqw;
+    --bjl-sign: min(calc(var(--bjk-f) * 0.9), calc(var(--bjk-u) * 1.05));
+    --bjl-btn: max(56px, min(24cqw, 11cqh));
+  }
+  .bjl-rig {
+    top: 72px;
+  }
+  .bjl-bubble {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: calc(100% + var(--bjl-ch) * 0.24);
+    margin: 0 auto;
+  }
+  .bjl-bubble::before {
+    right: auto;
+    left: 50%;
+    top: 100%;
+    margin-top: 0;
+    margin-left: calc(var(--bjl-bub) * -0.13);
+    border-right-color: transparent;
+    border-top-color: #e0a632;
+  }
+  .bjl-side {
+    left: calc(var(--bjl-tc) + var(--bjk-u) * 2.2);
+    right: 2cqw;
+    top: 30cqh;
+    bottom: 2cqh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3cqh;
+  }
+  .bjl-station {
+    height: auto;
+  }
+  .bjl-play--updown .bjl-queue {
+    display: none;
+  }
+  .bjl-queue {
+    flex: none;
+    flex-direction: column;
+    gap: 1cqh;
+  }
+  .bjl-queue-pic {
+    width: 17cqw;
+    height: 17cqw;
+  }
+  .bjl-panel {
+    gap: 2.4cqw;
+    padding: 2.4cqw;
+    border-width: 1.2cqw;
+    border-radius: 5cqw;
+  }
+  .bjl-post {
+    flex: none;
+    width: 4cqw;
+    height: 6cqh;
+  }
+}

@@ -1,0 +1,33 @@
+[
+  {
+    "id": "rkc-welcome",
+    "text": "Rocket Countdown!",
+    "file": "/audio/rocket-countdown/welcome.mp3"
+  },
+  {
+    "id": "rkc-done",
+    "text": "You flew to the stars!",
+    "file": "/audio/rocket-countdown/done.mp3"
+  },
+  {
+    "id": "rkc-mode-count",
+    "text": "Count down!",
+    "file": "/audio/rocket-countdown/mode-count.mp3"
+  },
+  {
+    "id": "rkc-mode-fuel",
+    "text": "Fuel the rocket!",
+    "file": "/audio/rocket-countdown/mode-fuel.mp3"
+  },
+  {
+    "id": "rkc-count-from",
+    "text": "Count down from",
+    "file": "/audio/rocket-countdown/count-from.mp3"
+  },
+  { "id": "rkc-blast", "text": "Blast off!", "file": "/audio/rocket-countdown/blast.mp3" },
+  {
+    "id": "rkc-fill-with",
+    "text": "Fill the tank with",
+    "file": "/audio/rocket-countdown/fill-with.mp3"
+  }
+]

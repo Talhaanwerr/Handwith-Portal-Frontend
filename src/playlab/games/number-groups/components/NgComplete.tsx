@@ -8,7 +8,7 @@ import { playClickSound } from "@shared/audio/sfx";
 import { clipText } from "@shared/audio/voice";
 import { cheerFor } from "@shared/audio/cheers";
 import { Picture } from "@games/blend-read/components/PictureArt";
-import { Teacher } from "@games/door-count/components/Teacher";
+import { NgGuide } from "@games/number-groups/components/NgGuide";
 import { FinaleRain, useFinaleCheer } from "@games/jigsaw-fun/components/Cheer";
 import { ROUND_COUNT, starsFor, type ModuleInfo } from "@games/number-groups/constants/kit";
 
@@ -70,7 +70,7 @@ export function NgComplete<Id extends string>({
       <FinaleRain cast={CAST} />
 
       <div className="ng-teacher-slot ng-teacher-slot--home" aria-hidden="true">
-        <Teacher cheer say={clipText(cheerId)} />
+        <NgGuide cheer say={clipText(cheerId)} />
       </div>
 
       <div className="ng-done-center">

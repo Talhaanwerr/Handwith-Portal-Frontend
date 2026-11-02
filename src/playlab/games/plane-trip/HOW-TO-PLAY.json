@@ -1,0 +1,7 @@
+{
+  "default": ["Look at the bag on the belt.", "Tap the friend with the same bag."],
+  "modules": {
+    "bags": ["Look at the bag on the belt.", "Tap the friend with the same bag."],
+    "pack": ["Look at the thing to pack.", "Tap the sunny or snowy suitcase."]
+  }
+}
