@@ -2,13 +2,17 @@
  * Tallest Tower — the board. The towers are the shared Burj pieces
  * (`bjk-floor`, `bjk-spire`, `bjk-podium`, `bjk-glow`, styled in
  * shared/styles/dubai.css) sized from `--bjk-f` (a floor's height) and `--bjk-u`
- * (the width unit), set here on `.bjt-board`.
+ * (the width unit), set here on `.bjt-board` — and on `.bjt-carry`, the layer
+ * over the stage where the piece under the finger and the gliding pieces are
+ * drawn, so a carried tower or star is exactly the size it is on the board.
  *
  * Every tower on a stage shares one floor height AND one spire height
  * (`--bjt-s`), so only the floors make one tower taller than another. Both
  * come from the round's tallest tower (`--bjt-n` floors, set by the round)
  * and the room the stage has (`--bjt-h`, less `--bjt-x` under a tower on the
- * stand), in the `ng` container's units.
+ * stand), in the `ng` container's units. The game is guided: the line is in
+ * the thin bar at the top centre, so every tower stands under it and the
+ * pills (`--bjt-top`), and the board is centred on the stage.
  */
 
 .apa-game .bjt-play .ng-main {
@@ -16,14 +20,15 @@
   display: block;
 }
 
-.bjt-board {
+.bjt-board,
+.bjt-carry {
   --bjt-n: 6;
-  /* the height a tower may fill, and what stands under it besides the sand */
-  --bjt-h: 97cqh;
+  /* the top of the towers' room (under the pills and the guide bar), the
+     height a tower may fill, and what stands under it besides the sand */
+  --bjt-top: 68px;
+  --bjt-h: calc(98cqh - var(--bjt-top));
   --bjt-x: 0px;
-  --bjt-top: 1cqh;
-  /* a floor is never under 40 px (two six-floor towers on a 568 × 320 phone) */
-  --bjk-f: max(40px, min(calc(80cqh / (var(--bjt-n) + 1.7)), 20cqh, 11cqw));
+  --bjk-f: min(calc(var(--bjt-h) / (var(--bjt-n) + 1.7)), 20cqh, 11cqw);
   --bjk-u: max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75));
   --bjt-s: max(
     0px,
@@ -32,12 +37,23 @@
       calc(var(--bjt-h) - var(--bjt-n) * var(--bjk-f) - var(--bjk-u) * 0.5 - var(--bjt-x))
     )
   );
+  /* Tall or Short?'s gold star, in its holder and under the finger */
+  --bjt-piece: clamp(48px, min(15cqh, 11cqw), 120px);
+}
+.bjt-board {
   position: relative;
   width: 100%;
   height: 100%;
 }
+/** Over everything (the bar and the pills too); never takes a touch. */
+.bjt-carry {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
 
-/* ── One whole tower, one big button ─────────────────────────────────────── */
+/* ── One whole tower ─────────────────────────────────────────────────────── */
 
 .bjt-tower {
   position: relative;
@@ -46,18 +62,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: inherit;
-  cursor: default;
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
-.bjt-tower.bjt-tower--live {
-  cursor: pointer;
+/** A tower to pick up (Line Them Up's row): the finger carries it. */
+.bjt-tower.bjt-tower--grab {
+  cursor: grab;
+  touch-action: none;
+}
+/** Being carried, or gliding: its place keeps the room. */
+.bjt-tower.bjt-tower--away {
+  visibility: hidden;
 }
 .bjt-spire-slot {
   position: relative;
@@ -74,7 +88,8 @@
   align-items: center;
 }
 
-/** The glow behind a tower: pulsing for a hint, steady for a right pick. */
+/** The glow behind a tower: pulsing for a hint, steady for a right drop or
+ *  while the star is over it. */
 .bjt-halo {
   position: absolute;
   z-index: -1;
@@ -96,8 +111,9 @@
 .bjt-tower--hint .bjt-halo {
   animation: bjt-pulse 1.3s ease-in-out infinite;
 }
-.bjt-tower--happy .bjt-halo {
+.bjt-tower--lit .bjt-halo {
   opacity: 1;
+  animation: none;
 }
 @keyframes bjt-pulse {
   0%,
@@ -113,8 +129,10 @@
   z-index: -1;
 }
 
-/** The gold star on a right tower's spire (never off the top of the stage). */
-.bjt-star {
+/** The gold star on a right tower's spire (never off the top of the stage),
+ *  and the empty box of the same size the dropped star glides to. */
+.bjt-star,
+.bjt-star-spot {
   position: absolute;
   top: 0;
   left: 50%;
@@ -124,6 +142,9 @@
   height: calc(var(--bjk-f) * 1.15);
   margin-left: calc(var(--bjk-f) * -0.575);
   pointer-events: none;
+}
+.bjt-star-spot {
+  visibility: hidden;
 }
 /** A lit spire's tip, twinkling. */
 .bjt-shine {
@@ -155,10 +176,41 @@
   }
 }
 
-/* ── Tall or Short?: two towers on the sand ──────────────────────────────── */
+/* ── What the finger carries, and what glides (in `.bjt-carry`) ──────────── */
 
-/* a column per tower, centred on its line; the spires keep clear of the
-   star trail (top centre) and the pills (top corners) */
+/** The star, centred on the finger (or on its gliding point). */
+.bjt-carried-star {
+  position: absolute;
+  left: calc(var(--bjt-piece) * -0.5);
+  top: calc(var(--bjt-piece) * -0.5);
+  display: block;
+  width: var(--bjt-piece);
+  height: var(--bjt-piece);
+}
+/** A tower, standing on its point (the middle of its podium's foot). */
+.bjt-carried-tower {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: block;
+  translate: -50% 0;
+}
+/** Where the finger holds the carried tower: its foot is this far off. */
+.bjt-grab-at {
+  position: absolute;
+  left: var(--bjt-gx, 0px);
+  top: var(--bjt-gy, 0px);
+  display: block;
+  width: 0;
+  height: 0;
+}
+.bjt-carried--lifted {
+  filter: drop-shadow(0 1.4cqh 1.2cqh rgba(40, 30, 60, 0.35));
+}
+
+/* ── Tall or Short?: two towers on the sand, the star's holder between ───── */
+
+/* a column per tower, centred on its line, both the same way off the middle */
 .bjt-col {
   position: absolute;
   top: var(--bjt-top);
@@ -170,20 +222,91 @@
   translate: -50% 0;
 }
 .bjt-col--left {
-  left: 29cqw;
+  left: 27cqw;
 }
 .bjt-col--right {
-  left: 69cqw;
+  left: 73cqw;
 }
 
-/* ── Line Them Up: the jumbled row, and the stand beside it ──────────────── */
+/** The little sandstone holder in the middle of the sand, the star on it. */
+.bjt-holder {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 2cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  translate: -50% 0;
+}
+.bjt-holder-spot {
+  position: relative;
+  display: block;
+  width: var(--bjt-piece);
+  height: var(--bjt-piece);
+  margin-bottom: calc(var(--bjt-piece) * -0.08);
+}
+/** Where the star goes back to: its pale shape, while it is away. */
+.bjt-holder-mark {
+  position: absolute;
+  inset: 10%;
+  display: block;
+  opacity: 0.32;
+  filter: grayscale(1) brightness(1.5);
+}
+.bjt-holder-base {
+  display: block;
+  width: calc(var(--bjt-piece) * 1.3);
+  height: calc(var(--bjt-piece) * 0.26);
+  border-radius: calc(var(--bjt-piece) * 0.06) calc(var(--bjt-piece) * 0.06)
+    calc(var(--bjt-piece) * 0.1) calc(var(--bjt-piece) * 0.1);
+  background: linear-gradient(#f3dcb8, #e2c194);
+  box-shadow:
+    0 calc(var(--bjt-piece) * 0.06) 0 #b98f62,
+    0 calc(var(--bjt-piece) * 0.1) calc(var(--bjt-piece) * 0.12) rgba(80, 50, 20, 0.25);
+}
+/** The star itself: a big piece to pick up. */
+.bjt-star-piece {
+  position: absolute;
+  inset: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.bjt-star-piece.is-away {
+  visibility: hidden;
+}
+/** Waiting to be picked up: a soft gold glow breathes behind it. */
+.bjt-star-piece--live::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 236, 150, 0.95), rgba(255, 214, 90, 0));
+  animation: bjt-pulse 1.5s ease-in-out infinite;
+}
 
-.bjt-play--order .bjt-board {
-  /* everything stays under the pills and the trail */
-  --bjt-top: max(66px, 2cqh);
+/* ── Line Them Up: the jumbled row, the stand beside it, the polaroid ───── */
+
+.bjt-play--order {
+  /* the polaroid, under the Back to Games pill */
+  --bjt-pol-top: 72px;
+  --bjt-pol-h: clamp(56px, 20cqh, 170px);
+}
+.bjt-play--order .bjt-board,
+.bjt-play--order .bjt-carry {
+  /* every tower stands under the polaroid, whose corner is the stand's */
+  --bjt-top: calc(var(--bjt-pol-top) + var(--bjt-pol-h) + 6px);
   --bjt-h: calc(98cqh - var(--bjt-top));
   --bjt-x: calc(var(--bjk-u) * 0.75);
-  --bjk-f: max(36px, min(calc(var(--bjt-h) / (var(--bjt-n) + 1.6)), 20cqh, 11cqw));
+  /* room for a spire about a floor tall over the podium and the plinth */
+  --bjk-f: min(calc(var(--bjt-h) / (var(--bjt-n) + 2.2)), 20cqh, 11cqw);
   /* three towers to a half of the stage */
   --bjk-u: min(5cqw, max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
 }
@@ -196,12 +319,14 @@
 }
 .bjt-row {
   left: 1cqw;
-  width: 47cqw;
+  width: 48cqw;
   justify-content: space-evenly;
 }
 .bjt-stand {
+  /* its plinth ends as far in from the right as the row's outer tower
+     stands in from the left, so the board is centred */
   left: 51cqw;
-  right: 1cqw;
+  right: 3cqw;
   flex-direction: column;
 }
 .bjt-stand-places {
@@ -219,7 +344,7 @@
   display: block;
   flex: none;
   height: calc(var(--bjk-u) * 0.4);
-  margin: calc(var(--bjk-u) * 0.06) 4% 0;
+  margin: calc(var(--bjk-u) * 0.06) 0 0;
   background: linear-gradient(to bottom right, transparent 50%, #f2c55c 50%);
 }
 .bjt-place {
@@ -231,11 +356,8 @@
   justify-content: flex-end;
   width: calc(var(--bjk-u) * 2.9);
 }
-.bjt-mover {
-  display: block;
-  flex: none;
-}
-/** An empty place on the stand: a dashed pad, glowing when it is next. */
+/** An empty place on the stand: a dashed pad, glowing when it is next and
+ *  lit while a tower is over it. */
 .bjt-pad {
   position: absolute;
   left: 4%;
@@ -251,6 +373,12 @@
   border-color: #ffd34d;
   animation: bjt-pad 1.4s ease-in-out infinite;
 }
+.bjt-place--over .bjt-pad {
+  border-color: #fff3b0;
+  background-color: rgba(255, 226, 120, 0.8);
+  box-shadow: 0 0 calc(var(--bjk-u) * 0.6) rgba(255, 214, 90, 0.9);
+  animation: none;
+}
 @keyframes bjt-pad {
   0%,
   100% {
@@ -261,9 +389,59 @@
   }
 }
 
+/** The picture to copy: a little tilted instant photo, a strip of tape on
+ *  top, the round's towers lined up in it (Polaroid.tsx). */
+.bjt-polaroid {
+  position: absolute;
+  z-index: 11;
+  top: var(--bjt-pol-top);
+  right: 20px;
+  width: calc(var(--bjt-pol-h) * 1.18);
+  height: var(--bjt-pol-h);
+  pointer-events: none;
+}
+.bjt-polaroid-tilt {
+  position: absolute;
+  inset: 0;
+  display: block;
+  box-sizing: border-box;
+  padding: calc(var(--bjt-pol-h) * 0.06) calc(var(--bjt-pol-h) * 0.05) calc(var(--bjt-pol-h) * 0.22);
+  border-radius: calc(var(--bjt-pol-h) * 0.02);
+  background: linear-gradient(#ffffff, #f6f1e6);
+  box-shadow:
+    0 calc(var(--bjt-pol-h) * 0.03) calc(var(--bjt-pol-h) * 0.08) rgba(25, 15, 45, 0.35),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  rotate: 4deg;
+}
+.bjt-polaroid-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.bjt-polaroid-photo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bjt-polaroid-tape {
+  position: absolute;
+  top: calc(var(--bjt-pol-h) * -0.07);
+  left: 31%;
+  display: block;
+  width: 38%;
+  height: calc(var(--bjt-pol-h) * 0.14);
+  background: rgba(255, 238, 186, 0.78);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  rotate: -5deg;
+}
+
 /* ── A module in miniature (the card's picture box is its own container) ── */
 
 .bjt-mini {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
@@ -273,6 +451,20 @@
   width: 100%;
   height: 100%;
 }
+/** Line Them Up's card: the polaroid pinned in its corner too. */
+.bjt-mini-pol {
+  position: absolute;
+  top: 7%;
+  left: 6%;
+  display: block;
+  box-sizing: border-box;
+  width: 27%;
+  height: 30%;
+  padding: 1.6% 1.6% 5%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(25, 15, 45, 0.35);
+  rotate: -5deg;
+}
 
 /* ── A phone held upright ────────────────────────────────────────────────── */
 
@@ -280,15 +472,18 @@
   .apa-game .bjt-play .ng-main {
     inset: 124px 3cqw 2cqh;
   }
-  /* Tall or Short?: the two towers side by side, the width is the limit */
-  .bjt-board {
+  /* Tall or Short?: the two towers side by side, the width is the limit;
+     they stand back on the sand, the star's holder in front between them */
+  .bjt-board,
+  .bjt-carry {
     --bjt-top: 0px;
-    --bjt-h: calc(98cqh - 124px);
+    --bjt-piece: clamp(48px, 15cqw, 96px);
+    --bjt-h: calc(98cqh - 124px - var(--bjt-piece) * 1.3);
     --bjk-f: min(calc(64cqh / (var(--bjt-n) + 2.4)), 22cqw);
     --bjk-u: min(14cqw, max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
   }
   .bjt-col {
-    bottom: 0;
+    bottom: calc(var(--bjt-piece) * 1.3);
   }
   .bjt-col--left {
     left: 26%;
@@ -296,11 +491,21 @@
   .bjt-col--right {
     left: 74%;
   }
+  .bjt-holder {
+    bottom: 0;
+  }
 
   /* Line Them Up: the row and the stand still side by side on the sand
      (nothing may stand in the sky), so the towers go slim — a place is
-     still at least 2.9 units (≥ 55 px) wide, a big enough button */
-  .bjt-play--order .bjt-board {
+     still at least 2.9 units (≥ 55 px) wide, a big enough piece. The
+     polaroid has the empty sky, under the guide bar. */
+  .bjt-play--order {
+    /* under the guide bar, which may wrap to two lines up here */
+    --bjt-pol-top: 124px;
+    --bjt-pol-h: clamp(56px, min(17cqh, 30cqw), 170px);
+  }
+  .bjt-play--order .bjt-board,
+  .bjt-play--order .bjt-carry {
     --bjt-top: 0px;
     --bjt-h: calc(98cqh - 124px);
     --bjk-f: min(calc(var(--bjt-h) / (var(--bjt-n) + 2.4)), 13cqw);
@@ -315,5 +520,12 @@
   .bjt-stand {
     left: 51%;
     right: 0;
+  }
+}
+
+/* a narrow stage: the guide bar drops under the pills, the polaroid under it */
+@container ng (max-width: 480px) {
+  .bjt-play--order {
+    --bjt-pol-top: 124px;
   }
 }

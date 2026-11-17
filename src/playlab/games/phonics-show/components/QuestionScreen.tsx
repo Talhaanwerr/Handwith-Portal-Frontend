@@ -3,16 +3,20 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LitSign, ShowPicture, ShowStage } from "@games/phonics-show/components/ShowStage";
+import { ShowGuideBar, ShowHand, lineText } from "@games/phonics-show/components/ShowGuide";
 import { QUESTIONS, TOTAL_QUESTIONS, answerOf } from "@games/phonics-show/constants/questions";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useAfterVoice } from "@shared/hooks/useAfterVoice";
+import { useIdleHand } from "@shared/hooks/useIdleHand";
 import { wordClip } from "@shared/audio/wordClips";
 import { cheerFor } from "@shared/audio/cheers";
-import { playClip, playSequence, sayAfter } from "@shared/audio/voice";
+import { clipText, playClip, playSequence, sayAfter } from "@shared/audio/voice";
 import { playClickSound, playCorrectSound, playIncorrectSound } from "@shared/audio/sfx";
 
 /** How long a question can sit unanswered before the ask is said again. */
 const NUDGE_MS = 8000;
+/** The ask, recorded once: "Can you click the starting sound of" + the word. */
+const ASK = "instr-click-starting-sound";
 
 interface QuestionScreenProps {
   index: number;
@@ -20,9 +24,6 @@ interface QuestionScreenProps {
   onBack: () => void;
   onExitPortal: () => void;
 }
-
-/** 1…15, built once rather than on every render. */
-const SLOTS = Array.from({ length: TOTAL_QUESTIONS }, (_, i) => i);
 
 /**
  * ONE QUESTION — the picture on the lit sign, three letters on the stage.
@@ -35,6 +36,11 @@ const SLOTS = Array.from({ length: TOTAL_QUESTIONS }, (_, i) => i);
  * own sound, turns red, shakes and is crossed out, then "Try again!" — the
  * child hears why it was wrong and picks again; a crossed-out letter can't
  * be picked twice. Only a right FIRST tap counts towards the stars.
+ *
+ * The guide bar at the top shows the progress and the line being said; once
+ * the ask has been heard, a child who waits (7 s, or a moment on the run's
+ * first question — see FirstPlayHand) sees the teaching hand tap the right
+ * letter.
  */
 export function QuestionScreen({ index, onSolved, onBack, onExitPortal }: QuestionScreenProps) {
   const question = QUESTIONS[index];
@@ -42,28 +48,53 @@ export function QuestionScreen({ index, onSolved, onBack, onExitPortal }: Questi
   const said = wordClip(question.word);
   const [chosen, setChosen] = useState<string | null>(null);
   const [wrong, setWrong] = useState<readonly string[]>([]);
+  /** The question whose ask has been said (or cut short by a tap): the hand's clock runs from here. */
+  const [askedFor, setAskedFor] = useState<number | null>(null);
+  /** The bar's line, once something other than the ask has been said for this question. */
+  const [line, setLine] = useState<{ index: number; text: string } | null>(null);
   const missed = useRef(false);
+  const screenRef = useRef<HTMLDivElement>(null);
+  const answerRef = useRef<HTMLButtonElement>(null);
   const { thenAfter } = useAfterVoice();
+
+  // the ask on the bar: "sun — Can you click the starting sound of sun?",
+  // the words of the parts said, never the sound that answers it
+  const word = said ? clipText(said) : question.word;
+  const askText = `${word} — ${clipText(ASK)} ${word}?`;
+  const barText = line?.index === index ? line.text : askText;
 
   // the picture arrives with the ask: "Sun. Can you click the starting sound
   // of sun?" — the word, the line, the word again. Never the sound itself at
   // the end: that would say the answer before the child has found it.
   useEffect(() => {
-    const word = said ? [said] : [];
-    const lines = [...word, "instr-click-starting-sound", ...word];
-    const t = setTimeout(() => void playSequence(lines, 250), 350);
-    return () => clearTimeout(t);
+    let live = true;
+    const name = said ? [said] : [];
+    const lines = [...name, ASK, ...name];
+    const t = setTimeout(() => {
+      void playSequence(lines, 250).then(() => {
+        if (live) setAskedFor(index);
+      });
+    }, 350);
+    return () => {
+      live = false;
+      clearTimeout(t);
+    };
   }, [index, said]);
 
   // a child still looking at the picture after a while gets the ask again
   useEffect(() => {
     if (chosen) return;
     const nudge = setTimeout(() => {
-      void sayAfter("instr-click-starting-sound");
+      setLine({ index, text: `${clipText(ASK)} ${word}?` });
+      void sayAfter(ASK);
       if (said) void sayAfter(said);
     }, NUDGE_MS);
     return () => clearTimeout(nudge);
-  }, [index, chosen, wrong, said]);
+  }, [index, chosen, wrong, said, word]);
+
+  // the teaching hand taps the right letter for a child who is waiting
+  const handKey = `${index}-${wrong.length}`;
+  const idle = useIdleHand(askedFor === index && !chosen, handKey);
 
   const pick = useCallback(
     (letter: string) => {
@@ -72,24 +103,28 @@ export function QuestionScreen({ index, onSolved, onBack, onExitPortal }: Questi
         missed.current = true;
         setWrong((w) => [...w, letter]);
         playIncorrectSound();
-        void playSequence([`phonics-${letter}`, "instr-try-again"], 200);
+        const missLine = [`phonics-${letter}`, "instr-try-again"];
+        setLine({ index, text: lineText(missLine) });
+        void playSequence(missLine, 200);
         return;
       }
       setChosen(letter);
       playCorrectSound();
       const firstTap = !missed.current;
-      thenAfter([`phonics-${letter}`, ...(said ? [said] : []), cheerFor(index + 7)], () => {
+      const rightLine = [`phonics-${letter}`, ...(said ? [said] : []), cheerFor(index + 7)];
+      setLine({ index, text: lineText(rightLine) });
+      thenAfter(rightLine, () => {
         setChosen(null);
         setWrong([]);
         missed.current = false;
         onSolved(firstTap);
       });
     },
-    [chosen, wrong, answer, said, index, thenAfter, onSolved]
+    [chosen, wrong, answer, said, index, thenAfter, onSolved, setChosen, setWrong, setLine]
   );
 
   return (
-    <div className="pgs-screen">
+    <div className="pgs-screen" ref={screenRef}>
       <ShowStage />
 
       <NavPillButton
@@ -116,29 +151,8 @@ export function QuestionScreen({ index, onSolved, onBack, onExitPortal }: Questi
         Back to Games
       </button>
 
-      {/* the progress row sits UNDER the two pinned pills, never beside them */}
-      <div className="pgs-topbar">
-        <div
-          className="pgs-progress"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={TOTAL_QUESTIONS}
-          aria-valuenow={index}
-          aria-label={`${index} of ${TOTAL_QUESTIONS} questions done`}
-        >
-          {SLOTS.map((slot) => (
-            <span
-              key={slot}
-              className={`pgs-progress-seg ${slot < index ? "pgs-progress-seg--done" : ""} ${
-                slot === index ? "pgs-progress-seg--now" : ""
-              }`}
-            />
-          ))}
-        </div>
-        <span className="pgs-count font-rounded font-black">
-          {index + 1} <span className="pgs-count-of">of {TOTAL_QUESTIONS}</span>
-        </span>
-      </div>
+      {/* the guide bar sits BETWEEN the two pinned pills, at the top centre */}
+      <ShowGuideBar index={index} total={TOTAL_QUESTIONS} solved={chosen !== null} text={barText} />
 
       <motion.div
         className="pgs-board"
@@ -176,6 +190,7 @@ export function QuestionScreen({ index, onSolved, onBack, onExitPortal }: Questi
           {question.options.map((letter) => (
             <li key={letter}>
               <button
+                ref={letter === answer ? answerRef : undefined}
                 type="button"
                 className={`pgs-option font-rounded font-black ${
                   chosen === letter ? "pgs-option--chosen" : ""
@@ -190,6 +205,8 @@ export function QuestionScreen({ index, onSolved, onBack, onExitPortal }: Questi
           ))}
         </ul>
       </motion.div>
+
+      <ShowHand show={idle} resetKey={handKey} root={screenRef} target={answerRef} />
     </div>
   );
 }

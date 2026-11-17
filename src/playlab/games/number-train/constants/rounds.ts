@@ -108,7 +108,7 @@ export function checkRounds(): string[] {
   covers("build", seen);
   noRepeats(
     "build",
-    BUILD_ROUNDS.map((n, i) => buildYard(i).join())
+    BUILD_ROUNDS.map((_n, i) => buildYard(i).join())
   );
 
   seen = new Set();

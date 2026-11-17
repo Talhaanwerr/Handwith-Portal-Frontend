@@ -1,24 +1,29 @@
 /**
- * Burj Lift — a thinking game (not a number game) for three-year-olds, with
- * the glass lift that runs up the outside of the Burj Khalifa, as data.
+ * Burj Lift — a thinking game for three-year-olds with the glass lift that
+ * runs up the outside of the Burj Khalifa, as data.
  *
- * The tower has six floors and a sign beside each one. Passengers ride the
- * lift one at a time — three in every round — and each one wants a floor:
+ * The tower has a ground floor (where the lift waits, doors open) and FOUR
+ * floors above it, each with a sign beside it: the floor's number, big, and
+ * its picture or its colour. Two children, a girl and a boy, take turns to
+ * ride — three rides a round. A ride is always the same three steps:
  *
- *   • "updown" — UP OR DOWN? (direction, a sunny day): every floor's sign is
- *                a picture (the park, the pool, the ball, the pizza, the
- *                star, the moon). The passenger's bubble shows the picture
- *                of the floor they want; the lift waits on another floor.
- *                Two big buttons, up and down: the right one rides the lift
- *                all the way there; the wrong one shakes, "Try again!", and
- *                the right one glows.
- *   • "match"  — PICTURE FLOORS (matching colours, the evening): every
- *                floor's sign is a colour; the passenger holds a balloon of
- *                one colour. Tap the floor with the same colour and the lift
- *                rides there; a wrong floor shakes, "Try again!", and the
- *                right floor glows.
+ *   1. DRAG the child, waiting on the sand, into the open lift;
+ *   2. press UP once for every floor — each press rides one floor and says
+ *      its number — until the lift stops at the child's floor, where they
+ *      step out happy (it never rides past it);
+ *   3. press DOWN once for every floor to bring the empty lift back to the
+ *      ground for the next child (not after the last ride: the round is won).
  *
- * Every passenger steps out happy on their floor; the next one gets in.
+ * A wrong button (down while a child rides up, up while the empty lift should
+ * come down) shakes, "Try again!", and the right one glows.
+ *
+ *   • "updown" — UP OR DOWN? (a sunny day): every sign has a picture (the
+ *                tree, the ball, the pizza, the moon) beside the number, and
+ *                the child's bubble shows the picture and the number of the
+ *                floor they want.
+ *   • "match"  — COLOUR FLOORS (the evening): every sign has a colour beside
+ *                the number, and the child holds a balloon of their floor's
+ *                colour.
  */
 
 import {
@@ -36,165 +41,90 @@ export const MODULES: readonly ModuleInfo<ModuleId>[] = [
   {
     id: "updown",
     name: "Up or Down?",
-    tag: "Take them up or down",
+    tag: "Take each child up to their floor and bring the lift back down",
     accent: "#E3A12F",
     edge: "#B07415",
     clip: "bjl-mode-updown",
   },
   {
     id: "match",
-    name: "Picture Floors",
-    tag: "Match the balloon to its floor",
+    name: "Colour Floors",
+    tag: "Ride up to the floor of the balloon's colour",
     accent: "#5D5FB8",
     edge: "#3F4190",
-    clip: "bjl-mode-match",
+    clip: "bjl-mode-colour",
   },
 ];
 
 export const VOICE: GameVoice = { welcome: "bjl-welcome", done: "bjl-done" };
 
-/** The tower's floors, always six (index 0 is the bottom floor). */
-export const FLOORS = 6;
-/** Passengers in one round. */
+/** The floors above the ground, numbered 1–4 (the lift's stops 1–4; the
+ *  ground is stop 0). */
+export const FLOORS = 4;
+/** Rides in one round. */
 export const TRIPS = 3;
 
-/** Up or Down?: each floor's picture, bottom to top (Fluent ids). */
-export const FLOOR_PICS: readonly string[] = ["tree", "ocean", "ball", "pizza", "star", "moon"];
+/** Up or Down?: each floor's picture, floor 1 to floor 4 (Fluent ids). */
+export const FLOOR_PICS: readonly string[] = ["tree", "ball", "pizza", "moon"];
 
-export type Colour = "red" | "orange" | "yellow" | "green" | "blue" | "purple";
-/** Picture Floors: each floor's colour, bottom to top. */
-export const FLOOR_COLOURS: readonly Colour[] = [
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "purple",
-];
+export type Colour = "red" | "yellow" | "green" | "blue";
+/** Colour Floors: each floor's colour, floor 1 to floor 4. */
+export const FLOOR_COLOURS: readonly Colour[] = ["red", "yellow", "green", "blue"];
 /** How each colour is painted (sign face, its darker edge). */
 export const COLOUR_PAINT: Readonly<Record<Colour, { face: string; edge: string }>> = {
   red: { face: "#ef4a3c", edge: "#a92a20" },
-  orange: { face: "#ff9a2e", edge: "#b9620c" },
   yellow: { face: "#ffd43b", edge: "#b8900a" },
   green: { face: "#3fbf5a", edge: "#21813a" },
   blue: { face: "#3a8ef0", edge: "#1d5daa" },
-  purple: { face: "#9a5cd6", edge: "#64339a" },
 };
 
-/** Who may ride (Fluent ids). */
-export const PASSENGERS = [
-  "penguin",
-  "owl",
-  "duck",
-  "hen",
-  "turtle",
-  "rabbit",
-  "elephant",
-  "kangaroo",
-] as const;
-export type Passenger = (typeof PASSENGERS)[number];
+/** Who rides: a girl and a boy, taking turns. */
+export type Kid = "girl" | "boy";
 
 export interface Trip {
-  who: Passenger;
-  /** The floor they want, 1–6. */
+  who: Kid;
+  /** The floor they want, 1–4. */
   to: number;
 }
 
-export interface LiftRound {
-  /** The floor the lift waits at when the round starts, 1–6. */
-  start: number;
-  trips: readonly Trip[];
-}
+/** Three rides, one after another; the lift starts every round on the ground. */
+export type LiftRound = readonly [Trip, Trip, Trip];
+
+const g = (to: number): Trip => ({ who: "girl", to });
+const b = (to: number): Trip => ({ who: "boy", to });
 
 export const ROUNDS: Readonly<Record<ModuleId, readonly LiftRound[]>> = {
   updown: [
-    {
-      start: 1,
-      trips: [
-        { who: "penguin", to: 4 },
-        { who: "owl", to: 2 },
-        { who: "duck", to: 6 },
-      ],
-    },
-    {
-      start: 6,
-      trips: [
-        { who: "hen", to: 3 },
-        { who: "turtle", to: 5 },
-        { who: "rabbit", to: 1 },
-      ],
-    },
-    {
-      start: 3,
-      trips: [
-        { who: "elephant", to: 5 },
-        { who: "penguin", to: 2 },
-        { who: "kangaroo", to: 6 },
-      ],
-    },
-    {
-      start: 4,
-      trips: [
-        { who: "owl", to: 1 },
-        { who: "duck", to: 5 },
-        { who: "turtle", to: 2 },
-      ],
-    },
+    [g(2), b(1), g(3)],
+    [b(3), g(4), b(1)],
+    [g(4), b(2), g(1)],
+    [b(1), g(3), b(4)],
   ],
   match: [
-    {
-      start: 1,
-      trips: [
-        { who: "penguin", to: 3 },
-        { who: "owl", to: 5 },
-        { who: "duck", to: 1 },
-      ],
-    },
-    {
-      start: 6,
-      trips: [
-        { who: "hen", to: 2 },
-        { who: "turtle", to: 4 },
-        { who: "rabbit", to: 6 },
-      ],
-    },
-    {
-      start: 2,
-      trips: [
-        { who: "elephant", to: 6 },
-        { who: "kangaroo", to: 1 },
-        { who: "penguin", to: 4 },
-      ],
-    },
-    {
-      start: 5,
-      trips: [
-        { who: "owl", to: 3 },
-        { who: "duck", to: 2 },
-        { who: "hen", to: 5 },
-      ],
-    },
+    [g(1), b(3), g(2)],
+    [b(4), g(2), b(3)],
+    [g(3), b(1), g(4)],
+    [b(2), g(4), b(1)],
   ],
 };
 
-/** Where the lift is when trip `t` begins (the start, or the last stop). */
-export const fromOf = (r: LiftRound, t: number): number => (t === 0 ? r.start : r.trips[t - 1].to);
+/** "Drag her (him) into the lift!" — said when the child is waiting. */
+export const dragClip = (k: Kid): string => (k === "girl" ? "bjl-drag-her" : "bjl-drag-him");
+/** "Press up to her (his) floor!" — said once the child is in. */
+export const upClip = (k: Kid): string => (k === "girl" ? "bjl-up-her" : "bjl-up-his");
+/** "Now bring the lift down!" — said once the child has stepped out. */
+export const DOWN_CLIP = "bjl-bring-down";
+/** The floor's number, said as the lift rides to it. */
+export const numberClip = (n: number): string => `number-${n}`;
 
-/** Up or Down?'s question, said for every new passenger. */
-export const ASK_UPDOWN = "bjl-up-or-down";
-/** Picture Floors' question: "Find the red one!" (Color & Shape's lines). */
-export const findClip = (c: Colour): string => `friends-find-${c}`;
-/** Said as the lift sets off. */
-export const goClip = (up: boolean): string => (up ? "bjl-going-up" : "bjl-going-down");
-
-/** Self-check: four different rounds a module, three different passengers
- *  a round, every trip really goes somewhere (and Up or Down? asks both
- *  ways), every picture exists, and a line for everything said. */
+/** Self-check: four different rounds a module, three rides a round to three
+ *  different floors, the girl and the boy taking turns, every floor visited
+ *  in every module, every picture there, and a line for everything said. */
 export function checkRounds(
   has: (id: string) => boolean,
   hasPic: (id: string) => boolean
 ): string[] {
-  const { problems, need } = roundChecker();
+  const { problems, need, noRepeats } = roundChecker();
   need(
     FLOOR_PICS.length === FLOORS && distinct(FLOOR_PICS),
     "a floor picture repeats or is missing"
@@ -203,32 +133,38 @@ export function checkRounds(
     FLOOR_COLOURS.length === FLOORS && distinct(FLOOR_COLOURS),
     "a floor colour repeats or is missing"
   );
-  for (const p of [...FLOOR_PICS, ...PASSENGERS]) need(hasPic(p), `no Fluent picture "${p}"`);
-  for (const c of FLOOR_COLOURS) need(has(findClip(c)), `no line for finding ${c}`);
-  for (const id of [ASK_UPDOWN, goClip(true), goClip(false), "instr-try-again"])
-    need(has(id), `no line "${id}"`);
+  for (const p of FLOOR_PICS) need(hasPic(p), `no Fluent picture "${p}"`);
+  const lines = [
+    DOWN_CLIP,
+    "instr-try-again",
+    ...(["girl", "boy"] as const).flatMap((k) => [dragClip(k), upClip(k)]),
+    ...Array.from({ length: FLOORS }, (_, i) => numberClip(i + 1)),
+  ];
+  for (const id of lines) need(has(id), `no line "${id}"`);
 
   for (const id of MODULE_IDS) {
     const rs = ROUNDS[id];
-    need(has(`bjl-mode-${id}`), `${id}: no title-card line`);
+    const info = MODULES.find((m) => m.id === id);
+    need(!!info && has(info.clip), `${id}: no title-card line`);
     need(rs.length === ROUND_COUNT, `${id}: ${rs.length} rounds`);
-    need(
-      distinct(rs.map((r) => `${r.start}:${r.trips.map((t) => t.to).join()}`)),
-      `${id}: a round repeats`
+    noRepeats(
+      id,
+      rs.map((r) => r.map((t) => `${t.who}${t.to}`).join())
     );
+    const seen = new Set<number>();
     rs.forEach((r, k) => {
-      need(r.trips.length === TRIPS, `${id} ${k}: ${r.trips.length} passengers`);
-      need(distinct(r.trips.map((t) => t.who)), `${id} ${k}: a passenger rides twice`);
-      need(r.start >= 1 && r.start <= FLOORS, `${id} ${k}: the lift starts off the tower`);
-      const dirs = new Set<boolean>();
-      r.trips.forEach((t, i) => {
-        const from = fromOf(r, i);
-        need(t.to >= 1 && t.to <= FLOORS, `${id} ${k}: floor ${t.to} is off the tower`);
-        need(t.to !== from, `${id} ${k}: passenger ${i + 1} is already on floor ${t.to}`);
-        dirs.add(t.to > from);
+      need(r.length === TRIPS, `${id} ${k}: ${r.length} rides`);
+      need(distinct(r.map((t) => t.to)), `${id} ${k}: two children want the same floor`);
+      r.forEach((t, i) => {
+        need(
+          Number.isInteger(t.to) && t.to >= 1 && t.to <= FLOORS,
+          `${id} ${k}: floor ${t.to} is not on the tower`
+        );
+        if (i > 0) need(t.who !== r[i - 1].who, `${id} ${k}: the same child rides twice running`);
+        seen.add(t.to);
       });
-      if (id === "updown") need(dirs.size === 2, `${id} ${k}: never asks both up and down`);
     });
+    for (let n = 1; n <= FLOORS; n++) need(seen.has(n), `${id}: nobody goes to floor ${n}`);
   }
   return problems;
 }

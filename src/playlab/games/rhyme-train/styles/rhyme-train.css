@@ -1,0 +1,321 @@
+/**
+ * Rhyme Train Station — class prefix `rtr-`. The shell, guide bar, drag ghost
+ * and celebrations are Count & Match's and the portal's (`ng-`, `pl-`); the
+ * pictures are Rhyme Time's (`.ryn-pic-img`). Sized in the `ng` container's
+ * units; sideways and upright phones at the bottom.
+ */
+
+/* ─── The station ──────────────────────────────────────────────────────── */
+.rtr-world {
+  position: absolute;
+  inset: 0;
+  background: #ffd9bd;
+}
+.rtr-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The board: the train on its rails, the platform below ────────────── */
+.rtr-play {
+  /* one carriage's width; everything on the train is a share of it */
+  --rtr-car: min(40cqh, 26cqw);
+  --rtr-door: 0.5;
+  --rtr-engine: 0.95;
+  --rtr-rider: max(70px, min(21cqh, 12cqw));
+}
+.rtr-play--3 {
+  --rtr-car: min(36cqh, 21cqw);
+}
+.rtr-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqh;
+  width: 100%;
+  height: 100%;
+}
+.rtr-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rtr-train {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--rtr-car) * 0.05);
+}
+/** The couplings: one bar along the whole train at wheel height. */
+.rtr-train::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 2%;
+  bottom: calc(var(--rtr-car) * 0.1);
+  height: calc(var(--rtr-car) * 0.04);
+  border-radius: 99px;
+  background: #3c3f5a;
+}
+.rtr-engine {
+  position: relative;
+  display: block;
+  width: calc(var(--rtr-car) * var(--rtr-engine));
+  aspect-ratio: 130 / 120;
+}
+.rtr-engine-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.rtr-steam {
+  animation: rtr-steam 0.9s ease-out infinite;
+}
+@keyframes rtr-steam {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 10px) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(14px, -18px) scale(1.3);
+  }
+}
+.rtr-rails {
+  display: block;
+  width: 100cqw;
+  height: max(8px, 2.6cqh);
+  margin-top: -0.4cqh;
+  background:
+    linear-gradient(#5a5d78, #5a5d78) top / 100% 32% no-repeat,
+    repeating-linear-gradient(90deg, #8a5a3c 0 2.2cqw, transparent 2.2cqw 4.4cqw) bottom / 100% 70%
+      no-repeat;
+}
+
+/** A carriage: roof, two windows, the door with its family picture, wheels. */
+.rtr-car {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: var(--rtr-car);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.rtr-car-roof {
+  display: block;
+  height: calc(var(--rtr-car) * 0.09);
+  margin: 0 calc(var(--rtr-car) * -0.03);
+  border-radius: calc(var(--rtr-car) * 0.07) calc(var(--rtr-car) * 0.07) 0 0;
+  background: #3c3f5a;
+}
+.rtr-car-body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--rtr-car) * 0.05);
+  padding: calc(var(--rtr-car) * 0.06);
+  border-radius: 0 0 calc(var(--rtr-car) * 0.06) calc(var(--rtr-car) * 0.06);
+  background: var(--rtr-paint, #2fa3a0);
+  box-shadow:
+    inset 0 calc(var(--rtr-car) * -0.07) 0 rgba(0, 0, 0, 0.2),
+    0 1cqh 0 rgba(60, 40, 50, 0.35);
+  transition: box-shadow 0.2s ease;
+}
+.rtr-car.is-lit .rtr-car-body {
+  box-shadow:
+    0 0 0 1.2cqh rgba(255, 210, 61, 0.75),
+    inset 0 calc(var(--rtr-car) * -0.07) 0 rgba(0, 0, 0, 0.2),
+    0 1cqh 0 rgba(60, 40, 50, 0.35);
+}
+.rtr-car.is-hint .rtr-car-body {
+  animation: rtr-hint 1.1s ease-in-out infinite;
+}
+@keyframes rtr-hint {
+  0%,
+  100% {
+    outline: 0.8cqh solid rgba(255, 210, 61, 0.95);
+    outline-offset: 0.4cqh;
+  }
+  50% {
+    outline: 0.8cqh solid rgba(255, 210, 61, 0.2);
+    outline-offset: 1.6cqh;
+  }
+}
+.rtr-car.is-talk .rtr-car-body,
+.rtr-rider.is-talk .rtr-person {
+  animation: rtr-hop 0.5s ease-out;
+}
+@keyframes rtr-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-1.8cqh);
+  }
+}
+.rtr-windows {
+  display: flex;
+  gap: calc(var(--rtr-car) * 0.05);
+}
+.rtr-window {
+  position: relative;
+  flex: 1;
+  height: calc(var(--rtr-car) * 0.36);
+  overflow: hidden;
+  border: calc(var(--rtr-car) * 0.025) solid #fff1da;
+  border-radius: calc(var(--rtr-car) * 0.07);
+  background: linear-gradient(#d8f3ff, #a9dcf2);
+}
+.rtr-sitter {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.rtr-sitter-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: block;
+  height: 86%;
+  aspect-ratio: 1;
+  padding: 6%;
+  border-radius: 20%;
+  background: #ffffff;
+}
+.rtr-door {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--rtr-car) * 0.04);
+  border-radius: calc(var(--rtr-car) * 0.08);
+  background: #fff1da;
+  box-shadow: inset 0 0 0 calc(var(--rtr-car) * 0.02) rgba(60, 63, 90, 0.25);
+}
+.rtr-door-pic {
+  display: block;
+  width: calc(var(--rtr-car) * var(--rtr-door));
+  height: calc(var(--rtr-car) * var(--rtr-door));
+}
+.rtr-wheels {
+  display: flex;
+  justify-content: space-around;
+  height: calc(var(--rtr-car) * 0.17);
+  margin-top: calc(var(--rtr-car) * -0.09);
+}
+.rtr-wheel {
+  display: block;
+  width: calc(var(--rtr-car) * 0.17);
+  height: calc(var(--rtr-car) * 0.17);
+  border: calc(var(--rtr-car) * 0.035) solid #3c3f5a;
+  border-radius: 50%;
+  background: radial-gradient(#3c3f5a 0 22%, #e2553f 24%);
+}
+
+/* ─── The platform and its passengers ──────────────────────────────────── */
+.rtr-platform {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5cqh 3.5cqw;
+}
+.rtr-rider {
+  position: relative;
+  width: var(--rtr-rider);
+  height: var(--rtr-rider);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.rtr-rider.is-away {
+  visibility: hidden;
+}
+.rtr-rider-in {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.rtr-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.rtr-card {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 10%;
+  border: max(3px, 0.45cqh) solid #f0c9a8;
+  border-radius: 20%;
+  background: #ffffff;
+  box-shadow: 0 max(4px, 0.9cqh) 0 rgba(120, 70, 40, 0.45);
+}
+/** The passenger under the finger: the same, lifted. */
+.rtr-carried {
+  left: calc(var(--rtr-rider) * -0.5);
+  top: calc(var(--rtr-rider) * -0.5);
+  width: var(--rtr-rider);
+  height: var(--rtr-rider);
+  pointer-events: none;
+}
+
+/* ─── The home card's miniature (its own size container) ───────────────── */
+.rtr-mini {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10cqh;
+  --rtr-car: 56cqh;
+  --rtr-engine: 0.95;
+  --rtr-door: 0.5;
+}
+.rtr-mini .rtr-train::before {
+  bottom: 5cqh;
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .rtr-play {
+    --rtr-car: min(36cqh, 24cqw);
+    --rtr-rider: max(64px, min(20cqh, 11cqw));
+  }
+  .rtr-play--3 {
+    --rtr-car: min(32cqh, 20cqw);
+  }
+  .rtr-board {
+    gap: 2.5cqh;
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .rtr-play .ng-main {
+    bottom: 5cqh;
+  }
+  .rtr-play {
+    --rtr-car: min(32cqw, 26cqh);
+    --rtr-door: 0.72;
+    --rtr-engine: 0.72;
+    --rtr-rider: max(70px, min(21cqw, 13cqh));
+  }
+  .rtr-play--3 {
+    --rtr-car: 23cqw;
+  }
+  .rtr-board {
+    gap: 6cqh;
+  }
+  .rtr-platform {
+    gap: 2cqh 2cqw;
+  }
+}

@@ -190,13 +190,15 @@ export function CountRound({ round, title, onDone, onMiss, onHome, onExitPortal 
   });
 
   const countLine = clipText(COUNT_FROM);
-  const prompt = trip
-    ? clipText(BLAST)
-    : done > 0
-      ? clipText(NEXT)
-      : countLine
-        ? `${countLine} ${top}!`
-        : "";
+  // after 1 nothing comes next: from that tap on it is "Blast off!"
+  const prompt =
+    trip || done >= order.length
+      ? clipText(BLAST)
+      : done > 0
+        ? clipText(NEXT)
+        : countLine
+          ? `${countLine} ${top}!`
+          : "";
 
   return (
     <NgStage

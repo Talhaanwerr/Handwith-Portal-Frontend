@@ -1,10 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  createContext,
+  createElement,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 /** How long a child may sit without touching before the teaching hand shows
  *  them the next move. One number for every drag game in PlayLab. */
 export const IDLE_HAND_MS = 7000;
+/** The same wait on a child's FIRST play (inside `<FirstPlayHand on>`): the
+ *  hand shows the move almost at once, before the child has to get stuck. */
+export const FIRST_PLAY_HAND_MS = 1800;
+
+const FirstPlay = createContext(false);
+
+/**
+ * The automatic hand for a first play: every idle hand inside an `on`
+ * provider fires after FIRST_PLAY_HAND_MS instead of IDLE_HAND_MS, so the
+ * very first round demonstrates each move by itself. Games wrap their first
+ * round in it (the NgShell kit does it for `guided` games); outside it the
+ * hand keeps its normal 7 s wait.
+ */
+export function FirstPlayHand({ on, children }: { on: boolean; children: ReactNode }) {
+  return createElement(FirstPlay.Provider, { value: on }, children);
+}
 
 /**
  * The idle teaching hand's clock, shared by every drag game.
@@ -21,6 +44,7 @@ export const IDLE_HAND_MS = 7000;
  *   {idle && next && <TeachingHand fx={…} fy={…} tx={…} ty={…} />}
  */
 export function useIdleHand(armed: boolean, resetKey?: unknown, ms: number = IDLE_HAND_MS) {
+  const delay = useContext(FirstPlay) ? Math.min(ms, FIRST_PLAY_HAND_MS) : ms;
   const [touches, setTouches] = useState(0);
   // Which wait the timer last fired for. A touch or a new resetKey starts a
   // new wait, so a hand fired for an older one simply stops matching — no
@@ -36,9 +60,9 @@ export function useIdleHand(armed: boolean, resetKey?: unknown, ms: number = IDL
 
   useEffect(() => {
     if (!armed) return;
-    const t = setTimeout(() => setFiredFor(wait), ms);
+    const t = setTimeout(() => setFiredFor(wait), delay);
     return () => clearTimeout(t);
-  }, [armed, wait, ms]);
+  }, [armed, wait, delay]);
 
   return armed && firedFor === wait;
 }

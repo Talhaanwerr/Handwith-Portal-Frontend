@@ -447,9 +447,6 @@ export const LEVELS: Record<LevelId, Level> = {
 /** Left to right / top to bottom on the level menu, easiest first. */
 export const LEVEL_ORDER: readonly LevelId[] = ["level1", "level2", "level3", "level4", "level5"];
 
-export const QUESTIONS_PER_LEVEL = 10;
-export const OPTIONS_PER_QUESTION = 8;
-
 export function questionCount(id: LevelId): number {
   return LEVELS[id].questions.length;
 }

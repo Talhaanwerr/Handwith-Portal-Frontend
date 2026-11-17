@@ -129,6 +129,10 @@ export function BagRound({ round, title, onDone, onMiss, onHome, onExitPortal }:
 
   const bagId = (i: number) => `ptr-bag-${round}-${i}`;
   const riding = arrived !== step && given === step;
+  /** The guide bar's line: the question; "Try again!" after a wrong
+   *  passenger, until the right one is tapped; "Here's your bag!" while the
+   *  bag goes over to its owner. */
+  const line = given > step ? "ptr-yours" : miss?.step === step ? "instr-try-again" : "ptr-whose";
 
   return (
     <NgStage
@@ -137,7 +141,7 @@ export function BagRound({ round, title, onDone, onMiss, onHome, onExitPortal }:
       world={<AirportWorld />}
       round={round}
       solved={solved}
-      say={say(clipText("ptr-whose"))}
+      say={say(clipText(line))}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

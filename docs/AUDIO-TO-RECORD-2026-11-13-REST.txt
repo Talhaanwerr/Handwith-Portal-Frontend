@@ -1,0 +1,48 @@
+AUDIO STILL TO RECORD — 10 lines (updated Nov 13 2026)
+Segment 1 of the next export = line 1 below.
+Lines marked (re-record) already have a file; the new one replaces it.
+
+1 teddy bear and 2 teddy bears. How many teddy bears?
+2 horses and 2 horses. How many horses?
+3 trains and 1 train. How many trains?
+2 balls and 2 balls. How many balls?
+3 drums and 2 drums. How many drums?
+4 teddy bears and 1 teddy bear. How many teddy bears?
+1 train and 4 trains. How many trains?
+3 balls and 2 balls. How many balls?
+tree!   (re-record)
+key!   (re-record)
+
+----------------------------------------
+WHERE EACH ONE GOES
+----------------------------------------
+  1. "1 teddy bear and 2 teddy bears. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-1-2-bear.mp3
+     id:   tys-add-1-2-bear
+  2. "2 horses and 2 horses. How many horses?"
+     file: public/audio/tiny-toy-shop/add-2-2-horse.mp3
+     id:   tys-add-2-2-horse
+  3. "3 trains and 1 train. How many trains?"
+     file: public/audio/tiny-toy-shop/add-3-1-train.mp3
+     id:   tys-add-3-1-train
+  4. "2 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-2-2-ball.mp3
+     id:   tys-add-2-2-ball
+  5. "3 drums and 2 drums. How many drums?"
+     file: public/audio/tiny-toy-shop/add-3-2-drum.mp3
+     id:   tys-add-3-2-drum
+  6. "4 teddy bears and 1 teddy bear. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-4-1-bear.mp3
+     id:   tys-add-4-1-bear
+  7. "1 train and 4 trains. How many trains?"
+     file: public/audio/tiny-toy-shop/add-1-4-train.mp3
+     id:   tys-add-1-4-train
+  8. "3 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-3-2-ball.mp3
+     id:   tys-add-3-2-ball
+  9. "tree!" (re-record)
+     file: public/audio/treats/word-tree.mp3
+     id:   treat-word-tree
+  10. "key!" (re-record)
+     file: public/audio/treats/word-key.mp3
+     id:   treat-word-key

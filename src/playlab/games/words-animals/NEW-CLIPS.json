@@ -1,0 +1,17 @@
+[
+  {
+    "id": "fw-animals-welcome",
+    "file": "/audio/first-words/animals-welcome.mp3",
+    "text": "First words! Animals!"
+  },
+  {
+    "id": "fw-animals-mode",
+    "file": "/audio/first-words/animals-mode.mp3",
+    "text": "Let’s learn animal words!"
+  },
+  {
+    "id": "fw-in-barn",
+    "file": "/audio/first-words/in-barn.mp3",
+    "text": "in the barn!"
+  }
+]

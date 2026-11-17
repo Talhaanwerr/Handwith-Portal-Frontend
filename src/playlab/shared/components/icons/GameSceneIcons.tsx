@@ -32,6 +32,58 @@ import { BurjLiftIcon } from "@games/burj-lift/components/BurjLiftIcon";
 import { TallestTowerIcon } from "@games/burj-towers/components/TallestTowerIcon";
 import { PlaneSeatsIcon } from "@games/plane-seats/components/PlaneSeatsIcon";
 import { PlaneTripIcon } from "@games/plane-trip/components/PlaneTripIcon";
+import { PlaneSnacksIcon } from "@games/plane-snacks/components/PlaneSnacksIcon";
+import { RhymeOrNotIcon } from "@games/rhyme-or-not/components/RhymeOrNotIcon";
+import { RhymeMatchIcon } from "@games/rhyme-match/components/RhymeMatchIcon";
+import { RhymeFamiliesIcon } from "@games/rhyme-families/components/RhymeFamiliesIcon";
+import { RhymeRocketIcon } from "@games/rhyme-rocket/components/RhymeRocketIcon";
+import { SillySandwichIcon } from "@games/silly-sandwich/components/SillySandwichIcon";
+import { RhymeDetectiveIcon } from "@games/rhyme-detective/components/RhymeDetectiveIcon";
+import { FinishSongIcon } from "@games/finish-song/components/FinishSongIcon";
+import { MagicHatIcon } from "@games/magic-hat/components/MagicHatIcon";
+import { RhymeTrainIcon } from "@games/rhyme-train/components/RhymeTrainIcon";
+import { ShapeCircleIcon } from "@games/shape-circle/components/ShapeCircleIcon";
+import { ShapeSquareIcon } from "@games/shape-square/components/ShapeSquareIcon";
+import { ShapeTriangleIcon } from "@games/shape-triangle/components/ShapeTriangleIcon";
+import { ShapeRectangleIcon } from "@games/shape-rectangle/components/ShapeRectangleIcon";
+import { ShapeStarIcon } from "@games/shape-star/components/ShapeStarIcon";
+import { WordsAnimalsIcon } from "@games/words-animals/components/WordsAnimalsIcon";
+import { WordsFoodIcon } from "@games/words-food/components/WordsFoodIcon";
+import { WordsHomeIcon } from "@games/words-home/components/WordsHomeIcon";
+import { WordsOutIcon } from "@games/words-out/components/WordsOutIcon";
+import { WordsBodyIcon } from "@games/words-body/components/WordsBodyIcon";
+import { WordBuilderAIcon } from "@games/word-builder-a/components/WordBuilderAIcon";
+import { WordBuilderEIcon } from "@games/word-builder-e/components/WordBuilderEIcon";
+import { WordBuilderIIcon } from "@games/word-builder-i/components/WordBuilderIIcon";
+import { WordBuilderOIcon } from "@games/word-builder-o/components/WordBuilderOIcon";
+import { WordBuilderUIcon } from "@games/word-builder-u/components/WordBuilderUIcon";
+import { RainbowWordsRedIcon } from "@games/rainbow-words-red/components/RainbowWordsRedIcon";
+import { RainbowWordsOrangeIcon } from "@games/rainbow-words-orange/components/RainbowWordsOrangeIcon";
+import { RainbowWordsYellowIcon } from "@games/rainbow-words-yellow/components/RainbowWordsYellowIcon";
+import { RainbowWordsGreenIcon } from "@games/rainbow-words-green/components/RainbowWordsGreenIcon";
+import { RainbowWordsBlueIcon } from "@games/rainbow-words-blue/components/RainbowWordsBlueIcon";
+import { RainbowWordsIndigoIcon } from "@games/rainbow-words-indigo/components/RainbowWordsIndigoIcon";
+import { RainbowWordsVioletIcon } from "@games/rainbow-words-violet/components/RainbowWordsVioletIcon";
+import { OurWorldAnimalsIcon } from "@games/our-world-animals/components/OurWorldAnimalsIcon";
+import { OurWorldSeaIcon } from "@games/our-world-sea/components/OurWorldSeaIcon";
+import { OurWorldRoadIcon } from "@games/our-world-road/components/OurWorldRoadIcon";
+import { OurWorldFoodIcon } from "@games/our-world-food/components/OurWorldFoodIcon";
+import { OurWorldPlayIcon } from "@games/our-world-play/components/OurWorldPlayIcon";
+import { OurWorldBodyIcon } from "@games/our-world-body/components/OurWorldBodyIcon";
+import { StickerStudioGardenIcon } from "@games/sticker-studio-garden/components/StickerStudioGardenIcon";
+import { StickerStudioSpaceIcon } from "@games/sticker-studio-space/components/StickerStudioSpaceIcon";
+import { StickerStudioFarmIcon } from "@games/sticker-studio-farm/components/StickerStudioFarmIcon";
+import { StickerStudioParkIcon } from "@games/sticker-studio-park/components/StickerStudioParkIcon";
+import { StickerStudioStreetIcon } from "@games/sticker-studio-street/components/StickerStudioStreetIcon";
+import { StickerStudioPartyIcon } from "@games/sticker-studio-party/components/StickerStudioPartyIcon";
+import { ColoursRoadIcon } from "@games/colours-road/components/ColoursRoadIcon";
+import { ColoursSeaIcon } from "@games/colours-sea/components/ColoursSeaIcon";
+import { ColoursSkyIcon } from "@games/colours-sky/components/ColoursSkyIcon";
+import { ColoursSpaceIcon } from "@games/colours-space/components/ColoursSpaceIcon";
+import { ColoursEmergencyIcon } from "@games/colours-emergency/components/ColoursEmergencyIcon";
+import { ColoursBuildIcon } from "@games/colours-build/components/ColoursBuildIcon";
+import { FruitEasyIcon } from "@games/fruit-easy/components/FruitEasyIcon";
+import { FruitTrickyIcon } from "@games/fruit-tricky/components/FruitTrickyIcon";
 import { WhatsInsideIcon } from "@games/whats-inside/components/WhatsInsideIcon";
 import { AnimalRepairIcon } from "@games/animal-repair/components/AnimalRepairIcon";
 import { CarGarageIcon } from "@games/car-garage/components/CarGarageIcon";
@@ -1621,6 +1673,58 @@ export const GAME_SCENE_ICONS: Record<string, () => ReactNode> = {
   "burj-towers": TallestTowerIcon,
   "plane-seats": PlaneSeatsIcon,
   "plane-trip": PlaneTripIcon,
+  "plane-snacks": PlaneSnacksIcon,
+  "rhyme-or-not": RhymeOrNotIcon,
+  "rhyme-match": RhymeMatchIcon,
+  "rhyme-families": RhymeFamiliesIcon,
+  "rhyme-rocket": RhymeRocketIcon,
+  "silly-sandwich": SillySandwichIcon,
+  "rhyme-detective": RhymeDetectiveIcon,
+  "finish-song": FinishSongIcon,
+  "magic-hat": MagicHatIcon,
+  "rhyme-train": RhymeTrainIcon,
+  "shape-circle": ShapeCircleIcon,
+  "shape-square": ShapeSquareIcon,
+  "shape-triangle": ShapeTriangleIcon,
+  "shape-rectangle": ShapeRectangleIcon,
+  "shape-star": ShapeStarIcon,
+  "words-animals": WordsAnimalsIcon,
+  "words-food": WordsFoodIcon,
+  "words-home": WordsHomeIcon,
+  "words-out": WordsOutIcon,
+  "words-body": WordsBodyIcon,
+  "word-builder-a": WordBuilderAIcon,
+  "word-builder-e": WordBuilderEIcon,
+  "word-builder-i": WordBuilderIIcon,
+  "word-builder-o": WordBuilderOIcon,
+  "word-builder-u": WordBuilderUIcon,
+  "rainbow-words-red": RainbowWordsRedIcon,
+  "rainbow-words-orange": RainbowWordsOrangeIcon,
+  "rainbow-words-yellow": RainbowWordsYellowIcon,
+  "rainbow-words-green": RainbowWordsGreenIcon,
+  "rainbow-words-blue": RainbowWordsBlueIcon,
+  "rainbow-words-indigo": RainbowWordsIndigoIcon,
+  "rainbow-words-violet": RainbowWordsVioletIcon,
+  "our-world-animals": OurWorldAnimalsIcon,
+  "our-world-sea": OurWorldSeaIcon,
+  "our-world-road": OurWorldRoadIcon,
+  "our-world-food": OurWorldFoodIcon,
+  "our-world-play": OurWorldPlayIcon,
+  "our-world-body": OurWorldBodyIcon,
+  "sticker-studio-garden": StickerStudioGardenIcon,
+  "sticker-studio-space": StickerStudioSpaceIcon,
+  "sticker-studio-farm": StickerStudioFarmIcon,
+  "sticker-studio-park": StickerStudioParkIcon,
+  "sticker-studio-street": StickerStudioStreetIcon,
+  "sticker-studio-party": StickerStudioPartyIcon,
+  "colours-road": ColoursRoadIcon,
+  "colours-sea": ColoursSeaIcon,
+  "colours-sky": ColoursSkyIcon,
+  "colours-space": ColoursSpaceIcon,
+  "colours-emergency": ColoursEmergencyIcon,
+  "colours-build": ColoursBuildIcon,
+  "fruit-easy": FruitEasyIcon,
+  "fruit-tricky": FruitTrickyIcon,
   "math-maze": MathMazeIcon,
   "food-sort": FoodSortIcon,
   "find-the-mouse": FindTheMouseIcon,

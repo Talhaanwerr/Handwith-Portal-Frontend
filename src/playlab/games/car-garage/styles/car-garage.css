@@ -455,6 +455,20 @@
   top: 8%;
 }
 
+/* ─── The guided layout (NgShell `guided`): the board is centred on the
+   whole stage, so in landscape Build the Car's wide board (steps, car and
+   bench) reaches the guide's corner — the car a little smaller and the
+   guide a little smaller keep the lift clear of him ─────────────────────── */
+@media (orientation: landscape) {
+  .ng-root--guided .bcg-play--build {
+    --bcg-car: min(35cqw, 66cqh);
+  }
+  .ng-root--guided .bcg-play .ng-teacher-slot {
+    width: min(28cqh, 12cqw);
+    height: min(28cqh, 12cqw);
+  }
+}
+
 /* ─── Portrait: the car (and its steps) on top, the tray under it ─────── */
 @media (orientation: portrait) {
   .bcg-play {

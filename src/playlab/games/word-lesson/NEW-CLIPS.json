@@ -1,0 +1,8 @@
+[
+  { "id": "fw-meet", "file": "/audio/first-words/meet.mp3", "text": "Tap each one!" },
+  { "id": "fw-where", "file": "/audio/first-words/where.mp3", "text": "Where is the" },
+  { "id": "fw-shadow", "file": "/audio/first-words/shadow.mp3", "text": "Put it on its shadow!" },
+  { "id": "fw-peek", "file": "/audio/first-words/peek.mp3", "text": "Peekaboo! Where is the" },
+  { "id": "fw-put", "file": "/audio/first-words/put.mp3", "text": "Put the" },
+  { "id": "fw-done", "file": "/audio/first-words/done.mp3", "text": "You learned new words!" }
+]

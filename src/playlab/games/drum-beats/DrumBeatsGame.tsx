@@ -29,6 +29,7 @@ export function DrumBeatsGame() {
     <div className="apa-game">
       <NgShell
         title="Drum Beats"
+        guided
         voice={VOICE}
         store={store}
         modules={MODULES}

@@ -9,6 +9,7 @@ import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
 import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
+import { FirstPlayHand } from "@shared/hooks/useIdleHand";
 import { createShowStore, type ShowScreen } from "@games/phonics-show/store/showStore";
 import { ShowDone, ShowSplash } from "@games/phonics-show/components/ShowScreens";
 import { ROUNDS, TOTAL_ROUNDS, starsFor } from "@games/odd-sound/constants/rounds";
@@ -81,12 +82,15 @@ export function OddSoundGame() {
 
           {screen === "play" && index < TOTAL_ROUNDS && (
             <motion.div key="play" className="absolute inset-0" {...PAGE_TRANSITION}>
-              <OddRound
-                index={index}
-                onSolved={solved}
-                onBack={() => setScreen("splash")}
-                onExitPortal={exitPortal}
-              />
+              {/* the run's first question shows the teaching hand by itself */}
+              <FirstPlayHand on={index === 0}>
+                <OddRound
+                  index={index}
+                  onSolved={solved}
+                  onBack={() => setScreen("splash")}
+                  onExitPortal={exitPortal}
+                />
+              </FirstPlayHand>
             </motion.div>
           )}
 

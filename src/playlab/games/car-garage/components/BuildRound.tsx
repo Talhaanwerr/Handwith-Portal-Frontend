@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playSnapSound } from "@shared/audio/sfx";
-import { clipText, playClip, sayAfter } from "@shared/audio/voice";
+import { clipText, sayAfter } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { useIdleHand } from "@shared/hooks/useIdleHand";
 import { useScheduler } from "@shared/hooks/useScheduler";
@@ -24,6 +24,7 @@ import { GarageWorld } from "@games/car-garage/components/GarageWorld";
 import { CarBay, SpotBox, playHonk, useDriveOff } from "@games/car-garage/components/CarBay";
 import { PieceArt, StepStrip } from "@games/car-garage/components/StepStrip";
 import { useCarDrag, type Verdict } from "@games/car-garage/hooks/useCarDrag";
+import { useSaidLine } from "@games/car-garage/hooks/useSaidLine";
 import {
   AXLES,
   BUILD_ROUNDS,
@@ -77,6 +78,7 @@ export function BuildRound({ round, title, onDone, onHome, onExitPortal }: Round
   const [driving, setDriving] = useState(false);
   const schedule = useScheduler();
   const { controls, slotRef, drive } = useDriveOff(stageRef);
+  const { line: saidLine, say: sayLine, clear: clearLine } = useSaidLine();
 
   const filled = useMemo(() => new Set(Object.keys(placed) as CarSpot[]), [placed]);
   const stepIx = currentStep(filled);
@@ -103,6 +105,7 @@ export function BuildRound({ round, title, onDone, onHome, onExitPortal }: Round
 
   /** The car is whole: it wakes up, honks, says its name and drives off. */
   const complete = useCallback(() => {
+    clearLine();
     playHonk();
     const name = NAME_CLIP[r.body];
     if (name) void sayAfter(name);
@@ -111,7 +114,7 @@ export function BuildRound({ round, title, onDone, onHome, onExitPortal }: Round
       setDriving(true);
       drive();
     }, DRIVE_AT);
-  }, [drive, finish, r.body, schedule]);
+  }, [drive, finish, r.body, clearLine, schedule]);
 
   /** Put a part on through a target: the place it fills, or null. */
   const place = useCallback(
@@ -195,7 +198,9 @@ export function BuildRound({ round, title, onDone, onHome, onExitPortal }: Round
   const { homeOf, targetOf } = drag;
   useEffect(() => {
     if (!idle || !nextPiece || !nextTarget) return;
-    void playClip("instr-watch-carefully");
+    // round one's hand comes by itself (guided: FirstPlayHand) while the step
+    // is still being said — "Watch carefully!" there would cut it off
+    if (round > 0) sayLine("instr-watch-carefully");
     const measure = () => {
       const a = centreIn(stageRef.current, homeOf(nextPiece));
       const b = centreIn(stageRef.current, targetOf(nextTarget));
@@ -207,7 +212,7 @@ export function BuildRound({ round, title, onDone, onHome, onExitPortal }: Round
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", measure);
     };
-  }, [idle, nextPiece, nextTarget, homeOf, targetOf]);
+  }, [idle, nextPiece, nextTarget, homeOf, targetOf, round, sayLine]);
 
   const registerSeat = useCallback((s: CarSpot, el: HTMLElement | null) => {
     if (el) seats.current.set(s, el);
@@ -226,7 +231,7 @@ export function BuildRound({ round, title, onDone, onHome, onExitPortal }: Round
       world={<GarageWorld />}
       round={round}
       solved={solved}
-      say={say(clipText(step ? step.clip : STEPS[STEPS.length - 1].clip))}
+      say={saidLine ?? say(clipText(step ? step.clip : STEPS[STEPS.length - 1].clip))}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

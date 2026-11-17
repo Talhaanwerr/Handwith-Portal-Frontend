@@ -32,7 +32,9 @@ export function OceanComplete({ onExitPortal }: OceanCompleteProps) {
     <AlphabetFinale
       symbols={lower ? LOWER : UPPER}
       headline={clipText("cheer-you-did-it")}
-      subline={lower ? "You finished all 26 small letters!" : "You finished all 26 BIG letters!"}
+      subline={
+        lower ? "You finished all 26 lowercase letters!" : "You finished all 26 uppercase letters!"
+      }
       clipId="cheer-you-did-it"
       backdrop={<OceanWorld />}
       mascot={
@@ -46,7 +48,7 @@ export function OceanComplete({ onExitPortal }: OceanCompleteProps) {
       tileClassName="bg-ocean"
       primaryClassName="bg-ocean"
       onPlayAgain={playAgain}
-      playAgainLabel={lower ? "Play small letters again" : "Play BIG letters again"}
+      playAgainLabel={lower ? "Play lowercase letters again" : "Play uppercase letters again"}
       onExitPortal={onExitPortal}
     />
   );

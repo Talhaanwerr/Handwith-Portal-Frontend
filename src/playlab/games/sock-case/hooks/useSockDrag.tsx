@@ -8,7 +8,6 @@ import { useScheduler } from "@shared/hooks/useScheduler";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { cssVars } from "@shared/styles/cssVars";
 import { playPickUpSound, playSnapSound } from "@shared/audio/sfx";
-import { playClip } from "@shared/audio/voice";
 import type { RootPoint } from "@shared/utils/pointer";
 import { centreIn } from "@games/number-groups/components/NgKit";
 
@@ -42,8 +41,9 @@ interface Flight {
  *   • dropped on open ground → it glides back, silently. A tap is never a drop.
  * A TAP on a sock (`tap`) does the same as dropping it on the peg.
  *
- * After 7 s without a touch while the peg waits, the teaching hand
- * (`useIdleHand`) drags the matching sock to the peg.
+ * After 7 s without a touch while the peg waits (at once on a guided first
+ * round), the teaching hand (`useIdleHand`) drags the matching sock to the
+ * peg; `handOn` tells the round, which decides what is said.
  */
 export function useSockDrag({
   stageRef,
@@ -175,7 +175,6 @@ export function useSockDrag({
       const b = centreIn(stageRef.current, to);
       setHand({ fx: a.x, fy: a.y, tx: b.x, ty: b.y });
     };
-    void playClip("instr-watch-carefully");
     const raf = requestAnimationFrame(measure);
     window.addEventListener("resize", measure);
     return () => {
@@ -226,6 +225,7 @@ export function useSockDrag({
   );
 
   return {
+    handOn: idle,
     placed,
     lit: over === 0,
     pickUp,

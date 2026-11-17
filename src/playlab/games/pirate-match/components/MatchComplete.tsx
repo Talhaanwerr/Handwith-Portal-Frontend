@@ -30,7 +30,9 @@ export function MatchComplete({ onExitPortal }: MatchCompleteProps) {
     <AlphabetFinale
       symbols={lower ? LOWER : UPPER}
       headline={clipText("cheer-you-did-it")}
-      subline={lower ? "You matched all 26 small letters!" : "You matched all 26 BIG letters!"}
+      subline={
+        lower ? "You matched all 26 lowercase letters!" : "You matched all 26 uppercase letters!"
+      }
       clipId="cheer-you-did-it"
       backdrop={<PirateWorld />}
       mascot={
@@ -44,7 +46,7 @@ export function MatchComplete({ onExitPortal }: MatchCompleteProps) {
       tileClassName="bg-pirate-gold"
       primaryClassName="bg-pirate"
       onPlayAgain={playAgain}
-      playAgainLabel={lower ? "Match small letters again" : "Match BIG letters again"}
+      playAgainLabel={lower ? "Match lowercase letters again" : "Match uppercase letters again"}
       onExitPortal={onExitPortal}
     />
   );

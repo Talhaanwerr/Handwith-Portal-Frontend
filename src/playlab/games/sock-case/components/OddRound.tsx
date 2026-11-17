@@ -13,6 +13,7 @@ import type { RootPoint } from "@shared/utils/pointer";
 import { CrossMark } from "@games/math-maze/components/CrossMark";
 import { shake } from "@games/find-the-mouse/utils/shake";
 import { NgStage } from "@games/number-groups/components/NgStage";
+import { useSaidLine } from "@games/car-garage/hooks/useSaidLine";
 import { PlayroomWorld } from "@games/number-groups/components/NgWorlds";
 import { centreIn, sayNumber, useRoundCelebration } from "@games/number-groups/components/NgKit";
 import { ROUND_COUNT } from "@games/number-groups/constants/kit";
@@ -77,6 +78,8 @@ export function OddRound({ round, title, onDone, onMiss, onHome, onExitPortal }:
   /** Which pair is swinging as it is counted, and a count of swings. */
   const [counted, setCounted] = useState(-1);
   const found = phase !== "ask";
+  // "That one has a partner!" shows in the bar while it is said
+  const { line, say: sayLine } = useSaidLine();
 
   const cast = useMemo(
     () =>
@@ -102,7 +105,7 @@ export function OddRound({ round, title, onDone, onMiss, onHome, onExitPortal }:
       const el = sockRefs.current.get(i);
       if (i !== odd) {
         playIncorrectSound();
-        void playClip(HAS_PARTNER);
+        sayLine(HAS_PARTNER);
         shake(el ?? null);
         hangRefs.current.get(partnerOf(r, i))?.animate(WIGGLE, {
           duration: 900,
@@ -146,7 +149,7 @@ export function OddRound({ round, title, onDone, onMiss, onHome, onExitPortal }:
         GLASS_MS + FLY_MS + 250 + (pairs.length - 1) * COUNT_MS + 500
       );
     },
-    [burst, finish, found, odd, onMiss, pairs, r, schedule, wrong]
+    [burst, finish, found, odd, onMiss, pairs, r, sayLine, schedule, wrong]
   );
 
   const registerSock = useCallback((i: number, el: HTMLElement | null) => {
@@ -194,7 +197,7 @@ export function OddRound({ round, title, onDone, onMiss, onHome, onExitPortal }:
       world={<PlayroomWorld />}
       round={round}
       solved={solved}
-      say={say(clipText(found ? SOLVED : ASK))}
+      say={(found ? null : line) ?? say(clipText(found ? SOLVED : ASK))}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

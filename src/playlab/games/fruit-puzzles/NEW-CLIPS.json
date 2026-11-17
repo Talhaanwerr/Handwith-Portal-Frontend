@@ -1,0 +1,27 @@
+[
+  {
+    "id": "frp-welcome",
+    "file": "/audio/fruit-puzzles/welcome.mp3",
+    "text": "Welcome to Fruit Puzzles!"
+  },
+  {
+    "id": "frp-done",
+    "file": "/audio/fruit-puzzles/done.mp3",
+    "text": "You fixed all the fruit!"
+  },
+  {
+    "id": "frp-mode-easy",
+    "file": "/audio/fruit-puzzles/mode-easy.mp3",
+    "text": "Easy Puzzles! Just a few big pieces."
+  },
+  {
+    "id": "frp-mode-tricky",
+    "file": "/audio/fruit-puzzles/mode-tricky.mp3",
+    "text": "Tricky Puzzles! Four pieces each."
+  },
+  {
+    "id": "frp-put",
+    "file": "/audio/fruit-puzzles/put.mp3",
+    "text": "Put the fruit back together!"
+  }
+]

@@ -37,6 +37,8 @@ export function NgComplete<Id extends string>({
   onChoose,
   onExitPortal,
   onRecord,
+  roundCount = ROUND_COUNT,
+  single = false,
 }: {
   info: ModuleInfo<Id>;
   mini: ReactNode;
@@ -49,6 +51,10 @@ export function NgComplete<Id extends string>({
   onChoose: () => void;
   onExitPortal: () => void;
   onRecord: (m: Id, stars: number) => void;
+  /** Rounds the run had (NgShell's `roundCount`). */
+  roundCount?: number;
+  /** A one-module game: no "Pick another" — there is nothing else to pick. */
+  single?: boolean;
 }) {
   const stars = starsFor(misses);
   const cheerId = useMemo(() => cheerFor(cheerSeed), [cheerSeed]);
@@ -84,7 +90,7 @@ export function NgComplete<Id extends string>({
           <span className="ng-done-pic">{mini}</span>
           <h2 className="ng-done-title font-rounded font-black">{clipText(cheerId)}</h2>
           <p className="ng-done-sub font-rounded font-bold">
-            {info.name} · {ROUND_COUNT} rounds
+            {info.name} · {roundCount} rounds
           </p>
           <StarRow earned={stars} total={3} size={40} />
           <div className="ng-done-buttons">
@@ -95,13 +101,15 @@ export function NgComplete<Id extends string>({
             >
               Play again
             </button>
-            <button
-              type="button"
-              className="ng-done-btn font-rounded font-black"
-              onClick={go(onChoose)}
-            >
-              Pick another
-            </button>
+            {!single && (
+              <button
+                type="button"
+                className="ng-done-btn font-rounded font-black"
+                onClick={go(onChoose)}
+              >
+                Pick another
+              </button>
+            )}
             <button
               type="button"
               className="ng-done-btn font-rounded font-black"

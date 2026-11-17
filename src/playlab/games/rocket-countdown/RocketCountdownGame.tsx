@@ -34,6 +34,7 @@ export function RocketCountdownGame() {
     <div className="rkc-game">
       <NgShell
         title="Rocket Countdown"
+        guided
         voice={VOICE}
         store={store}
         modules={MODULES}

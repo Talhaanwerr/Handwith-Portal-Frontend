@@ -1,0 +1,338 @@
+/**
+ * Rhyme Rocket — class prefix `rrk-`. The shell, guide bar, drag ghost and
+ * celebrations are Count & Match's and the portal's (`ng-`, `pl-`); the
+ * pictures are Rhyme Time's (`.ryn-pic-img`). Sized in the `ng` container's
+ * units; sideways and upright phones at the bottom.
+ */
+
+/* ─── Deep space ───────────────────────────────────────────────────────── */
+.rrk-world {
+  position: absolute;
+  inset: 0;
+  background: #121b52;
+}
+.rrk-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.rrk-twinkle {
+  animation: rrk-twinkle 2.6s ease-in-out infinite;
+}
+@keyframes rrk-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ─── The board: three planets above, the launch pad below ─────────────── */
+.rrk-play {
+  --rrk-planet: min(28cqh, 22cqw);
+  --rrk-rocket: min(36cqh, 30cqw);
+  --rrk-gap: 7cqh;
+}
+.rrk-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rrk-gap);
+  width: 100%;
+  height: 100%;
+}
+.rrk-sky-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 7cqw;
+}
+
+/* ─── A planet ─────────────────────────────────────────────────────────── */
+.rrk-planet-slot {
+  position: relative;
+  width: var(--rrk-planet);
+  height: var(--rrk-planet);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  animation: rrk-bob 3.8s ease-in-out infinite;
+}
+.rrk-planet-slot--1 {
+  margin-top: -2cqh;
+  animation-delay: -1.3s;
+}
+.rrk-planet-slot--2 {
+  animation-delay: -2.5s;
+}
+@keyframes rrk-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.4cqh);
+  }
+}
+/** The middle planet wears a ring. */
+.rrk-planet-slot--1::before {
+  content: "";
+  position: absolute;
+  left: -16%;
+  right: -16%;
+  top: 38%;
+  height: 24%;
+  border: max(3px, 1cqh) solid #ffd27a;
+  border-radius: 50%;
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+.rrk-planet-in {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.rrk-planet {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow:
+    inset -1.6cqh -1.6cqh 0 rgba(0, 0, 0, 0.16),
+    0 1.2cqh 0 var(--rrk-edge);
+  transition: box-shadow 0.2s ease;
+}
+.rrk-planet--0 {
+  --rrk-edge: #b85a1c;
+  background: radial-gradient(circle at 35% 30%, #ffc27a 0 18%, #ff9f43 50%, #e8772a 100%);
+}
+.rrk-planet--1 {
+  --rrk-edge: #157a6a;
+  background: radial-gradient(circle at 35% 30%, #8ff0dc 0 18%, #3ccfb4 50%, #1e9c88 100%);
+}
+.rrk-planet--2 {
+  --rrk-edge: #6a2fb0;
+  background: radial-gradient(circle at 35% 30%, #e5bcff 0 18%, #c77dff 50%, #8e4bd6 100%);
+}
+.rrk-crater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.13);
+}
+.rrk-crater--a {
+  left: 8%;
+  top: 58%;
+  width: 18%;
+  height: 14%;
+}
+.rrk-crater--b {
+  right: 10%;
+  top: 14%;
+  width: 13%;
+  height: 10%;
+}
+.rrk-planet-pic {
+  position: absolute;
+  inset: 17%;
+  display: block;
+  padding: 6%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+}
+.rrk-planet.is-naming {
+  box-shadow:
+    inset -1.6cqh -1.6cqh 0 rgba(0, 0, 0, 0.16),
+    0 1.2cqh 0 var(--rrk-edge),
+    0 0 0 1cqh rgba(255, 255, 255, 0.9);
+}
+.rrk-planet.is-lit {
+  box-shadow:
+    inset -1.6cqh -1.6cqh 0 rgba(0, 0, 0, 0.16),
+    0 1.2cqh 0 var(--rrk-edge),
+    0 0 0 1.3cqh #ffe066;
+}
+.rrk-planet.is-docked {
+  box-shadow:
+    inset -1.6cqh -1.6cqh 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1.2cqh #ffe066,
+    0 0 5cqh 2.5cqh rgba(255, 224, 102, 0.75);
+}
+.rrk-planet.is-hint {
+  animation: rrk-hint 1.1s ease-in-out infinite;
+}
+@keyframes rrk-hint {
+  0%,
+  100% {
+    box-shadow:
+      inset -1.6cqh -1.6cqh 0 rgba(0, 0, 0, 0.16),
+      0 1.2cqh 0 var(--rrk-edge),
+      0 0 0 1.2cqh rgba(255, 224, 102, 0.95);
+  }
+  50% {
+    box-shadow:
+      inset -1.6cqh -1.6cqh 0 rgba(0, 0, 0, 0.16),
+      0 1.2cqh 0 var(--rrk-edge),
+      0 0 0 0.8cqh #ffe066,
+      0 0 0 2.8cqh rgba(255, 224, 102, 0.4);
+  }
+}
+/** The rocket docked under the planet that rhymes (then blasting off). */
+.rrk-docked {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 80%;
+  width: calc(var(--rrk-planet) * 0.5);
+  height: calc(var(--rrk-planet) * 0.75);
+  margin-left: calc(var(--rrk-planet) * -0.25);
+  pointer-events: none;
+}
+
+/* ─── The rocket and its launch pad ────────────────────────────────────── */
+.rrk-launch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rrk-rocket {
+  position: relative;
+  z-index: 1;
+  width: calc(var(--rrk-rocket) * 2 / 3);
+  height: var(--rrk-rocket);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.rrk-rocket.is-away {
+  visibility: hidden;
+}
+.rrk-rocket-in,
+.rrk-wobble {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.rrk-wobble.is-wobbling {
+  transform-origin: 50% 90%;
+  animation: rrk-wobble 0.7s ease-in-out;
+}
+@keyframes rrk-wobble {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-12deg);
+  }
+  45% {
+    transform: rotate(10deg);
+  }
+  70% {
+    transform: rotate(-6deg);
+  }
+  88% {
+    transform: rotate(3deg);
+  }
+}
+.rrk-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.rrk-art-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.rrk-rocket-pic {
+  position: absolute;
+  left: 30%;
+  top: 34.7%;
+  width: 40%;
+  height: 26.7%;
+  display: block;
+}
+.rrk-pad {
+  display: block;
+  width: calc(var(--rrk-rocket) * 0.95);
+  height: max(12px, 3.6cqh);
+  margin-top: calc(var(--rrk-rocket) * -0.12);
+  border: max(2px, 0.5cqh) solid #e6e9f7;
+  border-radius: 1.4cqh;
+  background: repeating-linear-gradient(-45deg, #ffd23d 0 1.6cqh, #3a3f66 1.6cqh 3.2cqh);
+  box-shadow: 0 1cqh 0 rgba(10, 10, 40, 0.45);
+}
+/** The rocket under the finger. */
+.rrk-carried {
+  left: calc(var(--rrk-rocket) * -1 / 3);
+  top: calc(var(--rrk-rocket) * -0.48);
+  width: calc(var(--rrk-rocket) * 2 / 3);
+  height: var(--rrk-rocket);
+  pointer-events: none;
+}
+
+/* ─── The home card's miniature (its own size container) ───────────────── */
+.rrk-mini {
+  display: block;
+}
+.rrk-mini-planet {
+  position: absolute;
+  right: 18%;
+  top: 6%;
+  display: block;
+  width: 46cqh;
+  height: 46cqh;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffc27a 0 18%, #ff9f43 50%, #e8772a 100%);
+  box-shadow: 0 2cqh 0 #b85a1c;
+}
+.rrk-mini-pic {
+  position: absolute;
+  inset: 18%;
+  display: block;
+}
+.rrk-mini-rocket {
+  position: absolute;
+  left: 22%;
+  bottom: 4%;
+  display: block;
+  width: 40cqh;
+  height: 60cqh;
+  transform: rotate(24deg);
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .rrk-play {
+    --rrk-planet: min(27cqh, 20cqw);
+    --rrk-rocket: min(37cqh, 28cqw);
+    --rrk-gap: 5cqh;
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .rrk-play .ng-main {
+    bottom: 5cqh;
+  }
+  .rrk-play {
+    --rrk-planet: min(25cqw, 16cqh);
+    --rrk-rocket: min(30cqh, 54cqw);
+    --rrk-gap: 12cqh;
+  }
+  .rrk-sky-row {
+    gap: 3.5cqw;
+  }
+  .rrk-planet-slot--1 {
+    margin-top: -4cqh;
+  }
+}

@@ -1,0 +1,235 @@
+/**
+ * Rhyme Time: Yes or No? — class prefix `ryn-`. The shell, its guide bar and
+ * the celebrations are Count & Match's (`ng-`); `.apa-game` hides the teacher.
+ * `.ryn-pic-img` (a rhyme word's picture) is shared with Rhyme Match and
+ * Rhyme Houses. Sized in the `ng` container's units; sideways phones and
+ * upright phones at the bottom.
+ */
+
+/* ─── A rhyme word's picture (all three rhyme games) ───────────────────── */
+.ryn-pic-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+/* a real animal photo fills its box, with soft corners */
+.ryn-pic-img--photo {
+  object-fit: cover;
+  border-radius: 16%;
+}
+
+/* ─── The sunny stage ──────────────────────────────────────────────────── */
+.ryn-world {
+  position: absolute;
+  inset: 0;
+  background: #bfe9fb;
+}
+.ryn-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The board: the pair on top, the two thumbs below ─────────────────── */
+.ryn-play {
+  --ryn-card: min(38cqh, 25cqw);
+  --ryn-btn: max(64px, min(19cqh, 14cqw));
+}
+.ryn-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4.5cqh;
+  width: 100%;
+  height: 100%;
+}
+.ryn-pair {
+  display: flex;
+  align-items: center;
+  gap: 2.5cqw;
+}
+.ryn-card {
+  position: relative;
+  display: block;
+  width: var(--ryn-card);
+  height: var(--ryn-card);
+  padding: 0;
+  border: 0.9cqh solid #ffffff;
+  border-radius: 22%;
+  background: radial-gradient(circle at 50% 42%, #ffffff 0 52%, #fff4cf 100%);
+  box-shadow: 0 1.2cqh 0 rgba(140, 80, 30, 0.35);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+.ryn-card.is-waiting {
+  border: 0.7cqh dashed rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: none;
+  cursor: default;
+}
+.ryn-card-pic {
+  position: absolute;
+  inset: 11%;
+  display: block;
+}
+.ryn-link {
+  display: grid;
+  place-items: center;
+  width: min(9cqh, 6cqw);
+  height: min(9cqh, 6cqw);
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0.6cqh 0 rgba(140, 80, 30, 0.3);
+  font-family: inherit;
+  font-weight: 900;
+  font-size: min(6cqh, 4cqw);
+  line-height: 1;
+  color: #8e4f1e;
+}
+/* answered right: they rhyme — a gold glow round both; they don't — green */
+.ryn-pair.is-rhyme .ryn-card {
+  border-color: #ffd23d;
+  box-shadow:
+    0 0 0 1cqh rgba(255, 210, 61, 0.55),
+    0 1.2cqh 0 rgba(140, 80, 30, 0.35);
+}
+.ryn-pair.is-rhyme .ryn-link {
+  background: #ffd23d;
+  color: #7a4a00;
+}
+.ryn-pair.is-apart .ryn-card {
+  border-color: #6fcf8f;
+  box-shadow:
+    0 0 0 1cqh rgba(111, 207, 143, 0.45),
+    0 1.2cqh 0 rgba(140, 80, 30, 0.35);
+}
+
+/* ─── The two thumbs ───────────────────────────────────────────────────── */
+.ryn-answers {
+  display: flex;
+  gap: 5cqw;
+}
+.ryn-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2cqh;
+  width: calc(var(--ryn-btn) * 2.1);
+  height: var(--ryn-btn);
+  padding: 0 2cqh;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s ease;
+}
+.ryn-btn--yes {
+  background: linear-gradient(#5fd38a, #2fae62);
+  box-shadow: 0 1cqh 0 #1f8547;
+}
+.ryn-btn--no {
+  background: linear-gradient(#ff8a5c, #ec5a32);
+  box-shadow: 0 1cqh 0 #b83f1d;
+}
+.ryn-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.ryn-btn:not(:disabled):active {
+  translate: 0 0.6cqh;
+}
+.ryn-btn.is-hint {
+  animation: ryn-hint 1.1s ease-in-out infinite;
+}
+@keyframes ryn-hint {
+  0%,
+  100% {
+    outline: 0.8cqh solid rgba(255, 210, 61, 0.95);
+    outline-offset: 0.4cqh;
+  }
+  50% {
+    outline: 0.8cqh solid rgba(255, 210, 61, 0.2);
+    outline-offset: 1.6cqh;
+  }
+}
+.ryn-thumb {
+  display: block;
+  height: 68%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 0.4cqh 0 rgba(0, 0, 0, 0.18));
+}
+.ryn-thumb--down {
+  transform: rotate(180deg);
+}
+.ryn-btn-word {
+  font-size: calc(var(--ryn-btn) * 0.36);
+  line-height: 1;
+  text-shadow: 0 0.3cqh 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ─── The home card's miniature (its own size container) ───────────────── */
+.ryn-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqw;
+}
+.ryn-mini-pic {
+  display: block;
+  width: 48cqh;
+  height: 48cqh;
+  padding: 4cqh;
+  border-radius: 22%;
+  background: #ffffff;
+  box-shadow: 0 2cqh 0 rgba(140, 80, 30, 0.25);
+}
+.ryn-mini-thumb {
+  display: block;
+  width: 30cqh;
+  height: 30cqh;
+  object-fit: contain;
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .ryn-play {
+    --ryn-card: min(40cqh, 24cqw);
+    --ryn-btn: max(64px, min(20cqh, 13cqw));
+  }
+  .ryn-board {
+    gap: 3.5cqh;
+  }
+}
+
+/* ─── A phone held upright: the board fills the height ─────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .ryn-play .ng-main {
+    bottom: 5cqh;
+  }
+  .ryn-play {
+    --ryn-card: min(40cqw, 26cqh);
+    --ryn-btn: max(64px, min(10cqh, 19cqw));
+  }
+  .ryn-board {
+    gap: 6cqh;
+  }
+  .ryn-answers {
+    gap: 5cqw;
+  }
+  .ryn-btn {
+    width: 40cqw;
+  }
+}

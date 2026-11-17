@@ -1,0 +1,44 @@
+[
+  {
+    "id": "fms-welcome",
+    "file": "/audio/finish-song/welcome.mp3",
+    "text": "Welcome to Finish My Song!"
+  },
+  { "id": "fms-done", "file": "/audio/finish-song/done.mp3", "text": "You finished every song!" },
+  {
+    "id": "fms-mode-sing",
+    "file": "/audio/finish-song/mode-sing.mp3",
+    "text": "Finish My Song! Listen, then tap the egg that rhymes."
+  },
+  { "id": "fms-ask", "file": "/audio/finish-song/ask.mp3", "text": "Which one finishes my song?" },
+  {
+    "id": "fms-song-1",
+    "file": "/audio/finish-song/song-1.mp3",
+    "text": "I saw a cat, wearing a…"
+  },
+  {
+    "id": "fms-song-2",
+    "file": "/audio/finish-song/song-2.mp3",
+    "text": "Look at the moon! I eat with a…"
+  },
+  {
+    "id": "fms-song-3",
+    "file": "/audio/finish-song/song-3.mp3",
+    "text": "A little green frog sat on a…"
+  },
+  {
+    "id": "fms-song-4",
+    "file": "/audio/finish-song/song-4.mp3",
+    "text": "Twinkle, little star, high above my…"
+  },
+  {
+    "id": "fms-song-5",
+    "file": "/audio/finish-song/song-5.mp3",
+    "text": "My little red hen has a big blue…"
+  },
+  {
+    "id": "fms-song-6",
+    "file": "/audio/finish-song/song-6.mp3",
+    "text": "A tiny grey mouse lives in a…"
+  }
+]

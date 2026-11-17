@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { LitSign, ShowPicture, ShowStage } from "@games/phonics-show/components/ShowStage";
+import { ShowGuideBar, ShowHand, lineText } from "@games/phonics-show/components/ShowGuide";
 import { ROUNDS, TOTAL_ROUNDS, oddOf } from "@games/odd-sound/constants/rounds";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useAfterVoice } from "@shared/hooks/useAfterVoice";
+import { useIdleHand } from "@shared/hooks/useIdleHand";
 import { wordClip } from "@shared/audio/wordClips";
 import { cheerFor } from "@shared/audio/cheers";
-import { playSequence, playSequenceChecked, stopVoice } from "@shared/audio/voice";
+import { clipText, playSequence, playSequenceChecked, stopVoice } from "@shared/audio/voice";
 import { playClickSound, playCorrectSound, playIncorrectSound } from "@shared/audio/sfx";
 
 /** The pause between the four names — long enough to hold each one in mind. */
@@ -23,9 +25,6 @@ interface OddRoundProps {
   onExitPortal: () => void;
 }
 
-/** 1…10, built once rather than on every render. */
-const SLOTS = Array.from({ length: TOTAL_ROUNDS }, (_, i) => i);
-
 /**
  * ONE ROUND — four pictures, one odd sound out.
  *
@@ -39,6 +38,11 @@ const SLOTS = Array.from({ length: TOTAL_ROUNDS }, (_, i) => i);
  * (three the same, one not — the lesson, made visible), and the odd word, its own first sound and a cheer are said ("cat… c") — never the other three's sound again. A
  * WRONG tap: that card goes red with a ✕, its word and its first sound are
  * said ("ball… b") so the child hears why it belongs, then "Try again!".
+ *
+ * The guide bar at the top shows the progress and the line being said (the
+ * four names, then the ask). Once the ask has been heard, a child who waits
+ * (7 s, or a moment on the run's first round — see FirstPlayHand) sees the
+ * teaching hand tap the odd one out.
  */
 export function OddRound({ index, onSolved, onBack, onExitPortal }: OddRoundProps) {
   const round = ROUNDS[index];
@@ -48,27 +52,41 @@ export function OddRound({ index, onSolved, onBack, onExitPortal }: OddRoundProp
   const [readyFor, setReadyFor] = useState<number | null>(null);
   const [chosen, setChosen] = useState<string | null>(null);
   const [wrong, setWrong] = useState<readonly string[]>([]);
+  /** The bar's line, once something other than the four names has been said this round. */
+  const [line, setLine] = useState<{ index: number; text: string } | null>(null);
   const missed = useRef(false);
+  const screenRef = useRef<HTMLDivElement>(null);
+  const oddRef = useRef<HTMLButtonElement>(null);
   const { thenAfter } = useAfterVoice();
   const ready = readyFor === index;
+
+  // the bar: the four names ("ball, cat, bus, bed") while they are said, then the ask
+  const namesText = round.pictures.map((p) => clipText(wordClip(p) ?? "") || p).join(", ");
+  const barText = line?.index === index ? line.text : namesText;
 
   /** Say the four names in turn (each card lifts as it is named), then `after`. */
   const nameAll = useCallback(
     (after: readonly string[], onDone: () => void) => {
       let alive = true;
       const ids = [...round.pictures.map((p) => wordClip(p) ?? ""), ...after];
+      const n = round.pictures.length;
       void playSequenceChecked(ids, NAME_GAP_MS, (i) => {
-        if (alive) setSpeaking(i < round.pictures.length ? i : null);
+        if (!alive) return;
+        setSpeaking(i < n ? i : null);
+        // the names on the bar while they are said, then the ask (the names again on a re-hear)
+        if (i === 0) setLine(null);
+        else if (i === n) setLine({ index, text: clipText(ASK) });
       }).then(() => {
         if (!alive) return;
         setSpeaking(null);
+        setLine({ index, text: clipText(ASK) });
         onDone();
       });
       return () => {
         alive = false;
       };
     },
-    [round]
+    [round, index]
   );
 
   // a new round: name the four, then ask
@@ -91,17 +109,18 @@ export function OddRound({ index, onSolved, onBack, onExitPortal }: OddRoundProp
         missed.current = true;
         setWrong((w) => [...w, picture]);
         playIncorrectSound();
-        void playSequence(
-          [...(said ? [said] : []), `phonics-${picture[0]}`, "instr-try-again"],
-          300
-        );
+        const lines = [...(said ? [said] : []), `phonics-${picture[0]}`, "instr-try-again"];
+        setLine({ index, text: lineText(lines) });
+        void playSequence(lines, 300);
         return;
       }
       setChosen(picture);
       playCorrectSound();
       const firstTap = !missed.current;
+      const lines = [...(said ? [said] : []), `phonics-${picture[0]}`, cheerFor(index + 11)];
+      setLine({ index, text: lineText(lines) });
       thenAfter(
-        [...(said ? [said] : []), `phonics-${picture[0]}`, cheerFor(index + 11)],
+        lines,
         () => {
           setChosen(null);
           setWrong([]);
@@ -116,8 +135,12 @@ export function OddRound({ index, onSolved, onBack, onExitPortal }: OddRoundProp
 
   const solved = chosen !== null;
 
+  // the teaching hand taps the odd one out for a child who is waiting
+  const handKey = `${index}-${wrong.length}`;
+  const idle = useIdleHand(ready && !solved && speaking === null, handKey);
+
   return (
-    <div className="pgs-screen odd-screen">
+    <div className="pgs-screen odd-screen" ref={screenRef}>
       <ShowStage />
 
       <NavPillButton
@@ -145,28 +168,8 @@ export function OddRound({ index, onSolved, onBack, onExitPortal }: OddRoundProp
         Back to Games
       </button>
 
-      <div className="pgs-topbar">
-        <div
-          className="pgs-progress"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={TOTAL_ROUNDS}
-          aria-valuenow={index}
-          aria-label={`${index} of ${TOTAL_ROUNDS} rounds done`}
-        >
-          {SLOTS.map((slot) => (
-            <span
-              key={slot}
-              className={`pgs-progress-seg ${slot < index ? "pgs-progress-seg--done" : ""} ${
-                slot === index ? "pgs-progress-seg--now" : ""
-              }`}
-            />
-          ))}
-        </div>
-        <span className="pgs-count font-rounded font-black">
-          {index + 1} <span className="pgs-count-of">of {TOTAL_ROUNDS}</span>
-        </span>
-      </div>
+      {/* the guide bar sits BETWEEN the two pinned pills, at the top centre */}
+      <ShowGuideBar index={index} total={TOTAL_ROUNDS} solved={solved} text={barText} />
 
       <motion.div
         className="odd-board"
@@ -194,6 +197,7 @@ export function OddRound({ index, onSolved, onBack, onExitPortal }: OddRoundProp
           {round.pictures.map((picture, i) => (
             <li key={picture}>
               <button
+                ref={picture === odd ? oddRef : undefined}
                 type="button"
                 className={`odd-card ${speaking === i ? "odd-card--named" : ""} ${
                   chosen === picture ? "odd-card--right" : ""
@@ -218,6 +222,8 @@ export function OddRound({ index, onSolved, onBack, onExitPortal }: OddRoundProp
           ))}
         </ul>
       </motion.div>
+
+      <ShowHand show={idle} resetKey={handKey} root={screenRef} target={oddRef} />
     </div>
   );
 }

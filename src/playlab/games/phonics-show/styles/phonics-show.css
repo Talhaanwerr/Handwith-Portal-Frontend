@@ -8,7 +8,8 @@
  * against the 100cqh they must fit in, at every screen shape.
  *
  * LAYOUT RULE: the two pinned pills (Back, Back to Games) own the top
- * corners, so every screen keeps its content below them.
+ * corners and, on a question, the shared guide bar sits between them, so
+ * every screen keeps its content below that row.
  */
 
 .pgs-root {
@@ -251,7 +252,7 @@
    the last picture card, low enough that it sits under the sign. */
 .pgs-host {
   position: absolute;
-  right: 10cqw;
+  right: 7cqw;
   bottom: 2cqh;
   z-index: 3;
   width: 24cqh;
@@ -305,9 +306,11 @@
 
 /* ── A question ──────────────────────────────────────────────────────────── */
 
+/* The top padding keeps the board under the guide bar (16px down, 44–60px
+   tall), the bottom padding matches it so the board sits mid-stage. */
 .pgs-screen {
   gap: 2.4cqh;
-  padding: max(62px, 10cqh) 15cqw 3cqh;
+  padding: max(84px, 11cqh) 15cqw max(24px, 3cqh);
 }
 
 /** The way out, top-right — the twin of the pinned Back pill. Placed and
@@ -324,51 +327,32 @@
   box-shadow: 0 clamp(2px, 0.5vmin, 5px) 0 rgba(75, 37, 119, 0.3);
 }
 
-.pgs-topbar {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  width: min(100%, 120cqh);
-  align-items: center;
-  gap: 2cqh;
+/* ── The guide bar's progress: one little key per question ──────────────── */
+
+/* The shared guide bar (pl-guidebar) sizes each of its markers as a 16–30px
+   square — right for four stars, far too wide for fifteen questions — so the
+   show passes ONE marker, this grid of small keys in two short rows. */
+.pgs-root .pl-guidebar .pl-guidebar-progress > .pgs-progress {
+  width: auto;
+  height: auto;
 }
 .pgs-progress {
-  display: flex;
-  flex: 1;
-  gap: 0.6cqh;
+  display: grid;
+  grid-template-columns: repeat(var(--pgs-cols, 8), auto);
+  gap: clamp(2px, 0.5cqmin, 4px);
 }
 .pgs-progress-seg {
-  flex: 1;
-  height: clamp(8px, 2.4cqh, 20px);
-  border: clamp(2px, 0.4cqh, 3px) solid #c9a7e8;
+  width: clamp(6px, 1.5cqmin, 12px);
+  height: clamp(5px, 1.1cqmin, 9px);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease;
+  background: #e3d3f3;
+  transition: background 0.25s ease;
 }
 .pgs-progress-seg--now {
-  border-color: #ff6fa8;
-  background: #ffe1ee;
+  background: #ff6fa8;
 }
 .pgs-progress-seg--done {
-  border-color: #1c7a45;
-  background: linear-gradient(#7fe0a0, #34a95a);
-}
-/** "3 of 15", on the show's pink tag. */
-.pgs-count {
-  flex: none;
-  padding: 0.5cqh 2cqh;
-  border-radius: 999px;
-  background: #ff6fa8;
-  font-size: clamp(13px, 3.8cqh, 26px);
-  line-height: 1.1;
-  color: #ffffff;
-  box-shadow: inset 0 -0.5cqh 0 rgba(0, 0, 0, 0.16);
-}
-.pgs-count-of {
-  font-size: 0.72em;
-  opacity: 0.92;
+  background: #34a95a;
 }
 
 /** The sign above, the three letters below. */
@@ -597,7 +581,7 @@
 @container pgs (max-height: 520px) and (min-aspect-ratio: 3 / 2) {
   .pgs-screen {
     gap: 2cqh;
-    padding: max(58px, 16cqh) 13cqw 4cqh;
+    padding: max(68px, 17cqh) 13cqw 4cqh;
   }
   .pgs-board {
     flex-direction: row;
@@ -646,8 +630,12 @@
   .pgs-curtain {
     width: 8cqw;
   }
+  /* the ring in the width's unit too, so the title sign fits a narrow phone */
+  .pgs-sign {
+    --pgs-ring: min(3.4cqh, 4cqw);
+  }
   .pgs-title {
-    font-size: 8cqw;
+    font-size: 7.4cqw;
   }
   .pgs-level {
     font-size: 4cqw;
@@ -682,5 +670,13 @@
   }
   .pgs-done-title {
     font-size: 7cqw;
+  }
+}
+
+/* A narrow stage: the guide bar drops under the pills (guide-bar.css), so the
+   board starts under it — 68px down, up to two lines tall. */
+@container pgs (max-width: 480px) {
+  .pgs-screen {
+    padding-top: 124px;
   }
 }

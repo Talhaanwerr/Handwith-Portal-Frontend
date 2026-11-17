@@ -189,6 +189,12 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
+  "colours-build": ["Tap each part to colour it.", "Then watch it drive away!"],
+  "colours-emergency": ["Tap each part to colour it.", "Then watch it rush off to help!"],
+  "colours-road": ["Tap each part to colour it.", "Then watch it drive away!"],
+  "colours-sea": ["Tap each part to colour it.", "Then watch it sail away!"],
+  "colours-sky": ["Tap each part to colour it.", "Then watch it fly away!"],
+  "colours-space": ["Tap each part to colour it.", "Then watch it zoom away!"],
   "counting-numbers": [
     "Count the things that you can see on the screen.",
     "Then tap or drag the right number to show how many.",
@@ -263,17 +269,17 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
   ],
   "feed-the-shark": {
     default: [
-      "Look at the little letter fish swimming around.",
-      "Then drag each fish to its big letter shark.",
+      "Look at the lowercase letter fish swimming around.",
+      "Then drag each fish to its uppercase letter shark.",
     ],
     modules: {
       one: [
-        "Drag the little fish over to its big letter shark.",
+        "Drag the little fish over to its uppercase letter shark.",
         "Feed both sharks, one fish at a time, to finish the round.",
       ],
       both: [
         "Two little fish swim around at the same time.",
-        "Drag each fish to its own big letter shark.",
+        "Drag each fish to its own uppercase letter shark.",
       ],
     },
   },
@@ -293,6 +299,7 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
+  "finish-song": ["Listen to the bird's song.", "Tap the egg that finishes the rhyme."],
   "food-sort": {
     default: [
       "Look carefully at all of the foods on the screen.",
@@ -317,6 +324,8 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
+  "fruit-easy": ["Drag each piece onto the plate.", "Make the fruit whole again!"],
+  "fruit-tricky": ["Drag all four pieces onto the plate.", "Fit each piece in its place."],
   "jigsaw-fun": [
     "Drag each puzzle piece onto the board, one at a time.",
     "Fit all of the pieces together to finish the picture.",
@@ -348,11 +357,11 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
     ],
     modules: {
       uppercase: [
-        "Pick a big letter that you would like to trace.",
+        "Pick a uppercase letter that you would like to trace.",
         "Then trace it slowly with your finger.",
       ],
       lowercase: [
-        "Pick a small letter that you would like to trace.",
+        "Pick a lowercase letter that you would like to trace.",
         "Then trace it slowly with your finger.",
       ],
       numbers: [
@@ -369,6 +378,7 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
     "Pick a letter that you would like to try.",
     "Then tap the picture that starts with that letter.",
   ],
+  "magic-hat": ["Listen to the word the hat wants.", "Drag the right letter into the hat."],
   "magnet-match": [
     "Look at the gray letters that are waiting on the screen.",
     "Then drag each magnet onto the letter that matches it.",
@@ -471,7 +481,7 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
   },
   "ocean-abc": {
     default: [
-      "Choose big or small letters, and then pick a letter.",
+      "Choose uppercase or lowercase letters, and then pick a letter.",
       "Then build it, pop it, or trace it.",
     ],
     modules: {
@@ -520,6 +530,13 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       sums: ["Count the dots on the ticket.", "Tap the seat with that number."],
     },
   },
+  "plane-snacks": {
+    default: ["Help the friends on the plane.", "Tap the picture they need."],
+    modules: {
+      snacks: ["Look at the snack in the bubble.", "Tap that snack on the trolley."],
+      window: ["Watch the window. Something flies past!", "Tap the picture of what you saw."],
+    },
+  },
   "plane-trip": {
     default: ["Look at the bag on the belt.", "Tap the friend with the same bag."],
     modules: {
@@ -543,6 +560,30 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
+  "rhyme-detective": [
+    "Listen to the word on the case file.",
+    "Tap the thing in the room that rhymes.",
+  ],
+  "rhyme-families": {
+    default: ["Listen to the word for the picture.", "Drag it to the house it rhymes with."],
+    modules: {
+      houses: ["Listen to the word for the picture.", "Drag it to the house it rhymes with."],
+    },
+  },
+  "rhyme-match": {
+    default: ["Listen to the word in the middle.", "Drag the picture that rhymes onto it."],
+    modules: {
+      match: ["Listen to the word in the middle.", "Drag the picture that rhymes onto it."],
+    },
+  },
+  "rhyme-or-not": {
+    default: ["Listen to the two words.", "Tap thumbs up if they rhyme, thumbs down if not."],
+    modules: {
+      rhyme: ["Listen to the two words.", "Tap thumbs up if they rhyme, thumbs down if not."],
+    },
+  },
+  "rhyme-rocket": ["Listen to the word on the rocket.", "Fly it to the planet that rhymes."],
+  "rhyme-train": ["Listen to each picture.", "Drag each friend to the carriage that rhymes."],
   "rocket-countdown": {
     default: [
       "Look carefully at the rocket on the screen.",
@@ -588,10 +629,15 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
+  "shape-circle": ["Tap and drag the circles.", "Find circles all around you!"],
   "shape-match": [
     "Match the shapes first, and then fit in the missing pieces.",
     "Drag each piece to the place where it belongs.",
   ],
+  "shape-rectangle": ["Tap and drag the rectangles.", "Find rectangles all around you!"],
+  "shape-square": ["Tap and drag the squares.", "Find squares all around you!"],
+  "shape-star": ["Tap and drag the stars.", "Find stars all around you!"],
+  "shape-triangle": ["Tap and drag the triangles.", "Find triangles all around you!"],
   "silly-robot": {
     default: [
       "Look carefully at the dots on the silly robot.",
@@ -608,6 +654,7 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
       ],
     },
   },
+  "silly-sandwich": ["Listen to the monster's word.", "Put the rhyming fillings on his bread."],
   "sound-show": [
     "Listen to the letter sound on the big sign.",
     "Then tap the picture that starts with that sound.",
@@ -694,6 +741,89 @@ export const HOW_TO_PLAY: Readonly<Record<string, HowToPlayEntry>> = {
     "Look carefully at the picture on the screen.",
     "Then tap the word that matches the picture.",
   ],
+  "words-animals": ["Look and listen to each word.", "Tap or drag the one I say."],
+  "words-food": ["Look and listen to each word.", "Tap or drag the one I say."],
+  "words-home": ["Look and listen to each word.", "Tap or drag the one I say."],
+  "words-out": ["Look and listen to each word.", "Tap or drag the one I say."],
+  "words-body": ["Look and listen to each word.", "Tap or drag the one I say."],
+  "word-builder-a": [
+    "Tap the letters to hear their sounds.",
+    "Then drag the letters to build the word.",
+  ],
+  "word-builder-e": [
+    "Tap the letters to hear their sounds.",
+    "Then drag the letters to build the word.",
+  ],
+  "word-builder-i": [
+    "Tap the letters to hear their sounds.",
+    "Then drag the letters to build the word.",
+  ],
+  "word-builder-o": [
+    "Tap the letters to hear their sounds.",
+    "Then drag the letters to build the word.",
+  ],
+  "word-builder-u": [
+    "Tap the letters to hear their sounds.",
+    "Then drag the letters to build the word.",
+  ],
+  "rainbow-words-red": [
+    "Listen to the word and tap it.",
+    "Then tap the word that fits the sentence.",
+  ],
+  "rainbow-words-orange": [
+    "Listen to the word and tap it.",
+    "Then tap the word that fits the sentence.",
+  ],
+  "rainbow-words-yellow": [
+    "Listen to the word and tap it.",
+    "Then tap the word that fits the sentence.",
+  ],
+  "rainbow-words-green": [
+    "Listen to the word and tap it.",
+    "Then tap the word that fits the sentence.",
+  ],
+  "rainbow-words-blue": [
+    "Listen to the word and tap it.",
+    "Then tap the word that fits the sentence.",
+  ],
+  "rainbow-words-indigo": [
+    "Listen to the word and tap it.",
+    "Then tap the word that fits the sentence.",
+  ],
+  "rainbow-words-violet": [
+    "Listen to the word and tap it.",
+    "Then tap the word that fits the sentence.",
+  ],
+  "our-world-animals": ["Drag each thing to where it belongs.", "Then tap the one I ask for."],
+  "our-world-sea": ["Drag each thing to where it belongs.", "Then tap the one I ask for."],
+  "our-world-road": ["Drag each thing to where it belongs.", "Then tap the one I ask for."],
+  "our-world-food": ["Drag each thing to where it belongs.", "Then tap the one I ask for."],
+  "our-world-play": ["Drag each thing to where it belongs.", "Then tap the one I ask for."],
+  "our-world-body": ["Drag each thing to where it belongs.", "Then tap the one I ask for."],
+  "sticker-studio-garden": [
+    "Drag the sticker I ask for into the picture.",
+    "Then make your own picture and tap Done.",
+  ],
+  "sticker-studio-space": [
+    "Drag the sticker I ask for into the picture.",
+    "Then make your own picture and tap Done.",
+  ],
+  "sticker-studio-farm": [
+    "Drag the sticker I ask for into the picture.",
+    "Then make your own picture and tap Done.",
+  ],
+  "sticker-studio-park": [
+    "Drag the sticker I ask for into the picture.",
+    "Then make your own picture and tap Done.",
+  ],
+  "sticker-studio-street": [
+    "Drag the sticker I ask for into the picture.",
+    "Then make your own picture and tap Done.",
+  ],
+  "sticker-studio-party": [
+    "Drag the sticker I ask for into the picture.",
+    "Then make your own picture and tap Done.",
+  ],
 };
 
 /** The lines to show for a game (and the module the child picked, if any). */
@@ -730,6 +860,12 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "car-garage",
   "color-paint",
   "color-shape-friends",
+  "colours-build",
+  "colours-emergency",
+  "colours-road",
+  "colours-sea",
+  "colours-sky",
+  "colours-space",
   "counting-numbers",
   "cvc-match",
   "dino-dig",
@@ -738,12 +874,16 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "feed-the-fish",
   "feed-the-shark",
   "find-the-mouse",
+  "finish-song",
   "food-sort",
+  "fruit-easy",
+  "fruit-tricky",
   "jigsaw-fun",
   "jungle-spy",
   "letter-hunt",
   "letter-tracing",
   "letter-treats",
+  "magic-hat",
   "magnet-match",
   "math-maze",
   "number-groups",
@@ -758,13 +898,26 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "pirate-match",
   "phonics-show",
   "plane-seats",
+  "plane-snacks",
   "plane-trip",
   "pond-numbers",
+  "rhyme-detective",
+  "rhyme-families",
+  "rhyme-match",
+  "rhyme-or-not",
+  "rhyme-rocket",
+  "rhyme-train",
   "rocket-countdown",
   "sesame-activities",
   "shadow-match",
+  "shape-circle",
   "shape-match",
+  "shape-rectangle",
+  "shape-square",
+  "shape-star",
+  "shape-triangle",
   "silly-robot",
+  "silly-sandwich",
   "sock-case",
   "sound-show",
   "sort-it",
@@ -774,4 +927,9 @@ export const GATED_GAMES: ReadonlySet<string> = new Set<string>([
   "tiny-toy-shop",
   "whats-inside",
   "word-quiz",
+  "words-animals",
+  "words-food",
+  "words-home",
+  "words-out",
+  "words-body",
 ]);

@@ -1,0 +1,674 @@
+AUDIO STILL TO RECORD — 157 lines (Nov 13 2026)
+Until each is recorded, the browser voice reads it.
+
+== Rhyme Time (6) ==
+Welcome to Rhyme Time!
+You can hear rhymes!
+Rhyme Time! Listen, then tap yes or no.
+Do they rhyme?
+Yes! They rhyme!
+No, they don't rhyme.
+
+== Rhyme Match (4) ==
+Welcome to Rhyme Match!
+You found every rhyme!
+Rhyme Match! Drag the picture that rhymes.
+Find the one that rhymes with
+
+== Rhyme Houses (4) ==
+Welcome to Rhyme Houses!
+Every picture is home!
+Rhyme Houses! Take each picture to the house it rhymes with.
+Which house?
+
+== Rhyme Rocket (5) ==
+Welcome to Rhyme Rocket!
+Zoom! You flew to every rhyme!
+Rhyme Rocket! Fly to the planet that rhymes.
+I fly to the planet that rhymes with
+Blast off!
+
+== Silly Sandwich (7) ==
+Welcome to Silly Sandwich!
+Yum! Munch is full. Thank you!
+Silly Sandwich! Give Munch things that rhyme.
+I want something that rhymes with
+Yum! One more!
+Yuck! Silly!
+Big bite! Chomp!
+
+== Rhyme Detective (6) ==
+Welcome to Rhyme Detective!
+Case closed! You found every rhyme!
+Rhyme Detective! Find the thing that rhymes.
+Find something that rhymes with
+Find two things that rhyme with
+Find one more!
+
+== Finish the Song (10) ==
+Welcome to Finish My Song!
+You finished every song!
+Finish My Song! Listen, then tap the egg that rhymes.
+Which one finishes my song?
+I saw a cat, wearing a…
+Look at the moon! I eat with a…
+A little green frog sat on a…
+Twinkle, little star, high above my…
+My little red hen has a big blue…
+A tiny grey mouse lives in a…
+
+== Magic Hat (5) ==
+Welcome to Magic Hat Swap!
+What a magic wizard you are!
+Magic Hat Swap! Put a letter in the hat to make a new word.
+Can you make
+They all rhyme!
+
+== Rhyme Train (5) ==
+Welcome to Rhyme Train Station!
+Every train got its riders!
+Rhyme Train! Put each friend in the carriage that rhymes.
+Who rides in which carriage?
+Toot toot! Off we go!
+
+== Paint My Ride (all six) (44) ==
+Car!
+Bus!
+Taxi!
+School bus!
+Ice cream van!
+Scooter!
+Out at sea! Let's colour boats and ships.
+Sailboat!
+Speedboat!
+Fishing boat!
+Submarine!
+Ship!
+Ferry!
+Up in the sky! Let's colour things that fly.
+Aeroplane!
+Helicopter!
+Biplane!
+Hot-air balloon!
+Airship!
+Off to space! Let's colour rockets.
+Rocket!
+Space shuttle!
+Satellite!
+Moon buggy!
+Flying saucer!
+To the rescue! Let's colour fire engines and police cars.
+Fire engine!
+Police car!
+Ambulance!
+Rescue helicopter!
+Lifeboat!
+Tow truck!
+Let's build! Let's colour diggers and trucks.
+Digger!
+Dump truck!
+Crane!
+Cement mixer!
+Bulldozer!
+Road roller!
+Tap each part!
+That one is white.
+That one is black.
+That one is grey.
+Welcome to Paint My Ride!
+
+== Shapes (all five lessons) (32) ==
+Welcome to My Shapes!
+Put it in its home!
+Circle! Let's learn the circle.
+Now you know circles!
+This is a circle! Tap it.
+Tap all the circles!
+Which one is a circle?
+Put the wheels on the car!
+Square! Let's learn the square.
+Now you know squares!
+This is a square! Tap it.
+Tap all the squares!
+Which one is a square?
+Put the windows on the house!
+Triangle! Let's learn the triangle.
+Now you know triangles!
+This is a triangle! Tap it.
+Tap all the triangles!
+Which one is a triangle?
+Put the sails on the boat!
+Rectangle! Let's learn the rectangle.
+Now you know rectangles!
+This is a rectangle! Tap it.
+Tap all the rectangles!
+Which one is a rectangle?
+Put the cars on the train!
+Star! Let's learn the star.
+Now you know stars!
+This is a star! Tap it.
+Tap all the stars!
+Which one is a star?
+Put the stars in the sky!
+
+== First Words (all five lessons) (21) ==
+Tap each one!
+Where is the
+Put it on its shadow!
+Peekaboo! Where is the
+Put the
+You learned new words!
+First words! Animals!
+Let’s learn animal words!
+in the barn!
+First words! Food!
+Let’s learn food words!
+in the basket!
+First words! At home!
+Let’s learn words for home!
+in the cupboard!
+First words! Out and about!
+Let’s learn words for outside!
+in the wagon!
+First words! Clothes!
+Let’s learn clothes words!
+in the wardrobe!
+
+== Tiny Toy Shop (8) ==
+1 teddy bear and 2 teddy bears. How many teddy bears?
+2 horses and 2 horses. How many horses?
+3 trains and 1 train. How many trains?
+2 balls and 2 balls. How many balls?
+3 drums and 2 drums. How many drums?
+4 teddy bears and 1 teddy bear. How many teddy bears?
+1 train and 4 trains. How many trains?
+3 balls and 2 balls. How many balls?
+
+
+----------------------------------------
+WHERE EACH ONE GOES (for patching)
+----------------------------------------
+== Rhyme Time ==
+  1. "Welcome to Rhyme Time!"
+     file: public/audio/rhyme-or-not/welcome.mp3
+     id:   ryn-welcome
+  2. "You can hear rhymes!"
+     file: public/audio/rhyme-or-not/done.mp3
+     id:   ryn-done
+  3. "Rhyme Time! Listen, then tap yes or no."
+     file: public/audio/rhyme-or-not/mode-rhyme.mp3
+     id:   ryn-mode-rhyme
+  4. "Do they rhyme?"
+     file: public/audio/rhyme-or-not/ask.mp3
+     id:   ryn-ask
+  5. "Yes! They rhyme!"
+     file: public/audio/rhyme-or-not/yes.mp3
+     id:   ryn-yes
+  6. "No, they don't rhyme."
+     file: public/audio/rhyme-or-not/no.mp3
+     id:   ryn-no
+== Rhyme Match ==
+  7. "Welcome to Rhyme Match!"
+     file: public/audio/rhyme-match/welcome.mp3
+     id:   rym-welcome
+  8. "You found every rhyme!"
+     file: public/audio/rhyme-match/done.mp3
+     id:   rym-done
+  9. "Rhyme Match! Drag the picture that rhymes."
+     file: public/audio/rhyme-match/mode-match.mp3
+     id:   rym-mode-match
+  10. "Find the one that rhymes with"
+     file: public/audio/rhyme-match/find.mp3
+     id:   rym-find
+== Rhyme Houses ==
+  11. "Welcome to Rhyme Houses!"
+     file: public/audio/rhyme-families/welcome.mp3
+     id:   ryh-welcome
+  12. "Every picture is home!"
+     file: public/audio/rhyme-families/done.mp3
+     id:   ryh-done
+  13. "Rhyme Houses! Take each picture to the house it rhymes with."
+     file: public/audio/rhyme-families/mode-houses.mp3
+     id:   ryh-mode-houses
+  14. "Which house?"
+     file: public/audio/rhyme-families/which.mp3
+     id:   ryh-which
+== Rhyme Rocket ==
+  15. "Welcome to Rhyme Rocket!"
+     file: public/audio/rhyme-rocket/welcome.mp3
+     id:   rrk-welcome
+  16. "Zoom! You flew to every rhyme!"
+     file: public/audio/rhyme-rocket/done.mp3
+     id:   rrk-done
+  17. "Rhyme Rocket! Fly to the planet that rhymes."
+     file: public/audio/rhyme-rocket/mode-fly.mp3
+     id:   rrk-mode-fly
+  18. "I fly to the planet that rhymes with"
+     file: public/audio/rhyme-rocket/fly.mp3
+     id:   rrk-fly
+  19. "Blast off!"
+     file: public/audio/rhyme-rocket/blast.mp3
+     id:   rrk-blast
+== Silly Sandwich ==
+  20. "Welcome to Silly Sandwich!"
+     file: public/audio/silly-sandwich/welcome.mp3
+     id:   ssw-welcome
+  21. "Yum! Munch is full. Thank you!"
+     file: public/audio/silly-sandwich/done.mp3
+     id:   ssw-done
+  22. "Silly Sandwich! Give Munch things that rhyme."
+     file: public/audio/silly-sandwich/mode-make.mp3
+     id:   ssw-mode-make
+  23. "I want something that rhymes with"
+     file: public/audio/silly-sandwich/want.mp3
+     id:   ssw-want
+  24. "Yum! One more!"
+     file: public/audio/silly-sandwich/more.mp3
+     id:   ssw-more
+  25. "Yuck! Silly!"
+     file: public/audio/silly-sandwich/yuck.mp3
+     id:   ssw-yuck
+  26. "Big bite! Chomp!"
+     file: public/audio/silly-sandwich/bite.mp3
+     id:   ssw-bite
+== Rhyme Detective ==
+  27. "Welcome to Rhyme Detective!"
+     file: public/audio/rhyme-detective/welcome.mp3
+     id:   rdt-welcome
+  28. "Case closed! You found every rhyme!"
+     file: public/audio/rhyme-detective/done.mp3
+     id:   rdt-done
+  29. "Rhyme Detective! Find the thing that rhymes."
+     file: public/audio/rhyme-detective/mode-find.mp3
+     id:   rdt-mode-find
+  30. "Find something that rhymes with"
+     file: public/audio/rhyme-detective/find.mp3
+     id:   rdt-find
+  31. "Find two things that rhyme with"
+     file: public/audio/rhyme-detective/find-two.mp3
+     id:   rdt-find-two
+  32. "Find one more!"
+     file: public/audio/rhyme-detective/more.mp3
+     id:   rdt-more
+== Finish the Song ==
+  33. "Welcome to Finish My Song!"
+     file: public/audio/finish-song/welcome.mp3
+     id:   fms-welcome
+  34. "You finished every song!"
+     file: public/audio/finish-song/done.mp3
+     id:   fms-done
+  35. "Finish My Song! Listen, then tap the egg that rhymes."
+     file: public/audio/finish-song/mode-sing.mp3
+     id:   fms-mode-sing
+  36. "Which one finishes my song?"
+     file: public/audio/finish-song/ask.mp3
+     id:   fms-ask
+  37. "I saw a cat, wearing a…"
+     file: public/audio/finish-song/song-1.mp3
+     id:   fms-song-1
+  38. "Look at the moon! I eat with a…"
+     file: public/audio/finish-song/song-2.mp3
+     id:   fms-song-2
+  39. "A little green frog sat on a…"
+     file: public/audio/finish-song/song-3.mp3
+     id:   fms-song-3
+  40. "Twinkle, little star, high above my…"
+     file: public/audio/finish-song/song-4.mp3
+     id:   fms-song-4
+  41. "My little red hen has a big blue…"
+     file: public/audio/finish-song/song-5.mp3
+     id:   fms-song-5
+  42. "A tiny grey mouse lives in a…"
+     file: public/audio/finish-song/song-6.mp3
+     id:   fms-song-6
+== Magic Hat ==
+  43. "Welcome to Magic Hat Swap!"
+     file: public/audio/magic-hat/welcome.mp3
+     id:   mht-welcome
+  44. "What a magic wizard you are!"
+     file: public/audio/magic-hat/done.mp3
+     id:   mht-done
+  45. "Magic Hat Swap! Put a letter in the hat to make a new word."
+     file: public/audio/magic-hat/mode-swap.mp3
+     id:   mht-mode-swap
+  46. "Can you make"
+     file: public/audio/magic-hat/make.mp3
+     id:   mht-make
+  47. "They all rhyme!"
+     file: public/audio/magic-hat/all-rhyme.mp3
+     id:   mht-all-rhyme
+== Rhyme Train ==
+  48. "Welcome to Rhyme Train Station!"
+     file: public/audio/rhyme-train/welcome.mp3
+     id:   rtr-welcome
+  49. "Every train got its riders!"
+     file: public/audio/rhyme-train/done.mp3
+     id:   rtr-done
+  50. "Rhyme Train! Put each friend in the carriage that rhymes."
+     file: public/audio/rhyme-train/mode-train.mp3
+     id:   rtr-mode-train
+  51. "Who rides in which carriage?"
+     file: public/audio/rhyme-train/who.mp3
+     id:   rtr-who
+  52. "Toot toot! Off we go!"
+     file: public/audio/rhyme-train/toot.mp3
+     id:   rtr-toot
+== Paint My Ride (all six) ==
+  53. "Car!"
+     file: public/audio/magic-colours/name-car.mp3
+     id:   mgc-name-car
+  54. "Bus!"
+     file: public/audio/magic-colours/name-bus.mp3
+     id:   mgc-name-bus
+  55. "Taxi!"
+     file: public/audio/magic-colours/name-taxi.mp3
+     id:   mgc-name-taxi
+  56. "School bus!"
+     file: public/audio/magic-colours/name-school-bus.mp3
+     id:   mgc-name-school-bus
+  57. "Ice cream van!"
+     file: public/audio/magic-colours/name-ice-cream-van.mp3
+     id:   mgc-name-ice-cream-van
+  58. "Scooter!"
+     file: public/audio/magic-colours/name-scooter.mp3
+     id:   mgc-name-scooter
+  59. "Out at sea! Let's colour boats and ships."
+     file: public/audio/magic-colours/mode-sea.mp3
+     id:   mgc-mode-sea
+  60. "Sailboat!"
+     file: public/audio/magic-colours/name-boat.mp3
+     id:   mgc-name-boat
+  61. "Speedboat!"
+     file: public/audio/magic-colours/name-speedboat.mp3
+     id:   mgc-name-speedboat
+  62. "Fishing boat!"
+     file: public/audio/magic-colours/name-fishing-boat.mp3
+     id:   mgc-name-fishing-boat
+  63. "Submarine!"
+     file: public/audio/magic-colours/name-submarine.mp3
+     id:   mgc-name-submarine
+  64. "Ship!"
+     file: public/audio/magic-colours/name-ship.mp3
+     id:   mgc-name-ship
+  65. "Ferry!"
+     file: public/audio/magic-colours/name-ferry.mp3
+     id:   mgc-name-ferry
+  66. "Up in the sky! Let's colour things that fly."
+     file: public/audio/magic-colours/mode-sky.mp3
+     id:   mgc-mode-sky
+  67. "Aeroplane!"
+     file: public/audio/magic-colours/name-plane.mp3
+     id:   mgc-name-plane
+  68. "Helicopter!"
+     file: public/audio/magic-colours/name-helicopter.mp3
+     id:   mgc-name-helicopter
+  69. "Biplane!"
+     file: public/audio/magic-colours/name-biplane.mp3
+     id:   mgc-name-biplane
+  70. "Hot-air balloon!"
+     file: public/audio/magic-colours/name-balloon.mp3
+     id:   mgc-name-balloon
+  71. "Airship!"
+     file: public/audio/magic-colours/name-airship.mp3
+     id:   mgc-name-airship
+  72. "Off to space! Let's colour rockets."
+     file: public/audio/magic-colours/mode-space.mp3
+     id:   mgc-mode-space
+  73. "Rocket!"
+     file: public/audio/magic-colours/name-rocket.mp3
+     id:   mgc-name-rocket
+  74. "Space shuttle!"
+     file: public/audio/magic-colours/name-shuttle.mp3
+     id:   mgc-name-shuttle
+  75. "Satellite!"
+     file: public/audio/magic-colours/name-satellite.mp3
+     id:   mgc-name-satellite
+  76. "Moon buggy!"
+     file: public/audio/magic-colours/name-moon-buggy.mp3
+     id:   mgc-name-moon-buggy
+  77. "Flying saucer!"
+     file: public/audio/magic-colours/name-ufo.mp3
+     id:   mgc-name-ufo
+  78. "To the rescue! Let's colour fire engines and police cars."
+     file: public/audio/magic-colours/mode-emergency.mp3
+     id:   mgc-mode-emergency
+  79. "Fire engine!"
+     file: public/audio/magic-colours/name-fire-engine.mp3
+     id:   mgc-name-fire-engine
+  80. "Police car!"
+     file: public/audio/magic-colours/name-police-car.mp3
+     id:   mgc-name-police-car
+  81. "Ambulance!"
+     file: public/audio/magic-colours/name-ambulance.mp3
+     id:   mgc-name-ambulance
+  82. "Rescue helicopter!"
+     file: public/audio/magic-colours/name-rescue-helicopter.mp3
+     id:   mgc-name-rescue-helicopter
+  83. "Lifeboat!"
+     file: public/audio/magic-colours/name-lifeboat.mp3
+     id:   mgc-name-lifeboat
+  84. "Tow truck!"
+     file: public/audio/magic-colours/name-tow-truck.mp3
+     id:   mgc-name-tow-truck
+  85. "Let's build! Let's colour diggers and trucks."
+     file: public/audio/magic-colours/mode-build.mp3
+     id:   mgc-mode-build
+  86. "Digger!"
+     file: public/audio/magic-colours/name-digger.mp3
+     id:   mgc-name-digger
+  87. "Dump truck!"
+     file: public/audio/magic-colours/name-dump-truck.mp3
+     id:   mgc-name-dump-truck
+  88. "Crane!"
+     file: public/audio/magic-colours/name-crane.mp3
+     id:   mgc-name-crane
+  89. "Cement mixer!"
+     file: public/audio/magic-colours/name-cement-mixer.mp3
+     id:   mgc-name-cement-mixer
+  90. "Bulldozer!"
+     file: public/audio/magic-colours/name-bulldozer.mp3
+     id:   mgc-name-bulldozer
+  91. "Road roller!"
+     file: public/audio/magic-colours/name-road-roller.mp3
+     id:   mgc-name-road-roller
+  92. "Tap each part!"
+     file: public/audio/magic-colours/tap-each.mp3
+     id:   mgc-tap-each
+  93. "That one is white."
+     file: public/audio/magic-colours/is-white.mp3
+     id:   mgc-is-white
+  94. "That one is black."
+     file: public/audio/magic-colours/is-black.mp3
+     id:   mgc-is-black
+  95. "That one is grey."
+     file: public/audio/magic-colours/is-grey.mp3
+     id:   mgc-is-grey
+  96. "Welcome to Paint My Ride!"
+     file: public/audio/magic-colours/paint-my-ride-welcome.mp3
+     id:   pmr-welcome
+== Shapes (all five lessons) ==
+  97. "Welcome to My Shapes!"
+     file: public/audio/my-shapes/welcome.mp3
+     id:   msh-welcome
+  98. "Put it in its home!"
+     file: public/audio/my-shapes/puzzle.mp3
+     id:   msh-puzzle
+  99. "Circle! Let's learn the circle."
+     file: public/audio/my-shapes/mode-circle.mp3
+     id:   msh-mode-circle
+  100. "Now you know circles!"
+     file: public/audio/my-shapes/done-circle.mp3
+     id:   msh-done-circle
+  101. "This is a circle! Tap it."
+     file: public/audio/my-shapes/meet-circle.mp3
+     id:   msh-meet-circle
+  102. "Tap all the circles!"
+     file: public/audio/my-shapes/all-circle.mp3
+     id:   msh-all-circle
+  103. "Which one is a circle?"
+     file: public/audio/my-shapes/which-circle.mp3
+     id:   msh-which-circle
+  104. "Put the wheels on the car!"
+     file: public/audio/my-shapes/build-circle.mp3
+     id:   msh-build-circle
+  105. "Square! Let's learn the square."
+     file: public/audio/my-shapes/mode-square.mp3
+     id:   msh-mode-square
+  106. "Now you know squares!"
+     file: public/audio/my-shapes/done-square.mp3
+     id:   msh-done-square
+  107. "This is a square! Tap it."
+     file: public/audio/my-shapes/meet-square.mp3
+     id:   msh-meet-square
+  108. "Tap all the squares!"
+     file: public/audio/my-shapes/all-square.mp3
+     id:   msh-all-square
+  109. "Which one is a square?"
+     file: public/audio/my-shapes/which-square.mp3
+     id:   msh-which-square
+  110. "Put the windows on the house!"
+     file: public/audio/my-shapes/build-square.mp3
+     id:   msh-build-square
+  111. "Triangle! Let's learn the triangle."
+     file: public/audio/my-shapes/mode-triangle.mp3
+     id:   msh-mode-triangle
+  112. "Now you know triangles!"
+     file: public/audio/my-shapes/done-triangle.mp3
+     id:   msh-done-triangle
+  113. "This is a triangle! Tap it."
+     file: public/audio/my-shapes/meet-triangle.mp3
+     id:   msh-meet-triangle
+  114. "Tap all the triangles!"
+     file: public/audio/my-shapes/all-triangle.mp3
+     id:   msh-all-triangle
+  115. "Which one is a triangle?"
+     file: public/audio/my-shapes/which-triangle.mp3
+     id:   msh-which-triangle
+  116. "Put the sails on the boat!"
+     file: public/audio/my-shapes/build-triangle.mp3
+     id:   msh-build-triangle
+  117. "Rectangle! Let's learn the rectangle."
+     file: public/audio/my-shapes/mode-rectangle.mp3
+     id:   msh-mode-rectangle
+  118. "Now you know rectangles!"
+     file: public/audio/my-shapes/done-rectangle.mp3
+     id:   msh-done-rectangle
+  119. "This is a rectangle! Tap it."
+     file: public/audio/my-shapes/meet-rectangle.mp3
+     id:   msh-meet-rectangle
+  120. "Tap all the rectangles!"
+     file: public/audio/my-shapes/all-rectangle.mp3
+     id:   msh-all-rectangle
+  121. "Which one is a rectangle?"
+     file: public/audio/my-shapes/which-rectangle.mp3
+     id:   msh-which-rectangle
+  122. "Put the cars on the train!"
+     file: public/audio/my-shapes/build-rectangle.mp3
+     id:   msh-build-rectangle
+  123. "Star! Let's learn the star."
+     file: public/audio/my-shapes/mode-star.mp3
+     id:   msh-mode-star
+  124. "Now you know stars!"
+     file: public/audio/my-shapes/done-star.mp3
+     id:   msh-done-star
+  125. "This is a star! Tap it."
+     file: public/audio/my-shapes/meet-star.mp3
+     id:   msh-meet-star
+  126. "Tap all the stars!"
+     file: public/audio/my-shapes/all-star.mp3
+     id:   msh-all-star
+  127. "Which one is a star?"
+     file: public/audio/my-shapes/which-star.mp3
+     id:   msh-which-star
+  128. "Put the stars in the sky!"
+     file: public/audio/my-shapes/build-star.mp3
+     id:   msh-build-star
+== First Words (all five lessons) ==
+  129. "Tap each one!"
+     file: public/audio/first-words/meet.mp3
+     id:   fw-meet
+  130. "Where is the"
+     file: public/audio/first-words/where.mp3
+     id:   fw-where
+  131. "Put it on its shadow!"
+     file: public/audio/first-words/shadow.mp3
+     id:   fw-shadow
+  132. "Peekaboo! Where is the"
+     file: public/audio/first-words/peek.mp3
+     id:   fw-peek
+  133. "Put the"
+     file: public/audio/first-words/put.mp3
+     id:   fw-put
+  134. "You learned new words!"
+     file: public/audio/first-words/done.mp3
+     id:   fw-done
+  135. "First words! Animals!"
+     file: public/audio/first-words/animals-welcome.mp3
+     id:   fw-animals-welcome
+  136. "Let’s learn animal words!"
+     file: public/audio/first-words/animals-mode.mp3
+     id:   fw-animals-mode
+  137. "in the barn!"
+     file: public/audio/first-words/in-barn.mp3
+     id:   fw-in-barn
+  138. "First words! Food!"
+     file: public/audio/first-words/food-welcome.mp3
+     id:   fw-food-welcome
+  139. "Let’s learn food words!"
+     file: public/audio/first-words/food-mode.mp3
+     id:   fw-food-mode
+  140. "in the basket!"
+     file: public/audio/first-words/in-basket.mp3
+     id:   fw-in-basket
+  141. "First words! At home!"
+     file: public/audio/first-words/home-welcome.mp3
+     id:   fw-home-welcome
+  142. "Let’s learn words for home!"
+     file: public/audio/first-words/home-mode.mp3
+     id:   fw-home-mode
+  143. "in the cupboard!"
+     file: public/audio/first-words/in-cupboard.mp3
+     id:   fw-in-cupboard
+  144. "First words! Out and about!"
+     file: public/audio/first-words/out-welcome.mp3
+     id:   fw-out-welcome
+  145. "Let’s learn words for outside!"
+     file: public/audio/first-words/out-mode.mp3
+     id:   fw-out-mode
+  146. "in the wagon!"
+     file: public/audio/first-words/in-wagon.mp3
+     id:   fw-in-wagon
+  147. "First words! Clothes!"
+     file: public/audio/first-words/clothes-welcome.mp3
+     id:   fw-clothes-welcome
+  148. "Let’s learn clothes words!"
+     file: public/audio/first-words/clothes-mode.mp3
+     id:   fw-clothes-mode
+  149. "in the wardrobe!"
+     file: public/audio/first-words/in-wardrobe.mp3
+     id:   fw-in-wardrobe
+== Tiny Toy Shop ==
+  150. "1 teddy bear and 2 teddy bears. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-1-2-bear.mp3
+     id:   tys-add-1-2-bear
+  151. "2 horses and 2 horses. How many horses?"
+     file: public/audio/tiny-toy-shop/add-2-2-horse.mp3
+     id:   tys-add-2-2-horse
+  152. "3 trains and 1 train. How many trains?"
+     file: public/audio/tiny-toy-shop/add-3-1-train.mp3
+     id:   tys-add-3-1-train
+  153. "2 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-2-2-ball.mp3
+     id:   tys-add-2-2-ball
+  154. "3 drums and 2 drums. How many drums?"
+     file: public/audio/tiny-toy-shop/add-3-2-drum.mp3
+     id:   tys-add-3-2-drum
+  155. "4 teddy bears and 1 teddy bear. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-4-1-bear.mp3
+     id:   tys-add-4-1-bear
+  156. "1 train and 4 trains. How many trains?"
+     file: public/audio/tiny-toy-shop/add-1-4-train.mp3
+     id:   tys-add-1-4-train
+  157. "3 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-3-2-ball.mp3
+     id:   tys-add-3-2-ball

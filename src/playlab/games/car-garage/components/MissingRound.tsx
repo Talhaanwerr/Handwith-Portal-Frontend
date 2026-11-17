@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playIncorrectSound, playSnapSound } from "@shared/audio/sfx";
-import { clipText, playClip, sayAfter } from "@shared/audio/voice";
+import { clipText, sayAfter } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { useIdleHand } from "@shared/hooks/useIdleHand";
 import { useScheduler } from "@shared/hooks/useScheduler";
@@ -24,6 +24,7 @@ import { CarBay, SpotBox, playHonk, useDriveOff } from "@games/car-garage/compon
 import { PieceArt } from "@games/car-garage/components/StepStrip";
 import { ODD_NAME, OddArt } from "@games/car-garage/components/OddArt";
 import { useCarDrag, type Verdict } from "@games/car-garage/hooks/useCarDrag";
+import { useSaidLine } from "@games/car-garage/hooks/useSaidLine";
 import {
   MISSING_ASK,
   MISSING_ROUNDS,
@@ -64,6 +65,7 @@ export function MissingRound({ round, title, onDone, onMiss, onHome, onExitPorta
   const [driving, setDriving] = useState(false);
   const schedule = useScheduler();
   const { controls, slotRef, drive } = useDriveOff(stageRef);
+  const { line: saidLine, say: sayLine, clear: clearLine } = useSaidLine();
 
   const cast = useMemo(
     () =>
@@ -87,11 +89,11 @@ export function MissingRound({ round, title, onDone, onMiss, onHome, onExitPorta
     (i: number) => {
       if (wrong.includes(i)) return;
       playIncorrectSound();
-      void playClip(NOT_THAT);
+      sayLine(NOT_THAT);
       setWrong((w) => [...w, i]);
       onMiss();
     },
-    [onMiss, wrong]
+    [onMiss, sayLine, wrong]
   );
 
   /** The part goes on: snap, confetti, the car wakes up and leaves. */
@@ -99,6 +101,7 @@ export function MissingRound({ round, title, onDone, onMiss, onHome, onExitPorta
     if (fixedRef.current) return null;
     fixedRef.current = true;
     setFixed(true);
+    clearLine();
     playSnapSound();
     burst(gapRef.current);
     playHonk();
@@ -110,7 +113,7 @@ export function MissingRound({ round, title, onDone, onMiss, onHome, onExitPorta
       drive();
     }, DRIVE_AT);
     return gapRef.current;
-  }, [burst, drive, finish, r.body, schedule]);
+  }, [burst, drive, finish, r.body, clearLine, schedule]);
 
   const judge = useCallback(
     (i: number): Verdict => {
@@ -155,7 +158,8 @@ export function MissingRound({ round, title, onDone, onMiss, onHome, onExitPorta
   const { homeOf } = drag;
   useEffect(() => {
     if (!idle) return;
-    void playClip("instr-watch-carefully");
+    // round one's hand comes by itself (guided) while the question is said
+    if (round > 0) sayLine("instr-watch-carefully");
     const measure = () => {
       const a = centreIn(stageRef.current, homeOf(`${right}`));
       const b = centreIn(stageRef.current, gapRef.current);
@@ -167,7 +171,7 @@ export function MissingRound({ round, title, onDone, onMiss, onHome, onExitPorta
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", measure);
     };
-  }, [idle, right, homeOf]);
+  }, [idle, right, homeOf, round, sayLine]);
 
   const { registerTarget } = drag;
   const registerGap = useCallback(
@@ -190,7 +194,7 @@ export function MissingRound({ round, title, onDone, onMiss, onHome, onExitPorta
       world={<GarageWorld />}
       round={round}
       solved={solved}
-      say={say(clipText(MISSING_ASK))}
+      say={saidLine ?? say(clipText(MISSING_ASK))}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

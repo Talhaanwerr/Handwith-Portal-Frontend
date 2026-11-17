@@ -7809,241 +7809,1635 @@
     "drb-welcome": {
       "file": "/audio/drum-beats/welcome.mp3",
       "text": "Welcome to Drum Beats!",
-      "speak": "Welcome to Drum Beats!",
-      "speakUntilRecorded": true
+      "speak": "Welcome to Drum Beats!"
     },
     "drb-mode-little": {
       "file": "/audio/drum-beats/mode-little.mp3",
       "text": "Little beats! Tap the drum.",
-      "speak": "Little beats! Tap the drum.",
-      "speakUntilRecorded": true
+      "speak": "Little beats! Tap the drum."
     },
     "drb-mode-big": {
       "file": "/audio/drum-beats/mode-big.mp3",
       "text": "Big beats! Tap the drum.",
-      "speak": "Big beats! Tap the drum.",
-      "speakUntilRecorded": true
+      "speak": "Big beats! Tap the drum."
     },
     "drb-tap-1": {
       "file": "/audio/drum-beats/tap-1.mp3",
       "text": "Tap the drum one time!",
-      "speak": "Tap the drum one time!",
-      "speakUntilRecorded": true
+      "speak": "Tap the drum one time!"
     },
     "drb-tap-2": {
       "file": "/audio/drum-beats/tap-2.mp3",
       "text": "Tap the drum two times!",
-      "speak": "Tap the drum two times!",
-      "speakUntilRecorded": true
+      "speak": "Tap the drum two times!"
     },
     "drb-tap-3": {
       "file": "/audio/drum-beats/tap-3.mp3",
       "text": "Tap the drum three times!",
-      "speak": "Tap the drum three times!",
-      "speakUntilRecorded": true
+      "speak": "Tap the drum three times!"
     },
     "drb-tap-4": {
       "file": "/audio/drum-beats/tap-4.mp3",
       "text": "Tap the drum four times!",
-      "speak": "Tap the drum four times!",
-      "speakUntilRecorded": true
+      "speak": "Tap the drum four times!"
     },
     "drb-more-2": {
       "file": "/audio/drum-beats/more-2.mp3",
       "text": "Now two more!",
-      "speak": "Now two more!",
-      "speakUntilRecorded": true
+      "speak": "Now two more!"
     },
     "drb-more-3": {
       "file": "/audio/drum-beats/more-3.mp3",
       "text": "Now three more!",
-      "speak": "Now three more!",
-      "speakUntilRecorded": true
+      "speak": "Now three more!"
     },
     "pls-welcome": {
       "file": "/audio/plane-seats/welcome.mp3",
       "text": "Welcome aboard Plane Seats!",
-      "speak": "Welcome aboard Plane Seats!",
-      "speakUntilRecorded": true
+      "speak": "Welcome aboard Plane Seats!"
     },
     "pls-done": {
       "file": "/audio/plane-seats/done.mp3",
       "text": "Everyone is in their seat!",
-      "speak": "Everyone is in their seat!",
-      "speakUntilRecorded": true
+      "speak": "Everyone is in their seat!"
     },
     "pls-mode-number": {
       "file": "/audio/plane-seats/mode-number.mp3",
       "text": "Seat numbers! Find the seat on the ticket.",
-      "speak": "Seat numbers! Find the seat on the ticket.",
-      "speakUntilRecorded": true
+      "speak": "Seat numbers! Find the seat on the ticket."
     },
     "pls-mode-sums": {
       "file": "/audio/plane-seats/mode-sums.mp3",
       "text": "Ticket sums! Add them up to find the seat.",
-      "speak": "Ticket sums! Add them up to find the seat.",
-      "speakUntilRecorded": true
+      "speak": "Ticket sums! Add them up to find the seat."
     },
     "pls-find": {
       "file": "/audio/plane-seats/find.mp3",
       "text": "Find the seat with this number!",
-      "speak": "Find the seat with this number!",
-      "speakUntilRecorded": true
+      "speak": "Find the seat with this number!"
     },
     "pls-add": {
       "file": "/audio/plane-seats/add.mp3",
       "text": "Add up the ticket. Find the seat!",
-      "speak": "Add up the ticket. Find the seat!",
-      "speakUntilRecorded": true
+      "speak": "Add up the ticket. Find the seat!"
     },
     "bjl-welcome": {
       "file": "/audio/burj-lift/welcome.mp3",
       "text": "Welcome to the Burj Lift!",
-      "speak": "Welcome to the Burj Lift!",
-      "speakUntilRecorded": true
+      "speak": "Welcome to the Burj Lift!"
     },
     "bjl-done": {
       "file": "/audio/burj-lift/done.mp3",
       "text": "Everyone got to their floor!",
-      "speak": "Everyone got to their floor!",
-      "speakUntilRecorded": true
+      "speak": "Everyone got to their floor!"
     },
     "bjl-mode-updown": {
       "file": "/audio/burj-lift/mode-updown.mp3",
       "text": "Up or Down? Take everyone to their floor.",
-      "speak": "Up or Down? Take everyone to their floor.",
-      "speakUntilRecorded": true
+      "speak": "Up or Down? Take everyone to their floor."
     },
     "bjl-mode-match": {
       "file": "/audio/burj-lift/mode-match.mp3",
       "text": "Picture Floors! Match the balloon to its floor.",
-      "speak": "Picture Floors! Match the balloon to its floor.",
-      "speakUntilRecorded": true
+      "speak": "Picture Floors! Match the balloon to its floor."
     },
     "bjl-up-or-down": {
       "file": "/audio/burj-lift/up-or-down.mp3",
       "text": "Up or down?",
-      "speak": "Up or down?",
-      "speakUntilRecorded": true
+      "speak": "Up or down?"
     },
     "bjl-going-up": {
       "file": "/audio/burj-lift/going-up.mp3",
       "text": "Going up!",
-      "speak": "Going up!",
-      "speakUntilRecorded": true
+      "speak": "Going up!"
     },
     "bjl-going-down": {
       "file": "/audio/burj-lift/going-down.mp3",
       "text": "Going down!",
-      "speak": "Going down!",
-      "speakUntilRecorded": true
+      "speak": "Going down!"
     },
     "bjt-welcome": {
       "file": "/audio/burj-towers/welcome.mp3",
       "text": "Welcome to Tallest Tower!",
-      "speak": "Welcome to Tallest Tower!",
-      "speakUntilRecorded": true
+      "speak": "Welcome to Tallest Tower!"
     },
     "bjt-done": {
       "file": "/audio/burj-towers/done.mp3",
       "text": "You know tall and short!",
-      "speak": "You know tall and short!",
-      "speakUntilRecorded": true
+      "speak": "You know tall and short!"
     },
     "bjt-mode-tallshort": {
       "file": "/audio/burj-towers/mode-tallshort.mp3",
       "text": "Tall or Short? Find the tall tower and the short one.",
-      "speak": "Tall or Short? Find the tall tower and the short one.",
-      "speakUntilRecorded": true
+      "speak": "Tall or Short? Find the tall tower and the short one."
     },
     "bjt-mode-order": {
       "file": "/audio/burj-towers/mode-order.mp3",
       "text": "Line Them Up! Put the towers in order.",
-      "speak": "Line Them Up! Put the towers in order.",
-      "speakUntilRecorded": true
+      "speak": "Line Them Up! Put the towers in order."
     },
     "bjt-which-taller": {
       "file": "/audio/burj-towers/which-taller.mp3",
       "text": "Which tower is taller?",
-      "speak": "Which tower is taller?",
-      "speakUntilRecorded": true
+      "speak": "Which tower is taller?"
     },
     "bjt-which-shorter": {
       "file": "/audio/burj-towers/which-shorter.mp3",
       "text": "Which tower is shorter?",
-      "speak": "Which tower is shorter?",
-      "speakUntilRecorded": true
+      "speak": "Which tower is shorter?"
     },
     "bjt-order": {
       "file": "/audio/burj-towers/order.mp3",
       "text": "Put them in order, from short to tall!",
-      "speak": "Put them in order, from short to tall!",
-      "speakUntilRecorded": true
+      "speak": "Put them in order, from short to tall!"
     },
     "bjt-in-order": {
       "file": "/audio/burj-towers/in-order.mp3",
       "text": "Short, taller, tallest!",
-      "speak": "Short, taller, tallest!",
-      "speakUntilRecorded": true
+      "speak": "Short, taller, tallest!"
     },
     "ptr-welcome": {
       "file": "/audio/plane-trip/welcome.mp3",
       "text": "Welcome to Plane Trip!",
-      "speak": "Welcome to Plane Trip!",
-      "speakUntilRecorded": true
+      "speak": "Welcome to Plane Trip!"
     },
     "ptr-done": {
       "file": "/audio/plane-trip/done.mp3",
       "text": "Have a happy trip!",
-      "speak": "Have a happy trip!",
-      "speakUntilRecorded": true
+      "speak": "Have a happy trip!"
     },
     "ptr-mode-bags": {
       "file": "/audio/plane-trip/mode-bags.mp3",
       "text": "Bag match! Give each bag to its owner.",
-      "speak": "Bag match! Give each bag to its owner.",
-      "speakUntilRecorded": true
+      "speak": "Bag match! Give each bag to its owner."
     },
     "ptr-mode-pack": {
       "file": "/audio/plane-trip/mode-pack.mp3",
       "text": "Pack for the trip! Sunny or snowy?",
-      "speak": "Pack for the trip! Sunny or snowy?",
-      "speakUntilRecorded": true
+      "speak": "Pack for the trip! Sunny or snowy?"
     },
     "ptr-whose": {
       "file": "/audio/plane-trip/whose.mp3",
       "text": "Whose bag is this?",
-      "speak": "Whose bag is this?",
-      "speakUntilRecorded": true
+      "speak": "Whose bag is this?"
     },
     "ptr-yours": {
       "file": "/audio/plane-trip/yours.mp3",
       "text": "Here's your bag!",
-      "speak": "Here's your bag!",
-      "speakUntilRecorded": true
+      "speak": "Here's your bag!"
     },
     "ptr-where": {
       "file": "/audio/plane-trip/where.mp3",
       "text": "Where does it go?",
-      "speak": "Where does it go?",
-      "speakUntilRecorded": true
+      "speak": "Where does it go?"
     },
     "ptr-sunny": {
       "file": "/audio/plane-trip/sunny.mp3",
       "text": "The sunny suitcase!",
-      "speak": "The sunny suitcase!",
-      "speakUntilRecorded": true
+      "speak": "The sunny suitcase!"
     },
     "ptr-snowy": {
       "file": "/audio/plane-trip/snowy.mp3",
       "text": "The snowy suitcase!",
-      "speak": "The snowy suitcase!",
-      "speakUntilRecorded": true
+      "speak": "The snowy suitcase!"
     },
     "ptr-takeoff": {
       "file": "/audio/plane-trip/takeoff.mp3",
       "text": "All packed! Off we go!",
-      "speak": "All packed! Off we go!",
+      "speak": "All packed! Off we go!"
+    },
+    "psn-welcome": {
+      "file": "/audio/plane-snacks/welcome.mp3",
+      "text": "Welcome aboard! It's snack time in the sky!",
+      "speak": "Welcome aboard! It's snack time in the sky!"
+    },
+    "psn-done": {
+      "file": "/audio/plane-snacks/done.mp3",
+      "text": "What a happy flight!",
+      "speak": "What a happy flight!"
+    },
+    "psn-mode-snacks": {
+      "file": "/audio/plane-snacks/mode-snacks.mp3",
+      "text": "Snack Trolley! Give each friend the snack they want.",
+      "speak": "Snack Trolley! Give each friend the snack they want."
+    },
+    "psn-mode-window": {
+      "file": "/audio/plane-snacks/mode-window.mp3",
+      "text": "Window Spy! Watch what flies past the window.",
+      "speak": "Window Spy! Watch what flies past the window."
+    },
+    "psn-what-want": {
+      "file": "/audio/plane-snacks/what-want.mp3",
+      "text": "What does this friend want?",
+      "speak": "What does this friend want?"
+    },
+    "mgc-welcome": {
+      "file": "/audio/magic-colours/welcome.mp3",
+      "text": "Welcome to Magic Colours!",
+      "speak": "Welcome to Magic Colours!"
+    },
+    "mgc-done": {
+      "file": "/audio/magic-colours/done.mp3",
+      "text": "You coloured them all!",
+      "speak": "You coloured them all!"
+    },
+    "mgc-mode-roads": {
+      "file": "/audio/magic-colours/mode-roads.mp3",
+      "text": "On the Road! Let's colour cars and trucks.",
+      "speak": "On the Road! Let's colour cars and trucks."
+    },
+    "mgc-mode-sky-sea": {
+      "file": "/audio/magic-colours/mode-sky-sea.mp3",
+      "text": "Sky and Sea! Let's colour planes and boats.",
+      "speak": "Sky and Sea! Let's colour planes and boats."
+    },
+    "mgc-car": {
+      "file": "/audio/magic-colours/car.mp3",
+      "text": "Colour the car! Tap each part.",
+      "speak": "Colour the car! Tap each part."
+    },
+    "mgc-bus": {
+      "file": "/audio/magic-colours/bus.mp3",
+      "text": "Colour the bus! Tap each part.",
+      "speak": "Colour the bus! Tap each part."
+    },
+    "mgc-fire-engine": {
+      "file": "/audio/magic-colours/fire-engine.mp3",
+      "text": "Colour the fire engine! Tap each part.",
+      "speak": "Colour the fire engine! Tap each part."
+    },
+    "mgc-tractor": {
+      "file": "/audio/magic-colours/tractor.mp3",
+      "text": "Colour the tractor! Tap each part.",
+      "speak": "Colour the tractor! Tap each part."
+    },
+    "mgc-plane": {
+      "file": "/audio/magic-colours/plane.mp3",
+      "text": "Colour the aeroplane! Tap each part.",
+      "speak": "Colour the aeroplane! Tap each part."
+    },
+    "mgc-boat": {
+      "file": "/audio/magic-colours/boat.mp3",
+      "text": "Colour the sailboat! Tap each part.",
+      "speak": "Colour the sailboat! Tap each part."
+    },
+    "mgc-helicopter": {
+      "file": "/audio/magic-colours/helicopter.mp3",
+      "text": "Colour the helicopter! Tap each part.",
+      "speak": "Colour the helicopter! Tap each part."
+    },
+    "mgc-balloon": {
+      "file": "/audio/magic-colours/balloon.mp3",
+      "text": "Colour the balloon! Tap each part.",
+      "speak": "Colour the balloon! Tap each part."
+    },
+    "frp-welcome": {
+      "file": "/audio/fruit-puzzles/welcome.mp3",
+      "text": "Welcome to Fruit Puzzles!",
+      "speak": "Welcome to Fruit Puzzles!"
+    },
+    "frp-done": {
+      "file": "/audio/fruit-puzzles/done.mp3",
+      "text": "You fixed all the fruit!",
+      "speak": "You fixed all the fruit!"
+    },
+    "frp-mode-easy": {
+      "file": "/audio/fruit-puzzles/mode-easy.mp3",
+      "text": "Easy Puzzles! Just a few big pieces.",
+      "speak": "Easy Puzzles! Just a few big pieces."
+    },
+    "frp-mode-tricky": {
+      "file": "/audio/fruit-puzzles/mode-tricky.mp3",
+      "text": "Tricky Puzzles! Four pieces each.",
+      "speak": "Tricky Puzzles! Four pieces each."
+    },
+    "frp-put": {
+      "file": "/audio/fruit-puzzles/put.mp3",
+      "text": "Put the fruit back together!",
+      "speak": "Put the fruit back together!"
+    },
+    "ryn-welcome": {
+      "file": "/audio/rhyme-or-not/welcome.mp3",
+      "text": "Welcome to Rhyme Time!",
+      "speak": "Welcome to Rhyme Time!"
+    },
+    "ryn-done": {
+      "file": "/audio/rhyme-or-not/done.mp3",
+      "text": "You can hear rhymes!",
+      "speak": "You can hear rhymes!"
+    },
+    "ryn-mode-rhyme": {
+      "file": "/audio/rhyme-or-not/mode-rhyme.mp3",
+      "text": "Rhyme Time! Listen, then tap yes or no.",
+      "speak": "Rhyme Time! Listen, then tap yes or no."
+    },
+    "ryn-ask": {
+      "file": "/audio/rhyme-or-not/ask.mp3",
+      "text": "Do they rhyme?",
+      "speak": "Do they rhyme?"
+    },
+    "ryn-yes": {
+      "file": "/audio/rhyme-or-not/yes.mp3",
+      "text": "Yes! They rhyme!",
+      "speak": "Yes! They rhyme!"
+    },
+    "ryn-no": {
+      "file": "/audio/rhyme-or-not/no.mp3",
+      "text": "No, they don't rhyme.",
+      "speak": "No, they don't rhyme."
+    },
+    "rym-welcome": {
+      "file": "/audio/rhyme-match/welcome.mp3",
+      "text": "Welcome to Rhyme Match!",
+      "speak": "Welcome to Rhyme Match!"
+    },
+    "rym-done": {
+      "file": "/audio/rhyme-match/done.mp3",
+      "text": "You found every rhyme!",
+      "speak": "You found every rhyme!"
+    },
+    "rym-mode-match": {
+      "file": "/audio/rhyme-match/mode-match.mp3",
+      "text": "Rhyme Match! Drag the picture that rhymes.",
+      "speak": "Rhyme Match! Drag the picture that rhymes."
+    },
+    "rym-find": {
+      "file": "/audio/rhyme-match/find.mp3",
+      "text": "Find the one that rhymes with",
+      "speak": "Find the one that rhymes with"
+    },
+    "ryh-welcome": {
+      "file": "/audio/rhyme-families/welcome.mp3",
+      "text": "Welcome to Rhyme Houses!",
+      "speak": "Welcome to Rhyme Houses!"
+    },
+    "ryh-done": {
+      "file": "/audio/rhyme-families/done.mp3",
+      "text": "Every picture is home!",
+      "speak": "Every picture is home!"
+    },
+    "ryh-mode-houses": {
+      "file": "/audio/rhyme-families/mode-houses.mp3",
+      "text": "Rhyme Houses! Take each picture to the house it rhymes with.",
+      "speak": "Rhyme Houses! Take each picture to the house it rhymes with."
+    },
+    "ryh-which": {
+      "file": "/audio/rhyme-families/which.mp3",
+      "text": "Which house?",
+      "speak": "Which house?"
+    },
+    "mgc-name-car": {
+      "file": "/audio/magic-colours/name-car.mp3",
+      "text": "Car!",
+      "speak": "Car!"
+    },
+    "mgc-name-bus": {
+      "file": "/audio/magic-colours/name-bus.mp3",
+      "text": "Bus!",
+      "speak": "Bus!"
+    },
+    "mgc-name-taxi": {
+      "file": "/audio/magic-colours/name-taxi.mp3",
+      "text": "Taxi!",
+      "speak": "Taxi!"
+    },
+    "mgc-name-school-bus": {
+      "file": "/audio/magic-colours/name-school-bus.mp3",
+      "text": "School bus!",
+      "speak": "School bus!"
+    },
+    "mgc-name-ice-cream-van": {
+      "file": "/audio/magic-colours/name-ice-cream-van.mp3",
+      "text": "Ice cream van!",
+      "speak": "Ice cream van!"
+    },
+    "mgc-name-scooter": {
+      "file": "/audio/magic-colours/name-scooter.mp3",
+      "text": "Scooter!",
+      "speak": "Scooter!"
+    },
+    "mgc-mode-sea": {
+      "file": "/audio/magic-colours/mode-sea.mp3",
+      "text": "Out at sea! Let's colour boats and ships.",
+      "speak": "Out at sea! Let's colour boats and ships."
+    },
+    "mgc-name-boat": {
+      "file": "/audio/magic-colours/name-boat.mp3",
+      "text": "Sailboat!",
+      "speak": "Sailboat!"
+    },
+    "mgc-name-speedboat": {
+      "file": "/audio/magic-colours/name-speedboat.mp3",
+      "text": "Speedboat!",
+      "speak": "Speedboat!"
+    },
+    "mgc-name-fishing-boat": {
+      "file": "/audio/magic-colours/name-fishing-boat.mp3",
+      "text": "Fishing boat!",
+      "speak": "Fishing boat!"
+    },
+    "mgc-name-submarine": {
+      "file": "/audio/magic-colours/name-submarine.mp3",
+      "text": "Submarine!",
+      "speak": "Submarine!"
+    },
+    "mgc-name-ship": {
+      "file": "/audio/magic-colours/name-ship.mp3",
+      "text": "Ship!",
+      "speak": "Ship!"
+    },
+    "mgc-name-ferry": {
+      "file": "/audio/magic-colours/name-ferry.mp3",
+      "text": "Ferry!",
+      "speak": "Ferry!"
+    },
+    "mgc-mode-sky": {
+      "file": "/audio/magic-colours/mode-sky.mp3",
+      "text": "Up in the sky! Let's colour things that fly.",
+      "speak": "Up in the sky! Let's colour things that fly."
+    },
+    "mgc-name-plane": {
+      "file": "/audio/magic-colours/name-plane.mp3",
+      "text": "Aeroplane!",
+      "speak": "Aeroplane!"
+    },
+    "mgc-name-helicopter": {
+      "file": "/audio/magic-colours/name-helicopter.mp3",
+      "text": "Helicopter!",
+      "speak": "Helicopter!"
+    },
+    "mgc-name-biplane": {
+      "file": "/audio/magic-colours/name-biplane.mp3",
+      "text": "Biplane!",
+      "speak": "Biplane!"
+    },
+    "mgc-name-balloon": {
+      "file": "/audio/magic-colours/name-balloon.mp3",
+      "text": "Hot-air balloon!",
+      "speak": "Hot-air balloon!"
+    },
+    "mgc-name-airship": {
+      "file": "/audio/magic-colours/name-airship.mp3",
+      "text": "Airship!",
+      "speak": "Airship!"
+    },
+    "mgc-mode-space": {
+      "file": "/audio/magic-colours/mode-space.mp3",
+      "text": "Off to space! Let's colour rockets.",
+      "speak": "Off to space! Let's colour rockets."
+    },
+    "mgc-name-rocket": {
+      "file": "/audio/magic-colours/name-rocket.mp3",
+      "text": "Rocket!",
+      "speak": "Rocket!"
+    },
+    "mgc-name-shuttle": {
+      "file": "/audio/magic-colours/name-shuttle.mp3",
+      "text": "Space shuttle!",
+      "speak": "Space shuttle!"
+    },
+    "mgc-name-satellite": {
+      "file": "/audio/magic-colours/name-satellite.mp3",
+      "text": "Satellite!",
+      "speak": "Satellite!"
+    },
+    "mgc-name-moon-buggy": {
+      "file": "/audio/magic-colours/name-moon-buggy.mp3",
+      "text": "Moon buggy!",
+      "speak": "Moon buggy!"
+    },
+    "mgc-name-ufo": {
+      "file": "/audio/magic-colours/name-ufo.mp3",
+      "text": "Flying saucer!",
+      "speak": "Flying saucer!"
+    },
+    "mgc-mode-emergency": {
+      "file": "/audio/magic-colours/mode-emergency.mp3",
+      "text": "To the rescue! Let's colour fire engines and police cars.",
+      "speak": "To the rescue! Let's colour fire engines and police cars."
+    },
+    "mgc-name-fire-engine": {
+      "file": "/audio/magic-colours/name-fire-engine.mp3",
+      "text": "Fire engine!",
+      "speak": "Fire engine!"
+    },
+    "mgc-name-police-car": {
+      "file": "/audio/magic-colours/name-police-car.mp3",
+      "text": "Police car!",
+      "speak": "Police car!"
+    },
+    "mgc-name-ambulance": {
+      "file": "/audio/magic-colours/name-ambulance.mp3",
+      "text": "Ambulance!",
+      "speak": "Ambulance!"
+    },
+    "mgc-name-rescue-helicopter": {
+      "file": "/audio/magic-colours/name-rescue-helicopter.mp3",
+      "text": "Rescue helicopter!",
+      "speak": "Rescue helicopter!"
+    },
+    "mgc-name-lifeboat": {
+      "file": "/audio/magic-colours/name-lifeboat.mp3",
+      "text": "Lifeboat!",
+      "speak": "Lifeboat!"
+    },
+    "mgc-name-tow-truck": {
+      "file": "/audio/magic-colours/name-tow-truck.mp3",
+      "text": "Tow truck!",
+      "speak": "Tow truck!"
+    },
+    "mgc-mode-build": {
+      "file": "/audio/magic-colours/mode-build.mp3",
+      "text": "Let's build! Let's colour diggers and trucks.",
+      "speak": "Let's build! Let's colour diggers and trucks."
+    },
+    "mgc-name-digger": {
+      "file": "/audio/magic-colours/name-digger.mp3",
+      "text": "Digger!",
+      "speak": "Digger!"
+    },
+    "mgc-name-dump-truck": {
+      "file": "/audio/magic-colours/name-dump-truck.mp3",
+      "text": "Dump truck!",
+      "speak": "Dump truck!"
+    },
+    "mgc-name-crane": {
+      "file": "/audio/magic-colours/name-crane.mp3",
+      "text": "Crane!",
+      "speak": "Crane!"
+    },
+    "mgc-name-cement-mixer": {
+      "file": "/audio/magic-colours/name-cement-mixer.mp3",
+      "text": "Cement mixer!",
+      "speak": "Cement mixer!"
+    },
+    "mgc-name-bulldozer": {
+      "file": "/audio/magic-colours/name-bulldozer.mp3",
+      "text": "Bulldozer!",
+      "speak": "Bulldozer!"
+    },
+    "mgc-name-road-roller": {
+      "file": "/audio/magic-colours/name-road-roller.mp3",
+      "text": "Road roller!",
+      "speak": "Road roller!"
+    },
+    "mgc-tap-each": {
+      "file": "/audio/magic-colours/tap-each.mp3",
+      "text": "Tap each part!",
+      "speak": "Tap each part!"
+    },
+    "mgc-is-white": {
+      "file": "/audio/magic-colours/is-white.mp3",
+      "text": "That one is white.",
+      "speak": "That one is white."
+    },
+    "mgc-is-black": {
+      "file": "/audio/magic-colours/is-black.mp3",
+      "text": "That one is black.",
+      "speak": "That one is black."
+    },
+    "mgc-is-grey": {
+      "file": "/audio/magic-colours/is-grey.mp3",
+      "text": "That one is grey.",
+      "speak": "That one is grey."
+    },
+    "pmr-welcome": {
+      "file": "/audio/magic-colours/paint-my-ride-welcome.mp3",
+      "text": "Welcome to Paint My Ride!",
+      "speak": "Welcome to Paint My Ride!"
+    },
+    "rrk-welcome": {
+      "file": "/audio/rhyme-rocket/welcome.mp3",
+      "text": "Welcome to Rhyme Rocket!",
+      "speak": "Welcome to Rhyme Rocket!"
+    },
+    "rrk-done": {
+      "file": "/audio/rhyme-rocket/done.mp3",
+      "text": "Zoom! You flew to every rhyme!",
+      "speak": "Zoom! You flew to every rhyme!"
+    },
+    "rrk-mode-fly": {
+      "file": "/audio/rhyme-rocket/mode-fly.mp3",
+      "text": "Rhyme Rocket! Fly to the planet that rhymes.",
+      "speak": "Rhyme Rocket! Fly to the planet that rhymes."
+    },
+    "rrk-fly": {
+      "file": "/audio/rhyme-rocket/fly.mp3",
+      "text": "I fly to the planet that rhymes with",
+      "speak": "I fly to the planet that rhymes with"
+    },
+    "rrk-blast": {
+      "file": "/audio/rhyme-rocket/blast.mp3",
+      "text": "Blast off!",
+      "speak": "Blast off!"
+    },
+    "ssw-welcome": {
+      "file": "/audio/silly-sandwich/welcome.mp3",
+      "text": "Welcome to Silly Sandwich!",
+      "speak": "Welcome to Silly Sandwich!"
+    },
+    "ssw-done": {
+      "file": "/audio/silly-sandwich/done.mp3",
+      "text": "Yum! Munch is full. Thank you!",
+      "speak": "Yum! Munch is full. Thank you!"
+    },
+    "ssw-mode-make": {
+      "file": "/audio/silly-sandwich/mode-make.mp3",
+      "text": "Silly Sandwich! Give Munch things that rhyme.",
+      "speak": "Silly Sandwich! Give Munch things that rhyme."
+    },
+    "ssw-want": {
+      "file": "/audio/silly-sandwich/want.mp3",
+      "text": "I want something that rhymes with",
+      "speak": "I want something that rhymes with"
+    },
+    "ssw-more": {
+      "file": "/audio/silly-sandwich/more.mp3",
+      "text": "Yum! One more!",
+      "speak": "Yum! One more!"
+    },
+    "ssw-yuck": {
+      "file": "/audio/silly-sandwich/yuck.mp3",
+      "text": "Yuck! Silly!",
+      "speak": "Yuck! Silly!"
+    },
+    "ssw-bite": {
+      "file": "/audio/silly-sandwich/bite.mp3",
+      "text": "Big bite! Chomp!",
+      "speak": "Big bite! Chomp!"
+    },
+    "rdt-welcome": {
+      "file": "/audio/rhyme-detective/welcome.mp3",
+      "text": "Welcome to Rhyme Detective!",
+      "speak": "Welcome to Rhyme Detective!"
+    },
+    "rdt-done": {
+      "file": "/audio/rhyme-detective/done.mp3",
+      "text": "Case closed! You found every rhyme!",
+      "speak": "Case closed! You found every rhyme!"
+    },
+    "rdt-mode-find": {
+      "file": "/audio/rhyme-detective/mode-find.mp3",
+      "text": "Rhyme Detective! Find the thing that rhymes.",
+      "speak": "Rhyme Detective! Find the thing that rhymes."
+    },
+    "rdt-find": {
+      "file": "/audio/rhyme-detective/find.mp3",
+      "text": "Find something that rhymes with",
+      "speak": "Find something that rhymes with"
+    },
+    "rdt-find-two": {
+      "file": "/audio/rhyme-detective/find-two.mp3",
+      "text": "Find two things that rhyme with",
+      "speak": "Find two things that rhyme with"
+    },
+    "rdt-more": {
+      "file": "/audio/rhyme-detective/more.mp3",
+      "text": "Find one more!",
+      "speak": "Find one more!"
+    },
+    "fms-welcome": {
+      "file": "/audio/finish-song/welcome.mp3",
+      "text": "Welcome to Finish My Song!",
+      "speak": "Welcome to Finish My Song!"
+    },
+    "fms-done": {
+      "file": "/audio/finish-song/done.mp3",
+      "text": "You finished every song!",
+      "speak": "You finished every song!"
+    },
+    "fms-mode-sing": {
+      "file": "/audio/finish-song/mode-sing.mp3",
+      "text": "Finish My Song! Listen, then tap the egg that rhymes.",
+      "speak": "Finish My Song! Listen, then tap the egg that rhymes."
+    },
+    "fms-ask": {
+      "file": "/audio/finish-song/ask.mp3",
+      "text": "Which one finishes my song?",
+      "speak": "Which one finishes my song?"
+    },
+    "fms-song-1": {
+      "file": "/audio/finish-song/song-1.mp3",
+      "text": "I saw a cat, wearing a…",
+      "speak": "I saw a cat, wearing a…"
+    },
+    "fms-song-2": {
+      "file": "/audio/finish-song/song-2.mp3",
+      "text": "Look at the moon! I eat with a…",
+      "speak": "Look at the moon! I eat with a…"
+    },
+    "fms-song-3": {
+      "file": "/audio/finish-song/song-3.mp3",
+      "text": "A little green frog sat on a…",
+      "speak": "A little green frog sat on a…"
+    },
+    "fms-song-4": {
+      "file": "/audio/finish-song/song-4.mp3",
+      "text": "Twinkle, little star, high above my…",
+      "speak": "Twinkle, little star, high above my…"
+    },
+    "fms-song-5": {
+      "file": "/audio/finish-song/song-5.mp3",
+      "text": "My little red hen has a big blue…",
+      "speak": "My little red hen has a big blue…"
+    },
+    "fms-song-6": {
+      "file": "/audio/finish-song/song-6.mp3",
+      "text": "A tiny grey mouse lives in a…",
+      "speak": "A tiny grey mouse lives in a…"
+    },
+    "mht-welcome": {
+      "file": "/audio/magic-hat/welcome.mp3",
+      "text": "Welcome to Magic Hat Swap!",
+      "speak": "Welcome to Magic Hat Swap!"
+    },
+    "mht-done": {
+      "file": "/audio/magic-hat/done.mp3",
+      "text": "What a magic wizard you are!",
+      "speak": "What a magic wizard you are!"
+    },
+    "mht-mode-swap": {
+      "file": "/audio/magic-hat/mode-swap.mp3",
+      "text": "Magic Hat Swap! Put a letter in the hat to make a new word.",
+      "speak": "Magic Hat Swap! Put a letter in the hat to make a new word."
+    },
+    "mht-make": {
+      "file": "/audio/magic-hat/make.mp3",
+      "text": "Can you make",
+      "speak": "Can you make"
+    },
+    "mht-all-rhyme": {
+      "file": "/audio/magic-hat/all-rhyme.mp3",
+      "text": "They all rhyme!",
+      "speak": "They all rhyme!"
+    },
+    "rtr-welcome": {
+      "file": "/audio/rhyme-train/welcome.mp3",
+      "text": "Welcome to Rhyme Train Station!",
+      "speak": "Welcome to Rhyme Train Station!"
+    },
+    "rtr-done": {
+      "file": "/audio/rhyme-train/done.mp3",
+      "text": "Every train got its riders!",
+      "speak": "Every train got its riders!"
+    },
+    "rtr-mode-train": {
+      "file": "/audio/rhyme-train/mode-train.mp3",
+      "text": "Rhyme Train! Put each friend in the carriage that rhymes.",
+      "speak": "Rhyme Train! Put each friend in the carriage that rhymes."
+    },
+    "rtr-who": {
+      "file": "/audio/rhyme-train/who.mp3",
+      "text": "Who rides in which carriage?",
+      "speak": "Who rides in which carriage?"
+    },
+    "rtr-toot": {
+      "file": "/audio/rhyme-train/toot.mp3",
+      "text": "Toot toot! Off we go!",
+      "speak": "Toot toot! Off we go!"
+    },
+    "msh-welcome": {
+      "file": "/audio/my-shapes/welcome.mp3",
+      "text": "Welcome to My Shapes!",
+      "speak": "Welcome to My Shapes!"
+    },
+    "msh-puzzle": {
+      "file": "/audio/my-shapes/puzzle.mp3",
+      "text": "Put it in its home!",
+      "speak": "Put it in its home!"
+    },
+    "msh-mode-circle": {
+      "file": "/audio/my-shapes/mode-circle.mp3",
+      "text": "Circle! Let's learn the circle.",
+      "speak": "Circle! Let's learn the circle."
+    },
+    "msh-done-circle": {
+      "file": "/audio/my-shapes/done-circle.mp3",
+      "text": "Now you know circles!",
+      "speak": "Now you know circles!"
+    },
+    "msh-meet-circle": {
+      "file": "/audio/my-shapes/meet-circle.mp3",
+      "text": "This is a circle! Tap it.",
+      "speak": "This is a circle! Tap it."
+    },
+    "msh-all-circle": {
+      "file": "/audio/my-shapes/all-circle.mp3",
+      "text": "Tap all the circles!",
+      "speak": "Tap all the circles!"
+    },
+    "msh-which-circle": {
+      "file": "/audio/my-shapes/which-circle.mp3",
+      "text": "Which one is a circle?",
+      "speak": "Which one is a circle?"
+    },
+    "msh-build-circle": {
+      "file": "/audio/my-shapes/build-circle.mp3",
+      "text": "Put the wheels on the car!",
+      "speak": "Put the wheels on the car!"
+    },
+    "msh-mode-square": {
+      "file": "/audio/my-shapes/mode-square.mp3",
+      "text": "Square! Let's learn the square.",
+      "speak": "Square! Let's learn the square."
+    },
+    "msh-done-square": {
+      "file": "/audio/my-shapes/done-square.mp3",
+      "text": "Now you know squares!",
+      "speak": "Now you know squares!"
+    },
+    "msh-meet-square": {
+      "file": "/audio/my-shapes/meet-square.mp3",
+      "text": "This is a square! Tap it.",
+      "speak": "This is a square! Tap it."
+    },
+    "msh-all-square": {
+      "file": "/audio/my-shapes/all-square.mp3",
+      "text": "Tap all the squares!",
+      "speak": "Tap all the squares!"
+    },
+    "msh-which-square": {
+      "file": "/audio/my-shapes/which-square.mp3",
+      "text": "Which one is a square?",
+      "speak": "Which one is a square?"
+    },
+    "msh-build-square": {
+      "file": "/audio/my-shapes/build-square.mp3",
+      "text": "Put the windows on the house!",
+      "speak": "Put the windows on the house!"
+    },
+    "msh-mode-triangle": {
+      "file": "/audio/my-shapes/mode-triangle.mp3",
+      "text": "Triangle! Let's learn the triangle.",
+      "speak": "Triangle! Let's learn the triangle."
+    },
+    "msh-done-triangle": {
+      "file": "/audio/my-shapes/done-triangle.mp3",
+      "text": "Now you know triangles!",
+      "speak": "Now you know triangles!"
+    },
+    "msh-meet-triangle": {
+      "file": "/audio/my-shapes/meet-triangle.mp3",
+      "text": "This is a triangle! Tap it.",
+      "speak": "This is a triangle! Tap it."
+    },
+    "msh-all-triangle": {
+      "file": "/audio/my-shapes/all-triangle.mp3",
+      "text": "Tap all the triangles!",
+      "speak": "Tap all the triangles!"
+    },
+    "msh-which-triangle": {
+      "file": "/audio/my-shapes/which-triangle.mp3",
+      "text": "Which one is a triangle?",
+      "speak": "Which one is a triangle?"
+    },
+    "msh-build-triangle": {
+      "file": "/audio/my-shapes/build-triangle.mp3",
+      "text": "Put the sails on the boat!",
+      "speak": "Put the sails on the boat!"
+    },
+    "msh-mode-rectangle": {
+      "file": "/audio/my-shapes/mode-rectangle.mp3",
+      "text": "Rectangle! Let's learn the rectangle.",
+      "speak": "Rectangle! Let's learn the rectangle."
+    },
+    "msh-done-rectangle": {
+      "file": "/audio/my-shapes/done-rectangle.mp3",
+      "text": "Now you know rectangles!",
+      "speak": "Now you know rectangles!"
+    },
+    "msh-meet-rectangle": {
+      "file": "/audio/my-shapes/meet-rectangle.mp3",
+      "text": "This is a rectangle! Tap it.",
+      "speak": "This is a rectangle! Tap it."
+    },
+    "msh-all-rectangle": {
+      "file": "/audio/my-shapes/all-rectangle.mp3",
+      "text": "Tap all the rectangles!",
+      "speak": "Tap all the rectangles!"
+    },
+    "msh-which-rectangle": {
+      "file": "/audio/my-shapes/which-rectangle.mp3",
+      "text": "Which one is a rectangle?",
+      "speak": "Which one is a rectangle?"
+    },
+    "msh-build-rectangle": {
+      "file": "/audio/my-shapes/build-rectangle.mp3",
+      "text": "Put the cars on the train!",
+      "speak": "Put the cars on the train!"
+    },
+    "msh-mode-star": {
+      "file": "/audio/my-shapes/mode-star.mp3",
+      "text": "Star! Let's learn the star.",
+      "speak": "Star! Let's learn the star."
+    },
+    "msh-done-star": {
+      "file": "/audio/my-shapes/done-star.mp3",
+      "text": "Now you know stars!",
+      "speak": "Now you know stars!"
+    },
+    "msh-meet-star": {
+      "file": "/audio/my-shapes/meet-star.mp3",
+      "text": "This is a star! Tap it.",
+      "speak": "This is a star! Tap it."
+    },
+    "msh-all-star": {
+      "file": "/audio/my-shapes/all-star.mp3",
+      "text": "Tap all the stars!",
+      "speak": "Tap all the stars!"
+    },
+    "msh-which-star": {
+      "file": "/audio/my-shapes/which-star.mp3",
+      "text": "Which one is a star?",
+      "speak": "Which one is a star?"
+    },
+    "msh-build-star": {
+      "file": "/audio/my-shapes/build-star.mp3",
+      "text": "Put the stars in the sky!",
+      "speak": "Put the stars in the sky!"
+    },
+    "fw-meet": {
+      "file": "/audio/first-words/meet.mp3",
+      "text": "Tap each one!",
+      "speak": "Tap each one!"
+    },
+    "fw-where": {
+      "file": "/audio/first-words/where.mp3",
+      "text": "Where is the",
+      "speak": "Where is the"
+    },
+    "fw-shadow": {
+      "file": "/audio/first-words/shadow.mp3",
+      "text": "Put it on its shadow!",
+      "speak": "Put it on its shadow!"
+    },
+    "fw-peek": {
+      "file": "/audio/first-words/peek.mp3",
+      "text": "Peekaboo! Where is the",
+      "speak": "Peekaboo! Where is the"
+    },
+    "fw-put": {
+      "file": "/audio/first-words/put.mp3",
+      "text": "Put the",
+      "speak": "Put the"
+    },
+    "fw-done": {
+      "file": "/audio/first-words/done.mp3",
+      "text": "You learned new words!",
+      "speak": "You learned new words!"
+    },
+    "fw-animals-welcome": {
+      "file": "/audio/first-words/animals-welcome.mp3",
+      "text": "First words! Animals!",
+      "speak": "First words! Animals!"
+    },
+    "fw-animals-mode": {
+      "file": "/audio/first-words/animals-mode.mp3",
+      "text": "Let’s learn animal words!",
+      "speak": "Let’s learn animal words!"
+    },
+    "fw-in-barn": {
+      "file": "/audio/first-words/in-barn.mp3",
+      "text": "in the barn!",
+      "speak": "in the barn!"
+    },
+    "fw-food-welcome": {
+      "file": "/audio/first-words/food-welcome.mp3",
+      "text": "First words! Food!",
+      "speak": "First words! Food!"
+    },
+    "fw-food-mode": {
+      "file": "/audio/first-words/food-mode.mp3",
+      "text": "Let’s learn food words!",
+      "speak": "Let’s learn food words!"
+    },
+    "fw-in-basket": {
+      "file": "/audio/first-words/in-basket.mp3",
+      "text": "in the basket!",
+      "speak": "in the basket!"
+    },
+    "fw-home-welcome": {
+      "file": "/audio/first-words/home-welcome.mp3",
+      "text": "First words! At home!",
+      "speak": "First words! At home!"
+    },
+    "fw-home-mode": {
+      "file": "/audio/first-words/home-mode.mp3",
+      "text": "Let’s learn words for home!",
+      "speak": "Let’s learn words for home!"
+    },
+    "fw-in-cupboard": {
+      "file": "/audio/first-words/in-cupboard.mp3",
+      "text": "in the cupboard!",
+      "speak": "in the cupboard!"
+    },
+    "fw-out-welcome": {
+      "file": "/audio/first-words/out-welcome.mp3",
+      "text": "First words! Out and about!",
+      "speak": "First words! Out and about!"
+    },
+    "fw-out-mode": {
+      "file": "/audio/first-words/out-mode.mp3",
+      "text": "Let’s learn words for outside!",
+      "speak": "Let’s learn words for outside!"
+    },
+    "fw-in-wagon": {
+      "file": "/audio/first-words/in-wagon.mp3",
+      "text": "in the wagon!",
+      "speak": "in the wagon!"
+    },
+    "fw-clothes-welcome": {
+      "file": "/audio/first-words/clothes-welcome.mp3",
+      "text": "First words! Clothes!",
+      "speak": "First words! Clothes!"
+    },
+    "fw-clothes-mode": {
+      "file": "/audio/first-words/clothes-mode.mp3",
+      "text": "Let’s learn clothes words!",
+      "speak": "Let’s learn clothes words!"
+    },
+    "fw-in-wardrobe": {
+      "file": "/audio/first-words/in-wardrobe.mp3",
+      "text": "in the wardrobe!",
+      "speak": "in the wardrobe!"
+    },
+    "wbd-welcome": {
+      "file": "/audio/word-builder/welcome.mp3",
+      "text": "Word Builder!",
+      "speak": "Word Builder!",
+      "speakUntilRecorded": true
+    },
+    "wbd-done": {
+      "file": "/audio/word-builder/done.mp3",
+      "text": "You built every word!",
+      "speak": "You built every word!"
+    },
+    "wbd-mode-a": {
+      "file": "/audio/word-builder/mode-a.mp3",
+      "text": "Let’s build a words!",
+      "speak": "Let's build a words!"
+    },
+    "wbd-mode-e": {
+      "file": "/audio/word-builder/mode-e.mp3",
+      "text": "Let’s build e words!",
+      "speak": "Let's build e words!"
+    },
+    "wbd-mode-i": {
+      "file": "/audio/word-builder/mode-i.mp3",
+      "text": "Let’s build i words!",
+      "speak": "Let's build i words!"
+    },
+    "wbd-mode-o": {
+      "file": "/audio/word-builder/mode-o.mp3",
+      "text": "Let’s build o words!",
+      "speak": "Let's build o words!"
+    },
+    "wbd-mode-u": {
+      "file": "/audio/word-builder/mode-u.mp3",
+      "text": "Let’s build u words!",
+      "speak": "Let's build u words!"
+    },
+    "wbd-hear": {
+      "file": "/audio/word-builder/hear.mp3",
+      "text": "Tap each letter to hear its sound!",
+      "speak": "Tap each letter to hear its sound!"
+    },
+    "wbd-build": {
+      "file": "/audio/word-builder/build.mp3",
+      "text": "Build the word!",
+      "speak": "Build the word!"
+    },
+    "wbd-missing": {
+      "file": "/audio/word-builder/missing.mp3",
+      "text": "Which letter is missing?",
+      "speak": "Which letter is missing?"
+    },
+    "rbw-welcome": {
+      "file": "/audio/rainbow-words/welcome.mp3",
+      "text": "Rainbow Words!",
+      "speak": "Rainbow Words!",
+      "speakUntilRecorded": true
+    },
+    "rbw-done": {
+      "file": "/audio/rainbow-words/done.mp3",
+      "text": "You read every word!",
+      "speak": "You read every word!",
+      "speakUntilRecorded": true
+    },
+    "rbw-mode-red": {
+      "file": "/audio/rainbow-words/mode-red.mp3",
+      "text": "Red words! Let’s read!",
+      "speak": "Red words! Let's read!",
+      "speakUntilRecorded": true
+    },
+    "rbw-mode-orange": {
+      "file": "/audio/rainbow-words/mode-orange.mp3",
+      "text": "Orange words! Let’s read!",
+      "speak": "Orange words! Let's read!",
+      "speakUntilRecorded": true
+    },
+    "rbw-mode-yellow": {
+      "file": "/audio/rainbow-words/mode-yellow.mp3",
+      "text": "Yellow words! Let’s read!",
+      "speak": "Yellow words! Let's read!",
+      "speakUntilRecorded": true
+    },
+    "rbw-mode-green": {
+      "file": "/audio/rainbow-words/mode-green.mp3",
+      "text": "Green words! Let’s read!",
+      "speak": "Green words! Let's read!",
+      "speakUntilRecorded": true
+    },
+    "rbw-mode-blue": {
+      "file": "/audio/rainbow-words/mode-blue.mp3",
+      "text": "Blue words! Let’s read!",
+      "speak": "Blue words! Let's read!",
+      "speakUntilRecorded": true
+    },
+    "rbw-mode-indigo": {
+      "file": "/audio/rainbow-words/mode-indigo.mp3",
+      "text": "Indigo words! Let’s read!",
+      "speak": "Indigo words! Let's read!",
+      "speakUntilRecorded": true
+    },
+    "rbw-mode-violet": {
+      "file": "/audio/rainbow-words/mode-violet.mp3",
+      "text": "Violet words! Let’s read!",
+      "speak": "Violet words! Let's read!",
+      "speakUntilRecorded": true
+    },
+    "rbw-meet": {
+      "file": "/audio/rainbow-words/meet.mp3",
+      "text": "This word is",
+      "speak": "This word is",
+      "speakUntilRecorded": true
+    },
+    "rbw-tap": {
+      "file": "/audio/rainbow-words/tap.mp3",
+      "text": "Tap the word to hear it!",
+      "speak": "Tap the word to hear it!",
+      "speakUntilRecorded": true
+    },
+    "rbw-find": {
+      "file": "/audio/rainbow-words/find.mp3",
+      "text": "Find the word",
+      "speak": "Find the word",
+      "speakUntilRecorded": true
+    },
+    "rbw-catch": {
+      "file": "/audio/rainbow-words/catch.mp3",
+      "text": "Tap every cloud that says",
+      "speak": "Tap every cloud that says",
+      "speakUntilRecorded": true
+    },
+    "rbw-fill": {
+      "file": "/audio/rainbow-words/fill.mp3",
+      "text": "Which word is missing?",
+      "speak": "Which word is missing?",
+      "speakUntilRecorded": true
+    },
+    "sw-i": {
+      "file": "/audio/sight-words/i.mp3",
+      "text": "I",
+      "speak": "I",
+      "speakUntilRecorded": true
+    },
+    "sw-see": {
+      "file": "/audio/sight-words/see.mp3",
+      "text": "see",
+      "speak": "see",
+      "speakUntilRecorded": true
+    },
+    "sw-a": {
+      "file": "/audio/sight-words/a.mp3",
+      "text": "a",
+      "speak": "a",
+      "speakUntilRecorded": true
+    },
+    "sw-the": {
+      "file": "/audio/sight-words/the.mp3",
+      "text": "the",
+      "speak": "the",
+      "speakUntilRecorded": true
+    },
+    "sw-is": {
+      "file": "/audio/sight-words/is.mp3",
+      "text": "is",
+      "speak": "is",
+      "speakUntilRecorded": true
+    },
+    "sw-my": {
+      "file": "/audio/sight-words/my.mp3",
+      "text": "my",
+      "speak": "my",
+      "speakUntilRecorded": true
+    },
+    "sw-go": {
+      "file": "/audio/sight-words/go.mp3",
+      "text": "go",
+      "speak": "go",
+      "speakUntilRecorded": true
+    },
+    "sw-we": {
+      "file": "/audio/sight-words/we.mp3",
+      "text": "we",
+      "speak": "we",
+      "speakUntilRecorded": true
+    },
+    "sw-like": {
+      "file": "/audio/sight-words/like.mp3",
+      "text": "like",
+      "speak": "like",
+      "speakUntilRecorded": true
+    },
+    "sw-it": {
+      "file": "/audio/sight-words/it.mp3",
+      "text": "it",
+      "speak": "it",
+      "speakUntilRecorded": true
+    },
+    "sw-look": {
+      "file": "/audio/sight-words/look.mp3",
+      "text": "look",
+      "speak": "look",
+      "speakUntilRecorded": true
+    },
+    "sw-at": {
+      "file": "/audio/sight-words/at.mp3",
+      "text": "at",
+      "speak": "at",
+      "speakUntilRecorded": true
+    },
+    "sw-this": {
+      "file": "/audio/sight-words/this.mp3",
+      "text": "this",
+      "speak": "this",
+      "speakUntilRecorded": true
+    },
+    "sw-and": {
+      "file": "/audio/sight-words/and.mp3",
+      "text": "and",
+      "speak": "and",
+      "speakUntilRecorded": true
+    },
+    "sw-has": {
+      "file": "/audio/sight-words/has.mp3",
+      "text": "has",
+      "speak": "has",
+      "speakUntilRecorded": true
+    },
+    "sw-play": {
+      "file": "/audio/sight-words/play.mp3",
+      "text": "play",
+      "speak": "play",
+      "speakUntilRecorded": true
+    },
+    "sw-to": {
+      "file": "/audio/sight-words/to.mp3",
+      "text": "to",
+      "speak": "to",
+      "speakUntilRecorded": true
+    },
+    "sw-he": {
+      "file": "/audio/sight-words/he.mp3",
+      "text": "he",
+      "speak": "he",
+      "speakUntilRecorded": true
+    },
+    "sw-little": {
+      "file": "/audio/sight-words/little.mp3",
+      "text": "little",
+      "speak": "little",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-red-1": {
+      "file": "/audio/rainbow-words/s-red-1.mp3",
+      "text": "I see a cat.",
+      "speak": "I see a cat.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-red-2": {
+      "file": "/audio/rainbow-words/s-red-2.mp3",
+      "text": "I see a dog.",
+      "speak": "I see a dog.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-red-3": {
+      "file": "/audio/rainbow-words/s-red-3.mp3",
+      "text": "I see a bus.",
+      "speak": "I see a bus.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-orange-1": {
+      "file": "/audio/rainbow-words/s-orange-1.mp3",
+      "text": "The dog is big.",
+      "speak": "The dog is big.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-orange-2": {
+      "file": "/audio/rainbow-words/s-orange-2.mp3",
+      "text": "The bus is big.",
+      "speak": "The bus is big.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-orange-3": {
+      "file": "/audio/rainbow-words/s-orange-3.mp3",
+      "text": "The bed is big.",
+      "speak": "The bed is big.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-yellow-1": {
+      "file": "/audio/rainbow-words/s-yellow-1.mp3",
+      "text": "My dog can go.",
+      "speak": "My dog can go.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-yellow-2": {
+      "file": "/audio/rainbow-words/s-yellow-2.mp3",
+      "text": "My cat can go.",
+      "speak": "My cat can go.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-yellow-3": {
+      "file": "/audio/rainbow-words/s-yellow-3.mp3",
+      "text": "My bus can go.",
+      "speak": "My bus can go.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-green-1": {
+      "file": "/audio/rainbow-words/s-green-1.mp3",
+      "text": "We like the hat.",
+      "speak": "We like the hat.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-green-2": {
+      "file": "/audio/rainbow-words/s-green-2.mp3",
+      "text": "We like the cup.",
+      "speak": "We like the cup.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-green-3": {
+      "file": "/audio/rainbow-words/s-green-3.mp3",
+      "text": "We like it.",
+      "speak": "We like it.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-blue-1": {
+      "file": "/audio/rainbow-words/s-blue-1.mp3",
+      "text": "Look at the fox.",
+      "speak": "Look at the fox.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-blue-2": {
+      "file": "/audio/rainbow-words/s-blue-2.mp3",
+      "text": "Look at the hen.",
+      "speak": "Look at the hen.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-blue-3": {
+      "file": "/audio/rainbow-words/s-blue-3.mp3",
+      "text": "This is a box.",
+      "speak": "This is a box.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-indigo-1": {
+      "file": "/audio/rainbow-words/s-indigo-1.mp3",
+      "text": "The hen has a hat.",
+      "speak": "The hen has a hat.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-indigo-2": {
+      "file": "/audio/rainbow-words/s-indigo-2.mp3",
+      "text": "The cat and the dog.",
+      "speak": "The cat and the dog.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-indigo-3": {
+      "file": "/audio/rainbow-words/s-indigo-3.mp3",
+      "text": "The dog can play.",
+      "speak": "The dog can play.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-violet-1": {
+      "file": "/audio/rainbow-words/s-violet-1.mp3",
+      "text": "I see the little hen.",
+      "speak": "I see the little hen.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-violet-2": {
+      "file": "/audio/rainbow-words/s-violet-2.mp3",
+      "text": "I go to the bus.",
+      "speak": "I go to the bus.",
+      "speakUntilRecorded": true
+    },
+    "rbw-s-violet-3": {
+      "file": "/audio/rainbow-words/s-violet-3.mp3",
+      "text": "He can go.",
+      "speak": "He can go.",
+      "speakUntilRecorded": true
+    },
+    "owd-welcome": {
+      "file": "/audio/our-world/welcome.mp3",
+      "text": "Our World!",
+      "speak": "Our World!",
+      "speakUntilRecorded": true
+    },
+    "owd-done": {
+      "file": "/audio/our-world/done.mp3",
+      "text": "You know where everything belongs!",
+      "speak": "You know where everything belongs!",
+      "speakUntilRecorded": true
+    },
+    "owd-mode-animals": {
+      "file": "/audio/our-world/mode-animals.mp3",
+      "text": "Animals! Farm or jungle?",
+      "speak": "Animals! Farm or jungle?",
+      "speakUntilRecorded": true
+    },
+    "owd-mode-sea": {
+      "file": "/audio/our-world/mode-sea.mp3",
+      "text": "Sea and sky!",
+      "speak": "Sea and sky!",
+      "speakUntilRecorded": true
+    },
+    "owd-mode-road": {
+      "file": "/audio/our-world/mode-road.mp3",
+      "text": "On the road, or in the house?",
+      "speak": "On the road, or in the house?",
+      "speakUntilRecorded": true
+    },
+    "owd-mode-food": {
+      "file": "/audio/our-world/mode-food.mp3",
+      "text": "What do we eat?",
+      "speak": "What do we eat?",
+      "speakUntilRecorded": true
+    },
+    "owd-mode-play": {
+      "file": "/audio/our-world/mode-play.mp3",
+      "text": "Clothes and toys!",
+      "speak": "Clothes and toys!",
+      "speakUntilRecorded": true
+    },
+    "owd-mode-body": {
+      "file": "/audio/our-world/mode-body.mp3",
+      "text": "My body and my kitchen!",
+      "speak": "My body and my kitchen!",
+      "speakUntilRecorded": true
+    },
+    "owd-sort": {
+      "file": "/audio/our-world/sort.mp3",
+      "text": "Put each one where it belongs!",
+      "speak": "Put each one where it belongs!",
+      "speakUntilRecorded": true
+    },
+    "owd-pick": {
+      "file": "/audio/our-world/pick.mp3",
+      "text": "Which one belongs here?",
+      "speak": "Which one belongs here?",
+      "speakUntilRecorded": true
+    },
+    "owd-odd": {
+      "file": "/audio/our-world/odd.mp3",
+      "text": "Which one does not belong?",
+      "speak": "Which one does not belong?",
+      "speakUntilRecorded": true
+    },
+    "owd-place-farm": {
+      "file": "/audio/our-world/place-farm.mp3",
+      "text": "On the farm",
+      "speak": "On the farm",
+      "speakUntilRecorded": true
+    },
+    "owd-place-jungle": {
+      "file": "/audio/our-world/place-jungle.mp3",
+      "text": "In the jungle",
+      "speak": "In the jungle",
+      "speakUntilRecorded": true
+    },
+    "owd-place-sea": {
+      "file": "/audio/our-world/place-sea.mp3",
+      "text": "In the sea",
+      "speak": "In the sea",
+      "speakUntilRecorded": true
+    },
+    "owd-place-sky": {
+      "file": "/audio/our-world/place-sky.mp3",
+      "text": "In the sky",
+      "speak": "In the sky",
+      "speakUntilRecorded": true
+    },
+    "owd-place-road": {
+      "file": "/audio/our-world/place-road.mp3",
+      "text": "On the road",
+      "speak": "On the road",
+      "speakUntilRecorded": true
+    },
+    "owd-place-home": {
+      "file": "/audio/our-world/place-home.mp3",
+      "text": "In the house",
+      "speak": "In the house",
+      "speakUntilRecorded": true
+    },
+    "owd-place-eat": {
+      "file": "/audio/our-world/place-eat.mp3",
+      "text": "We eat it",
+      "speak": "We eat it",
+      "speakUntilRecorded": true
+    },
+    "owd-place-no-eat": {
+      "file": "/audio/our-world/place-no-eat.mp3",
+      "text": "We do not eat it",
+      "speak": "We do not eat it",
+      "speakUntilRecorded": true
+    },
+    "owd-place-wear": {
+      "file": "/audio/our-world/place-wear.mp3",
+      "text": "We wear it",
+      "speak": "We wear it",
+      "speakUntilRecorded": true
+    },
+    "owd-place-toys": {
+      "file": "/audio/our-world/place-toys.mp3",
+      "text": "We play with it",
+      "speak": "We play with it",
+      "speakUntilRecorded": true
+    },
+    "owd-place-body": {
+      "file": "/audio/our-world/place-body.mp3",
+      "text": "My body",
+      "speak": "My body",
+      "speakUntilRecorded": true
+    },
+    "owd-place-kitchen": {
+      "file": "/audio/our-world/place-kitchen.mp3",
+      "text": "In the kitchen",
+      "speak": "In the kitchen",
+      "speakUntilRecorded": true
+    },
+    "stk-welcome": {
+      "file": "/audio/sticker-studio/welcome.mp3",
+      "text": "Sticker Studio!",
+      "speak": "Sticker Studio!",
+      "speakUntilRecorded": true
+    },
+    "stk-done": {
+      "file": "/audio/sticker-studio/done.mp3",
+      "text": "What a lovely picture!",
+      "speak": "What a lovely picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-mode-garden": {
+      "file": "/audio/sticker-studio/mode-garden.mp3",
+      "text": "Let’s make a garden picture!",
+      "speak": "Let's make a garden picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-mode-space": {
+      "file": "/audio/sticker-studio/mode-space.mp3",
+      "text": "Let’s make a space picture!",
+      "speak": "Let's make a space picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-mode-farm": {
+      "file": "/audio/sticker-studio/mode-farm.mp3",
+      "text": "Let’s make a farm picture!",
+      "speak": "Let's make a farm picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-mode-park": {
+      "file": "/audio/sticker-studio/mode-park.mp3",
+      "text": "Let’s make a park picture!",
+      "speak": "Let's make a park picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-mode-street": {
+      "file": "/audio/sticker-studio/mode-street.mp3",
+      "text": "Let’s make a street picture!",
+      "speak": "Let's make a street picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-mode-party": {
+      "file": "/audio/sticker-studio/mode-party.mp3",
+      "text": "Let’s make a party picture!",
+      "speak": "Let's make a party picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-put": {
+      "file": "/audio/sticker-studio/put.mp3",
+      "text": "Put the",
+      "speak": "Put the",
+      "speakUntilRecorded": true
+    },
+    "stk-in": {
+      "file": "/audio/sticker-studio/in.mp3",
+      "text": "in your picture!",
+      "speak": "in your picture!",
+      "speakUntilRecorded": true
+    },
+    "stk-free": {
+      "file": "/audio/sticker-studio/free.mp3",
+      "text": "Now make your own picture! Tap Done when you finish.",
+      "speak": "Now make your own picture! Tap Done when you finish.",
       "speakUntilRecorded": true
     }
   },

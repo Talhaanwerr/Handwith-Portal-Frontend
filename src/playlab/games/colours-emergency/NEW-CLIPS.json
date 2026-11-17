@@ -1,0 +1,37 @@
+[
+  {
+    "id": "mgc-mode-emergency",
+    "file": "/audio/magic-colours/mode-emergency.mp3",
+    "text": "To the rescue! Let's colour fire engines and police cars."
+  },
+  {
+    "id": "mgc-name-fire-engine",
+    "file": "/audio/magic-colours/name-fire-engine.mp3",
+    "text": "Fire engine!"
+  },
+  {
+    "id": "mgc-name-police-car",
+    "file": "/audio/magic-colours/name-police-car.mp3",
+    "text": "Police car!"
+  },
+  {
+    "id": "mgc-name-ambulance",
+    "file": "/audio/magic-colours/name-ambulance.mp3",
+    "text": "Ambulance!"
+  },
+  {
+    "id": "mgc-name-rescue-helicopter",
+    "file": "/audio/magic-colours/name-rescue-helicopter.mp3",
+    "text": "Rescue helicopter!"
+  },
+  {
+    "id": "mgc-name-lifeboat",
+    "file": "/audio/magic-colours/name-lifeboat.mp3",
+    "text": "Lifeboat!"
+  },
+  {
+    "id": "mgc-name-tow-truck",
+    "file": "/audio/magic-colours/name-tow-truck.mp3",
+    "text": "Tow truck!"
+  }
+]

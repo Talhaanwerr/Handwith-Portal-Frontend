@@ -5,13 +5,15 @@ here.** Third consumer of the shared-theme architecture (pirate → arctic → t
 
 ## What exists
 
-| Piece              | File                | Exports                                                                                                                                                                                                                                                                                                                                                                                      |
-| ------------------ | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Machines           | `SiteVehicles.tsx`  | `Excavator` (`pose: digging\|raised\|parked`, `facing`, `working?`), `DumpTruck` (`bed: down\|tipping`, `loaded?`, `facing`), `Bulldozer` (`blade: down\|raised`, `facing`), `TowerCrane` (`load: none\|block\|beam`, `hookDrop`, `swing?`), `MixerTruck`, `RoadRoller`                                                                                                                      |
-| World & structures | `SiteWorld.tsx`     | `SiteSky`, `DirtGround`, `TrackMarks` (`turning?`), `SiteHole`, `HouseBuild` (`stage: 1..4` — foundation → walls → roof frame → roofed), `Scaffolding` (`ladder?`), `SiteLadder`, `SiteFence`, `ShippingContainer`, `ToolShed`                                                                                                                                                               |
-| Materials & safety | `SiteMaterials.tsx` | `BrickStack` (`rows: 1..4`), `BlockStack` (`count: 1..3`), `PlankStack`, `PipeStack`, `CementBags`, `MaterialPile` (`kind: dirt\|sand\|gravel`), `TrafficCone`, `Barricade`, `SiteSign` (`kind: dig\|hardhat\|slow\|crane` — symbols, no text), `WarningTape`, `SiteLight` (`blink?`), `ToolBox`, `SiteHammer`, `SiteWrench`, `SiteShovel`, `Wheelbarrow` (`loaded?`), `Blueprint` (`open?`) |
-| Crew               | `SiteCrew.tsx`      | `SiteWorker` (`pose: standing\|thumbsup\|blueprint\|carrying` — always hard-hatted and vested), `HardHat`                                                                                                                                                                                                                                                                                    |
-| Art palette        | `palette.ts`        | `C` — every illustration colour (art direction, per tokens.ts rule)                                                                                                                                                                                                                                                                                                                          |
+Only the pieces a game uses are kept (unused art was removed on 16 Nov 2026; it is in git history if a new game needs it).
+
+| Piece              | File                | Exports                                                                                                                             |
+| ------------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Machines           | `SiteVehicles.tsx`  | `Excavator` (`pose: digging\|raised\|parked`, `facing`, `working?`), `TowerCrane` (`load: none\|block\|beam`, `hookDrop`, `swing?`) |
+| World & structures | `SiteWorld.tsx`     | `SiteSky`, `DirtGround`, `HouseBuild` (`stage: 1..4`), `Scaffolding` (`ladder?`), `ToolShed`                                        |
+| Materials & safety | `SiteMaterials.tsx` | `BrickStack` (`rows: 1..4`), `TrafficCone`, `ToolBox`                                                                               |
+| Crew               | `SiteCrew.tsx`      | `SiteWorker` (`pose: standing\|thumbsup\|blueprint\|carrying` — always hard-hatted and vested)                                      |
+| Art palette        | `palette.ts`        | `C` — every illustration colour                                                                                                     |
 
 ## Deliberate REUSE, not redrawn
 
@@ -23,7 +25,6 @@ here.** Third consumer of the shared-theme architecture (pirate → arctic → t
 
 ## UI treatment
 
-- Chrome tokens: the `builder` family in `shared/styles/tokens.ts`.
 - Surfaces & scoped paint: `shared/styles/construction.css` — `ct-panel-steel`,
   `ct-panel-paper` (blueprint-paper reading surface), `ct-trim-hazard`,
   `ct-pill`, `ct-progress-fill` (dirt → machine yellow); put `ct-world` on a

@@ -1,0 +1,6 @@
+{
+  "default": ["Listen to the word for the picture.", "Drag it to the house it rhymes with."],
+  "modules": {
+    "houses": ["Listen to the word for the picture.", "Drag it to the house it rhymes with."]
+  }
+}

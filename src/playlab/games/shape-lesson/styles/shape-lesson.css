@@ -1,0 +1,744 @@
+/**
+ * MY SHAPES — the five shape lessons (shape-circle … shape-star) share this
+ * one stylesheet. Class prefix `msh-`. The shell, guide bar, drag ghost and
+ * celebrations are Count & Match's and the portal's (`ng-`, `pl-`). Sized in
+ * the `ng` container's units; sideways and upright phones at the bottom.
+ */
+
+/* ─── The worlds ───────────────────────────────────────────────────────── */
+.msh-world {
+  position: absolute;
+  inset: 0;
+  background: #cfe6ff;
+}
+.msh-world--night {
+  background: #2a1a66;
+}
+.msh-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.msh-twinkle {
+  animation: msh-twinkle 2.4s ease-in-out infinite;
+}
+@keyframes msh-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ─── Sizes ────────────────────────────────────────────────────────────── */
+.msh-play {
+  /* page 1: the one big shape */
+  --msh-big: min(56cqh, 40cqw);
+  /* page 2: the two shapes */
+  --msh-two: min(44cqh, 30cqw);
+  --msh-two-gap: 12cqw;
+  /* page 3: a counter slot, the three sizes on the field */
+  --msh-slot: min(10cqh, 7cqw);
+  --msh-s2: min(34cqh, 22cqw);
+  --msh-s1: min(28cqh, 18cqw);
+  --msh-s0: min(22cqh, 14cqw);
+  /* page 4: the piece and its homes */
+  --msh-pz: min(38cqh, 24cqw);
+  /* page 5: a picture frame */
+  --msh-frame: min(40cqh, 26cqw);
+  /* page 6: the picture's width, and a piece (a gap is 22% of the picture) */
+  --msh-pw: min(92cqh, 62cqw);
+  --msh-bp: calc(var(--msh-pw) * 0.22);
+  --msh-pad: max(8px, 2.2cqh);
+}
+
+/** Each lesson's own colour (frames, the counter's ring). */
+.msh-play--circle {
+  --msh-accent: #f2463f;
+}
+.msh-play--square {
+  --msh-accent: #2f86f0;
+}
+.msh-play--triangle {
+  --msh-accent: #3cc152;
+}
+.msh-play--rectangle {
+  --msh-accent: #ff9a1f;
+}
+.msh-play--star {
+  --msh-accent: #9c5cf2;
+}
+
+/* ─── A shape ──────────────────────────────────────────────────────────── */
+.msh-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.msh-tap {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.msh-tap:disabled {
+  cursor: default;
+}
+.msh-tap:focus-visible {
+  outline: 4px solid #ffffff;
+  outline-offset: 4px;
+  border-radius: 20%;
+}
+.msh-wiggle,
+.msh-breathe {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.msh-breathe {
+  animation: msh-breathe 2.8s ease-in-out infinite;
+}
+@keyframes msh-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+.msh-breathe.is-popped,
+.msh-wiggle.is-popped {
+  animation: msh-pop 0.7s ease-out;
+}
+@keyframes msh-pop {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.82, 1.12);
+  }
+  50% {
+    transform: scale(1.18, 0.9) translateY(-6%);
+  }
+  75% {
+    transform: scale(0.96, 1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.msh-wiggle.is-wiggling {
+  transform-origin: 50% 85%;
+  animation: msh-wiggle 0.6s ease-in-out;
+}
+@keyframes msh-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-9deg);
+  }
+  45% {
+    transform: rotate(8deg);
+  }
+  70% {
+    transform: rotate(-5deg);
+  }
+  88% {
+    transform: rotate(2deg);
+  }
+}
+.msh-wiggle.is-pulse {
+  animation: msh-pulse 0.9s ease-in-out infinite;
+}
+@keyframes msh-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+.msh-bob {
+  animation: msh-bob 3.4s ease-in-out infinite;
+}
+@keyframes msh-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4%);
+  }
+}
+
+/** The gold glow behind the right one (after a miss) or a won one. */
+.msh-halo {
+  position: absolute;
+  inset: -14%;
+  z-index: 0;
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 230, 110, 0.95) 0 38%,
+    rgba(255, 230, 110, 0.45) 56%,
+    rgba(255, 230, 110, 0) 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.msh-halo.is-on,
+.msh-halo.is-won {
+  opacity: 1;
+}
+.msh-halo.is-big {
+  animation: msh-halo 0.9s ease-in-out infinite;
+}
+@keyframes msh-halo {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.22);
+  }
+}
+
+/* ─── Sparkles out of a tapped shape ───────────────────────────────────── */
+.msh-sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.msh-ray {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+.msh-spark {
+  position: absolute;
+  left: max(-12px, -3cqh);
+  top: max(-12px, -3cqh);
+  width: max(24px, 6cqh);
+  height: max(24px, 6cqh);
+  animation: msh-fly 0.8s ease-out forwards;
+}
+@keyframes msh-fly {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.4);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(calc(var(--msh-big) * -0.62)) scale(1.1);
+  }
+}
+
+/* ─── Page 1: meet ─────────────────────────────────────────────────────── */
+.msh-meet {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.msh-spot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--msh-big) * 1.3);
+  height: calc(var(--msh-big) * 1.3);
+  margin: calc(var(--msh-big) * -0.65) 0 0 calc(var(--msh-big) * -0.65);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.85) 0 40%,
+    rgba(255, 255, 255, 0.35) 58%,
+    rgba(255, 255, 255, 0) 71%
+  );
+}
+.msh-meet-in {
+  position: relative;
+  display: block;
+  width: var(--msh-big);
+  height: var(--msh-big);
+}
+
+/* ─── Page 2: which one? ───────────────────────────────────────────────── */
+.msh-which {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--msh-two-gap);
+  width: 100%;
+  height: 100%;
+}
+.msh-which-slot {
+  position: relative;
+  display: block;
+  width: var(--msh-two);
+  height: var(--msh-two);
+}
+
+/* ─── Page 3: tap them all ─────────────────────────────────────────────── */
+.msh-all {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5cqh;
+  width: 100%;
+  height: 100%;
+}
+.msh-counter {
+  display: flex;
+  flex: none;
+  gap: max(6px, 1.6cqh);
+  padding: max(5px, 1.2cqh) max(10px, 2.6cqh);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 0 0 max(3px, 0.7cqh) var(--msh-accent, #ffffff),
+    0 max(3px, 0.8cqh) 0 rgba(0, 0, 0, 0.14);
+}
+.msh-count-slot {
+  position: relative;
+  display: block;
+  width: var(--msh-slot);
+  height: var(--msh-slot);
+}
+.msh-count-star {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: rgba(170, 160, 200, 0.25);
+  stroke: #b6a9d8;
+  stroke-width: 6;
+  stroke-dasharray: 9 6;
+  transition: fill 0.2s ease;
+}
+.msh-count-slot.is-full .msh-count-star {
+  fill: #ffd23d;
+  stroke: #d99a00;
+  stroke-dasharray: none;
+}
+.msh-count-shape {
+  position: absolute;
+  inset: 30% 30% 24%;
+  display: block;
+}
+.msh-field {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border-radius: max(18px, 5cqh);
+  background: rgba(255, 255, 255, 0.4);
+}
+.msh-field-item {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  display: block;
+  transform: translate(-50%, -50%);
+}
+.msh-size--2 {
+  width: var(--msh-s2);
+  height: var(--msh-s2);
+}
+.msh-size--1 {
+  width: var(--msh-s1);
+  height: var(--msh-s1);
+}
+.msh-size--0 {
+  width: var(--msh-s0);
+  height: var(--msh-s0);
+}
+.msh-field-in {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.msh-bob.is-wiggling {
+  animation: msh-wiggle 0.6s ease-in-out;
+}
+
+/* ─── Page 4: the puzzle ───────────────────────────────────────────────── */
+.msh-puzzle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqw;
+  width: 100%;
+  height: 100%;
+}
+.msh-tray,
+.msh-homes,
+.msh-build-tray {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--msh-pad);
+  border-radius: max(16px, 4cqh);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    inset 0 0 0 max(3px, 0.7cqh) rgba(255, 255, 255, 0.9),
+    0 max(4px, 1cqh) 0 rgba(0, 0, 0, 0.14);
+}
+.msh-homes {
+  gap: 4cqw;
+}
+.msh-piece {
+  position: relative;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.msh-piece.is-away {
+  visibility: hidden;
+}
+.msh-puzzle-piece,
+.msh-home {
+  width: var(--msh-pz);
+  height: var(--msh-pz);
+}
+.msh-piece-in,
+.msh-home-in {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.msh-home {
+  position: relative;
+}
+.msh-home.is-pulse .msh-home-in {
+  animation: msh-pulse 0.9s ease-in-out infinite;
+}
+.msh-home-fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+/** The shape under the finger. */
+.msh-carried {
+  pointer-events: none;
+}
+.msh-carried--puzzle {
+  left: calc(var(--msh-pz) * -0.5);
+  top: calc(var(--msh-pz) * -0.5);
+  width: var(--msh-pz);
+  height: var(--msh-pz);
+}
+.msh-carried--build {
+  left: calc(var(--msh-bp) * -0.5);
+  top: calc(var(--msh-bp) * -0.5);
+  width: var(--msh-bp);
+  height: var(--msh-bp);
+}
+
+/* ─── Page 5: in my world ──────────────────────────────────────────────── */
+.msh-world-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqw;
+  width: 100%;
+  height: 100%;
+}
+.msh-frame-slot {
+  display: block;
+  width: var(--msh-frame);
+  height: var(--msh-frame);
+}
+.msh-frame {
+  border-radius: 24%;
+  background: #ffffff;
+  box-shadow:
+    inset 0 0 0 max(4px, 1cqh) var(--msh-accent, #ffffff),
+    0 max(5px, 1.3cqh) 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.2s ease;
+}
+.msh-frame.is-naming {
+  box-shadow:
+    inset 0 0 0 max(4px, 1cqh) var(--msh-accent, #ffffff),
+    0 max(5px, 1.3cqh) 0 rgba(0, 0, 0, 0.2),
+    0 0 0 max(5px, 1.3cqh) rgba(255, 255, 255, 0.95);
+}
+.msh-frame.is-hint,
+.msh-frame.is-won {
+  box-shadow:
+    inset 0 0 0 max(4px, 1cqh) #ffd23d,
+    0 max(5px, 1.3cqh) 0 rgba(0, 0, 0, 0.2),
+    0 0 0 max(6px, 1.5cqh) #ffe066;
+}
+.msh-frame.is-pulse {
+  animation: msh-pulse 0.9s ease-in-out infinite;
+}
+.msh-frame-pic {
+  position: absolute;
+  inset: 16%;
+  width: auto;
+  height: auto;
+}
+.msh-thing-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.msh-frame-glow {
+  position: absolute;
+  inset: 7%;
+  display: block;
+  pointer-events: none;
+}
+.msh-glowline path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: msh-draw 0.9s ease-out forwards;
+}
+@keyframes msh-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ─── Page 6: build a picture ──────────────────────────────────────────── */
+.msh-build {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqw;
+  width: 100%;
+  height: 100%;
+}
+.msh-pic-slot {
+  display: block;
+}
+.msh-pic {
+  position: relative;
+  width: var(--msh-pw);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: max(14px, 3.4cqh);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 max(4px, 1cqh) #ffffff,
+    0 max(6px, 1.6cqh) 0 max(4px, 1cqh) rgba(0, 0, 0, 0.18);
+}
+.msh-pic-move {
+  position: absolute;
+  inset: 0;
+}
+.msh-pic-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.msh-gap {
+  position: absolute;
+  aspect-ratio: 1;
+}
+.msh-gap-fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.msh-build-tray {
+  flex-direction: column;
+  gap: max(6px, 2cqh);
+  min-width: calc(var(--msh-bp) + var(--msh-pad) * 2);
+  min-height: calc(var(--msh-bp) + var(--msh-pad) * 2);
+}
+.msh-build-piece {
+  width: var(--msh-bp);
+  height: var(--msh-bp);
+}
+.msh-puff,
+.msh-smile {
+  opacity: 0;
+}
+
+/* the picture comes alive */
+.msh-pic.is-alive .msh-puff {
+  animation: msh-puff 1.2s ease-out infinite;
+}
+@keyframes msh-puff {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+.msh-pic--car.is-alive .msh-pic-move {
+  animation: msh-rumble 0.32s ease-in-out infinite;
+}
+@keyframes msh-rumble {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.6%);
+  }
+}
+.msh-pic--house.is-alive .msh-gap::after {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: 12%;
+  background: #fff3a8;
+  animation: msh-light 0.5s ease-out forwards;
+}
+@keyframes msh-light {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.85;
+  }
+}
+.msh-pic--boat.is-alive .msh-pic-move {
+  transform-origin: 50% 80%;
+  animation: msh-rock 1.2s ease-in-out infinite;
+}
+@keyframes msh-rock {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-1%);
+  }
+}
+.msh-pic--train.is-alive .msh-pic-move {
+  animation: msh-chug 0.4s ease-in-out infinite;
+}
+@keyframes msh-chug {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(1.4%);
+  }
+}
+.msh-pic--sky.is-alive .msh-gap {
+  animation: msh-twinkle-big 0.9s ease-in-out infinite;
+  animation-delay: calc(var(--msh-i) * 0.25s);
+}
+@keyframes msh-twinkle-big {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+.msh-pic--sky.is-alive .msh-smile {
+  opacity: 1;
+}
+.msh-pic--sky.is-alive .msh-flat {
+  opacity: 0;
+}
+
+/* ─── The star card's miniature ────────────────────────────────────────── */
+.msh-mini {
+  display: block;
+}
+.msh-mini-shape {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: 60cqh;
+  height: 60cqh;
+  margin: -32cqh 0 0 -30cqh;
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .msh-play {
+    --msh-big: min(62cqh, 44cqw);
+    --msh-two: min(52cqh, 32cqw);
+    --msh-slot: min(12cqh, 8cqw);
+    --msh-s2: min(31cqh, 20cqw);
+    --msh-s1: min(25cqh, 16cqw);
+    --msh-s0: min(20cqh, 13cqw);
+    --msh-pz: min(44cqh, 26cqw);
+    --msh-frame: min(50cqh, 26cqw);
+    --msh-pw: min(94cqh, 62cqw);
+    --msh-pad: max(6px, 2cqh);
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .msh-play .ng-main {
+    bottom: 6cqh;
+  }
+  .msh-play {
+    --msh-big: min(72cqw, 40cqh);
+    --msh-two: min(40cqw, 26cqh);
+    --msh-two-gap: 8cqw;
+    --msh-slot: min(12cqw, 7cqh);
+    --msh-s2: min(34cqw, 18cqh);
+    --msh-s1: min(27cqw, 14cqh);
+    --msh-s0: min(21cqw, 11cqh);
+    --msh-pz: min(36cqw, 20cqh);
+    --msh-frame: min(44cqw, 18cqh);
+    --msh-pw: min(92cqw, 60cqh);
+  }
+  .msh-field-item {
+    left: var(--px);
+    top: var(--py);
+  }
+  .msh-puzzle,
+  .msh-build {
+    flex-direction: column-reverse;
+    gap: 4cqh;
+  }
+  .msh-world-row {
+    flex-direction: column;
+    gap: 3cqh;
+  }
+  .msh-build-tray {
+    flex-direction: row;
+    gap: 4cqw;
+  }
+}

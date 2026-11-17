@@ -1,0 +1,7 @@
+{
+  "default": ["Help the friends on the plane.", "Tap the picture they need."],
+  "modules": {
+    "snacks": ["Look at the snack in the bubble.", "Tap that snack on the trolley."],
+    "window": ["Watch the window. Something flies past!", "Tap the picture of what you saw."]
+  }
+}

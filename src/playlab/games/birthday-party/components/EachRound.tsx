@@ -61,6 +61,10 @@ export function EachRound({ round, title, onDone, onMiss, onHome, onExitPortal }
   const [wrong, setWrong] = useState<readonly number[]>([]);
   /** The plate being counted aloud after a wrong number, if any. */
   const [counting, setCounting] = useState<number | null>(null);
+  /** "This friend has one!" is being said (a cupcake sent home from a full
+   *  plate): the guide bar shows it until the line ends or a cupcake lands. */
+  const [hasOne, setHasOne] = useState(false);
+  const hasOneRun = useRef(0);
   const cast = useMemo(
     () => [
       <span key="c" className="ng-cast">
@@ -84,6 +88,7 @@ export function EachRound({ round, title, onDone, onMiss, onHome, onExitPortal }
   const onPlaced = useCallback(
     (_seat: number, count: number, plate: HTMLElement | undefined) => {
       burst(plate);
+      setHasOne(false);
       sayNumber(count);
       if (count < n) return;
       setPhase("full");
@@ -104,7 +109,11 @@ export function EachRound({ round, title, onDone, onMiss, onHome, onExitPortal }
       // a second cupcake on a full plate: the one there wiggles, this one
       // glides home, and the teacher says why
       shake(drag.seatEl(zone) ?? null);
-      void playClip(HAS_ONE);
+      const run = ++hasOneRun.current;
+      setHasOne(true);
+      void playClip(HAS_ONE).then(() => {
+        if (hasOneRun.current === run) setHasOne(false);
+      });
       onMiss();
     },
   });
@@ -178,7 +187,9 @@ export function EachRound({ round, title, onDone, onMiss, onHome, onExitPortal }
 
   const prompt =
     phase === "fill"
-      ? ASK
+      ? hasOne
+        ? HAS_ONE
+        : ASK
       : phase === "full"
         ? EVERYONE
         : counting !== null

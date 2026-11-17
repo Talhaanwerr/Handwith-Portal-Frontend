@@ -1,0 +1,52 @@
+[
+  {
+    "id": "wbd-welcome",
+    "file": "/audio/word-builder/welcome.mp3",
+    "text": "Word Builder!"
+  },
+  {
+    "id": "wbd-done",
+    "file": "/audio/word-builder/done.mp3",
+    "text": "You built every word!"
+  },
+  {
+    "id": "wbd-mode-a",
+    "file": "/audio/word-builder/mode-a.mp3",
+    "text": "Let’s build a words!"
+  },
+  {
+    "id": "wbd-mode-e",
+    "file": "/audio/word-builder/mode-e.mp3",
+    "text": "Let’s build e words!"
+  },
+  {
+    "id": "wbd-mode-i",
+    "file": "/audio/word-builder/mode-i.mp3",
+    "text": "Let’s build i words!"
+  },
+  {
+    "id": "wbd-mode-o",
+    "file": "/audio/word-builder/mode-o.mp3",
+    "text": "Let’s build o words!"
+  },
+  {
+    "id": "wbd-mode-u",
+    "file": "/audio/word-builder/mode-u.mp3",
+    "text": "Let’s build u words!"
+  },
+  {
+    "id": "wbd-hear",
+    "file": "/audio/word-builder/hear.mp3",
+    "text": "Tap each letter to hear its sound!"
+  },
+  {
+    "id": "wbd-build",
+    "file": "/audio/word-builder/build.mp3",
+    "text": "Build the word!"
+  },
+  {
+    "id": "wbd-missing",
+    "file": "/audio/word-builder/missing.mp3",
+    "text": "Which letter is missing?"
+  }
+]

@@ -23,13 +23,16 @@ const ROUNDS: Record<ModuleId, ComponentType<RoundProps>> = {
  * lost, among things that could never go on a car). The car is drawn here
  * from separate parts (`components/CarArt`) and shared with The Messy Car
  * Wash. Shell, stage, celebrations and store are Count & Match's, from
- * `@games/number-groups`.
+ * `@games/number-groups`, in its guided layout: every screen centred, the
+ * line being said in the thin bar at the top, and the teaching hand showing
+ * each move by itself on the first round.
  */
 export function CarGarageGame() {
   const store = useCarGarageStore();
   return (
     <NgShell
       title="Build-a-Car Garage"
+      guided
       voice={VOICE}
       store={store}
       modules={MODULES}

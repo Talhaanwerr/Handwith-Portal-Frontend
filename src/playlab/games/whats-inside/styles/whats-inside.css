@@ -290,3 +290,12 @@
     gap: 4cqh;
   }
 }
+
+/* Guided (everything centred on the stage), upright: the chest's lid swings
+   open to the left, so the chest stands a little right of the cards and the
+   pair is centred as the eye sees it. */
+@media (orientation: portrait) {
+  .ng-root--guided .wsi-chest-spot {
+    left: 4cqw;
+  }
+}

@@ -32,8 +32,16 @@ export interface ModuleStore<Id extends string> {
  * comes back is validated: a module this game no longer has (Count & Match's
  * old saves still name Find the Number, Group Boxes and Peekaboo Count) or a
  * star count outside 1–3 is simply dropped.
+ *
+ * `rounds` is how many rounds a run has: the kit's four unless a game says
+ * otherwise (a one-module game, NgShell's `single`, may play six). The game
+ * hands its NgShell the same number as `roundCount`.
  */
-export function createModuleStore<Id extends string>(key: string, ids: readonly Id[]) {
+export function createModuleStore<Id extends string>(
+  key: string,
+  ids: readonly Id[],
+  rounds: number = ROUND_COUNT
+) {
   return create<ModuleStore<Id>>()(
     persist(
       (set) => ({
@@ -52,9 +60,7 @@ export function createModuleStore<Id extends string>(key: string, ids: readonly 
           set((s) => {
             if (s.screen !== "play") return {};
             const next = s.round + 1;
-            return next >= ROUND_COUNT
-              ? { round: next, screen: "complete" as const }
-              : { round: next };
+            return next >= rounds ? { round: next, screen: "complete" as const } : { round: next };
           }),
         miss: () => set((s) => (s.screen === "play" ? { misses: s.misses + 1 } : {})),
         restart: () => set({ round: 0, misses: 0, screen: "play" }),

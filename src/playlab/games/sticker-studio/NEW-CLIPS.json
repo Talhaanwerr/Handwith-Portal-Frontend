@@ -1,0 +1,57 @@
+[
+  {
+    "id": "stk-welcome",
+    "file": "/audio/sticker-studio/welcome.mp3",
+    "text": "Sticker Studio!"
+  },
+  {
+    "id": "stk-done",
+    "file": "/audio/sticker-studio/done.mp3",
+    "text": "What a lovely picture!"
+  },
+  {
+    "id": "stk-mode-garden",
+    "file": "/audio/sticker-studio/mode-garden.mp3",
+    "text": "Let’s make a garden picture!"
+  },
+  {
+    "id": "stk-mode-space",
+    "file": "/audio/sticker-studio/mode-space.mp3",
+    "text": "Let’s make a space picture!"
+  },
+  {
+    "id": "stk-mode-farm",
+    "file": "/audio/sticker-studio/mode-farm.mp3",
+    "text": "Let’s make a farm picture!"
+  },
+  {
+    "id": "stk-mode-park",
+    "file": "/audio/sticker-studio/mode-park.mp3",
+    "text": "Let’s make a park picture!"
+  },
+  {
+    "id": "stk-mode-street",
+    "file": "/audio/sticker-studio/mode-street.mp3",
+    "text": "Let’s make a street picture!"
+  },
+  {
+    "id": "stk-mode-party",
+    "file": "/audio/sticker-studio/mode-party.mp3",
+    "text": "Let’s make a party picture!"
+  },
+  {
+    "id": "stk-put",
+    "file": "/audio/sticker-studio/put.mp3",
+    "text": "Put the"
+  },
+  {
+    "id": "stk-in",
+    "file": "/audio/sticker-studio/in.mp3",
+    "text": "in your picture!"
+  },
+  {
+    "id": "stk-free",
+    "file": "/audio/sticker-studio/free.mp3",
+    "text": "Now make your own picture! Tap Done when you finish."
+  }
+]

@@ -11,7 +11,7 @@ This file is the source of truth for **where code, CSS, and assets go**. Ignore 
 ```
 Read Handwith-Portal-Frontend/src/playlab/GAME_DEV.md (or src/playlab/GAME_DEV.md if the repo root is the frontend) and follow it before writing any code.
 
-Stay inside PlayLab game files. Do not change portal auth, backend, next.config, global html/body CSS, or import playlab base.css.
+Stay inside PlayLab game files. Do not change portal auth, backend, next.config, or global html/body CSS.
 
 Task: <describe the game or the change>
 ```
@@ -25,7 +25,7 @@ If you only have the frontend folder open, the path is `src/playlab/GAME_DEV.md`
 - Backend (`Handwith-Portal-Backend`)
 - Auth, login, cookies, API client, `proxy.ts`
 - Super Admin pages other than Library wiring listed below
-- `src/playlab/shared/styles/base.css` — **never import it**. It sets `html, body { overflow: hidden }` and breaks portal scroll
+- `html` / `body` rules of any kind — the portal page must keep scrolling
 - `src/app/globals.css` unless you are adding a **shared PlayLab color token** that several games need (ask first)
 - New npm packages (framer-motion and howler are already installed)
 
@@ -147,11 +147,31 @@ Most SFX are generated in code via `@shared/audio/sfx`. Voice lines: `@shared/au
 
 Do **not** use `next/dynamic` with `ssr: false` (Next.js 16 rejects it here). Follow the existing `React.lazy` + `Suspense` map in `GamePlayer.tsx`.
 
-**C.** Keep `src/playlab/games/registry.ts` in sync with the same `id` / title / colors. Library does **not** read this file, but it must not drift.
-
-**D.** Card icon — add a scene to `GAME_SCENE_ICONS` in `src/playlab/shared/components/icons/GameSceneIcons.tsx` (otherwise the card falls back to the emoji `glyph`). Build it from the game's own art, and use inline `style` for any new colour: the Library page does not load `playlab.css`.
+**C.** Card icon — add a scene to `GAME_SCENE_ICONS` in `src/playlab/shared/components/icons/GameSceneIcons.tsx` (otherwise the card falls back to the emoji `glyph`). Build it from the game's own art, and use inline `style` for any new colour: the Library page does not load `playlab.css`.
 
 You do **not** add `src/app/play/<game-id>/page.tsx`. One dynamic route already exists: `src/app/(play)/play/[gameId]/page.tsx`.
+
+---
+
+## Folders that are not one game (audited Nov 13, 2026)
+
+Every folder in `src/playlab/games/` is a game with one `<PascalCase>Game.tsx` root, except these:
+
+| Folder                           | What it is                                                                                            |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `number-groups`                  | A game **and** the NgShell kit (`NgShell`, `NgStage`, `NgCheckpoint`, `createModuleStore`)            |
+| `word-lesson`, `shape-lesson`    | Lesson kits with no root. The `words-*` and `shape-*` folders are thin games built on them            |
+| `word-builder`                   | Lesson kit with no root. The five `word-builder-a` … `-u` folders are thin games built on it          |
+| `rainbow-words`                  | Lesson kit with no root. The seven `rainbow-words-red` … `-violet` folders are thin games built on it |
+| `our-world`                      | Lesson kit with no root. The six `our-world-*` folders are thin games built on it                     |
+| `sticker-studio`                 | Lesson kit with no root. The six `sticker-studio-*` folders are thin games built on it                |
+| `magic-colours`, `fruit-puzzles` | Art, rounds and CSS only. Played through `colours-*` and `fruit-easy` / `fruit-tricky`                |
+| `brick-lab/engine`               | The SVG brick engine the `brick-*` games share                                                        |
+| `blend-read`, `jigsaw-fun`       | Games whose `PictureArt` and `Cheer` components most newer games import                               |
+
+`NEW-CLIPS.json` and `HOW-TO-PLAY.json` at a game's root are read by the audio scripts in `scripts/` (and by the lesson kits). Leave them where they are.
+
+The old `games/registry.ts` copy of the game list is gone (nothing read it). `src/constants/games.ts` is the only list.
 
 ---
 

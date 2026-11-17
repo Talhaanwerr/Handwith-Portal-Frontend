@@ -1,0 +1,28 @@
+[
+  {
+    "id": "rdt-welcome",
+    "file": "/audio/rhyme-detective/welcome.mp3",
+    "text": "Welcome to Rhyme Detective!"
+  },
+  {
+    "id": "rdt-done",
+    "file": "/audio/rhyme-detective/done.mp3",
+    "text": "Case closed! You found every rhyme!"
+  },
+  {
+    "id": "rdt-mode-find",
+    "file": "/audio/rhyme-detective/mode-find.mp3",
+    "text": "Rhyme Detective! Find the thing that rhymes."
+  },
+  {
+    "id": "rdt-find",
+    "file": "/audio/rhyme-detective/find.mp3",
+    "text": "Find something that rhymes with"
+  },
+  {
+    "id": "rdt-find-two",
+    "file": "/audio/rhyme-detective/find-two.mp3",
+    "text": "Find two things that rhyme with"
+  },
+  { "id": "rdt-more", "file": "/audio/rhyme-detective/more.mp3", "text": "Find one more!" }
+]

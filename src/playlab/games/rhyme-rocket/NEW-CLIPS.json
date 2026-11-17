@@ -1,0 +1,23 @@
+[
+  {
+    "id": "rrk-welcome",
+    "file": "/audio/rhyme-rocket/welcome.mp3",
+    "text": "Welcome to Rhyme Rocket!"
+  },
+  {
+    "id": "rrk-done",
+    "file": "/audio/rhyme-rocket/done.mp3",
+    "text": "Zoom! You flew to every rhyme!"
+  },
+  {
+    "id": "rrk-mode-fly",
+    "file": "/audio/rhyme-rocket/mode-fly.mp3",
+    "text": "Rhyme Rocket! Fly to the planet that rhymes."
+  },
+  {
+    "id": "rrk-fly",
+    "file": "/audio/rhyme-rocket/fly.mp3",
+    "text": "I fly to the planet that rhymes with"
+  },
+  { "id": "rrk-blast", "file": "/audio/rhyme-rocket/blast.mp3", "text": "Blast off!" }
+]

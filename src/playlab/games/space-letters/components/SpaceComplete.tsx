@@ -31,7 +31,9 @@ export function SpaceComplete({ onExitPortal }: SpaceCompleteProps) {
     <AlphabetFinale
       symbols={lower ? LOWER : UPPER}
       headline={clipText("cheer-you-did-it")}
-      subline={lower ? "You built all 26 small letters!" : "You built all 26 BIG letters!"}
+      subline={
+        lower ? "You built all 26 lowercase letters!" : "You built all 26 uppercase letters!"
+      }
       clipId="cheer-you-did-it"
       backdrop={<SpaceBackdrop />}
       rootClassName="spl-screen"
@@ -40,7 +42,7 @@ export function SpaceComplete({ onExitPortal }: SpaceCompleteProps) {
       tileClassName="bg-space"
       primaryClassName="bg-space"
       onPlayAgain={playAgain}
-      playAgainLabel={lower ? "Play small letters again" : "Play BIG letters again"}
+      playAgainLabel={lower ? "Play lowercase letters again" : "Play uppercase letters again"}
       onExitPortal={onExitPortal}
     />
   );

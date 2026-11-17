@@ -1,0 +1,22 @@
+[
+  {
+    "id": "mgc-tap-each",
+    "file": "/audio/magic-colours/tap-each.mp3",
+    "text": "Tap each part!"
+  },
+  {
+    "id": "mgc-is-white",
+    "file": "/audio/magic-colours/is-white.mp3",
+    "text": "That one is white."
+  },
+  {
+    "id": "mgc-is-black",
+    "file": "/audio/magic-colours/is-black.mp3",
+    "text": "That one is black."
+  },
+  {
+    "id": "mgc-is-grey",
+    "file": "/audio/magic-colours/is-grey.mp3",
+    "text": "That one is grey."
+  }
+]

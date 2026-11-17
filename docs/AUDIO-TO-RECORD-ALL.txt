@@ -1,0 +1,1067 @@
+ALL LINES STILL TO RECORD
+=========================
+Read each line as written. One file per line; the WHERE list at the bottom gives each file's name.
+
+Plane Seats — 6 lines
+  1. Welcome aboard Plane Seats!
+  2. Everyone is in their seat!
+  3. Seat numbers! Find the seat on the ticket.
+  4. Ticket sums! Add them up to find the seat.
+  5. Find the seat with this number!
+  6. Add up the ticket. Find the seat!
+
+Plane Trip (airport) — 10 lines
+  7. Welcome to Plane Trip!
+  8. Have a happy trip!
+  9. Bag match! Give each bag to its owner.
+  10. Pack for the trip! Sunny or snowy?
+  11. Whose bag is this?
+  12. Here's your bag!
+  13. Where does it go?
+  14. The sunny suitcase!
+  15. The snowy suitcase!
+  16. All packed! Off we go!
+
+Snack Time in the Sky — 5 lines
+  17. Welcome aboard! It's snack time in the sky!
+  18. What a happy flight!
+  19. Snack Trolley! Give each friend the snack they want.
+  20. Window Spy! Watch what flies past the window.
+  21. What does this friend want?
+
+Burj Lift — 7 lines
+  22. Welcome to the Burj Lift!
+  23. Everyone got to their floor!
+  24. Up or Down? Take everyone to their floor.
+  25. Picture Floors! Match the balloon to its floor.
+  26. Up or down?
+  27. Going up!
+  28. Going down!
+
+Tallest Tower — 8 lines
+  29. Welcome to Tallest Tower!
+  30. You know tall and short!
+  31. Tall or Short? Find the tall tower and the short one.
+  32. Line Them Up! Put the towers in order.
+  33. Which tower is taller?
+  34. Which tower is shorter?
+  35. Put them in order, from short to tall!
+  36. Short, taller, tallest!
+
+Fruit Puzzles (new, still being built) — 5 lines
+  37. Welcome to Fruit Puzzles!
+  38. You fixed all the fruit!
+  39. Easy Puzzles! Just a few big pieces.
+  40. Tricky Puzzles! Four pieces each.
+  41. Put the fruit back together!
+
+Magic Colours (new, still being built) — 12 lines
+  42. Welcome to Magic Colours!
+  43. You coloured them all!
+  44. On the Road! Let's colour cars and trucks.
+  45. Sky and Sea! Let's colour planes and boats.
+  46. Colour the car! Tap each part.
+  47. Colour the bus! Tap each part.
+  48. Colour the fire engine! Tap each part.
+  49. Colour the tractor! Tap each part.
+  50. Colour the aeroplane! Tap each part.
+  51. Colour the sailboat! Tap each part.
+  52. Colour the helicopter! Tap each part.
+  53. Colour the balloon! Tap each part.
+
+Drum Beats — 9 lines
+  54. Welcome to Drum Beats!
+  55. Little beats! Tap the drum.
+  56. Big beats! Tap the drum.
+  57. Tap the drum one time!
+  58. Tap the drum two times!
+  59. Tap the drum three times!
+  60. Tap the drum four times!
+  61. Now two more!
+  62. Now three more!
+
+Tiny Toy Shop (older game) — 8 lines
+  63. 1 teddy bear and 2 teddy bears. How many teddy bears?
+  64. 2 horses and 2 horses. How many horses?
+  65. 3 trains and 1 train. How many trains?
+  66. 2 balls and 2 balls. How many balls?
+  67. 3 drums and 2 drums. How many drums?
+  68. 4 teddy bears and 1 teddy bear. How many teddy bears?
+  69. 1 train and 4 trains. How many trains?
+  70. 3 balls and 2 balls. How many balls?
+
+Space ABC (older game) — 26 lines
+  71. Find the A!
+  72. Find the B!
+  73. Find the C!
+  74. Find the D!
+  75. Find the E!
+  76. Find the F!
+  77. Find the G!
+  78. Find the H!
+  79. Find the I!
+  80. Find the J!
+  81. Find the K!
+  82. Find the L!
+  83. Find the M!
+  84. Find the N!
+  85. Find the O!
+  86. Find the P!
+  87. Find the Q!
+  88. Find the R!
+  89. Find the S!
+  90. Find the T!
+  91. Find the U!
+  92. Find the V!
+  93. Find the W!
+  94. Find the X!
+  95. Find the Y!
+  96. Find the Z!
+
+Blend & Seek (older game: words and their sounds) — 157 lines
+  97. cat
+  98. c
+  99. a
+  100. t
+  101. dog
+  102. d
+  103. o
+  104. g
+  105. sun
+  106. s
+  107. u
+  108. n
+  109. hat
+  110. h
+  111. a
+  112. t
+  113. fox
+  114. f
+  115. o
+  116. x
+  117. b
+  118. e
+  119. d
+  120. cup
+  121. c
+  122. u
+  123. p
+  124. box
+  125. b
+  126. o
+  127. x
+  128. bus
+  129. b
+  130. u
+  131. s
+  132. hen
+  133. h
+  134. e
+  135. n
+  136. i
+  137. p
+  138. frog
+  139. f
+  140. r
+  141. o
+  142. g
+  143. star
+  144. s
+  145. t
+  146. c
+  147. r
+  148. a
+  149. b
+  150. p
+  151. l
+  152. u
+  153. m
+  154. drum
+  155. d
+  156. r
+  157. u
+  158. m
+  159. flag
+  160. f
+  161. l
+  162. a
+  163. g
+  164. e
+  165. l
+  166. nest
+  167. n
+  168. e
+  169. s
+  170. t
+  171. c
+  172. l
+  173. a
+  174. m
+  175. cake
+  176. c
+  177. a
+  178. k
+  179. house
+  180. h
+  181. s
+  182. s
+  183. p
+  184. n
+  185. juice
+  186. j
+  187. c
+  188. m
+  189. i
+  190. c
+  191. t
+  192. s
+  193. b
+  194. l
+  195. b
+  196. l
+  197. train
+  198. t
+  199. r
+  200. n
+  201. mouse
+  202. m
+  203. s
+  204. c
+  205. l
+  206. o
+  207. u
+  208. m
+  209. s
+  210. queen
+  211. n
+  212. whale
+  213. a
+  214. l
+  215. b
+  216. r
+  217. u
+  218. c
+  219. r
+  220. n
+  221. t
+  222. shoe
+  223. lion
+  224. l
+  225. i
+  226. o
+  227. n
+  228. snake
+  229. s
+  230. n
+  231. a
+  232. k
+  233. t
+  234. s
+  235. c
+  236. l
+  237. d
+  238. m
+  239. t
+  240. b
+  241. i
+  242. k
+  243. c
+  244. u
+  245. b
+  246. e
+  247. f
+  248. t
+  249. u
+  250. n
+  251. i
+  252. c
+  253. n
+
+Total: 253 lines.
+Already recorded and reused (not listed): the numbers, "Try again!", the colour lines, the cheers.
+
+
+----------------------------------------
+WHERE EACH ONE GOES (for patching)
+----------------------------------------
+
+Plane Seats
+  1. "Welcome aboard Plane Seats!"
+     file: public/audio/plane-seats/welcome.mp3
+     id:   pls-welcome
+  2. "Everyone is in their seat!"
+     file: public/audio/plane-seats/done.mp3
+     id:   pls-done
+  3. "Seat numbers! Find the seat on the ticket."
+     file: public/audio/plane-seats/mode-number.mp3
+     id:   pls-mode-number
+  4. "Ticket sums! Add them up to find the seat."
+     file: public/audio/plane-seats/mode-sums.mp3
+     id:   pls-mode-sums
+  5. "Find the seat with this number!"
+     file: public/audio/plane-seats/find.mp3
+     id:   pls-find
+  6. "Add up the ticket. Find the seat!"
+     file: public/audio/plane-seats/add.mp3
+     id:   pls-add
+
+Plane Trip (airport)
+  7. "Welcome to Plane Trip!"
+     file: public/audio/plane-trip/welcome.mp3
+     id:   ptr-welcome
+  8. "Have a happy trip!"
+     file: public/audio/plane-trip/done.mp3
+     id:   ptr-done
+  9. "Bag match! Give each bag to its owner."
+     file: public/audio/plane-trip/mode-bags.mp3
+     id:   ptr-mode-bags
+  10. "Pack for the trip! Sunny or snowy?"
+     file: public/audio/plane-trip/mode-pack.mp3
+     id:   ptr-mode-pack
+  11. "Whose bag is this?"
+     file: public/audio/plane-trip/whose.mp3
+     id:   ptr-whose
+  12. "Here's your bag!"
+     file: public/audio/plane-trip/yours.mp3
+     id:   ptr-yours
+  13. "Where does it go?"
+     file: public/audio/plane-trip/where.mp3
+     id:   ptr-where
+  14. "The sunny suitcase!"
+     file: public/audio/plane-trip/sunny.mp3
+     id:   ptr-sunny
+  15. "The snowy suitcase!"
+     file: public/audio/plane-trip/snowy.mp3
+     id:   ptr-snowy
+  16. "All packed! Off we go!"
+     file: public/audio/plane-trip/takeoff.mp3
+     id:   ptr-takeoff
+
+Snack Time in the Sky
+  17. "Welcome aboard! It's snack time in the sky!"
+     file: public/audio/plane-snacks/welcome.mp3
+     id:   psn-welcome
+  18. "What a happy flight!"
+     file: public/audio/plane-snacks/done.mp3
+     id:   psn-done
+  19. "Snack Trolley! Give each friend the snack they want."
+     file: public/audio/plane-snacks/mode-snacks.mp3
+     id:   psn-mode-snacks
+  20. "Window Spy! Watch what flies past the window."
+     file: public/audio/plane-snacks/mode-window.mp3
+     id:   psn-mode-window
+  21. "What does this friend want?"
+     file: public/audio/plane-snacks/what-want.mp3
+     id:   psn-what-want
+
+Burj Lift
+  22. "Welcome to the Burj Lift!"
+     file: public/audio/burj-lift/welcome.mp3
+     id:   bjl-welcome
+  23. "Everyone got to their floor!"
+     file: public/audio/burj-lift/done.mp3
+     id:   bjl-done
+  24. "Up or Down? Take everyone to their floor."
+     file: public/audio/burj-lift/mode-updown.mp3
+     id:   bjl-mode-updown
+  25. "Picture Floors! Match the balloon to its floor."
+     file: public/audio/burj-lift/mode-match.mp3
+     id:   bjl-mode-match
+  26. "Up or down?"
+     file: public/audio/burj-lift/up-or-down.mp3
+     id:   bjl-up-or-down
+  27. "Going up!"
+     file: public/audio/burj-lift/going-up.mp3
+     id:   bjl-going-up
+  28. "Going down!"
+     file: public/audio/burj-lift/going-down.mp3
+     id:   bjl-going-down
+
+Tallest Tower
+  29. "Welcome to Tallest Tower!"
+     file: public/audio/burj-towers/welcome.mp3
+     id:   bjt-welcome
+  30. "You know tall and short!"
+     file: public/audio/burj-towers/done.mp3
+     id:   bjt-done
+  31. "Tall or Short? Find the tall tower and the short one."
+     file: public/audio/burj-towers/mode-tallshort.mp3
+     id:   bjt-mode-tallshort
+  32. "Line Them Up! Put the towers in order."
+     file: public/audio/burj-towers/mode-order.mp3
+     id:   bjt-mode-order
+  33. "Which tower is taller?"
+     file: public/audio/burj-towers/which-taller.mp3
+     id:   bjt-which-taller
+  34. "Which tower is shorter?"
+     file: public/audio/burj-towers/which-shorter.mp3
+     id:   bjt-which-shorter
+  35. "Put them in order, from short to tall!"
+     file: public/audio/burj-towers/order.mp3
+     id:   bjt-order
+  36. "Short, taller, tallest!"
+     file: public/audio/burj-towers/in-order.mp3
+     id:   bjt-in-order
+
+Fruit Puzzles (new, still being built)
+  37. "Welcome to Fruit Puzzles!"
+     file: public/audio/fruit-puzzles/welcome.mp3
+     id:   frp-welcome
+  38. "You fixed all the fruit!"
+     file: public/audio/fruit-puzzles/done.mp3
+     id:   frp-done
+  39. "Easy Puzzles! Just a few big pieces."
+     file: public/audio/fruit-puzzles/mode-easy.mp3
+     id:   frp-mode-easy
+  40. "Tricky Puzzles! Four pieces each."
+     file: public/audio/fruit-puzzles/mode-tricky.mp3
+     id:   frp-mode-tricky
+  41. "Put the fruit back together!"
+     file: public/audio/fruit-puzzles/put.mp3
+     id:   frp-put
+
+Magic Colours (new, still being built)
+  42. "Welcome to Magic Colours!"
+     file: public/audio/magic-colours/welcome.mp3
+     id:   mgc-welcome
+  43. "You coloured them all!"
+     file: public/audio/magic-colours/done.mp3
+     id:   mgc-done
+  44. "On the Road! Let's colour cars and trucks."
+     file: public/audio/magic-colours/mode-roads.mp3
+     id:   mgc-mode-roads
+  45. "Sky and Sea! Let's colour planes and boats."
+     file: public/audio/magic-colours/mode-sky-sea.mp3
+     id:   mgc-mode-sky-sea
+  46. "Colour the car! Tap each part."
+     file: public/audio/magic-colours/car.mp3
+     id:   mgc-car
+  47. "Colour the bus! Tap each part."
+     file: public/audio/magic-colours/bus.mp3
+     id:   mgc-bus
+  48. "Colour the fire engine! Tap each part."
+     file: public/audio/magic-colours/fire-engine.mp3
+     id:   mgc-fire-engine
+  49. "Colour the tractor! Tap each part."
+     file: public/audio/magic-colours/tractor.mp3
+     id:   mgc-tractor
+  50. "Colour the aeroplane! Tap each part."
+     file: public/audio/magic-colours/plane.mp3
+     id:   mgc-plane
+  51. "Colour the sailboat! Tap each part."
+     file: public/audio/magic-colours/boat.mp3
+     id:   mgc-boat
+  52. "Colour the helicopter! Tap each part."
+     file: public/audio/magic-colours/helicopter.mp3
+     id:   mgc-helicopter
+  53. "Colour the balloon! Tap each part."
+     file: public/audio/magic-colours/balloon.mp3
+     id:   mgc-balloon
+
+Drum Beats
+  54. "Welcome to Drum Beats!"
+     file: public/audio/drum-beats/welcome.mp3
+     id:   drb-welcome
+  55. "Little beats! Tap the drum."
+     file: public/audio/drum-beats/mode-little.mp3
+     id:   drb-mode-little
+  56. "Big beats! Tap the drum."
+     file: public/audio/drum-beats/mode-big.mp3
+     id:   drb-mode-big
+  57. "Tap the drum one time!"
+     file: public/audio/drum-beats/tap-1.mp3
+     id:   drb-tap-1
+  58. "Tap the drum two times!"
+     file: public/audio/drum-beats/tap-2.mp3
+     id:   drb-tap-2
+  59. "Tap the drum three times!"
+     file: public/audio/drum-beats/tap-3.mp3
+     id:   drb-tap-3
+  60. "Tap the drum four times!"
+     file: public/audio/drum-beats/tap-4.mp3
+     id:   drb-tap-4
+  61. "Now two more!"
+     file: public/audio/drum-beats/more-2.mp3
+     id:   drb-more-2
+  62. "Now three more!"
+     file: public/audio/drum-beats/more-3.mp3
+     id:   drb-more-3
+
+Tiny Toy Shop (older game)
+  63. "1 teddy bear and 2 teddy bears. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-1-2-bear.mp3
+     id:   tys-add-1-2-bear
+  64. "2 horses and 2 horses. How many horses?"
+     file: public/audio/tiny-toy-shop/add-2-2-horse.mp3
+     id:   tys-add-2-2-horse
+  65. "3 trains and 1 train. How many trains?"
+     file: public/audio/tiny-toy-shop/add-3-1-train.mp3
+     id:   tys-add-3-1-train
+  66. "2 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-2-2-ball.mp3
+     id:   tys-add-2-2-ball
+  67. "3 drums and 2 drums. How many drums?"
+     file: public/audio/tiny-toy-shop/add-3-2-drum.mp3
+     id:   tys-add-3-2-drum
+  68. "4 teddy bears and 1 teddy bear. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-4-1-bear.mp3
+     id:   tys-add-4-1-bear
+  69. "1 train and 4 trains. How many trains?"
+     file: public/audio/tiny-toy-shop/add-1-4-train.mp3
+     id:   tys-add-1-4-train
+  70. "3 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-3-2-ball.mp3
+     id:   tys-add-3-2-ball
+
+Space ABC (older game)
+  71. "Find the A!"
+     file: public/audio/space/find-a.mp3
+     id:   space-find-a
+  72. "Find the B!"
+     file: public/audio/space/find-b.mp3
+     id:   space-find-b
+  73. "Find the C!"
+     file: public/audio/space/find-c.mp3
+     id:   space-find-c
+  74. "Find the D!"
+     file: public/audio/space/find-d.mp3
+     id:   space-find-d
+  75. "Find the E!"
+     file: public/audio/space/find-e.mp3
+     id:   space-find-e
+  76. "Find the F!"
+     file: public/audio/space/find-f.mp3
+     id:   space-find-f
+  77. "Find the G!"
+     file: public/audio/space/find-g.mp3
+     id:   space-find-g
+  78. "Find the H!"
+     file: public/audio/space/find-h.mp3
+     id:   space-find-h
+  79. "Find the I!"
+     file: public/audio/space/find-i.mp3
+     id:   space-find-i
+  80. "Find the J!"
+     file: public/audio/space/find-j.mp3
+     id:   space-find-j
+  81. "Find the K!"
+     file: public/audio/space/find-k.mp3
+     id:   space-find-k
+  82. "Find the L!"
+     file: public/audio/space/find-l.mp3
+     id:   space-find-l
+  83. "Find the M!"
+     file: public/audio/space/find-m.mp3
+     id:   space-find-m
+  84. "Find the N!"
+     file: public/audio/space/find-n.mp3
+     id:   space-find-n
+  85. "Find the O!"
+     file: public/audio/space/find-o.mp3
+     id:   space-find-o
+  86. "Find the P!"
+     file: public/audio/space/find-p.mp3
+     id:   space-find-p
+  87. "Find the Q!"
+     file: public/audio/space/find-q.mp3
+     id:   space-find-q
+  88. "Find the R!"
+     file: public/audio/space/find-r.mp3
+     id:   space-find-r
+  89. "Find the S!"
+     file: public/audio/space/find-s.mp3
+     id:   space-find-s
+  90. "Find the T!"
+     file: public/audio/space/find-t.mp3
+     id:   space-find-t
+  91. "Find the U!"
+     file: public/audio/space/find-u.mp3
+     id:   space-find-u
+  92. "Find the V!"
+     file: public/audio/space/find-v.mp3
+     id:   space-find-v
+  93. "Find the W!"
+     file: public/audio/space/find-w.mp3
+     id:   space-find-w
+  94. "Find the X!"
+     file: public/audio/space/find-x.mp3
+     id:   space-find-x
+  95. "Find the Y!"
+     file: public/audio/space/find-y.mp3
+     id:   space-find-y
+  96. "Find the Z!"
+     file: public/audio/space/find-z.mp3
+     id:   space-find-z
+
+Blend & Seek (older game: words and their sounds)
+  97. "cat"
+     file: public/audio/blend/word-level1-cat.mp3
+     id:   blend-word-level1-cat
+  98. "c"
+     file: public/audio/blend/sound-level1-cat-0.mp3
+     id:   blend-sound-level1-cat-0
+  99. "a"
+     file: public/audio/blend/sound-level1-cat-1.mp3
+     id:   blend-sound-level1-cat-1
+  100. "t"
+     file: public/audio/blend/sound-level1-cat-2.mp3
+     id:   blend-sound-level1-cat-2
+  101. "dog"
+     file: public/audio/blend/word-level1-dog.mp3
+     id:   blend-word-level1-dog
+  102. "d"
+     file: public/audio/blend/sound-level1-dog-0.mp3
+     id:   blend-sound-level1-dog-0
+  103. "o"
+     file: public/audio/blend/sound-level1-dog-1.mp3
+     id:   blend-sound-level1-dog-1
+  104. "g"
+     file: public/audio/blend/sound-level1-dog-2.mp3
+     id:   blend-sound-level1-dog-2
+  105. "sun"
+     file: public/audio/blend/word-level1-sun.mp3
+     id:   blend-word-level1-sun
+  106. "s"
+     file: public/audio/blend/sound-level1-sun-0.mp3
+     id:   blend-sound-level1-sun-0
+  107. "u"
+     file: public/audio/blend/sound-level1-sun-1.mp3
+     id:   blend-sound-level1-sun-1
+  108. "n"
+     file: public/audio/blend/sound-level1-sun-2.mp3
+     id:   blend-sound-level1-sun-2
+  109. "hat"
+     file: public/audio/blend/word-level1-hat.mp3
+     id:   blend-word-level1-hat
+  110. "h"
+     file: public/audio/blend/sound-level1-hat-0.mp3
+     id:   blend-sound-level1-hat-0
+  111. "a"
+     file: public/audio/blend/sound-level1-hat-1.mp3
+     id:   blend-sound-level1-hat-1
+  112. "t"
+     file: public/audio/blend/sound-level1-hat-2.mp3
+     id:   blend-sound-level1-hat-2
+  113. "fox"
+     file: public/audio/blend/word-level1-fox.mp3
+     id:   blend-word-level1-fox
+  114. "f"
+     file: public/audio/blend/sound-level1-fox-0.mp3
+     id:   blend-sound-level1-fox-0
+  115. "o"
+     file: public/audio/blend/sound-level1-fox-1.mp3
+     id:   blend-sound-level1-fox-1
+  116. "x"
+     file: public/audio/blend/sound-level1-fox-2.mp3
+     id:   blend-sound-level1-fox-2
+  117. "b"
+     file: public/audio/blend/sound-level1-bed-0.mp3
+     id:   blend-sound-level1-bed-0
+  118. "e"
+     file: public/audio/blend/sound-level1-bed-1.mp3
+     id:   blend-sound-level1-bed-1
+  119. "d"
+     file: public/audio/blend/sound-level1-bed-2.mp3
+     id:   blend-sound-level1-bed-2
+  120. "cup"
+     file: public/audio/blend/word-level1-cup.mp3
+     id:   blend-word-level1-cup
+  121. "c"
+     file: public/audio/blend/sound-level1-cup-0.mp3
+     id:   blend-sound-level1-cup-0
+  122. "u"
+     file: public/audio/blend/sound-level1-cup-1.mp3
+     id:   blend-sound-level1-cup-1
+  123. "p"
+     file: public/audio/blend/sound-level1-cup-2.mp3
+     id:   blend-sound-level1-cup-2
+  124. "box"
+     file: public/audio/blend/word-level1-box.mp3
+     id:   blend-word-level1-box
+  125. "b"
+     file: public/audio/blend/sound-level1-box-0.mp3
+     id:   blend-sound-level1-box-0
+  126. "o"
+     file: public/audio/blend/sound-level1-box-1.mp3
+     id:   blend-sound-level1-box-1
+  127. "x"
+     file: public/audio/blend/sound-level1-box-2.mp3
+     id:   blend-sound-level1-box-2
+  128. "bus"
+     file: public/audio/blend/word-level1-bus.mp3
+     id:   blend-word-level1-bus
+  129. "b"
+     file: public/audio/blend/sound-level1-bus-0.mp3
+     id:   blend-sound-level1-bus-0
+  130. "u"
+     file: public/audio/blend/sound-level1-bus-1.mp3
+     id:   blend-sound-level1-bus-1
+  131. "s"
+     file: public/audio/blend/sound-level1-bus-2.mp3
+     id:   blend-sound-level1-bus-2
+  132. "hen"
+     file: public/audio/blend/word-level1-hen.mp3
+     id:   blend-word-level1-hen
+  133. "h"
+     file: public/audio/blend/sound-level1-hen-0.mp3
+     id:   blend-sound-level1-hen-0
+  134. "e"
+     file: public/audio/blend/sound-level1-hen-1.mp3
+     id:   blend-sound-level1-hen-1
+  135. "n"
+     file: public/audio/blend/sound-level1-hen-2.mp3
+     id:   blend-sound-level1-hen-2
+  136. "i"
+     file: public/audio/blend/sound-level2-ship-1.mp3
+     id:   blend-sound-level2-ship-1
+  137. "p"
+     file: public/audio/blend/sound-level2-ship-2.mp3
+     id:   blend-sound-level2-ship-2
+  138. "frog"
+     file: public/audio/blend/word-level2-frog.mp3
+     id:   blend-word-level2-frog
+  139. "f"
+     file: public/audio/blend/sound-level2-frog-0.mp3
+     id:   blend-sound-level2-frog-0
+  140. "r"
+     file: public/audio/blend/sound-level2-frog-1.mp3
+     id:   blend-sound-level2-frog-1
+  141. "o"
+     file: public/audio/blend/sound-level2-frog-2.mp3
+     id:   blend-sound-level2-frog-2
+  142. "g"
+     file: public/audio/blend/sound-level2-frog-3.mp3
+     id:   blend-sound-level2-frog-3
+  143. "star"
+     file: public/audio/blend/word-level2-star.mp3
+     id:   blend-word-level2-star
+  144. "s"
+     file: public/audio/blend/sound-level2-star-0.mp3
+     id:   blend-sound-level2-star-0
+  145. "t"
+     file: public/audio/blend/sound-level2-star-1.mp3
+     id:   blend-sound-level2-star-1
+  146. "c"
+     file: public/audio/blend/sound-level2-crab-0.mp3
+     id:   blend-sound-level2-crab-0
+  147. "r"
+     file: public/audio/blend/sound-level2-crab-1.mp3
+     id:   blend-sound-level2-crab-1
+  148. "a"
+     file: public/audio/blend/sound-level2-crab-2.mp3
+     id:   blend-sound-level2-crab-2
+  149. "b"
+     file: public/audio/blend/sound-level2-crab-3.mp3
+     id:   blend-sound-level2-crab-3
+  150. "p"
+     file: public/audio/blend/sound-level2-plum-0.mp3
+     id:   blend-sound-level2-plum-0
+  151. "l"
+     file: public/audio/blend/sound-level2-plum-1.mp3
+     id:   blend-sound-level2-plum-1
+  152. "u"
+     file: public/audio/blend/sound-level2-plum-2.mp3
+     id:   blend-sound-level2-plum-2
+  153. "m"
+     file: public/audio/blend/sound-level2-plum-3.mp3
+     id:   blend-sound-level2-plum-3
+  154. "drum"
+     file: public/audio/blend/word-level2-drum.mp3
+     id:   blend-word-level2-drum
+  155. "d"
+     file: public/audio/blend/sound-level2-drum-0.mp3
+     id:   blend-sound-level2-drum-0
+  156. "r"
+     file: public/audio/blend/sound-level2-drum-1.mp3
+     id:   blend-sound-level2-drum-1
+  157. "u"
+     file: public/audio/blend/sound-level2-drum-2.mp3
+     id:   blend-sound-level2-drum-2
+  158. "m"
+     file: public/audio/blend/sound-level2-drum-3.mp3
+     id:   blend-sound-level2-drum-3
+  159. "flag"
+     file: public/audio/blend/word-level2-flag.mp3
+     id:   blend-word-level2-flag
+  160. "f"
+     file: public/audio/blend/sound-level2-flag-0.mp3
+     id:   blend-sound-level2-flag-0
+  161. "l"
+     file: public/audio/blend/sound-level2-flag-1.mp3
+     id:   blend-sound-level2-flag-1
+  162. "a"
+     file: public/audio/blend/sound-level2-flag-2.mp3
+     id:   blend-sound-level2-flag-2
+  163. "g"
+     file: public/audio/blend/sound-level2-flag-3.mp3
+     id:   blend-sound-level2-flag-3
+  164. "e"
+     file: public/audio/blend/sound-level2-shell-1.mp3
+     id:   blend-sound-level2-shell-1
+  165. "l"
+     file: public/audio/blend/sound-level2-shell-2.mp3
+     id:   blend-sound-level2-shell-2
+  166. "nest"
+     file: public/audio/blend/word-level2-nest.mp3
+     id:   blend-word-level2-nest
+  167. "n"
+     file: public/audio/blend/sound-level2-nest-0.mp3
+     id:   blend-sound-level2-nest-0
+  168. "e"
+     file: public/audio/blend/sound-level2-nest-1.mp3
+     id:   blend-sound-level2-nest-1
+  169. "s"
+     file: public/audio/blend/sound-level2-nest-2.mp3
+     id:   blend-sound-level2-nest-2
+  170. "t"
+     file: public/audio/blend/sound-level2-nest-3.mp3
+     id:   blend-sound-level2-nest-3
+  171. "c"
+     file: public/audio/blend/sound-level2-clam-0.mp3
+     id:   blend-sound-level2-clam-0
+  172. "l"
+     file: public/audio/blend/sound-level2-clam-1.mp3
+     id:   blend-sound-level2-clam-1
+  173. "a"
+     file: public/audio/blend/sound-level2-clam-2.mp3
+     id:   blend-sound-level2-clam-2
+  174. "m"
+     file: public/audio/blend/sound-level2-clam-3.mp3
+     id:   blend-sound-level2-clam-3
+  175. "cake"
+     file: public/audio/blend/word-level3-cake.mp3
+     id:   blend-word-level3-cake
+  176. "c"
+     file: public/audio/blend/sound-level3-cake-0.mp3
+     id:   blend-sound-level3-cake-0
+  177. "a"
+     file: public/audio/blend/sound-level3-cake-1.mp3
+     id:   blend-sound-level3-cake-1
+  178. "k"
+     file: public/audio/blend/sound-level3-cake-2.mp3
+     id:   blend-sound-level3-cake-2
+  179. "house"
+     file: public/audio/blend/word-level3-house.mp3
+     id:   blend-word-level3-house
+  180. "h"
+     file: public/audio/blend/sound-level3-house-0.mp3
+     id:   blend-sound-level3-house-0
+  181. "s"
+     file: public/audio/blend/sound-level3-house-2.mp3
+     id:   blend-sound-level3-house-2
+  182. "s"
+     file: public/audio/blend/sound-level3-spoon-0.mp3
+     id:   blend-sound-level3-spoon-0
+  183. "p"
+     file: public/audio/blend/sound-level3-spoon-1.mp3
+     id:   blend-sound-level3-spoon-1
+  184. "n"
+     file: public/audio/blend/sound-level3-spoon-3.mp3
+     id:   blend-sound-level3-spoon-3
+  185. "juice"
+     file: public/audio/blend/word-level3-juice.mp3
+     id:   blend-word-level3-juice
+  186. "j"
+     file: public/audio/blend/sound-level3-juice-0.mp3
+     id:   blend-sound-level3-juice-0
+  187. "c"
+     file: public/audio/blend/sound-level3-juice-2.mp3
+     id:   blend-sound-level3-juice-2
+  188. "m"
+     file: public/audio/blend/sound-level3-mice-0.mp3
+     id:   blend-sound-level3-mice-0
+  189. "i"
+     file: public/audio/blend/sound-level3-mice-1.mp3
+     id:   blend-sound-level3-mice-1
+  190. "c"
+     file: public/audio/blend/sound-level3-mice-2.mp3
+     id:   blend-sound-level3-mice-2
+  191. "t"
+     file: public/audio/blend/sound-level3-toes-0.mp3
+     id:   blend-sound-level3-toes-0
+  192. "s"
+     file: public/audio/blend/sound-level3-toes-2.mp3
+     id:   blend-sound-level3-toes-2
+  193. "b"
+     file: public/audio/blend/sound-level3-bowl-0.mp3
+     id:   blend-sound-level3-bowl-0
+  194. "l"
+     file: public/audio/blend/sound-level3-bowl-2.mp3
+     id:   blend-sound-level3-bowl-2
+  195. "b"
+     file: public/audio/blend/sound-level3-blue-0.mp3
+     id:   blend-sound-level3-blue-0
+  196. "l"
+     file: public/audio/blend/sound-level3-blue-1.mp3
+     id:   blend-sound-level3-blue-1
+  197. "train"
+     file: public/audio/blend/word-level3-train.mp3
+     id:   blend-word-level3-train
+  198. "t"
+     file: public/audio/blend/sound-level3-train-0.mp3
+     id:   blend-sound-level3-train-0
+  199. "r"
+     file: public/audio/blend/sound-level3-train-1.mp3
+     id:   blend-sound-level3-train-1
+  200. "n"
+     file: public/audio/blend/sound-level3-train-3.mp3
+     id:   blend-sound-level3-train-3
+  201. "mouse"
+     file: public/audio/blend/word-level3-mouse.mp3
+     id:   blend-word-level3-mouse
+  202. "m"
+     file: public/audio/blend/sound-level3-mouse-0.mp3
+     id:   blend-sound-level3-mouse-0
+  203. "s"
+     file: public/audio/blend/sound-level3-mouse-2.mp3
+     id:   blend-sound-level3-mouse-2
+  204. "c"
+     file: public/audio/blend/sound-level4-clock-0.mp3
+     id:   blend-sound-level4-clock-0
+  205. "l"
+     file: public/audio/blend/sound-level4-clock-1.mp3
+     id:   blend-sound-level4-clock-1
+  206. "o"
+     file: public/audio/blend/sound-level4-clock-2.mp3
+     id:   blend-sound-level4-clock-2
+  207. "u"
+     file: public/audio/blend/sound-level4-thumb-1.mp3
+     id:   blend-sound-level4-thumb-1
+  208. "m"
+     file: public/audio/blend/sound-level4-thumb-2.mp3
+     id:   blend-sound-level4-thumb-2
+  209. "s"
+     file: public/audio/blend/sound-level4-cheese-2.mp3
+     id:   blend-sound-level4-cheese-2
+  210. "queen"
+     file: public/audio/blend/word-level4-queen.mp3
+     id:   blend-word-level4-queen
+  211. "n"
+     file: public/audio/blend/sound-level4-queen-2.mp3
+     id:   blend-sound-level4-queen-2
+  212. "whale"
+     file: public/audio/blend/word-level4-whale.mp3
+     id:   blend-word-level4-whale
+  213. "a"
+     file: public/audio/blend/sound-level4-whale-1.mp3
+     id:   blend-sound-level4-whale-1
+  214. "l"
+     file: public/audio/blend/sound-level4-whale-2.mp3
+     id:   blend-sound-level4-whale-2
+  215. "b"
+     file: public/audio/blend/sound-level4-brush-0.mp3
+     id:   blend-sound-level4-brush-0
+  216. "r"
+     file: public/audio/blend/sound-level4-brush-1.mp3
+     id:   blend-sound-level4-brush-1
+  217. "u"
+     file: public/audio/blend/sound-level4-brush-2.mp3
+     id:   blend-sound-level4-brush-2
+  218. "c"
+     file: public/audio/blend/sound-level4-crown-0.mp3
+     id:   blend-sound-level4-crown-0
+  219. "r"
+     file: public/audio/blend/sound-level4-crown-1.mp3
+     id:   blend-sound-level4-crown-1
+  220. "n"
+     file: public/audio/blend/sound-level4-crown-3.mp3
+     id:   blend-sound-level4-crown-3
+  221. "t"
+     file: public/audio/blend/sound-level4-teeth-0.mp3
+     id:   blend-sound-level4-teeth-0
+  222. "shoe"
+     file: public/audio/blend/word-level4-shoe.mp3
+     id:   blend-word-level4-shoe
+  223. "lion"
+     file: public/audio/blend/word-level5-lion.mp3
+     id:   blend-word-level5-lion
+  224. "l"
+     file: public/audio/blend/sound-level5-lion-0.mp3
+     id:   blend-sound-level5-lion-0
+  225. "i"
+     file: public/audio/blend/sound-level5-lion-1.mp3
+     id:   blend-sound-level5-lion-1
+  226. "o"
+     file: public/audio/blend/sound-level5-lion-2.mp3
+     id:   blend-sound-level5-lion-2
+  227. "n"
+     file: public/audio/blend/sound-level5-lion-3.mp3
+     id:   blend-sound-level5-lion-3
+  228. "snake"
+     file: public/audio/blend/word-level5-snake.mp3
+     id:   blend-word-level5-snake
+  229. "s"
+     file: public/audio/blend/sound-level5-snake-0.mp3
+     id:   blend-sound-level5-snake-0
+  230. "n"
+     file: public/audio/blend/sound-level5-snake-1.mp3
+     id:   blend-sound-level5-snake-1
+  231. "a"
+     file: public/audio/blend/sound-level5-snake-2.mp3
+     id:   blend-sound-level5-snake-2
+  232. "k"
+     file: public/audio/blend/sound-level5-snake-3.mp3
+     id:   blend-sound-level5-snake-3
+  233. "t"
+     file: public/audio/blend/sound-level5-toys-0.mp3
+     id:   blend-sound-level5-toys-0
+  234. "s"
+     file: public/audio/blend/sound-level5-toys-2.mp3
+     id:   blend-sound-level5-toys-2
+  235. "c"
+     file: public/audio/blend/sound-level5-cloud-0.mp3
+     id:   blend-sound-level5-cloud-0
+  236. "l"
+     file: public/audio/blend/sound-level5-cloud-1.mp3
+     id:   blend-sound-level5-cloud-1
+  237. "d"
+     file: public/audio/blend/sound-level5-cloud-3.mp3
+     id:   blend-sound-level5-cloud-3
+  238. "m"
+     file: public/audio/blend/sound-level5-meat-0.mp3
+     id:   blend-sound-level5-meat-0
+  239. "t"
+     file: public/audio/blend/sound-level5-meat-2.mp3
+     id:   blend-sound-level5-meat-2
+  240. "b"
+     file: public/audio/blend/sound-level5-bike-0.mp3
+     id:   blend-sound-level5-bike-0
+  241. "i"
+     file: public/audio/blend/sound-level5-bike-1.mp3
+     id:   blend-sound-level5-bike-1
+  242. "k"
+     file: public/audio/blend/sound-level5-bike-2.mp3
+     id:   blend-sound-level5-bike-2
+  243. "c"
+     file: public/audio/blend/sound-level5-cube-0.mp3
+     id:   blend-sound-level5-cube-0
+  244. "u"
+     file: public/audio/blend/sound-level5-cube-1.mp3
+     id:   blend-sound-level5-cube-1
+  245. "b"
+     file: public/audio/blend/sound-level5-cube-2.mp3
+     id:   blend-sound-level5-cube-2
+  246. "e"
+     file: public/audio/blend/sound-level5-chef-1.mp3
+     id:   blend-sound-level5-chef-1
+  247. "f"
+     file: public/audio/blend/sound-level5-chef-2.mp3
+     id:   blend-sound-level5-chef-2
+  248. "t"
+     file: public/audio/blend/sound-level5-tie-0.mp3
+     id:   blend-sound-level5-tie-0
+  249. "u"
+     file: public/audio/blend/sound-level5-unicorn-0.mp3
+     id:   blend-sound-level5-unicorn-0
+  250. "n"
+     file: public/audio/blend/sound-level5-unicorn-1.mp3
+     id:   blend-sound-level5-unicorn-1
+  251. "i"
+     file: public/audio/blend/sound-level5-unicorn-2.mp3
+     id:   blend-sound-level5-unicorn-2
+  252. "c"
+     file: public/audio/blend/sound-level5-unicorn-3.mp3
+     id:   blend-sound-level5-unicorn-3
+  253. "n"
+     file: public/audio/blend/sound-level5-unicorn-5.mp3
+     id:   blend-sound-level5-unicorn-5

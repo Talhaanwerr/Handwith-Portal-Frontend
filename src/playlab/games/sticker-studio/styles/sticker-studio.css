@@ -1,0 +1,185 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   STICKER STUDIO — six picture-making lessons. Every class is `stk-`. Sizes
+   come from the stage (`cqh` / `cqw`); the lesson's colour arrives as
+   --stk-accent / --stk-edge on the board.
+   ───────────────────────────────────────────────────────────────────────── */
+.stk-play {
+  /* a sticker's side on the picture, and a tray card's */
+  --stk-size: min(19cqh, 12cqw);
+  --stk-card: min(19cqh, 11cqw);
+  --stk-glow: #ffd84a;
+}
+.stk-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2cqh;
+  width: 100%;
+  height: 100%;
+}
+.stk-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* ─── The picture: the scene itself, framed by a dashed line ───────────── */
+.stk-canvas {
+  position: relative;
+  flex: 1;
+  width: 94cqw;
+  min-height: 0;
+  border-radius: 4cqh;
+  outline: max(3px, 0.6cqh) dashed rgba(255, 255, 255, 0.85);
+  outline-offset: -0.6cqh;
+}
+.stk-canvas.is-lit {
+  background: rgba(255, 255, 255, 0.18);
+  outline-color: var(--stk-glow);
+}
+.stk-placed {
+  position: absolute;
+  left: calc(var(--px) * 100%);
+  top: calc(var(--py) * 100%);
+  display: block;
+  width: var(--stk-size);
+  height: var(--stk-size);
+  margin: calc(var(--stk-size) * -0.5) 0 0 calc(var(--stk-size) * -0.5);
+  pointer-events: none;
+  animation: stk-pop 0.3s ease-out;
+}
+@keyframes stk-pop {
+  0% {
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.14);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ─── The tray ─────────────────────────────────────────────────────────── */
+.stk-tray {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4cqw;
+  padding: 1.6cqh 2.4cqw;
+  border-radius: 5cqh;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 1.2cqh 0 var(--stk-edge);
+}
+.stk-slot {
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--stk-card);
+  height: var(--stk-card);
+}
+.stk-drag {
+  cursor: grab;
+  touch-action: none;
+}
+.stk-slot.is-away {
+  opacity: 0.35;
+}
+.stk-in {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.stk-card {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10%;
+  border-radius: 22%;
+  background: #ffffff;
+  box-shadow: 0 0.9cqh 0 color-mix(in srgb, var(--stk-accent) 55%, #ffffff);
+}
+.stk-card.is-hint {
+  box-shadow:
+    0 0.9cqh 0 color-mix(in srgb, var(--stk-accent) 55%, #ffffff),
+    0 0 0 1cqh var(--stk-glow);
+}
+.stk-carried {
+  left: calc(var(--stk-size) * -0.5);
+  top: calc(var(--stk-size) * -0.5);
+  width: var(--stk-size);
+  height: var(--stk-size);
+  pointer-events: none;
+}
+.stk-done {
+  flex: none;
+  min-height: max(56px, 13cqh);
+  padding: 0 4cqw;
+  border: 0;
+  border-radius: 999px;
+  background: #3dab72;
+  box-shadow: 0 1cqh 0 #2b8a57;
+  font-size: clamp(18px, 6cqh, 40px);
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+}
+.stk-done.is-waiting {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* the free page shows all six stickers and Done: smaller cards */
+.stk-play--free {
+  --stk-card: min(16cqh, 9cqw);
+}
+
+/* ─── A lesson's home card ─────────────────────────────────────────────── */
+.stk-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+}
+.stk-mini-pic {
+  display: block;
+  width: 34cqh;
+  height: 34cqh;
+}
+.stk-mini-pic:nth-child(2) {
+  translate: 0 -8cqh;
+}
+.stk-mini-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ─── Upright ──────────────────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .stk-play {
+    --stk-size: min(22cqw, 12cqh);
+    --stk-card: min(22cqw, 12cqh);
+  }
+  .stk-play--free {
+    --stk-card: min(19cqw, 10cqh);
+  }
+  .stk-tray {
+    flex-wrap: wrap;
+    max-width: 96cqw;
+    gap: 2cqw;
+  }
+  .stk-done {
+    min-height: 52px;
+    padding: 0 8cqw;
+    font-size: clamp(18px, 6cqw, 30px);
+  }
+}

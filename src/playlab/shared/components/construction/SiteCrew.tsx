@@ -226,37 +226,3 @@ export function SiteWorker({
     </svg>
   );
 }
-
-/** The hard hat on its own — badge, reward, menu icon. */
-export function HardHat({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 80" className={`pl-art ${className}`} aria-hidden="true">
-      <path
-        d="M18 54 Q22 12 60 12 Q98 12 102 54 Z"
-        fill={C.YELLOW}
-        stroke={C.YELLOW_LINE}
-        strokeWidth="3.5"
-        strokeLinejoin="round"
-      />
-      <rect
-        x="10"
-        y="52"
-        width="100"
-        height="12"
-        rx="6"
-        fill={C.YELLOW_DEEP}
-        stroke={C.YELLOW_LINE}
-        strokeWidth="3"
-      />
-      <path d="M54 16 h12 v36 h-12 Z" fill={C.YELLOW_DEEP} opacity="0.7" />
-      <path
-        d="M30 30 q10 -10 22 -12"
-        fill="none"
-        stroke={C.WHITE}
-        strokeWidth="4"
-        strokeLinecap="round"
-        opacity="0.6"
-      />
-    </svg>
-  );
-}

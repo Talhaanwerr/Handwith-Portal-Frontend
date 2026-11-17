@@ -164,8 +164,8 @@ export function OceanModeSelect() {
   };
 
   const options: { c: LetterCase; title: string; preview: string; aria: string }[] = [
-    { c: "upper", title: "BIG LETTERS", preview: "ABC", aria: "Play with big letters" },
-    { c: "lower", title: "small letters", preview: "abc", aria: "Play with small letters" },
+    { c: "upper", title: "UPPERCASE", preview: "ABC", aria: "Play with uppercase letters" },
+    { c: "lower", title: "lowercase", preview: "abc", aria: "Play with lowercase letters" },
   ];
 
   return (
@@ -374,7 +374,7 @@ export function OceanGrid() {
         <div className="relative z-10 flex flex-col items-center">
           <h1 className="oab-heading font-rounded text-center font-black">Ocean ABC</h1>
           <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
-            {letterCase === "lower" ? "Pick a small letter" : "Pick a big letter"}
+            {letterCase === "lower" ? "Pick a lowercase letter" : "Pick a uppercase letter"}
           </p>
         </div>
 

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "msh-mode-rectangle",
+    "file": "/audio/my-shapes/mode-rectangle.mp3",
+    "text": "Rectangle! Let's learn the rectangle."
+  },
+  {
+    "id": "msh-done-rectangle",
+    "file": "/audio/my-shapes/done-rectangle.mp3",
+    "text": "Now you know rectangles!"
+  },
+  {
+    "id": "msh-meet-rectangle",
+    "file": "/audio/my-shapes/meet-rectangle.mp3",
+    "text": "This is a rectangle! Tap it."
+  },
+  {
+    "id": "msh-all-rectangle",
+    "file": "/audio/my-shapes/all-rectangle.mp3",
+    "text": "Tap all the rectangles!"
+  },
+  {
+    "id": "msh-which-rectangle",
+    "file": "/audio/my-shapes/which-rectangle.mp3",
+    "text": "Which one is a rectangle?"
+  },
+  {
+    "id": "msh-build-rectangle",
+    "file": "/audio/my-shapes/build-rectangle.mp3",
+    "text": "Put the cars on the train!"
+  }
+]

@@ -1,0 +1,305 @@
+/**
+ * Rhyme Detective — class prefix `rdt-`. The shell, its guide bar and the
+ * celebrations are Count & Match's (`ng-`); `.apa-game` hides the teacher.
+ * The room is a fixed-shape box (16:9 wide, 9:14 upright) so the things stay
+ * on their shelves; everything in it is sized from the box, and the box from
+ * the `ng` container. Sideways and upright phones at the bottom.
+ */
+
+/* ─── The walls ────────────────────────────────────────────────────────── */
+.rdt-world {
+  position: absolute;
+  inset: 0;
+  background: #d9c8ee;
+}
+.rdt-world--kitchen {
+  background: #fff6e4;
+}
+.rdt-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The room box ─────────────────────────────────────────────────────── */
+.rdt-play {
+  /* the board's height: under the guide bar, above the bottom margin */
+  --rdt-mainh: calc(97cqh - max(66px, 15cqh));
+  --rdt-w: min(94cqw, calc(var(--rdt-mainh) * 1.7778));
+  --rdt-obj: calc(var(--rdt-w) * 0.14);
+}
+.rdt-room {
+  position: relative;
+  width: var(--rdt-w);
+  aspect-ratio: 16 / 9;
+}
+
+/* ─── A thing in the room ──────────────────────────────────────────────── */
+.rdt-spot {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
+  width: var(--rdt-obj);
+  height: var(--rdt-obj);
+  margin-left: calc(var(--rdt-obj) / -2);
+  margin-top: calc(var(--rdt-obj) / -2);
+}
+.rdt-thing {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 24%;
+  background: #ffffff;
+  box-shadow:
+    0 calc(var(--rdt-obj) * 0.06) 0 rgba(120, 90, 160, 0.35),
+    0 calc(var(--rdt-obj) * 0.12) calc(var(--rdt-obj) * 0.16) rgba(60, 40, 90, 0.18);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.rdt-thing-shadow {
+  display: none;
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 0;
+  height: 13%;
+  border-radius: 50%;
+  background: rgba(70, 35, 20, 0.28);
+}
+.rdt-thing-pic {
+  position: absolute;
+  inset: 12%;
+  display: block;
+}
+.rdt-thing.is-hint::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  animation: rdt-hint 1.1s ease-in-out infinite;
+}
+@keyframes rdt-hint {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0.9cqh rgba(255, 210, 61, 0.95);
+  }
+  50% {
+    box-shadow: 0 0 0 2cqh rgba(255, 210, 61, 0.15);
+  }
+}
+
+/* ─── The magnifying glass ─────────────────────────────────────────────── */
+.rdt-lens {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--rdt-obj) * 1.45);
+  height: calc(var(--rdt-obj) * 1.45);
+  margin-left: calc(var(--rdt-obj) * -0.725);
+  margin-top: calc(var(--rdt-obj) * -0.725);
+  pointer-events: none;
+}
+.rdt-lens-glass {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: calc(var(--rdt-obj) * 0.08) solid #e2a93b;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #ffffff 0 30%, #e3f4ff 100%);
+  box-shadow: 0 calc(var(--rdt-obj) * 0.06) 0 #a8761f;
+}
+.rdt-lens-pic {
+  position: absolute;
+  inset: 4%;
+  display: block;
+}
+.rdt-lens-handle {
+  position: absolute;
+  right: -16%;
+  bottom: -16%;
+  width: 18%;
+  height: 46%;
+  border-radius: 999px;
+  background: #7a4a22;
+  box-shadow: 0 calc(var(--rdt-obj) * 0.05) 0 #4f2f14;
+  transform: rotate(-45deg);
+}
+.rdt-lens--right .rdt-lens-glass {
+  border-color: #ffd23d;
+  box-shadow:
+    0 0 0 calc(var(--rdt-obj) * 0.08) rgba(255, 210, 61, 0.5),
+    0 calc(var(--rdt-obj) * 0.06) 0 #a8761f;
+}
+.rdt-lens--wrong .rdt-lens-glass {
+  border-color: #a9a1c8;
+  box-shadow: 0 calc(var(--rdt-obj) * 0.06) 0 #6f6894;
+}
+
+/* ─── The gold "found" seal ────────────────────────────────────────────── */
+.rdt-seal {
+  position: absolute;
+  z-index: 5;
+  right: -18%;
+  top: -16%;
+  width: 52%;
+  height: 52%;
+  pointer-events: none;
+}
+.rdt-seal svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The case file, pinned top-left ───────────────────────────────────── */
+.rdt-case {
+  position: absolute;
+  z-index: 4;
+  left: 1.5%;
+  top: 2%;
+  width: 15%;
+  min-width: 56px;
+  padding: calc(var(--rdt-w) * 0.016);
+  padding-top: calc(var(--rdt-w) * 0.022);
+  border: 0;
+  border-radius: calc(var(--rdt-w) * 0.012);
+  background: #f3d28b;
+  box-shadow: 0 calc(var(--rdt-w) * 0.008) 0 #c99a4a;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.rdt-case-tab {
+  position: absolute;
+  left: 8%;
+  top: -9%;
+  width: 42%;
+  height: 12%;
+  border-radius: calc(var(--rdt-w) * 0.008) calc(var(--rdt-w) * 0.008) 0 0;
+  background: #e4bc6a;
+}
+.rdt-case-clip {
+  position: absolute;
+  right: 12%;
+  top: -6%;
+  width: 12%;
+  height: 26%;
+  border: calc(var(--rdt-w) * 0.0035) solid #9aa3b5;
+  border-radius: 999px;
+}
+.rdt-case-photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  padding: 8%;
+  border-radius: 8%;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 calc(var(--rdt-w) * 0.003) #e9dcc0;
+}
+.rdt-case-photo .ryn-pic-img {
+  width: 100%;
+  height: 100%;
+}
+.rdt-case-marks {
+  display: flex;
+  justify-content: center;
+  gap: 8%;
+  padding-top: 6%;
+}
+.rdt-case-mark {
+  display: block;
+  width: 16%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(140, 90, 43, 0.25);
+  box-shadow: inset 0 0 0 calc(var(--rdt-w) * 0.002) rgba(140, 90, 43, 0.4);
+}
+.rdt-case-mark.is-on {
+  background: #ffd23d;
+  box-shadow: 0 0 0 calc(var(--rdt-w) * 0.003) #c98a10;
+}
+
+/* ─── The detective, bottom-left ───────────────────────────────────────── */
+.rdt-detective {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  bottom: -2%;
+  width: 16%;
+  aspect-ratio: 200 / 260;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.rdt-detective-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The home card's miniature ────────────────────────────────────────── */
+.rdt-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqw;
+}
+.rdt-mini-case {
+  display: block;
+  width: 50cqh;
+  height: 58cqh;
+  padding: 6cqh 4cqh;
+  border-radius: 8cqh;
+  background: #f3d28b;
+  box-shadow: 0 2cqh 0 #c99a4a;
+}
+.rdt-mini-lens {
+  display: block;
+  width: 50cqh;
+  height: 50cqh;
+  padding: 6cqh;
+  border: 4cqh solid #e2a93b;
+  border-radius: 50%;
+  background: #eaf6ff;
+  box-shadow: 0 2cqh 0 #a8761f;
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .rdt-case {
+    width: 14%;
+  }
+}
+
+/* ─── A phone held upright: the upright room ───────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .rdt-play .ng-main {
+    bottom: 3cqh;
+  }
+  .rdt-play {
+    --rdt-mainh: calc(95cqh - max(66px, 16cqh));
+    --rdt-w: min(94cqw, calc(var(--rdt-mainh) * 0.6429));
+    --rdt-obj: calc(var(--rdt-w) * 0.24);
+  }
+  .rdt-room {
+    aspect-ratio: 9 / 14;
+  }
+  .rdt-spot {
+    left: calc(var(--px) * 100%);
+    top: calc(var(--py) * 100%);
+  }
+  .rdt-case {
+    width: 30%;
+    padding: calc(var(--rdt-w) * 0.03);
+    padding-top: calc(var(--rdt-w) * 0.04);
+  }
+  .rdt-detective {
+    display: none;
+  }
+}

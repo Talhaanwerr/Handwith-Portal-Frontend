@@ -110,25 +110,7 @@
   flex: none;
 }
 /** One apple (or cupcake) on a soft white disc — a button. */
-.apa-piece {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 14%;
-  border: 0.6cqh solid transparent;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 40%, #ffffff 0 60%, #f1f4ea 100%);
-  box-shadow: 0 0.8cqh 0 rgba(60, 80, 30, 0.2);
-  cursor: default;
-}
 /** Waiting to be tapped: a gold ring and a gentle bob. */
-.apa-piece.apa-piece--live {
-  border-color: #ffc93c;
-  cursor: pointer;
-  animation: apa-bob 1.6s ease-in-out infinite;
-}
 @keyframes apa-bob {
   0%,
   100% {
@@ -139,55 +121,14 @@
   }
 }
 /** Counted: a green ring and its number. */
-.apa-piece.apa-piece--counted {
-  border-color: #34a95a;
-}
-.apa-badge {
-  position: absolute;
-  left: 50%;
-  /* sized from the piece, so the number never hides the apple on a phone */
-  top: calc(var(--apa-p) * -0.24);
-  display: grid;
-  place-items: center;
-  width: calc(var(--apa-p) * 0.46);
-  height: calc(var(--apa-p) * 0.46);
-  min-width: 24px;
-  min-height: 24px;
-  margin-left: calc(var(--apa-p) * -0.23);
-  border: 0.5cqh solid #ffffff;
-  border-radius: 50%;
-  background: #34a95a;
-  font-size: calc(var(--apa-p) * 0.3);
-  line-height: 1;
-  color: #ffffff;
-  box-shadow: 0 0.5cqh 1cqh rgba(0, 60, 20, 0.3);
-}
 
 /* ── A module in miniature (its home card) ───────────────────────────────── */
-
-.apa-mini {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 4%;
-}
-.apa-mini-row {
-  display: flex;
-  gap: 3%;
-}
 /* the card's picture box is its own size container (.ng-mode-pic), so these
    units are shares of that box, not of the stage */
 .apa-mini-pic {
   display: block;
   width: min(30cqh, 13cqw);
   height: min(30cqh, 13cqw);
-}
-.apa-mini-op {
-  font-size: 26cqh;
-  line-height: 1;
-  color: #e07a1f;
 }
 
 /* ── A phone held sideways ───────────────────────────────────────────────── */

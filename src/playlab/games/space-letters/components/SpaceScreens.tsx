@@ -129,8 +129,8 @@ export function SpaceModeSelect({ onExitPortal = () => {} }: { onExitPortal?: ()
   };
 
   const options: { c: LetterCase; title: string; preview: string; aria: string }[] = [
-    { c: "upper", title: "BIG LETTERS", preview: "ABC", aria: "Play with big letters" },
-    { c: "lower", title: "small letters", preview: "abc", aria: "Play with small letters" },
+    { c: "upper", title: "UPPERCASE", preview: "ABC", aria: "Play with uppercase letters" },
+    { c: "lower", title: "lowercase", preview: "abc", aria: "Play with lowercase letters" },
   ];
 
   return (
@@ -236,7 +236,9 @@ export function SpaceGrid() {
             Space ABC
           </h1>
           <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
-            {letterCase === "lower" ? "Pick a small letter to build" : "Pick a big letter to build"}
+            {letterCase === "lower"
+              ? "Pick a lowercase letter to build"
+              : "Pick a uppercase letter to build"}
           </p>
         </div>
 

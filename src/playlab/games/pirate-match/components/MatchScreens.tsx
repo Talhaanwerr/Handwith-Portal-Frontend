@@ -231,8 +231,8 @@ export function MatchStart() {
             <h1 className="pm-heading font-rounded font-black">Pirate Match</h1>
             <p className="font-rounded text-sm font-bold opacity-80">
               {letterCase === "lower"
-                ? "Match each small letter to its picture"
-                : "Match each big letter to its picture"}
+                ? "Match each lowercase letter to its picture"
+                : "Match each uppercase letter to its picture"}
             </p>
           </div>
 

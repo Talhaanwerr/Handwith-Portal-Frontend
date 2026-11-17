@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { playChime, playClickSound, playIncorrectSound, playStarPop } from "@shared/audio/sfx";
 import { clipText, playClip, playSequence, sayAfter } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
@@ -39,7 +39,7 @@ const candle = (p: number) => <CandleStick paint={p} />;
  *
  * The birthday friend wears a badge with their age — "I am 3!" Drag candles
  * from the tray onto the big cake (each one is counted as it goes on); tap a
- * candle on the cake to take it off again. "Done!" appears after the first
+ * candle on the cake to take it off again. "Done!" wakes after the first
  * candle. The right number: the candles light one by one, the friend says
  * "Blow them out!", and each tapped flame goes out in a puff while the
  * candles still burning are counted down. The wrong number is never crossed
@@ -242,6 +242,9 @@ export function CandlesRound({ round, title, onDone, onMiss, onHome, onExitPorta
     }
   );
 
+  /** Done can be pressed: placing, with at least one candle on. */
+  const doneAwake = phase === "place" && count > 0;
+
   const prompt =
     phase === "check" ? COUNT_AGAIN : phase === "light" || phase === "blow" ? BLOW : ASK;
   const ageLine = clipText(I_AM);
@@ -273,35 +276,30 @@ export function CandlesRound({ round, title, onDone, onMiss, onHome, onExitPorta
         >
           <div className="bdc-candles-board">
             <div className="bdc-friend">
+              {/* Done stands there all round, faded and asleep except while
+                  there are candles to check — so the board is centred with
+                  it and never jumps when it wakes */}
               <div className="bdc-done-slot">
-                <AnimatePresence>
-                  {phase === "place" && count > 0 && (
-                    <motion.button
-                      key="done"
-                      ref={doneRef}
-                      type="button"
-                      className="bdc-done font-rounded font-black"
-                      onClick={done}
-                      aria-label="Done — light the candles"
-                      initial={{ opacity: 0, scale: 0.7 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                    >
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M5 12.5 L10 17.5 L19 7"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      Done!
-                    </motion.button>
-                  )}
-                </AnimatePresence>
+                <button
+                  ref={doneRef}
+                  type="button"
+                  className={`bdc-done font-rounded font-black ${doneAwake ? "" : "is-asleep"}`}
+                  onClick={done}
+                  disabled={!doneAwake}
+                  aria-label="Done — light the candles"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M5 12.5 L10 17.5 L19 7"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Done!
+                </button>
               </div>
             </div>
 

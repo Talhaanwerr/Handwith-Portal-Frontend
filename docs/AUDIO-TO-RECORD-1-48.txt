@@ -1,0 +1,216 @@
+LINES TO RECORD: THE NEW GAMES (1-48)
+=====================================
+Read each line as written. One file per line; the WHERE list at the bottom gives each file's name.
+
+Plane Seats — 6 lines
+  1. Welcome aboard Plane Seats!
+  2. Everyone is in their seat!
+  3. Seat numbers! Find the seat on the ticket.
+  4. Ticket sums! Add them up to find the seat.
+  5. Find the seat with this number!
+  6. Add up the ticket. Find the seat!
+
+Plane Trip (airport) — 10 lines
+  7. Welcome to Plane Trip!
+  8. Have a happy trip!
+  9. Bag match! Give each bag to its owner.
+  10. Pack for the trip! Sunny or snowy?
+  11. Whose bag is this?
+  12. Here's your bag!
+  13. Where does it go?
+  14. The sunny suitcase!
+  15. The snowy suitcase!
+  16. All packed! Off we go!
+
+Snack Time in the Sky — 5 lines
+  17. Welcome aboard! It's snack time in the sky!
+  18. What a happy flight!
+  19. Snack Trolley! Give each friend the snack they want.
+  20. Window Spy! Watch what flies past the window.
+  21. What does this friend want?
+  (22-24 removed: Window Spy uses lines that are already recorded)
+
+Burj Lift — 7 lines
+  25. Welcome to the Burj Lift!
+  26. Everyone got to their floor!
+  27. Up or Down? Take everyone to their floor.
+  28. Picture Floors! Match the balloon to its floor.
+  29. Up or down?
+  30. Going up!
+  31. Going down!
+
+Tallest Tower — 8 lines
+  32. Welcome to Tallest Tower!
+  33. You know tall and short!
+  34. Tall or Short? Find the tall tower and the short one.
+  35. Line Them Up! Put the towers in order.
+  36. Which tower is taller?
+  37. Which tower is shorter?
+  38. Put them in order, from short to tall!
+  39. Short, taller, tallest!
+
+Drum Beats — 9 lines
+  40. Welcome to Drum Beats!
+  41. Little beats! Tap the drum.
+  42. Big beats! Tap the drum.
+  43. Tap the drum one time!
+  44. Tap the drum two times!
+  45. Tap the drum three times!
+  46. Tap the drum four times!
+  47. Now two more!
+  48. Now three more!
+
+Total: 45 lines (numbers 22-24 are not used).
+Already recorded and reused (not listed): the numbers, "Try again!", the colour lines, the cheers.
+
+
+----------------------------------------
+WHERE EACH ONE GOES (for patching)
+----------------------------------------
+
+Plane Seats
+  1. "Welcome aboard Plane Seats!"
+     file: public/audio/plane-seats/welcome.mp3
+     id:   pls-welcome
+  2. "Everyone is in their seat!"
+     file: public/audio/plane-seats/done.mp3
+     id:   pls-done
+  3. "Seat numbers! Find the seat on the ticket."
+     file: public/audio/plane-seats/mode-number.mp3
+     id:   pls-mode-number
+  4. "Ticket sums! Add them up to find the seat."
+     file: public/audio/plane-seats/mode-sums.mp3
+     id:   pls-mode-sums
+  5. "Find the seat with this number!"
+     file: public/audio/plane-seats/find.mp3
+     id:   pls-find
+  6. "Add up the ticket. Find the seat!"
+     file: public/audio/plane-seats/add.mp3
+     id:   pls-add
+
+Plane Trip (airport)
+  7. "Welcome to Plane Trip!"
+     file: public/audio/plane-trip/welcome.mp3
+     id:   ptr-welcome
+  8. "Have a happy trip!"
+     file: public/audio/plane-trip/done.mp3
+     id:   ptr-done
+  9. "Bag match! Give each bag to its owner."
+     file: public/audio/plane-trip/mode-bags.mp3
+     id:   ptr-mode-bags
+  10. "Pack for the trip! Sunny or snowy?"
+     file: public/audio/plane-trip/mode-pack.mp3
+     id:   ptr-mode-pack
+  11. "Whose bag is this?"
+     file: public/audio/plane-trip/whose.mp3
+     id:   ptr-whose
+  12. "Here's your bag!"
+     file: public/audio/plane-trip/yours.mp3
+     id:   ptr-yours
+  13. "Where does it go?"
+     file: public/audio/plane-trip/where.mp3
+     id:   ptr-where
+  14. "The sunny suitcase!"
+     file: public/audio/plane-trip/sunny.mp3
+     id:   ptr-sunny
+  15. "The snowy suitcase!"
+     file: public/audio/plane-trip/snowy.mp3
+     id:   ptr-snowy
+  16. "All packed! Off we go!"
+     file: public/audio/plane-trip/takeoff.mp3
+     id:   ptr-takeoff
+
+Snack Time in the Sky (plane, still being finished: a few lines may be added)
+  17. "Welcome aboard! It's snack time in the sky!"
+     file: public/audio/plane-snacks/welcome.mp3
+     id:   psn-welcome
+  18. "What a happy flight!"
+     file: public/audio/plane-snacks/done.mp3
+     id:   psn-done
+  19. "Snack Trolley! Give each friend the snack they want."
+     file: public/audio/plane-snacks/mode-snacks.mp3
+     id:   psn-mode-snacks
+  20. "Window Spy! Watch what flies past the window."
+     file: public/audio/plane-snacks/mode-window.mp3
+     id:   psn-mode-window
+  21. "What does this friend want?"
+     file: public/audio/plane-snacks/what-want.mp3
+     id:   psn-what-want
+
+Burj Lift
+  25. "Welcome to the Burj Lift!"
+     file: public/audio/burj-lift/welcome.mp3
+     id:   bjl-welcome
+  26. "Everyone got to their floor!"
+     file: public/audio/burj-lift/done.mp3
+     id:   bjl-done
+  27. "Up or Down? Take everyone to their floor."
+     file: public/audio/burj-lift/mode-updown.mp3
+     id:   bjl-mode-updown
+  28. "Picture Floors! Match the balloon to its floor."
+     file: public/audio/burj-lift/mode-match.mp3
+     id:   bjl-mode-match
+  29. "Up or down?"
+     file: public/audio/burj-lift/up-or-down.mp3
+     id:   bjl-up-or-down
+  30. "Going up!"
+     file: public/audio/burj-lift/going-up.mp3
+     id:   bjl-going-up
+  31. "Going down!"
+     file: public/audio/burj-lift/going-down.mp3
+     id:   bjl-going-down
+
+Tallest Tower
+  32. "Welcome to Tallest Tower!"
+     file: public/audio/burj-towers/welcome.mp3
+     id:   bjt-welcome
+  33. "You know tall and short!"
+     file: public/audio/burj-towers/done.mp3
+     id:   bjt-done
+  34. "Tall or Short? Find the tall tower and the short one."
+     file: public/audio/burj-towers/mode-tallshort.mp3
+     id:   bjt-mode-tallshort
+  35. "Line Them Up! Put the towers in order."
+     file: public/audio/burj-towers/mode-order.mp3
+     id:   bjt-mode-order
+  36. "Which tower is taller?"
+     file: public/audio/burj-towers/which-taller.mp3
+     id:   bjt-which-taller
+  37. "Which tower is shorter?"
+     file: public/audio/burj-towers/which-shorter.mp3
+     id:   bjt-which-shorter
+  38. "Put them in order, from short to tall!"
+     file: public/audio/burj-towers/order.mp3
+     id:   bjt-order
+  39. "Short, taller, tallest!"
+     file: public/audio/burj-towers/in-order.mp3
+     id:   bjt-in-order
+
+Drum Beats
+  40. "Welcome to Drum Beats!"
+     file: public/audio/drum-beats/welcome.mp3
+     id:   drb-welcome
+  41. "Little beats! Tap the drum."
+     file: public/audio/drum-beats/mode-little.mp3
+     id:   drb-mode-little
+  42. "Big beats! Tap the drum."
+     file: public/audio/drum-beats/mode-big.mp3
+     id:   drb-mode-big
+  43. "Tap the drum one time!"
+     file: public/audio/drum-beats/tap-1.mp3
+     id:   drb-tap-1
+  44. "Tap the drum two times!"
+     file: public/audio/drum-beats/tap-2.mp3
+     id:   drb-tap-2
+  45. "Tap the drum three times!"
+     file: public/audio/drum-beats/tap-3.mp3
+     id:   drb-tap-3
+  46. "Tap the drum four times!"
+     file: public/audio/drum-beats/tap-4.mp3
+     id:   drb-tap-4
+  47. "Now two more!"
+     file: public/audio/drum-beats/more-2.mp3
+     id:   drb-more-2
+  48. "Now three more!"
+     file: public/audio/drum-beats/more-3.mp3
+     id:   drb-more-3

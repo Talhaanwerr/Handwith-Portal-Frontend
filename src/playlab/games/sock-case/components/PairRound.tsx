@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playIncorrectSound, playStarPop } from "@shared/audio/sfx";
-import { clipText, playClip } from "@shared/audio/voice";
+import { clipText } from "@shared/audio/voice";
 import { useSayOnEnter } from "@shared/hooks/useSayOnEnter";
 import { useScheduler } from "@shared/hooks/useScheduler";
 import { CrossMark } from "@games/math-maze/components/CrossMark";
@@ -14,6 +14,7 @@ import type { RoundProps } from "@games/number-groups/components/roundProps";
 import { SockArt, PegArt } from "@games/sock-case/components/SockArt";
 import { Basket, HangingSock, LineRow } from "@games/sock-case/components/SockLine";
 import { useSockDrag } from "@games/sock-case/hooks/useSockDrag";
+import { useSaidLine } from "@games/car-garage/hooks/useSaidLine";
 import { PAIR_ROUNDS, pairAnswer, pairBasket, type Sock } from "@games/sock-case/constants/rounds";
 
 const ASK = "skc-find-pair";
@@ -37,6 +38,8 @@ export function PairRound({ round, title, onDone, onMiss, onHome, onExitPortal }
   const schedule = useScheduler();
   const [wrong, setWrong] = useState<readonly number[]>([]);
   const [swing, setSwing] = useState(0);
+  // a reaction ("Try again!", "They match! A pair!") shows in the bar while said
+  const { line, say: sayLine } = useSaidLine();
 
   const cast = useMemo(
     () =>
@@ -60,28 +63,34 @@ export function PairRound({ round, title, onDone, onMiss, onHome, onExitPortal }
     (v: number) => {
       if (wrong.includes(v)) return;
       playIncorrectSound();
-      void playClip("instr-try-again");
+      sayLine("instr-try-again");
       setWrong((w) => [...w, v]);
       onMiss();
     },
-    [onMiss, wrong]
+    [onMiss, sayLine, wrong]
   );
 
   const onRight = useCallback(
     (peg: HTMLElement | undefined) => {
       burst(peg);
       playStarPop();
-      void playClip(PAIRED);
+      sayLine(PAIRED);
       // the pair swings once the sock has settled on its peg
       schedule(() => setSwing(1), 260);
       finish(lineRef.current);
     },
-    [burst, finish, schedule]
+    [burst, finish, sayLine, schedule]
   );
 
-  const { placed, lit, pickUp, tap, registerPeg, registerSeat, registerHome, away, layer } =
+  const { handOn, placed, lit, pickUp, tap, registerPeg, registerSeat, registerHome, away, layer } =
     useSockDrag({ stageRef, answer, locked: solved, onRight, onWrong });
   const piece = useCallback((v: number) => <SockArt sock={basket[v]} />, [basket]);
+
+  // the idle hand after 7 s says "Watch carefully!"; round one's comes by
+  // itself (guided) while the question is still being said, so it is silent
+  useEffect(() => {
+    if (handOn && round > 0) sayLine("instr-watch-carefully");
+  }, [handOn, round, sayLine]);
 
   return (
     <NgStage
@@ -90,7 +99,7 @@ export function PairRound({ round, title, onDone, onMiss, onHome, onExitPortal }
       world={<PlayroomWorld />}
       round={round}
       solved={solved}
-      say={say(clipText(solved ? PAIRED : ASK))}
+      say={line ?? say(clipText(ASK))}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

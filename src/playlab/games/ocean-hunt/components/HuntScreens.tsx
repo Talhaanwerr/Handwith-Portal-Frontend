@@ -159,8 +159,8 @@ export function HuntStart() {
           <h1 className="oh-heading font-rounded font-black">Ocean Hunt</h1>
           <p className="font-rounded text-sm font-semibold text-white/80 drop-shadow-md">
             {letterCase === "lower"
-              ? "Which small letter is hiding?"
-              : "Which big letter is hiding?"}
+              ? "Which lowercase letter is hiding?"
+              : "Which uppercase letter is hiding?"}
           </p>
         </motion.div>
 

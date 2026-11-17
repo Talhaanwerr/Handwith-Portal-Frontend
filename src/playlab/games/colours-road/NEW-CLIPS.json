@@ -1,0 +1,32 @@
+[
+  {
+    "id": "mgc-name-car",
+    "file": "/audio/magic-colours/name-car.mp3",
+    "text": "Car!"
+  },
+  {
+    "id": "mgc-name-bus",
+    "file": "/audio/magic-colours/name-bus.mp3",
+    "text": "Bus!"
+  },
+  {
+    "id": "mgc-name-taxi",
+    "file": "/audio/magic-colours/name-taxi.mp3",
+    "text": "Taxi!"
+  },
+  {
+    "id": "mgc-name-school-bus",
+    "file": "/audio/magic-colours/name-school-bus.mp3",
+    "text": "School bus!"
+  },
+  {
+    "id": "mgc-name-ice-cream-van",
+    "file": "/audio/magic-colours/name-ice-cream-van.mp3",
+    "text": "Ice cream van!"
+  },
+  {
+    "id": "mgc-name-scooter",
+    "file": "/audio/magic-colours/name-scooter.mp3",
+    "text": "Scooter!"
+  }
+]

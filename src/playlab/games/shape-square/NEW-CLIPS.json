@@ -1,0 +1,32 @@
+[
+  {
+    "id": "msh-mode-square",
+    "file": "/audio/my-shapes/mode-square.mp3",
+    "text": "Square! Let's learn the square."
+  },
+  {
+    "id": "msh-done-square",
+    "file": "/audio/my-shapes/done-square.mp3",
+    "text": "Now you know squares!"
+  },
+  {
+    "id": "msh-meet-square",
+    "file": "/audio/my-shapes/meet-square.mp3",
+    "text": "This is a square! Tap it."
+  },
+  {
+    "id": "msh-all-square",
+    "file": "/audio/my-shapes/all-square.mp3",
+    "text": "Tap all the squares!"
+  },
+  {
+    "id": "msh-which-square",
+    "file": "/audio/my-shapes/which-square.mp3",
+    "text": "Which one is a square?"
+  },
+  {
+    "id": "msh-build-square",
+    "file": "/audio/my-shapes/build-square.mp3",
+    "text": "Put the windows on the house!"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "fw-food-welcome",
+    "file": "/audio/first-words/food-welcome.mp3",
+    "text": "First words! Food!"
+  },
+  {
+    "id": "fw-food-mode",
+    "file": "/audio/first-words/food-mode.mp3",
+    "text": "Let’s learn food words!"
+  },
+  {
+    "id": "fw-in-basket",
+    "file": "/audio/first-words/in-basket.mp3",
+    "text": "in the basket!"
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "ryn-welcome",
+    "file": "/audio/rhyme-or-not/welcome.mp3",
+    "text": "Welcome to Rhyme Time!"
+  },
+  { "id": "ryn-done", "file": "/audio/rhyme-or-not/done.mp3", "text": "You can hear rhymes!" },
+  {
+    "id": "ryn-mode-rhyme",
+    "file": "/audio/rhyme-or-not/mode-rhyme.mp3",
+    "text": "Rhyme Time! Listen, then tap yes or no."
+  },
+  { "id": "ryn-ask", "file": "/audio/rhyme-or-not/ask.mp3", "text": "Do they rhyme?" },
+  { "id": "ryn-yes", "file": "/audio/rhyme-or-not/yes.mp3", "text": "Yes! They rhyme!" },
+  { "id": "ryn-no", "file": "/audio/rhyme-or-not/no.mp3", "text": "No, they don't rhyme." }
+]

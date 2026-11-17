@@ -14,7 +14,8 @@ import type { PaletteKey } from "@games/letter-treats/components/candy-world/Can
  *                        are counted aloud.
  *
  * Places are shares of the stage (x of its width, y of its height), so a
- * round looks the same on every screen.
+ * round looks the same on every screen; each round's fish open spread evenly
+ * about the middle (its leftmost and rightmost mirror each other).
  */
 
 export type ModuleId = "everyone" | "colour";
@@ -76,9 +77,9 @@ export const MODULES: Record<ModuleId, ModuleInfo> = {
       },
       {
         fish: [
-          { hue: "red", bites: 3, at: [0.24, 0.38], bed: 0 },
-          { hue: "yellow", bites: 2, at: [0.54, 0.56], bed: 2 },
-          { hue: "pink", bites: 3, at: [0.8, 0.4], bed: 3 },
+          { hue: "red", bites: 3, at: [0.22, 0.38], bed: 0 },
+          { hue: "yellow", bites: 2, at: [0.52, 0.56], bed: 2 },
+          { hue: "pink", bites: 3, at: [0.78, 0.4], bed: 3 },
         ],
       },
       {
@@ -105,25 +106,25 @@ export const MODULES: Record<ModuleId, ModuleInfo> = {
       {
         target: "red",
         fish: [
-          { hue: "red", bites: 3, at: [0.26, 0.4], bed: 1 },
-          { hue: "purple", bites: 2, at: [0.54, 0.58], bed: 2 },
-          { hue: "yellow", bites: 2, at: [0.8, 0.42], bed: 3 },
+          { hue: "red", bites: 3, at: [0.22, 0.4], bed: 1 },
+          { hue: "purple", bites: 2, at: [0.5, 0.58], bed: 2 },
+          { hue: "yellow", bites: 2, at: [0.78, 0.42], bed: 3 },
         ],
       },
       {
         target: "purple",
         fish: [
           { hue: "yellow", bites: 2, at: [0.22, 0.42], bed: 0 },
-          { hue: "green", bites: 2, at: [0.48, 0.6], bed: 1 },
-          { hue: "purple", bites: 3, at: [0.76, 0.46], bed: 2 },
+          { hue: "green", bites: 2, at: [0.5, 0.6], bed: 1 },
+          { hue: "purple", bites: 3, at: [0.78, 0.46], bed: 2 },
         ],
       },
       {
         target: "orange",
         fish: [
-          { hue: "orange", bites: 3, at: [0.3, 0.54], bed: 1 },
-          { hue: "purple", bites: 2, at: [0.56, 0.36], bed: 2 },
-          { hue: "green", bites: 2, at: [0.82, 0.52], bed: 3 },
+          { hue: "orange", bites: 3, at: [0.2, 0.54], bed: 1 },
+          { hue: "purple", bites: 2, at: [0.5, 0.36], bed: 2 },
+          { hue: "green", bites: 2, at: [0.8, 0.52], bed: 3 },
         ],
       },
     ],

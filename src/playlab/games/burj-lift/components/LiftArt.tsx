@@ -1,14 +1,18 @@
 "use client";
 
-import type { CSSProperties, ReactNode, Ref } from "react";
+import { memo, type ReactNode, type Ref } from "react";
 import { motion } from "framer-motion";
+import { cssVars } from "@shared/styles/cssVars";
 import { Thing } from "@games/number-groups/components/SumParts";
+import { KidArt } from "@games/burj-lift/components/KidArt";
+import { COLOUR_PAINT, type Colour, type Kid } from "@games/burj-lift/constants/rounds";
 
 /**
  * Burj Lift's own pieces (styles in `burj-lift/styles/burj-lift.css`, all
- * `bjl-` classes, no SVG ids): the chunky arrow, the balloon, and the glass
- * lift car with its passenger. The tower and the world are Burj Khalifa's
- * (`BurjTower`, `DubaiWorld`), never redrawn here.
+ * `bjl-` classes, no SVG ids): the chunky arrow, the balloon, a floor's sign,
+ * what a child wants (a bubble or a balloon), and the glass lift car with its
+ * doors and its rider. The tower and the world are Burj Khalifa's
+ * (`BurjTower`, `DubaiWorld`), never redrawn here; the children are KidArt.
  */
 
 export type LiftDir = "up" | "down";
@@ -30,11 +34,17 @@ export function LiftArrow({ dir, className = "" }: { dir: LiftDir; className?: s
   );
 }
 
-/** A party balloon on its string, in one colour (face and darker edge). */
+/** A party balloon on a long string, in one colour (face and darker edge);
+ *  the string's end is the bottom centre of the box. */
 export function Balloon({ face, edge }: { face: string; edge: string }) {
   return (
-    <svg viewBox="0 0 40 70" className="bjl-balloon-art" aria-hidden="true">
-      <path d="M20 44 Q15 52 21 58 Q26 64 19 70" fill="none" stroke="#6b5a3a" strokeWidth="1.6" />
+    <svg viewBox="0 0 40 90" className="bjl-balloon-art" aria-hidden="true">
+      <path
+        d="M20 44 Q14 54 21 63 Q27 72 19 81 Q17 85 20 90"
+        fill="none"
+        stroke="#6b5a3a"
+        strokeWidth="1.6"
+      />
       <path d="M17 43 H23 L21.5 46.5 H18.5 Z" fill={edge} />
       <ellipse cx="20" cy="22" rx="17" ry="20.5" fill={edge} />
       <ellipse cx="20" cy="21" rx="15.4" ry="19" fill={face} />
@@ -43,63 +53,165 @@ export function Balloon({ face, edge }: { face: string; edge: string }) {
   );
 }
 
-/** What the passenger is doing: getting in, riding, or stepping out. */
+/** A colour, as a glossy square tile (a floor's sign in Colour Floors). */
+function Swatch({ colour }: { colour: Colour }) {
+  const paint = COLOUR_PAINT[colour];
+  return (
+    <span
+      className="bjl-swatch"
+      style={cssVars({ "--bjl-face": paint.face, "--bjl-edge": paint.edge })}
+    />
+  );
+}
+
+/** A floor's number in its green disc (the tower games' number badge). */
+function FloorNumber({ n }: { n: number }) {
+  return <span className="bjl-num font-rounded font-black">{n}</span>;
+}
+
+/**
+ * A FLOOR'S SIGN — a white plate in a gold frame: the floor's picture (or its
+ * colour) and its number, big. `here` lights it while the lift stands at the
+ * floor; `reached` turns the frame green when a child has got out there.
+ */
+export const FloorSign = memo(function FloorSign({
+  n,
+  pic,
+  colour,
+  here,
+  reached,
+  signRef,
+}: {
+  n: number;
+  pic?: string;
+  colour?: Colour;
+  here: boolean;
+  reached: boolean;
+  signRef?: Ref<HTMLSpanElement>;
+}) {
+  return (
+    <span
+      ref={signRef}
+      className={`bjl-sign ${here ? "bjl-sign--here" : ""} ${reached ? "bjl-sign--reached" : ""}`}
+    >
+      <span className="bjl-sign-face">
+        {pic ? <Thing id={pic} /> : colour ? <Swatch colour={colour} /> : null}
+      </span>
+      <FloorNumber n={n} />
+    </span>
+  );
+});
+
+/**
+ * WHAT A CHILD WANTS — Up or Down?: a speech bubble with the picture and the
+ * number of their floor (the floor's own sign, small); Colour Floors: a
+ * balloon of their floor's colour. `tail` is the side the bubble points to.
+ */
+export function Wish({
+  n,
+  pic,
+  colour,
+  tail,
+}: {
+  n: number;
+  pic?: string;
+  colour?: Colour;
+  tail: "down" | "left";
+}) {
+  if (colour)
+    return (
+      <span className="bjl-wish bjl-wish--balloon" aria-hidden="true">
+        <Balloon {...COLOUR_PAINT[colour]} />
+      </span>
+    );
+  return (
+    <span className={`bjl-wish bjl-wish--bubble bjl-wish--${tail}`} aria-hidden="true">
+      <span className="bjl-wish-pic">{pic && <Thing id={pic} />}</span>
+      <FloorNumber n={n} />
+    </span>
+  );
+}
+
+/** What the rider is doing: standing in the car, or stepping out happy. */
 export type RiderPhase = "in" | "out";
 
 /**
- * THE LIFT CAR — a glass cabin in a gold frame, a pulley box on top and a
- * sill below, the passenger standing inside behind the glass. A new
- * passenger (a new `riderKey`) pops in; `phase="out"` makes them hop out to
- * the left, onto the floor they have arrived at, and bounce away. `extra`
- * (the passenger's bubble or balloon) is drawn beside the cabin.
+ * THE LIFT CAR — a glass cabin in a gold frame, a pulley box on top and a sill
+ * below, two glass doors that slide open (`open`) and shut. A rider (a new
+ * `riderKey`) stands inside behind the glass; `riderPhase="out"` makes them
+ * hop out to the left, onto the floor the car has stopped at, cheering, and
+ * go in. `glow` rings the cabin while a child is carried ("drop me here"),
+ * brighter when the finger is over it. `wish` is drawn beside the cabin.
+ *
+ * The ride itself is the car's CSS `translate` (`.bjl-car`, from
+ * `--bjl-level`), never a framer transform, so the rider's own hop is free.
  */
 export function LiftCar({
-  passenger,
+  rider,
   riderKey,
-  phase,
-  extra,
+  riderPhase,
+  open,
+  glow,
+  wish,
   carRef,
-  style,
+  cabinRef,
+  seatRef,
+  level,
 }: {
-  passenger: string;
+  rider: Kid | null;
   riderKey: string | number;
-  phase: RiderPhase;
-  extra?: ReactNode;
+  riderPhase: RiderPhase;
+  open: boolean;
+  glow: "none" | "open" | "over";
+  wish?: ReactNode;
   carRef?: Ref<HTMLDivElement>;
-  style?: CSSProperties;
+  /** The drop target: the cabin. */
+  cabinRef?: Ref<HTMLSpanElement>;
+  /** Where a rider stands (a carried child flies to it). */
+  seatRef?: Ref<HTMLSpanElement>;
+  /** The stop the car is at, or riding to: 0 (the ground) to 4. */
+  level: number;
 }) {
-  const out = phase === "out";
+  const out = riderPhase === "out";
   return (
-    <div ref={carRef} className="bjl-car" style={style}>
+    <div ref={carRef} className="bjl-car" style={cssVars({ "--bjl-level": level })}>
       <span className="bjl-car-cap" aria-hidden="true" />
-      <span className="bjl-car-cabin" aria-hidden="true">
+      <span ref={cabinRef} className={`bjl-car-cabin bjl-car-cabin--${glow}`} aria-hidden="true">
         <span className="bjl-car-back" />
-        <motion.span
-          key={riderKey}
-          className="bjl-rider"
-          initial={{ opacity: 0, scale: 0.4 }}
-          animate={
-            out
-              ? {
-                  x: ["0%", "-55%", "-105%", "-105%", "-105%"],
-                  y: ["0%", "-70%", "0%", "-22%", "0%"],
-                  opacity: [1, 1, 1, 1, 0],
-                  scale: 1,
-                }
-              : { x: "0%", y: "0%", opacity: 1, scale: 1 }
-          }
-          transition={
-            out
-              ? { duration: 1, times: [0, 0.3, 0.55, 0.78, 1], ease: "easeOut" }
-              : { duration: 0.35, ease: "easeOut" }
-          }
-        >
-          <Thing id={passenger} />
-        </motion.span>
+        <span ref={seatRef} className="bjl-rider-seat">
+          {rider && (
+            <motion.span
+              key={riderKey}
+              className="bjl-rider"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={
+                out
+                  ? {
+                      x: ["0%", "-60%", "-120%", "-120%", "-120%"],
+                      y: ["0%", "-34%", "0%", "-12%", "0%"],
+                      opacity: [1, 1, 1, 1, 0],
+                      scale: 1,
+                    }
+                  : { x: "0%", y: "0%", opacity: 1, scale: 1 }
+              }
+              transition={
+                out
+                  ? { duration: 1, times: [0, 0.28, 0.55, 0.75, 1], ease: "easeOut" }
+                  : { duration: 0.2, ease: "easeOut" }
+              }
+            >
+              <KidArt who={rider} pose={out ? "cheer" : "stand"} />
+            </motion.span>
+          )}
+        </span>
+        <span className="bjl-car-doors">
+          <span className={`bjl-door bjl-door--l ${open ? "bjl-door--open" : ""}`} />
+          <span className={`bjl-door bjl-door--r ${open ? "bjl-door--open" : ""}`} />
+        </span>
         <span className="bjl-car-glass" />
       </span>
       <span className="bjl-car-sill" aria-hidden="true" />
-      {extra}
+      {wish && <span className="bjl-car-wish">{wish}</span>}
     </div>
   );
 }

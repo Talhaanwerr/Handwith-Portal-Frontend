@@ -1,0 +1,248 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   WORD BUILDER — five lessons (a, e, i, o, u), three words a lesson, three
+   pages a word. Every class is `wbd-`. Sizes come from the stage (`cqh` /
+   `cqw`), so one layout serves a sideways phone and a desktop; upright, the
+   picture goes on top and the letters below.
+   ───────────────────────────────────────────────────────────────────────── */
+.wbd-play {
+  /* a letter tile's side, and the picture card's */
+  --wbd-tile: min(24cqh, 12cqw);
+  --wbd-pic: min(54cqh, 30cqw);
+  --wbd-edge: #b8742f;
+  --wbd-glow: #ffd84a;
+}
+.wbd-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqw;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The picture card ─────────────────────────────────────────────────── */
+.wbd-picture {
+  display: block;
+  flex: none;
+  width: var(--wbd-pic);
+  height: var(--wbd-pic);
+  padding: calc(var(--wbd-pic) * 0.09);
+  border-radius: 14%;
+  background: #ffffff;
+  box-shadow: 0 1.4cqh 0 var(--wbd-edge);
+}
+.wbd-picture img,
+.wbd-picture svg,
+.wbd-mini-pic img,
+.wbd-mini-pic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ─── The letters ──────────────────────────────────────────────────────── */
+.wbd-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7cqh;
+}
+.wbd-row,
+.wbd-tray {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--wbd-tile) * 0.16);
+}
+.wbd-tray {
+  gap: calc(var(--wbd-tile) * 0.28);
+}
+.wbd-slot {
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--wbd-tile);
+  height: var(--wbd-tile);
+  padding: 0;
+  border: 0;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.wbd-slot--tap {
+  cursor: pointer;
+}
+.wbd-slot--drop {
+  border-radius: 20%;
+  background: rgba(255, 255, 255, 0.55);
+  outline: max(3px, 0.6cqh) dashed rgba(60, 40, 20, 0.35);
+  outline-offset: -0.6cqh;
+}
+.wbd-slot--drop.is-lit {
+  background: rgba(255, 224, 102, 0.75);
+}
+.wbd-slot--drop.is-hint {
+  outline-color: #e8a80c;
+  box-shadow: 0 0 0 1cqh var(--wbd-glow);
+}
+.wbd-slot--drop.is-filled {
+  background: none;
+  outline: none;
+  box-shadow: none;
+}
+.wbd-gap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: calc(var(--wbd-tile) * 0.56);
+  line-height: 1;
+  color: rgba(60, 40, 20, 0.45);
+}
+.wbd-drag {
+  cursor: grab;
+  touch-action: none;
+}
+.wbd-slot.is-away {
+  visibility: hidden;
+}
+.wbd-in,
+.wbd-wiggle {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wbd-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20%;
+  background: #fff3d6;
+  box-shadow: 0 1cqh 0 var(--wbd-edge);
+  font-size: calc(var(--wbd-tile) * 0.66);
+  line-height: 1;
+  color: #3a2a6b;
+  user-select: none;
+}
+.wbd-tile.is-heard {
+  background: #ffffff;
+  box-shadow:
+    0 1cqh 0 var(--wbd-edge),
+    0 0 0 0.9cqh var(--wbd-glow);
+}
+/* the letter being said as the word is sounded out again */
+.wbd-tile.is-saying {
+  transform: translateY(-10%) scale(1.1);
+  background: #fff7c2;
+}
+.wbd-tile {
+  transition: transform 0.16s ease-out;
+}
+.wbd-tile.is-pulse {
+  animation: wbd-pulse 1s ease-in-out infinite;
+}
+@keyframes wbd-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.09);
+  }
+}
+.wbd-wiggle.is-wiggling {
+  animation: wbd-wiggle 0.6s ease-in-out;
+}
+@keyframes wbd-wiggle {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  20% {
+    transform: translateX(-7%) rotate(-5deg);
+  }
+  40% {
+    transform: translateX(7%) rotate(5deg);
+  }
+  60% {
+    transform: translateX(-4%) rotate(-3deg);
+  }
+  80% {
+    transform: translateX(4%) rotate(3deg);
+  }
+}
+/* the letter under the finger */
+.wbd-carried {
+  left: calc(var(--wbd-tile) * -0.5);
+  top: calc(var(--wbd-tile) * -0.5);
+  width: var(--wbd-tile);
+  height: var(--wbd-tile);
+}
+
+/* ─── A lesson's home card ─────────────────────────────────────────────── */
+.wbd-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqh;
+}
+.wbd-mini-pic {
+  display: block;
+  width: 46cqh;
+  height: 46cqh;
+}
+.wbd-mini-word {
+  display: flex;
+  gap: 3cqh;
+}
+.wbd-mini-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24cqh;
+  height: 24cqh;
+  border-radius: 20%;
+  background: #fff3d6;
+  box-shadow: 0 1.6cqh 0 #b8742f;
+  font-family: var(--font-rounded, inherit);
+  font-size: 17cqh;
+  font-weight: 900;
+  line-height: 1;
+  color: #3a2a6b;
+}
+.wbd-mini-tile.is-vowel {
+  color: #e8554e;
+}
+
+/* ─── A short screen (a phone on its side) ─────────────────────────────── */
+@container ng (max-height: 520px) {
+  .wbd-play {
+    --wbd-tile: min(23cqh, 11cqw);
+    --wbd-pic: min(56cqh, 28cqw);
+  }
+  .wbd-side {
+    gap: 5cqh;
+  }
+}
+
+/* ─── Upright: the picture on top, the letters below ───────────────────── */
+@container ng (orientation: portrait) {
+  .wbd-play {
+    --wbd-tile: min(20cqw, 12cqh);
+    --wbd-pic: min(56cqw, 30cqh);
+  }
+  .wbd-board {
+    flex-direction: column;
+    gap: 4cqh;
+  }
+  .wbd-side {
+    gap: 4cqh;
+  }
+}

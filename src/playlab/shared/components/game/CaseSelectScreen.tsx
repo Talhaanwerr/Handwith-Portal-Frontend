@@ -13,15 +13,15 @@ const CASE_OPTIONS: readonly Choice<SelectableCase>[] = [
   {
     value: "upper",
     preview: "ABC",
-    label: "BIG LETTERS",
-    aria: "Play with big letters",
+    label: "UPPERCASE",
+    aria: "Play with uppercase letters",
     variant: "upper",
   },
   {
     value: "lower",
     preview: "abc",
-    label: "small letters",
-    aria: "Play with small letters",
+    label: "lowercase",
+    aria: "Play with lowercase letters",
     variant: "lower",
   },
 ];
