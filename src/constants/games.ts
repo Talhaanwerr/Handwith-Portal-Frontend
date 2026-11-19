@@ -706,6 +706,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🔴",
     route: "/play/rainbow-words-red",
     colors: { bg: "#FDE8E6", border: "#B43A34", text: "#5E1A16" },
+    hidden: true,
   },
   {
     id: "rainbow-words-orange",
@@ -715,6 +716,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🟠",
     route: "/play/rainbow-words-orange",
     colors: { bg: "#FFEEDB", border: "#BE6A0C", text: "#5E3202" },
+    hidden: true,
   },
   {
     id: "rainbow-words-yellow",
@@ -724,6 +726,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🟡",
     route: "/play/rainbow-words-yellow",
     colors: { bg: "#FFF7D6", border: "#A97F04", text: "#574000" },
+    hidden: true,
   },
   {
     id: "rainbow-words-green",
@@ -733,6 +736,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🟢",
     route: "/play/rainbow-words-green",
     colors: { bg: "#E6F5EA", border: "#267A41", text: "#0F3F1F" },
+    hidden: true,
   },
   {
     id: "rainbow-words-blue",
@@ -742,6 +746,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🔵",
     route: "/play/rainbow-words-blue",
     colors: { bg: "#E3EFFB", border: "#1F5C9C", text: "#0E2F55" },
+    hidden: true,
   },
   {
     id: "rainbow-words-indigo",
@@ -751,6 +756,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🌀",
     route: "/play/rainbow-words-indigo",
     colors: { bg: "#E8EAFB", border: "#333C99", text: "#191F5C" },
+    hidden: true,
   },
   {
     id: "rainbow-words-violet",
@@ -760,6 +766,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🟣",
     route: "/play/rainbow-words-violet",
     colors: { bg: "#F1E8FB", border: "#6233A3", text: "#33155F" },
+    hidden: true,
   },
   {
     id: "our-world-animals",
@@ -769,6 +776,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🐄",
     route: "/play/our-world-animals",
     colors: { bg: "#E6F5EA", border: "#2E7D46", text: "#0F3F1F" },
+    hidden: true,
   },
   {
     id: "our-world-sea",
@@ -778,6 +786,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🐟",
     route: "/play/our-world-sea",
     colors: { bg: "#E3EFFB", border: "#1F5C9C", text: "#0E2F55" },
+    hidden: true,
   },
   {
     id: "our-world-road",
@@ -787,6 +796,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🚗",
     route: "/play/our-world-road",
     colors: { bg: "#FDE8E6", border: "#B43A34", text: "#5E1A16" },
+    hidden: true,
   },
   {
     id: "our-world-food",
@@ -796,6 +806,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🍎",
     route: "/play/our-world-food",
     colors: { bg: "#FFF1D9", border: "#BE7A0C", text: "#5E3A02" },
+    hidden: true,
   },
   {
     id: "our-world-play",
@@ -805,6 +816,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🧢",
     route: "/play/our-world-play",
     colors: { bg: "#EFE8FB", border: "#5E3BA6", text: "#2A1560" },
+    hidden: true,
   },
   {
     id: "our-world-body",
@@ -814,6 +826,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "👃",
     route: "/play/our-world-body",
     colors: { bg: "#DFF4F3", border: "#1C7573", text: "#0B3D3C" },
+    hidden: true,
   },
   {
     id: "sticker-studio-garden",
@@ -823,6 +836,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🌼",
     route: "/play/sticker-studio-garden",
     colors: { bg: "#E6F5EA", border: "#2E7D46", text: "#0F3F1F" },
+    hidden: true,
   },
   {
     id: "sticker-studio-space",
@@ -832,6 +846,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🚀",
     route: "/play/sticker-studio-space",
     colors: { bg: "#E9E7FB", border: "#4A42A8", text: "#221C63" },
+    hidden: true,
   },
   {
     id: "sticker-studio-farm",
@@ -841,6 +856,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🐔",
     route: "/play/sticker-studio-farm",
     colors: { bg: "#FDE8E6", border: "#B43A34", text: "#5E1A16" },
+    hidden: true,
   },
   {
     id: "sticker-studio-park",
@@ -850,6 +866,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🪁",
     route: "/play/sticker-studio-park",
     colors: { bg: "#DFF4F3", border: "#1C7573", text: "#0B3D3C" },
+    hidden: true,
   },
   {
     id: "sticker-studio-street",
@@ -859,6 +876,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🚌",
     route: "/play/sticker-studio-street",
     colors: { bg: "#E3EFFB", border: "#1F5C9C", text: "#0E2F55" },
+    hidden: true,
   },
   {
     id: "sticker-studio-party",
@@ -868,6 +886,7 @@ export const GAMES: readonly GameMeta[] = [
     glyph: "🎂",
     route: "/play/sticker-studio-party",
     colors: { bg: "#FCE7F2", border: "#B0437E", text: "#5E1C40" },
+    hidden: true,
   },
   {
     id: "colours-road",
