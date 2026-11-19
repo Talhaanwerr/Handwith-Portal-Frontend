@@ -1,0 +1,360 @@
+/**
+ * Silly Sandwich — class prefix `ssw-`. The shell, guide bar, drag ghost and
+ * celebrations are Count & Match's and the portal's (`ng-`, `pl-`); the
+ * pictures are Rhyme Time's (`.ryn-pic-img`). `--ssw-mon` is Munch's height
+ * (his box is 1.2× as wide); everything round him is a share of it. Sized in
+ * the `ng` container's units; sideways and upright phones at the bottom.
+ */
+
+/* ─── The kitchen ──────────────────────────────────────────────────────── */
+.ssw-world {
+  position: absolute;
+  inset: 0;
+  background: #fff0cc;
+}
+.ssw-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* in a round the board's own counter takes its place */
+.ssw-play .ssw-world-counter {
+  display: none;
+}
+
+/* ─── The board: Munch behind the counter, the tray on it ──────────────── */
+.ssw-play {
+  --ssw-mon: min(50cqh, 34cqw);
+  --ssw-plate: min(21cqh, 15cqw);
+}
+.ssw-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+}
+.ssw-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* ─── Munch ────────────────────────────────────────────────────────────── */
+.ssw-munch {
+  position: relative;
+  flex: none;
+  width: calc(var(--ssw-mon) * 1.2);
+  height: var(--ssw-mon);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ssw-munch-body {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-origin: 50% 100%;
+}
+.ssw-munch-body--munch {
+  animation: ssw-hop 0.8s ease-out;
+}
+.ssw-munch-body--yuck {
+  animation: ssw-shake 0.9s ease-in-out;
+}
+.ssw-munch-body--bite {
+  animation: ssw-lunge 0.6s ease-out;
+}
+@keyframes ssw-hop {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-3cqh);
+  }
+  80% {
+    transform: translateY(-1cqh);
+  }
+}
+@keyframes ssw-shake {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(-6deg);
+  }
+  35% {
+    transform: rotate(5deg);
+  }
+  55% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+}
+@keyframes ssw-lunge {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.07);
+  }
+}
+.ssw-munch-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.ssw-lids rect {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  animation: ssw-blink 4.2s ease-in-out infinite;
+}
+@keyframes ssw-blink {
+  0%,
+  91%,
+  100% {
+    transform: scaleY(0);
+  }
+  95% {
+    transform: scaleY(1);
+  }
+}
+.ssw-chew {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ssw-chew 0.28s ease-in-out infinite alternate;
+}
+@keyframes ssw-chew {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0.45);
+  }
+}
+.ssw-hands {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  pointer-events: none;
+}
+
+/* ─── The sandwich in Munch's hands ────────────────────────────────────── */
+.ssw-sandwich {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: calc(var(--ssw-mon) * -0.08);
+  display: block;
+  width: calc(var(--ssw-mon) * 0.62);
+  height: calc(var(--ssw-mon) * 0.44);
+  margin-left: calc(var(--ssw-mon) * -0.31);
+}
+/** A warm glow under the bread while a filling is held over it. */
+.ssw-sandwich::before {
+  content: "";
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: -6%;
+  height: 60%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 220, 80, 0.9), rgba(255, 220, 80, 0));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.ssw-sandwich.is-lit::before {
+  opacity: 1;
+}
+.ssw-bread {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  height: calc(var(--ssw-mon) * 0.155);
+}
+.ssw-bread-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/** A filling on the bread: a round slice with a lettuce frill. */
+.ssw-slice {
+  position: absolute;
+  display: block;
+  width: calc(var(--ssw-mon) * 0.31);
+  height: calc(var(--ssw-mon) * 0.31);
+  border: max(3px, calc(var(--ssw-mon) * 0.022)) solid #7ccb4e;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 calc(var(--ssw-mon) * 0.014) 0 #4e9a2e;
+}
+.ssw-slice--0 {
+  left: 1%;
+  bottom: calc(var(--ssw-mon) * 0.07);
+}
+.ssw-slice--1 {
+  right: 1%;
+  bottom: calc(var(--ssw-mon) * 0.1);
+}
+.ssw-slice-pic {
+  position: absolute;
+  inset: 12%;
+  display: block;
+}
+.ssw-lid {
+  position: absolute;
+  z-index: 3;
+  left: -2%;
+  right: -2%;
+  bottom: calc(var(--ssw-mon) * 0.19);
+  display: block;
+  height: calc(var(--ssw-mon) * 0.26);
+}
+
+/* ─── The counter and the tray of fillings ─────────────────────────────── */
+.ssw-counter {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: none;
+  justify-content: center;
+  width: 100cqw;
+  padding: 3.6cqh 0 1.6cqh;
+  background: linear-gradient(#ebb070 0 2.6cqh, #9c5a26 2.6cqh 3.2cqh, #c27a3e 3.2cqh 100%);
+}
+.ssw-counter::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 12cqh;
+  background: #b46f37;
+}
+.ssw-mat {
+  display: flex;
+  gap: 3cqw;
+  padding: 1.6cqh 3cqw;
+  border: max(2px, 0.5cqh) dashed rgba(255, 255, 255, 0.85);
+  border-radius: 4cqh;
+  background: #9ed9b8;
+  box-shadow: 0 1cqh 0 rgba(80, 40, 10, 0.35);
+}
+.ssw-plate {
+  position: relative;
+  width: var(--ssw-plate);
+  height: var(--ssw-plate);
+  border: max(3px, 0.9cqh) solid #5fa8d3;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0 62%, #eaf3fa 63% 72%, #ffffff 73%);
+  box-shadow: 0 1cqh 0 rgba(60, 40, 20, 0.35);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 0.2s ease;
+}
+.ssw-plate.is-gone {
+  visibility: hidden;
+}
+.ssw-plate.is-naming {
+  box-shadow:
+    0 1cqh 0 rgba(60, 40, 20, 0.35),
+    0 0 0 1cqh #ffd23d;
+}
+.ssw-plate.is-hint {
+  animation: ssw-hint 1.1s ease-in-out infinite;
+}
+@keyframes ssw-hint {
+  0%,
+  100% {
+    box-shadow:
+      0 1cqh 0 rgba(60, 40, 20, 0.35),
+      0 0 0 1cqh rgba(255, 210, 61, 0.95);
+  }
+  50% {
+    box-shadow:
+      0 1cqh 0 rgba(60, 40, 20, 0.35),
+      0 0 0 2.4cqh rgba(255, 210, 61, 0.2);
+  }
+}
+.ssw-plate-in {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.ssw-plate-pic {
+  position: absolute;
+  inset: 15%;
+  display: block;
+}
+/** The filling under the finger: the same plate, lifted. */
+.ssw-carried {
+  left: calc(var(--ssw-plate) * -0.5);
+  top: calc(var(--ssw-plate) * -0.5);
+  width: var(--ssw-plate);
+  height: var(--ssw-plate);
+  border: max(3px, 0.9cqh) solid #5fa8d3;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1.6cqh 2cqh rgba(60, 40, 20, 0.3);
+  pointer-events: none;
+}
+
+/* ─── The home card's miniature (its own size container) ───────────────── */
+.ssw-mini {
+  --ssw-mon: 86cqh;
+}
+.ssw-mini-munch {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: calc(var(--ssw-mon) * 1.2);
+  height: var(--ssw-mon);
+  margin-top: calc(var(--ssw-mon) * -0.5);
+  margin-left: calc(var(--ssw-mon) * -0.6);
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .ssw-play {
+    --ssw-mon: min(44cqh, 30cqw);
+    --ssw-plate: min(23cqh, 13cqw);
+  }
+  .ssw-counter {
+    padding: 3.4cqh 0 1.4cqh;
+  }
+  .ssw-mat {
+    padding: 1.2cqh 2.5cqw;
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .ssw-play .ng-main {
+    bottom: 5cqh;
+  }
+  .ssw-play {
+    --ssw-mon: min(44cqh, 76cqw);
+    --ssw-plate: min(19cqw, 12cqh);
+  }
+  .ssw-mat {
+    gap: 2.5cqw;
+    padding: 1.4cqh 2.5cqw;
+  }
+}

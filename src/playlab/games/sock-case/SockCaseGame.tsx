@@ -22,13 +22,16 @@ const ROUNDS: Record<ModuleId, ComponentType<RoundProps>> = {
  * onto the empty peg) and The Odd Sock (tap the sock with no partner; the
  * magnifying glass solves the case and the pairs are counted). Shell, chrome,
  * celebrations and store are Count & Match's (`@games/number-groups`); only
- * the socks, the peg, the basket and the glass are drawn here.
+ * the socks, the peg, the basket and the glass are drawn here. Guided layout:
+ * every screen centred, the line being said in the thin bar at the top, the
+ * teaching hand showing the move by itself on the first round.
  */
 export function SockCaseGame() {
   const store = useSockCaseStore();
   return (
     <NgShell
       title="The Missing Sock Case"
+      guided
       voice={VOICE}
       store={store}
       modules={MODULES}

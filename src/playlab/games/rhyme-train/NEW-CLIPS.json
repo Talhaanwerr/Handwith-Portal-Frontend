@@ -1,0 +1,19 @@
+[
+  {
+    "id": "rtr-welcome",
+    "file": "/audio/rhyme-train/welcome.mp3",
+    "text": "Welcome to Rhyme Train Station!"
+  },
+  {
+    "id": "rtr-done",
+    "file": "/audio/rhyme-train/done.mp3",
+    "text": "Every train got its riders!"
+  },
+  {
+    "id": "rtr-mode-train",
+    "file": "/audio/rhyme-train/mode-train.mp3",
+    "text": "Rhyme Train! Put each friend in the carriage that rhymes."
+  },
+  { "id": "rtr-who", "file": "/audio/rhyme-train/who.mp3", "text": "Who rides in which carriage?" },
+  { "id": "rtr-toot", "file": "/audio/rhyme-train/toot.mp3", "text": "Toot toot! Off we go!" }
+]

@@ -1,0 +1,272 @@
+[
+  {
+    "id": "rbw-welcome",
+    "file": "/audio/rainbow-words/welcome.mp3",
+    "text": "Rainbow Words!"
+  },
+  {
+    "id": "rbw-done",
+    "file": "/audio/rainbow-words/done.mp3",
+    "text": "You read every word!"
+  },
+  {
+    "id": "rbw-mode-red",
+    "file": "/audio/rainbow-words/mode-red.mp3",
+    "text": "Red words! Let’s read!"
+  },
+  {
+    "id": "rbw-mode-orange",
+    "file": "/audio/rainbow-words/mode-orange.mp3",
+    "text": "Orange words! Let’s read!"
+  },
+  {
+    "id": "rbw-mode-yellow",
+    "file": "/audio/rainbow-words/mode-yellow.mp3",
+    "text": "Yellow words! Let’s read!"
+  },
+  {
+    "id": "rbw-mode-green",
+    "file": "/audio/rainbow-words/mode-green.mp3",
+    "text": "Green words! Let’s read!"
+  },
+  {
+    "id": "rbw-mode-blue",
+    "file": "/audio/rainbow-words/mode-blue.mp3",
+    "text": "Blue words! Let’s read!"
+  },
+  {
+    "id": "rbw-mode-indigo",
+    "file": "/audio/rainbow-words/mode-indigo.mp3",
+    "text": "Indigo words! Let’s read!"
+  },
+  {
+    "id": "rbw-mode-violet",
+    "file": "/audio/rainbow-words/mode-violet.mp3",
+    "text": "Violet words! Let’s read!"
+  },
+  {
+    "id": "rbw-meet",
+    "file": "/audio/rainbow-words/meet.mp3",
+    "text": "This word is"
+  },
+  {
+    "id": "rbw-tap",
+    "file": "/audio/rainbow-words/tap.mp3",
+    "text": "Tap the word to hear it!"
+  },
+  {
+    "id": "rbw-find",
+    "file": "/audio/rainbow-words/find.mp3",
+    "text": "Find the word"
+  },
+  {
+    "id": "rbw-catch",
+    "file": "/audio/rainbow-words/catch.mp3",
+    "text": "Tap every cloud that says"
+  },
+  {
+    "id": "rbw-fill",
+    "file": "/audio/rainbow-words/fill.mp3",
+    "text": "Which word is missing?"
+  },
+  {
+    "id": "sw-i",
+    "file": "/audio/sight-words/i.mp3",
+    "text": "I"
+  },
+  {
+    "id": "sw-see",
+    "file": "/audio/sight-words/see.mp3",
+    "text": "see"
+  },
+  {
+    "id": "sw-a",
+    "file": "/audio/sight-words/a.mp3",
+    "text": "a"
+  },
+  {
+    "id": "sw-the",
+    "file": "/audio/sight-words/the.mp3",
+    "text": "the"
+  },
+  {
+    "id": "sw-is",
+    "file": "/audio/sight-words/is.mp3",
+    "text": "is"
+  },
+  {
+    "id": "sw-my",
+    "file": "/audio/sight-words/my.mp3",
+    "text": "my"
+  },
+  {
+    "id": "sw-go",
+    "file": "/audio/sight-words/go.mp3",
+    "text": "go"
+  },
+  {
+    "id": "sw-we",
+    "file": "/audio/sight-words/we.mp3",
+    "text": "we"
+  },
+  {
+    "id": "sw-like",
+    "file": "/audio/sight-words/like.mp3",
+    "text": "like"
+  },
+  {
+    "id": "sw-it",
+    "file": "/audio/sight-words/it.mp3",
+    "text": "it"
+  },
+  {
+    "id": "sw-look",
+    "file": "/audio/sight-words/look.mp3",
+    "text": "look"
+  },
+  {
+    "id": "sw-at",
+    "file": "/audio/sight-words/at.mp3",
+    "text": "at"
+  },
+  {
+    "id": "sw-this",
+    "file": "/audio/sight-words/this.mp3",
+    "text": "this"
+  },
+  {
+    "id": "sw-and",
+    "file": "/audio/sight-words/and.mp3",
+    "text": "and"
+  },
+  {
+    "id": "sw-has",
+    "file": "/audio/sight-words/has.mp3",
+    "text": "has"
+  },
+  {
+    "id": "sw-play",
+    "file": "/audio/sight-words/play.mp3",
+    "text": "play"
+  },
+  {
+    "id": "sw-to",
+    "file": "/audio/sight-words/to.mp3",
+    "text": "to"
+  },
+  {
+    "id": "sw-he",
+    "file": "/audio/sight-words/he.mp3",
+    "text": "he"
+  },
+  {
+    "id": "sw-little",
+    "file": "/audio/sight-words/little.mp3",
+    "text": "little"
+  },
+  {
+    "id": "rbw-s-red-1",
+    "file": "/audio/rainbow-words/s-red-1.mp3",
+    "text": "I see a cat."
+  },
+  {
+    "id": "rbw-s-red-2",
+    "file": "/audio/rainbow-words/s-red-2.mp3",
+    "text": "I see a dog."
+  },
+  {
+    "id": "rbw-s-red-3",
+    "file": "/audio/rainbow-words/s-red-3.mp3",
+    "text": "I see a bus."
+  },
+  {
+    "id": "rbw-s-orange-1",
+    "file": "/audio/rainbow-words/s-orange-1.mp3",
+    "text": "The dog is big."
+  },
+  {
+    "id": "rbw-s-orange-2",
+    "file": "/audio/rainbow-words/s-orange-2.mp3",
+    "text": "The bus is big."
+  },
+  {
+    "id": "rbw-s-orange-3",
+    "file": "/audio/rainbow-words/s-orange-3.mp3",
+    "text": "The bed is big."
+  },
+  {
+    "id": "rbw-s-yellow-1",
+    "file": "/audio/rainbow-words/s-yellow-1.mp3",
+    "text": "My dog can go."
+  },
+  {
+    "id": "rbw-s-yellow-2",
+    "file": "/audio/rainbow-words/s-yellow-2.mp3",
+    "text": "My cat can go."
+  },
+  {
+    "id": "rbw-s-yellow-3",
+    "file": "/audio/rainbow-words/s-yellow-3.mp3",
+    "text": "My bus can go."
+  },
+  {
+    "id": "rbw-s-green-1",
+    "file": "/audio/rainbow-words/s-green-1.mp3",
+    "text": "We like the hat."
+  },
+  {
+    "id": "rbw-s-green-2",
+    "file": "/audio/rainbow-words/s-green-2.mp3",
+    "text": "We like the cup."
+  },
+  {
+    "id": "rbw-s-green-3",
+    "file": "/audio/rainbow-words/s-green-3.mp3",
+    "text": "We like it."
+  },
+  {
+    "id": "rbw-s-blue-1",
+    "file": "/audio/rainbow-words/s-blue-1.mp3",
+    "text": "Look at the fox."
+  },
+  {
+    "id": "rbw-s-blue-2",
+    "file": "/audio/rainbow-words/s-blue-2.mp3",
+    "text": "Look at the hen."
+  },
+  {
+    "id": "rbw-s-blue-3",
+    "file": "/audio/rainbow-words/s-blue-3.mp3",
+    "text": "This is a box."
+  },
+  {
+    "id": "rbw-s-indigo-1",
+    "file": "/audio/rainbow-words/s-indigo-1.mp3",
+    "text": "The hen has a hat."
+  },
+  {
+    "id": "rbw-s-indigo-2",
+    "file": "/audio/rainbow-words/s-indigo-2.mp3",
+    "text": "The cat and the dog."
+  },
+  {
+    "id": "rbw-s-indigo-3",
+    "file": "/audio/rainbow-words/s-indigo-3.mp3",
+    "text": "The dog can play."
+  },
+  {
+    "id": "rbw-s-violet-1",
+    "file": "/audio/rainbow-words/s-violet-1.mp3",
+    "text": "I see the little hen."
+  },
+  {
+    "id": "rbw-s-violet-2",
+    "file": "/audio/rainbow-words/s-violet-2.mp3",
+    "text": "I go to the bus."
+  },
+  {
+    "id": "rbw-s-violet-3",
+    "file": "/audio/rainbow-words/s-violet-3.mp3",
+    "text": "He can go."
+  }
+]

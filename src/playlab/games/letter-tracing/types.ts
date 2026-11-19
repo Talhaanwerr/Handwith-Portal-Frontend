@@ -32,20 +32,6 @@ export interface LetterDefinition {
   phonetic: string;
 }
 
-export interface StrokeState {
-  strokeId: string;
-  completed: boolean;
-  /** 0–1 fraction of how far along the path the child has traced */
-  progress: number;
-}
-
-export interface TracingSession {
-  letter: string;
-  strokes: StrokeState[];
-  currentStrokeIndex: number;
-  phase: "demo" | "tracing";
-}
-
 export type StickerTheme = "garden" | "ocean" | "sky" | "forest" | "safari" | "space";
 
 export interface StickerDefinition {

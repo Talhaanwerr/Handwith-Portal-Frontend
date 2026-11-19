@@ -270,7 +270,7 @@ export function SharkLevel({ roundIndex, onRoundComplete }: SharkLevelProps) {
               }
               transition={{ duration: 0.5, delay: drag ? 0 : i * 0.08 }}
               role="img"
-              aria-label={`Shark with the big letter ${s.upper}${fed ? " — fed!" : ""}`}
+              aria-label={`Shark with the uppercase letter ${s.upper}${fed ? " — fed!" : ""}`}
             >
               {/* soft target halo while a fish is being dragged */}
               {drag && !fed && (

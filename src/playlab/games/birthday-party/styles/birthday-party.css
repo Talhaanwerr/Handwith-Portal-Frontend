@@ -485,37 +485,6 @@
   gap: 3cqh;
   width: var(--bdc-fw);
 }
-.bdc-friend-stage {
-  position: relative;
-  width: var(--bdc-fw);
-  height: var(--bdc-fw);
-}
-.bdc-friend-badge {
-  position: absolute;
-  right: -6%;
-  bottom: -18%;
-  z-index: 2;
-  display: block;
-  width: 64%;
-}
-.bdc-friend-says {
-  position: absolute;
-  left: -40%;
-  right: -40%;
-  bottom: 104%;
-  z-index: 3;
-  width: max-content;
-  max-width: 30cqw;
-  margin: 0 auto;
-  padding: 0.8cqh 2cqh;
-  border-radius: 2.4cqh;
-  background: #ffffff;
-  color: #c2457a;
-  font-size: clamp(14px, 5cqh, 30px);
-  line-height: 1.1;
-  white-space: nowrap;
-  box-shadow: 0 0.8cqh 1.8cqh rgba(120, 40, 80, 0.25);
-}
 .bdc-done-slot {
   display: flex;
   align-items: center;
@@ -543,6 +512,14 @@
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+}
+.bdc-done {
+  transition: opacity 0.3s ease;
+}
+/* no candle on yet, or nothing left to check: there, but asleep */
+.bdc-done.is-asleep {
+  opacity: 0.35;
+  cursor: default;
 }
 .bdc-done svg {
   display: block;
@@ -700,9 +677,6 @@
   .bdc-done {
     font-size: clamp(16px, 6cqw, 30px);
   }
-  .bdc-friend-says {
-    font-size: clamp(14px, 5cqw, 26px);
-  }
   .bdc-tray--candles {
     gap: 1cqw;
     padding: 1.2cqh 1.6cqw;
@@ -739,13 +713,15 @@
    In the teacher's corner and bigger than he was, saying his lines in his
    bubble (the kit places .dc-teacher-says; only the colour is the party's). */
 .bdc-game {
+  /* the friend's square slot */
+  --bdc-gs: min(58cqh, 26cqw);
   position: relative;
   width: 100%;
   height: 100%;
 }
 .bdc-game .ng-teacher-slot {
-  width: min(58cqh, 26cqw);
-  height: min(58cqh, 26cqw);
+  width: var(--bdc-gs);
+  height: var(--bdc-gs);
 }
 .bdc-game .ng-main {
   left: 27cqw;
@@ -764,20 +740,64 @@
   width: 50%;
 }
 .bdc-guide .bdc-badge-num {
-  font-size: calc(min(58cqh, 26cqw) * 0.31);
+  font-size: calc(var(--bdc-gs) * 0.31);
 }
 .bdc-game .ng-teacher-slot .bdc-guide-says {
   color: #c2457a;
 }
 @media (orientation: portrait) {
-  .bdc-game .ng-teacher-slot {
-    width: min(24cqh, 40cqw);
-    height: min(24cqh, 40cqw);
+  .bdc-game {
+    --bdc-gs: min(24cqh, 40cqw);
+  }
+  /* guided, upright: a little smaller, so their hat stays under the board */
+  .bdc-game .ng-root--guided {
+    --bdc-gs: min(21cqh, 36cqw);
   }
   .bdc-game .ng-main {
     left: 3cqw;
   }
-  .bdc-guide .bdc-badge-num {
-    font-size: calc(min(24cqh, 40cqw) * 0.31);
+}
+
+/* ── The guided layout (`<NgShell guided>`) ───────────────────────────────
+   Everything centred on the stage, the friend still big in the corner with
+   their bubble. Lying down, the friend and bubble take a column on the left;
+   the title screen, the board and the star card keep the same margin on BOTH
+   sides (`--bdc-side`), so they are centred and never reach the friend. The
+   boards are sized to the room that leaves (`--bdc-room`). Upright, the
+   friend stands under the board and nothing moves. */
+@media (orientation: landscape) {
+  .bdc-game .ng-root--guided {
+    --bdc-gs: min(44cqh, 19cqw);
+    --bdc-side: calc(var(--bdc-gs) + 3cqw);
+    --bdc-room: calc(100cqw - 2 * var(--bdc-side));
+  }
+  .bdc-game .ng-root--guided .ng-main,
+  .bdc-game .ng-root--guided .ng-home-col,
+  .bdc-game .ng-root--guided .ng-done-center {
+    left: var(--bdc-side);
+    right: var(--bdc-side);
+  }
+  /* the bubble keeps to the friend's column */
+  .bdc-game .ng-root--guided .ng-teacher-slot .bdc-guide-says {
+    max-width: calc(var(--bdc-gs) + 2cqw);
+    font-size: clamp(14px, 4.6cqh, 28px);
+  }
+  .bdc-game .ng-root--guided .ng-modes {
+    --ng-mode-w: min(calc((var(--bdc-room) - 4cqw) / 2), 56cqh);
+  }
+  .bdc-game .ng-root--guided .ng-done-card {
+    width: min(var(--bdc-room), 120cqh);
+  }
+  /* One for Each: six cupcakes in one row, the table as wide as the room */
+  .bdc-game .ng-root--guided .bdc-play--each {
+    --bdc-c: max(48px, min(17cqh, calc((var(--bdc-room) - 14cqw) / 6)));
+  }
+  .bdc-game .ng-root--guided .bdc-each-board {
+    --bdc-s: min(calc(var(--bdc-room) / (var(--bdc-n) + 1)), 26cqh);
+  }
+  /* Candles: the cake, Done beside it, all inside the room */
+  .bdc-game .ng-root--guided .bdc-play--candles {
+    --bdc-cw: min(calc(var(--bdc-room) - var(--bdc-fw) - 3cqw), 120cqh);
+    --bdc-tw: max(48px, min(14cqh, calc((var(--bdc-room) - 10cqw) / 6)));
   }
 }

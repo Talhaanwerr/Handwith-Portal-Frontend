@@ -33,6 +33,7 @@ export function BirthdayPartyGame() {
     <div className="bdc-game">
       <NgShell
         title="Birthday Party"
+        guided
         voice={VOICE}
         store={store}
         modules={MODULES}

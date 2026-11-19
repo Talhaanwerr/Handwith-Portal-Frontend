@@ -123,6 +123,14 @@ export function ContentLibraryAdmin() {
 
   const selectedCount = selected.size;
   const shelf = useMemo(() => GAMES.filter((g) => !g.hidden), []);
+  const series = useMemo(
+    () =>
+      GAME_SERIES.map((group) => ({
+        ...group,
+        games: group.ids.flatMap((id) => shelf.filter((g) => g.id === id)),
+      })).filter((group) => group.games.length > 0),
+    [shelf]
+  );
 
   async function applyBulk() {
     if (selectedCount === 0) return;
@@ -377,9 +385,99 @@ export function ContentLibraryAdmin() {
           </div>
         )}
       </div>
+
+      {series.map((group) => (
+        <section key={group.title} className="border-t border-slate-200 pt-6">
+          <h2 className="text-lg font-semibold text-slate-900">
+            {group.title}{" "}
+            <span className="text-sm font-normal text-slate-500">({group.games.length})</span>
+          </h2>
+          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            {group.games.map((game) => (
+              <GameCard key={game.id} game={game} />
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }
+
+/** Games that were made as one series, shown together under a heading
+ *  below the full shelf. */
+const GAME_SERIES: readonly { title: string; ids: readonly string[] }[] = [
+  {
+    title: "Rhyme Games",
+    ids: [
+      "rhyme-or-not",
+      "rhyme-match",
+      "rhyme-families",
+      "rhyme-rocket",
+      "silly-sandwich",
+      "rhyme-detective",
+      "finish-song",
+      "magic-hat",
+      "rhyme-train",
+    ],
+  },
+  {
+    title: "Paint My Ride",
+    ids: [
+      "colours-road",
+      "colours-sea",
+      "colours-sky",
+      "colours-space",
+      "colours-emergency",
+      "colours-build",
+    ],
+  },
+  {
+    title: "First Words",
+    ids: ["words-animals", "words-food", "words-home", "words-out", "words-body"],
+  },
+  {
+    title: "Word Builder",
+    ids: ["word-builder-a", "word-builder-e", "word-builder-i", "word-builder-o", "word-builder-u"],
+  },
+  {
+    title: "Rainbow Words",
+    ids: [
+      "rainbow-words-red",
+      "rainbow-words-orange",
+      "rainbow-words-yellow",
+      "rainbow-words-green",
+      "rainbow-words-blue",
+      "rainbow-words-indigo",
+      "rainbow-words-violet",
+    ],
+  },
+  {
+    title: "Our World",
+    ids: [
+      "our-world-animals",
+      "our-world-sea",
+      "our-world-road",
+      "our-world-food",
+      "our-world-play",
+      "our-world-body",
+    ],
+  },
+  {
+    title: "Sticker Studio",
+    ids: [
+      "sticker-studio-garden",
+      "sticker-studio-space",
+      "sticker-studio-farm",
+      "sticker-studio-park",
+      "sticker-studio-street",
+      "sticker-studio-party",
+    ],
+  },
+  {
+    title: "Shapes",
+    ids: ["shape-circle", "shape-square", "shape-triangle", "shape-rectangle", "shape-star"],
+  },
+];
 
 function ContentRow({
   row,

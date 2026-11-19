@@ -1,0 +1,7 @@
+{
+  "default": ["Drag each piece onto the plate.", "Make the fruit whole again!"],
+  "modules": {
+    "easy": ["Drag the big pieces onto the plate.", "Make the fruit whole again!"],
+    "tricky": ["Drag all four pieces onto the plate.", "Fit each piece in its place."]
+  }
+}

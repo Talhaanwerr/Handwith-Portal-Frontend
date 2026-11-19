@@ -38,8 +38,8 @@ export function JungleComplete({ onExitPortal }: JungleCompleteProps) {
       headline={clipText("cheer-you-did-it")}
       subline={
         lower
-          ? "You found all 26 animals with little letters!"
-          : "You found all 26 animals with BIG letters!"
+          ? "You found all 26 animals with lowercase letters!"
+          : "You found all 26 animals with uppercase letters!"
       }
       clipId="cheer-you-did-it"
       backdrop={<JungleBackdrop />}
@@ -54,7 +54,7 @@ export function JungleComplete({ onExitPortal }: JungleCompleteProps) {
       tileClassName="bg-jungle"
       primaryClassName="bg-jungle"
       onPlayAgain={playAgain}
-      playAgainLabel={lower ? "Play little letters again" : "Play BIG letters again"}
+      playAgainLabel={lower ? "Play lowercase letters again" : "Play uppercase letters again"}
       onExitPortal={onExitPortal}
     />
   );

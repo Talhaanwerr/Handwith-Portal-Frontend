@@ -77,26 +77,6 @@ export function buildPath(
 }
 
 /**
- * Given a list of pre-sampled points and a current finger position,
- * return the index of the closest point on the path and the distance to it.
- */
-export function closestPointOnPath(
-  pathPoints: Point[],
-  finger: Point
-): { index: number; dist: number } {
-  let bestIndex = 0;
-  let bestDist = Infinity;
-  for (let i = 0; i < pathPoints.length; i++) {
-    const d = distance(pathPoints[i], finger);
-    if (d < bestDist) {
-      bestDist = d;
-      bestIndex = i;
-    }
-  }
-  return { index: bestIndex, dist: bestDist };
-}
-
-/**
  * Scale a point from the 200×200 letter-space to canvas pixels.
  */
 export function scalePoint(p: Point, canvasSize: number, padding = 20): Point {

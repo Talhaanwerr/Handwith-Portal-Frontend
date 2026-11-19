@@ -1,0 +1,117 @@
+[
+  {
+    "id": "owd-welcome",
+    "file": "/audio/our-world/welcome.mp3",
+    "text": "Our World!"
+  },
+  {
+    "id": "owd-done",
+    "file": "/audio/our-world/done.mp3",
+    "text": "You know where everything belongs!"
+  },
+  {
+    "id": "owd-mode-animals",
+    "file": "/audio/our-world/mode-animals.mp3",
+    "text": "Animals! Farm or jungle?"
+  },
+  {
+    "id": "owd-mode-sea",
+    "file": "/audio/our-world/mode-sea.mp3",
+    "text": "Sea and sky!"
+  },
+  {
+    "id": "owd-mode-road",
+    "file": "/audio/our-world/mode-road.mp3",
+    "text": "On the road, or in the house?"
+  },
+  {
+    "id": "owd-mode-food",
+    "file": "/audio/our-world/mode-food.mp3",
+    "text": "What do we eat?"
+  },
+  {
+    "id": "owd-mode-play",
+    "file": "/audio/our-world/mode-play.mp3",
+    "text": "Clothes and toys!"
+  },
+  {
+    "id": "owd-mode-body",
+    "file": "/audio/our-world/mode-body.mp3",
+    "text": "My body and my kitchen!"
+  },
+  {
+    "id": "owd-sort",
+    "file": "/audio/our-world/sort.mp3",
+    "text": "Put each one where it belongs!"
+  },
+  {
+    "id": "owd-pick",
+    "file": "/audio/our-world/pick.mp3",
+    "text": "Which one belongs here?"
+  },
+  {
+    "id": "owd-odd",
+    "file": "/audio/our-world/odd.mp3",
+    "text": "Which one does not belong?"
+  },
+  {
+    "id": "owd-place-farm",
+    "file": "/audio/our-world/place-farm.mp3",
+    "text": "On the farm"
+  },
+  {
+    "id": "owd-place-jungle",
+    "file": "/audio/our-world/place-jungle.mp3",
+    "text": "In the jungle"
+  },
+  {
+    "id": "owd-place-sea",
+    "file": "/audio/our-world/place-sea.mp3",
+    "text": "In the sea"
+  },
+  {
+    "id": "owd-place-sky",
+    "file": "/audio/our-world/place-sky.mp3",
+    "text": "In the sky"
+  },
+  {
+    "id": "owd-place-road",
+    "file": "/audio/our-world/place-road.mp3",
+    "text": "On the road"
+  },
+  {
+    "id": "owd-place-home",
+    "file": "/audio/our-world/place-home.mp3",
+    "text": "In the house"
+  },
+  {
+    "id": "owd-place-eat",
+    "file": "/audio/our-world/place-eat.mp3",
+    "text": "We eat it"
+  },
+  {
+    "id": "owd-place-no-eat",
+    "file": "/audio/our-world/place-no-eat.mp3",
+    "text": "We do not eat it"
+  },
+  {
+    "id": "owd-place-wear",
+    "file": "/audio/our-world/place-wear.mp3",
+    "text": "We wear it"
+  },
+  {
+    "id": "owd-place-toys",
+    "file": "/audio/our-world/place-toys.mp3",
+    "text": "We play with it"
+  },
+  {
+    "id": "owd-place-body",
+    "file": "/audio/our-world/place-body.mp3",
+    "text": "My body"
+  },
+  {
+    "id": "owd-place-kitchen",
+    "file": "/audio/our-world/place-kitchen.mp3",
+    "text": "In the kitchen"
+  }
+]

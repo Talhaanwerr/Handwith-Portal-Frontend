@@ -148,6 +148,16 @@ export function PackRound({ round, title, onDone, onMiss, onHome, onExitPortal }
       .slice(0, packed)
       .map((it, k) => ({ it, k }))
       .filter(({ it }) => ITEM_TRIP[it] === t);
+  /** The guide bar's line: the question; "Try again!" after the wrong case,
+   *  until the right one is tapped; "The sunny suitcase!" (or snowy) while
+   *  the thing flies in; "All packed! Off we go!" once the lids shut. */
+  const line = closed
+    ? "ptr-takeoff"
+    : packed > step
+      ? `ptr-${trip}`
+      : miss?.step === step
+        ? "instr-try-again"
+        : "ptr-where";
 
   return (
     <NgStage
@@ -156,7 +166,7 @@ export function PackRound({ round, title, onDone, onMiss, onHome, onExitPortal }
       world={<AirportWorld takeoff={takeoff} />}
       round={round}
       solved={solved}
-      say={say(clipText(closed ? "ptr-takeoff" : "ptr-where"))}
+      say={say(clipText(line))}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

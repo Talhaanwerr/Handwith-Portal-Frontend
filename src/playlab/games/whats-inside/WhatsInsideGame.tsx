@@ -29,6 +29,7 @@ export function WhatsInsideGame() {
   return (
     <NgShell
       title="What's Inside?"
+      guided
       voice={VOICE}
       store={store}
       modules={MODULES}

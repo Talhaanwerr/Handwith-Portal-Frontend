@@ -85,6 +85,8 @@ interface Hooks {
   setFlakes: Dispatch<SetStateAction<FlakeView[]>>;
   /** Say each bite's number (Feed the Colour Fish). */
   countBites: boolean;
+  /** A line the tank says (a full fish's thanks), and its end — for the guide bar. */
+  onLine?: (id: string, said: Promise<void>) => void;
 }
 
 export type Tank = ReturnType<typeof createTank>;
@@ -239,7 +241,8 @@ export function createTank(def: FeedRoundDef, hooks: Hooks) {
     fish[i].task = "full";
     setMood(i, "full");
     playStarPop();
-    void sayAfter(YUM_CLIPS[i % YUM_CLIPS.length]);
+    const yum = YUM_CLIPS[i % YUM_CLIPS.length];
+    hooks.onLine?.(yum, sayAfter(yum));
     later(() => {
       const f = fish[i];
       const { w, h } = size;

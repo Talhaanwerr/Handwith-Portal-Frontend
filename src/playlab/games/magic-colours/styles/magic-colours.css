@@ -1,0 +1,331 @@
+/**
+ * Magic Colours — a vehicle to colour, standing in a calm road or sea scene.
+ * Runs in Count & Match's shell (guided), so everything is sized in the `ng`
+ * container's units (1cqh = 1% of the stage's height). The teacher is hidden
+ * by Apple Basket's `.apa-game` wrapper. The colours and the ink are Color &
+ * Paint's, set in the drawing itself (VehiclePicture).
+ *
+ * The board's floor and the scene's road / water are set from the same two
+ * numbers, so the wheels stand on the road and the hull sits in the sea:
+ *   --mgc-floor  the board's bottom edge, above the stage's bottom;
+ *   --mgc-road   the road's (and the sea's) height.
+ */
+
+.mgc-game {
+  --mgc-floor: 4cqh;
+  --mgc-road: 14cqh;
+}
+
+/* ── The scenes ──────────────────────────────────────────────────────────── */
+
+.mgc-world {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #7cc8f4 0%, #b4e2fb 50%, #e6f6ff 100%);
+}
+.mgc-sun {
+  position: absolute;
+  top: max(70px, 14cqh);
+  right: 7cqw;
+  width: min(14cqh, 10cqw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%, #fff3a8 0 30%, #ffd93d 70%);
+  box-shadow: 0 0 0 2cqh rgba(255, 217, 61, 0.22);
+}
+.mgc-cloud {
+  position: absolute;
+  fill: #ffffff;
+  opacity: 0.92;
+  animation: mgc-drift 70s linear infinite alternate;
+}
+.mgc-cloud--a {
+  top: max(84px, 20cqh);
+  left: 6cqw;
+  width: min(26cqh, 20cqw);
+}
+.mgc-cloud--c {
+  top: 52cqh;
+  left: 22cqw;
+  width: min(22cqh, 16cqw);
+  opacity: 0.85;
+  animation-duration: 80s;
+}
+.mgc-cloud--b {
+  top: 34cqh;
+  left: 58cqw;
+  width: min(18cqh, 14cqw);
+  opacity: 0.8;
+  animation-duration: 90s;
+  animation-direction: alternate-reverse;
+}
+@keyframes mgc-drift {
+  from {
+    transform: translateX(-4cqw);
+  }
+  to {
+    transform: translateX(6cqw);
+  }
+}
+
+/* the road */
+.mgc-hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--mgc-road) + 7cqh - 1px);
+  width: 100%;
+  height: 16cqh;
+}
+.mgc-world--site .mgc-hills {
+  bottom: calc(var(--mgc-road) - 1px);
+}
+
+/* the town street: houses on a pavement, behind the road */
+.mgc-town {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--mgc-road) + 5cqh - 2px);
+  width: 100%;
+  height: 26cqh;
+}
+.mgc-pavement {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--mgc-road) - 1px);
+  height: 5cqh;
+  background: linear-gradient(180deg, #e7ddcf 0%, #d6cab9 100%);
+}
+.mgc-road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--mgc-road);
+  background: linear-gradient(180deg, #9aa3b0 0%, #8a94a3 100%);
+  box-shadow: inset 0 0.8cqh 0 #b9c0ca;
+}
+.mgc-lane {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 42%;
+  height: max(4px, 1cqh);
+  background: repeating-linear-gradient(90deg, #ffffff 0 7cqw, transparent 7cqw 13cqw);
+  opacity: 0.85;
+}
+
+/* the sky: far hills only, low down */
+.mgc-far-hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 9cqh;
+}
+
+/* space: Rocket Countdown's scene (`.rkc-space`), and moon dust */
+.mgc-moon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(var(--mgc-road) + 2cqh);
+}
+
+/* the building site: a barrier along the back, dirt, two cones */
+.mgc-barrier {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--mgc-road) - 2px);
+  width: 100%;
+  height: 5cqh;
+}
+.mgc-dirt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--mgc-road);
+  background: linear-gradient(180deg, #c99a66 0%, #b5844f 100%);
+  box-shadow: inset 0 0.8cqh 0 #d8ae7c;
+}
+.mgc-cone {
+  position: absolute;
+  bottom: calc(var(--mgc-road) * 0.35);
+  width: min(6cqh, 4cqw);
+}
+.mgc-cone--a {
+  left: 3cqw;
+}
+.mgc-cone--b {
+  right: 3cqw;
+}
+
+/* the sea */
+.mgc-island {
+  position: absolute;
+  left: 8cqw;
+  bottom: calc(var(--mgc-road) + 1cqh);
+  width: min(40cqh, 30cqw);
+  height: 8cqh;
+}
+.mgc-sea {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--mgc-road) + 2cqh);
+  background: linear-gradient(180deg, #4fb3e8 0%, #3a9bd6 100%);
+}
+.mgc-waves {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% - 1px);
+  width: 100%;
+  height: 3cqh;
+}
+
+/* ── The board ───────────────────────────────────────────────────────────── */
+
+/* the guide bar is at the top; the board stands on the road */
+.apa-game .mgc-play .ng-main {
+  bottom: var(--mgc-floor);
+}
+
+.mgc-board {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: flex-end;
+  justify-content: center;
+}
+.mgc-play--air .mgc-board {
+  align-items: center;
+  /* a flyer sits a little above the middle, clear of the water */
+  padding-bottom: 6cqh;
+}
+
+/** The picture's box: as big as the board allows, never a giant on a desk. */
+.mgc-frame {
+  display: flex;
+  width: min(100%, 92cqw, 150cqh);
+  height: min(100%, 64cqh);
+  align-items: flex-end;
+  justify-content: center;
+}
+.mgc-play--air .mgc-frame {
+  height: min(100%, 58cqh);
+  align-items: center;
+}
+.mgc-vehicle {
+  width: 100%;
+  height: 100%;
+}
+.mgc-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  /* a tap on a part never selects or highlights anything */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.mgc-svg [data-part]:focus-visible {
+  stroke: #ffc93c;
+  stroke-width: 6px;
+}
+
+/* ── A module in miniature (its card's own size container) ───────────────── */
+
+.mgc-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mgc-mini.mgc-mini--road {
+  background: linear-gradient(180deg, transparent 72%, #a9b1bc 72%);
+}
+.mgc-mini.mgc-mini--sea {
+  background: linear-gradient(180deg, transparent 76%, #8ccff2 76%);
+}
+.mgc-mini.mgc-mini--sky {
+  background: linear-gradient(180deg, #cfeafb 0%, #f2faff 100%);
+}
+.mgc-mini.mgc-mini--space {
+  background:
+    radial-gradient(circle at 20% 24%, #ffffff 0 1.5%, transparent 2%),
+    radial-gradient(circle at 76% 18%, #ffffff 0 1.2%, transparent 1.7%),
+    radial-gradient(circle at 60% 70%, #ffffff 0 1%, transparent 1.5%),
+    linear-gradient(160deg, #0b1330 0%, #1b2b6b 100%);
+}
+.mgc-mini.mgc-mini--site {
+  background: linear-gradient(180deg, transparent 72%, #c99a66 72%);
+}
+.mgc-mini-pic {
+  display: block;
+  width: 86cqw;
+  height: 76cqh;
+}
+
+/* ── A phone held sideways: the road a little lower ──────────────────────── */
+
+@container ng (max-height: 520px) {
+  .mgc-game {
+    --mgc-floor: 3cqh;
+    --mgc-road: 13cqh;
+  }
+  /* every part a finger's width: the picture takes the whole board here */
+  .mgc-frame,
+  .mgc-play--air .mgc-frame {
+    height: min(100%, 80cqh);
+  }
+  .mgc-play--air .mgc-board {
+    padding-bottom: 0;
+  }
+}
+
+/* ── A phone held upright: the picture across the width, on the road ─────── */
+
+@container ng (orientation: portrait) {
+  .mgc-game {
+    --mgc-floor: 6cqh;
+    --mgc-road: 15cqh;
+  }
+  .apa-game .mgc-play .ng-main {
+    top: 140px;
+    bottom: var(--mgc-floor);
+  }
+  .mgc-frame {
+    width: 100%;
+    height: min(100%, 44cqh);
+  }
+  .mgc-play--air .mgc-board {
+    padding-bottom: 14cqh;
+  }
+  .mgc-sun {
+    top: 150px;
+    width: 16cqw;
+  }
+  .mgc-cloud--a {
+    top: 22cqh;
+    width: 30cqw;
+  }
+  .mgc-cloud--b {
+    top: 36cqh;
+    width: 22cqw;
+  }
+  .mgc-island {
+    width: 40cqw;
+  }
+}

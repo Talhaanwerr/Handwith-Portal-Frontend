@@ -1,0 +1,37 @@
+[
+  {
+    "id": "mgc-mode-build",
+    "file": "/audio/magic-colours/mode-build.mp3",
+    "text": "Let's build! Let's colour diggers and trucks."
+  },
+  {
+    "id": "mgc-name-digger",
+    "file": "/audio/magic-colours/name-digger.mp3",
+    "text": "Digger!"
+  },
+  {
+    "id": "mgc-name-dump-truck",
+    "file": "/audio/magic-colours/name-dump-truck.mp3",
+    "text": "Dump truck!"
+  },
+  {
+    "id": "mgc-name-crane",
+    "file": "/audio/magic-colours/name-crane.mp3",
+    "text": "Crane!"
+  },
+  {
+    "id": "mgc-name-cement-mixer",
+    "file": "/audio/magic-colours/name-cement-mixer.mp3",
+    "text": "Cement mixer!"
+  },
+  {
+    "id": "mgc-name-bulldozer",
+    "file": "/audio/magic-colours/name-bulldozer.mp3",
+    "text": "Bulldozer!"
+  },
+  {
+    "id": "mgc-name-road-roller",
+    "file": "/audio/magic-colours/name-road-roller.mp3",
+    "text": "Road roller!"
+  }
+]

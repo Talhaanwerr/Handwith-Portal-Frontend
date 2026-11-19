@@ -54,7 +54,6 @@ export const MODULES: readonly ModuleInfo<ModuleId>[] = [
 export const VOICE: GameVoice = { welcome: "tys-welcome", done: "tys-done" };
 
 export type ToyId = Extract<PictureId, "bear" | "ball" | "drum" | "train" | "horse">;
-export const TOYS: readonly ToyId[] = ["bear", "ball", "drum", "train", "horse"];
 
 /** Which sesame pal is shopping this round. */
 export type Customer = "ruby" | "bo";

@@ -1,0 +1,6 @@
+{
+  "default": ["Listen to the word in the middle.", "Drag the picture that rhymes onto it."],
+  "modules": {
+    "match": ["Listen to the word in the middle.", "Drag the picture that rhymes onto it."]
+  }
+}

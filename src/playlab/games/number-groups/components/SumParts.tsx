@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, type Ref } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { fluentSrc } from "@shared/constants/fluent3d";
 
@@ -80,48 +80,3 @@ export const SumStrip = memo(function SumStrip({
     </div>
   );
 });
-
-/**
- * One thing to tap: glowing and bobbing while it is waiting to be tapped
- * (`live`), and wearing its number once it has been counted (`count`).
- */
-export function CountPiece({
-  id,
-  live,
-  count,
-  onTap,
-  pieceRef,
-  label,
-}: {
-  id: string;
-  live: boolean;
-  count: number | null;
-  onTap: () => void;
-  pieceRef?: Ref<HTMLButtonElement>;
-  label: string;
-}) {
-  return (
-    <button
-      ref={pieceRef}
-      type="button"
-      className={`apa-piece ${live ? "apa-piece--live" : ""} ${
-        count !== null ? "apa-piece--counted" : ""
-      }`}
-      onClick={onTap}
-      disabled={!live}
-      aria-label={label}
-    >
-      <Thing id={id} />
-      {count !== null && (
-        <motion.span
-          className="apa-badge font-rounded font-black"
-          initial={{ scale: 0.3, y: 10 }}
-          animate={{ scale: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 360, damping: 15 }}
-        >
-          {count}
-        </motion.span>
-      )}
-    </button>
-  );
-}

@@ -3,9 +3,10 @@
 import { memo, type ReactNode, type RefObject } from "react";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { playClickSound } from "@shared/audio/sfx";
+import { GuideBar } from "@shared/components/game/GuideBar";
 import { NgGuide } from "@games/number-groups/components/NgGuide";
+import { useGuided, useRoundCount } from "@games/number-groups/components/NgGuided";
 import { Picture } from "@games/blend-read/components/PictureArt";
-import { ROUND_COUNT } from "@games/number-groups/constants/kit";
 
 /**
  * The frame every round of both games plays in — Pond Numbers' chrome, the
@@ -48,16 +49,24 @@ export function NgStage({
    *  thing under the finger. */
   overlay?: ReactNode;
 }) {
+  // the guided layout: the instruction goes in the thin bar beside the stars
+  const guided = useGuided();
   return (
     <div ref={stageRef} className={`ng-screen ng-play ${playClass}`}>
       {world}
       <StageTeacher solved={solved} say={say} />
       <div className="ng-main">{children}</div>
       {overlay}
-      <StageTrail round={round} solved={solved} />
-      <p className="ng-sr" aria-live="polite">
-        {say}
-      </p>
+      {guided ? (
+        <StageGuideBar round={round} solved={solved} say={say} />
+      ) : (
+        <>
+          <StageTrail round={round} solved={solved} />
+          <p className="ng-sr" aria-live="polite">
+            {say}
+          </p>
+        </>
+      )}
       <StageNav title={title} onHome={onHome} onExitPortal={onExitPortal} />
     </div>
   );
@@ -71,25 +80,46 @@ const StageTeacher = memo(function StageTeacher({ solved, say }: { solved: boole
   );
 });
 
+/** A star a round (four, or the game's `roundCount`): done, the one being
+ *  played, still to come. */
+function trailStars(round: number, solved: boolean, count: number) {
+  return Array.from({ length: count }, (_, i) => (
+    <span
+      key={i}
+      className={`ng-trail-item ${
+        i < round || (i === round && solved) ? "is-done" : i === round ? "is-now" : ""
+      }`}
+    >
+      <Picture id="star" />
+    </span>
+  ));
+}
+
 const StageTrail = memo(function StageTrail({ round, solved }: { round: number; solved: boolean }) {
+  const count = useRoundCount();
   return (
     <div
       className="ng-trail"
       role="img"
-      aria-label={`Round ${Math.min(round + 1, ROUND_COUNT)} of ${ROUND_COUNT}`}
+      aria-label={`Round ${Math.min(round + 1, count)} of ${count}`}
     >
-      {Array.from({ length: ROUND_COUNT }, (_, i) => (
-        <span
-          key={i}
-          className={`ng-trail-item ${
-            i < round || (i === round && solved) ? "is-done" : i === round ? "is-now" : ""
-          }`}
-        >
-          <Picture id="star" />
-        </span>
-      ))}
+      {trailStars(round, solved, count)}
     </div>
   );
+});
+
+/** The guided layout's top bar: the stars and the line being said. */
+const StageGuideBar = memo(function StageGuideBar({
+  round,
+  solved,
+  say,
+}: {
+  round: number;
+  solved: boolean;
+  say: string;
+}) {
+  const count = useRoundCount();
+  return <GuideBar text={say}>{trailStars(round, solved, count)}</GuideBar>;
 });
 
 const StageNav = memo(function StageNav({

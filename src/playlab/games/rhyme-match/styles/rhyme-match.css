@@ -1,0 +1,190 @@
+/**
+ * Rhyme Match — class prefix `rym-`. The shell, guide bar, drag ghost and
+ * celebrations are Count & Match's and the portal's (`ng-`, `pl-`); the
+ * pictures are Rhyme Time's (`.ryn-pic-img`). Sized in the `ng` container's
+ * units; sideways and upright phones at the bottom.
+ */
+
+/* ─── The garden ───────────────────────────────────────────────────────── */
+.rym-world {
+  position: absolute;
+  inset: 0;
+  background: #c5ecfb;
+}
+.rym-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The board: the pad on top, the three pictures below ──────────────── */
+.rym-play {
+  --rym-pic: min(30cqh, 19cqw);
+  --rym-opt: max(76px, min(26cqh, 17cqw));
+}
+.rym-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqh;
+  width: 100%;
+  height: 100%;
+}
+
+/** The pad: the target, and the place its rhyme snaps into. */
+.rym-pad {
+  display: flex;
+  align-items: center;
+  gap: 2cqh;
+  padding: 2cqh;
+  border: 0.8cqh solid #ffffff;
+  border-radius: 5cqh;
+  background: #ffffff;
+  box-shadow: 0 1.2cqh 0 rgba(60, 120, 40, 0.35);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.rym-pad.is-lit {
+  border-color: #ffd23d;
+  box-shadow:
+    0 0 0 1.2cqh rgba(255, 210, 61, 0.55),
+    0 1.2cqh 0 rgba(60, 120, 40, 0.35);
+}
+.rym-pad.is-paired {
+  border-color: #ffd23d;
+  box-shadow:
+    0 0 0 1cqh rgba(255, 210, 61, 0.45),
+    0 1.2cqh 0 rgba(60, 120, 40, 0.35);
+}
+.rym-pad-pic,
+.rym-spot {
+  position: relative;
+  display: block;
+  width: var(--rym-pic);
+  height: var(--rym-pic);
+}
+.rym-spot {
+  border: 0.6cqh dashed #8fcf78;
+  border-radius: 24%;
+  background: #f0fae9;
+}
+.rym-pad.is-paired .rym-spot {
+  border-style: solid;
+  border-color: transparent;
+  background: transparent;
+}
+.rym-spot-pic {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* ─── The three pictures to drag ───────────────────────────────────────── */
+.rym-options {
+  display: flex;
+  gap: 5cqw;
+}
+.rym-opt {
+  position: relative;
+  width: var(--rym-opt);
+  height: var(--rym-opt);
+  border-radius: 24%;
+  background: #ffffff;
+  box-shadow: 0 1cqh 0 rgba(60, 120, 40, 0.35);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.rym-opt.is-away {
+  visibility: hidden;
+}
+.rym-opt.is-hint {
+  animation: rym-hint 1.1s ease-in-out infinite;
+}
+@keyframes rym-hint {
+  0%,
+  100% {
+    outline: 0.8cqh solid rgba(255, 210, 61, 0.95);
+    outline-offset: 0.4cqh;
+  }
+  50% {
+    outline: 0.8cqh solid rgba(255, 210, 61, 0.2);
+    outline-offset: 1.6cqh;
+  }
+}
+.rym-opt-pic {
+  position: absolute;
+  inset: 11%;
+  display: block;
+}
+/** The picture under the finger: the same card, lifted. */
+.rym-carried {
+  left: calc(var(--rym-opt) * -0.5);
+  top: calc(var(--rym-opt) * -0.5);
+  width: var(--rym-opt);
+  height: var(--rym-opt);
+  padding: calc(var(--rym-opt) * 0.11);
+  border-radius: 24%;
+  background: #ffffff;
+  box-shadow: 0 1.6cqh 2cqh rgba(40, 60, 30, 0.3);
+  pointer-events: none;
+}
+
+/* ─── The home card's miniature (its own size container) ───────────────── */
+.rym-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqh;
+}
+.rym-mini-pad {
+  display: flex;
+  gap: 3cqh;
+  padding: 3cqh;
+  border: 1.6cqh solid #ffd23d;
+  border-radius: 8cqh;
+  background: #ffffff;
+}
+.rym-mini-pic {
+  display: block;
+  width: 38cqh;
+  height: 38cqh;
+}
+.rym-mini-pic--left {
+  width: 26cqh;
+  height: 26cqh;
+  opacity: 0.85;
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .rym-play {
+    --rym-pic: min(31cqh, 18cqw);
+    --rym-opt: max(76px, min(27cqh, 16cqw));
+  }
+  .rym-board {
+    gap: 4cqh;
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .rym-play .ng-main {
+    bottom: 5cqh;
+  }
+  .rym-play {
+    --rym-pic: min(34cqw, 20cqh);
+    --rym-opt: max(76px, min(26cqw, 15cqh));
+  }
+  .rym-board {
+    gap: 7cqh;
+  }
+  .rym-options {
+    gap: 4cqw;
+  }
+}

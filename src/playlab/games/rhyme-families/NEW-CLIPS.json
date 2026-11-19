@@ -1,0 +1,14 @@
+[
+  {
+    "id": "ryh-welcome",
+    "file": "/audio/rhyme-families/welcome.mp3",
+    "text": "Welcome to Rhyme Houses!"
+  },
+  { "id": "ryh-done", "file": "/audio/rhyme-families/done.mp3", "text": "Every picture is home!" },
+  {
+    "id": "ryh-mode-houses",
+    "file": "/audio/rhyme-families/mode-houses.mp3",
+    "text": "Rhyme Houses! Take each picture to the house it rhymes with."
+  },
+  { "id": "ryh-which", "file": "/audio/rhyme-families/which.mp3", "text": "Which house?" }
+]

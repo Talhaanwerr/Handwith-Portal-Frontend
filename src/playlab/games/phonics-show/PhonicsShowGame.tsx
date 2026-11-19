@@ -9,6 +9,7 @@ import { PAGE_TRANSITION } from "@shared/constants/transitions";
 import { PORTAL_ROUTE } from "@shared/constants/routes";
 import { playClickSound } from "@shared/audio/sfx";
 import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
+import { FirstPlayHand } from "@shared/hooks/useIdleHand";
 import { useShowStore, type ShowScreen } from "@games/phonics-show/store/showStore";
 import {
   QUESTIONS,
@@ -86,12 +87,15 @@ export function PhonicsShowGame() {
 
           {screen === "play" && index < TOTAL_QUESTIONS && (
             <motion.div key="play" className="absolute inset-0" {...PAGE_TRANSITION}>
-              <QuestionScreen
-                index={index}
-                onSolved={solved}
-                onBack={() => setScreen("splash")}
-                onExitPortal={exitPortal}
-              />
+              {/* the run's first question shows the teaching hand by itself */}
+              <FirstPlayHand on={index === 0}>
+                <QuestionScreen
+                  index={index}
+                  onSolved={solved}
+                  onBack={() => setScreen("splash")}
+                  onExitPortal={exitPortal}
+                />
+              </FirstPlayHand>
             </motion.div>
           )}
 

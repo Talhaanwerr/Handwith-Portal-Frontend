@@ -44,8 +44,9 @@ const cell = () => <FuelCell />;
  * The rocket's fuel window shows how many star cells it needs. Drag cells
  * from the crate into the tank: each one is counted aloud and lights a bar
  * of the gauge; tap the tank to take the top cell out again. The Go! lever
- * appears after the first cell. Pulled with the right amount: an automatic
- * countdown (3, 2, 1, "Blast off!") and the rocket lifts off. With the wrong
+ * stands faded until the first cell is in, then wakes. Pulled with the right
+ * amount: an automatic countdown (3, 2, 1, "Blast off!") and the rocket
+ * lifts off. With the wrong
  * amount the gauge glows softly twice (never a strobe), the cells in it are
  * counted aloud, the number is said again, and the child fixes it.
  */
@@ -264,29 +265,25 @@ export function FuelRound({ round, title, onDone, onMiss, onHome, onExitPortal }
               />
             ))}
           </div>
+          {/* the lever stands there from the start, faded and asleep until the
+              first cell is in — so the board is centred with it, and does
+              not jump when it wakes */}
           <div className="rkc-lever-slot">
-            <AnimatePresence>
-              {count > 0 && (
-                <motion.button
-                  key="lever"
-                  ref={leverRef}
-                  type="button"
-                  className={`rkc-lever ${phase !== "fill" ? "is-pulled" : ""}`}
-                  onClick={pull}
-                  disabled={phase !== "fill"}
-                  aria-label="Pull the Go lever"
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                >
-                  <span className="rkc-lever-stick" aria-hidden="true">
-                    <span className="rkc-lever-knob" />
-                  </span>
-                  <span className="rkc-lever-base font-rounded font-black">Go!</span>
-                </motion.button>
-              )}
-            </AnimatePresence>
+            <button
+              ref={leverRef}
+              type="button"
+              className={`rkc-lever ${phase !== "fill" ? "is-pulled" : ""} ${
+                count === 0 ? "is-asleep" : ""
+              }`}
+              onClick={pull}
+              disabled={phase !== "fill" || count === 0}
+              aria-label="Pull the Go lever"
+            >
+              <span className="rkc-lever-stick" aria-hidden="true">
+                <span className="rkc-lever-knob" />
+              </span>
+              <span className="rkc-lever-base font-rounded font-black">Go!</span>
+            </button>
           </div>
         </div>
       </div>

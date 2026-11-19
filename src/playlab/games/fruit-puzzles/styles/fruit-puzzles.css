@@ -1,0 +1,184 @@
+/**
+ * Fruit Puzzles — the plate in the middle, the loose pieces on the table
+ * either side (above and below on a phone held upright), in the sunny
+ * kitchen. Runs in Count & Match's shell (guided), so it is sized in the `ng`
+ * container's units (1cqh = 1% of the stage's height). The teacher is hidden
+ * by `.apa-game`. The glides, the confetti and the teaching hand are Jigsaw
+ * Fun's (`jf-*`, global).
+ *
+ * Each round hands its own fit on `.frp-board` (see layoutOf in rounds.ts):
+ *   --frp-k / --frp-kp      a loose piece's size, as a share of the plate's
+ *   --frp-wide / --frp-tall the whole board, in plates (sideways / upright)
+ *   --frp-sw / --frp-sh     the widest / tallest piece, in board units
+ * and, on every piece, --frp-w / --frp-h: its own box in board units. From
+ * those:
+ *   --frp-plate  the plate (and the board under it), square
+ *   --frp-pu     one board unit of a loose piece, in pixels
+ */
+
+/* ── The world ───────────────────────────────────────────────────────────── */
+
+.frp-world {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.frp-world-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── The board ───────────────────────────────────────────────────────────── */
+
+.frp-board {
+  /* the room under the guide bar */
+  --frp-room: calc(97cqh - max(66px, 15cqh));
+  --frp-plate: min(var(--frp-room), calc(92cqw / var(--frp-wide, 2)));
+  --frp-pu: calc(var(--frp-plate) * var(--frp-k, 0.8) / 100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--frp-plate) * 0.07);
+}
+
+/**
+ * One side's loose pieces, on a soft linen cloth as wide as the widest piece
+ * plus its edge (both sides match, so the plate stays in the middle). The
+ * pieces sit at the cloth's outer edge, which keeps the whole board centred
+ * when one side's pieces are narrower.
+ */
+.frp-side {
+  display: flex;
+  width: calc(var(--frp-pu) * (var(--frp-sw, 40) + 12));
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--frp-pu) * 8);
+  padding: calc(var(--frp-pu) * 6);
+  border-radius: calc(var(--frp-pu) * 10);
+  background: rgba(255, 251, 244, 0.9);
+  box-shadow:
+    inset 0 0 0 calc(var(--frp-pu) * 1.2) rgba(240, 180, 150, 0.45),
+    0 1cqh 0 rgba(160, 104, 52, 0.22);
+}
+.frp-side.frp-side--a {
+  align-items: flex-start;
+}
+.frp-side.frp-side--b {
+  align-items: flex-end;
+}
+
+/** One loose piece: the fruit's own fragment, at its true shape. */
+.frp-tpiece {
+  display: block;
+  flex: none;
+  width: calc(var(--frp-pu) * var(--frp-w));
+  height: calc(var(--frp-pu) * var(--frp-h));
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.frp-tpiece.is-lifted {
+  opacity: 0.25;
+}
+.frp-tpiece.is-used {
+  visibility: hidden;
+}
+.frp-piece-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/** The plate: white, with a soft rim and a solid shadow on the table. */
+.frp-plate {
+  position: relative;
+  flex: none;
+  width: var(--frp-plate);
+  height: var(--frp-plate);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle closest-side,
+    #fbf6ef 0 86%,
+    #efe2d2 87% 90%,
+    #ffffff 91% 100%
+  );
+  box-shadow:
+    0 1.4cqh 0 rgba(160, 104, 52, 0.32),
+    0 2.6cqh 3.6cqh rgba(120, 70, 30, 0.18);
+}
+/** Whole again: a warm gold ring round the plate. */
+.frp-plate.frp-plate--done {
+  box-shadow:
+    0 0 0 1.2cqh #ffd84d,
+    0 1.4cqh 0 1.2cqh rgba(160, 104, 52, 0.32),
+    0 2.6cqh 3.6cqh rgba(120, 70, 30, 0.18);
+}
+.frp-plate-fruit {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.frp-plate-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/** The piece under the finger. */
+.frp-ghost-art {
+  display: block;
+}
+.frp-ghost-art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── A module in miniature (its home card's own size container) ──────────── */
+
+.frp-mini {
+  position: absolute;
+  inset: 4cqh 4cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.frp-mini-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── A phone held upright: pieces above and below the plate ─────────────── */
+
+@media (orientation: portrait) {
+  .apa-game .frp-play .ng-main {
+    bottom: 3cqh;
+  }
+}
+@container ng (orientation: portrait) {
+  .frp-board {
+    --frp-room: calc(97cqh - 124px);
+    --frp-plate: min(92cqw, calc(var(--frp-room) / var(--frp-tall, 2)));
+    --frp-pu: calc(var(--frp-plate) * var(--frp-kp, 0.8) / 100);
+    flex-direction: column;
+  }
+  .frp-side {
+    width: auto;
+    height: calc(var(--frp-pu) * (var(--frp-sh, 40) + 12));
+    flex-direction: row;
+  }
+}

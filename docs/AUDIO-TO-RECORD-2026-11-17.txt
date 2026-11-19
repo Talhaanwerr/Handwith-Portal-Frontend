@@ -1,0 +1,410 @@
+AUDIO STILL TO RECORD — 97 lines (Nov 17 2026)
+Segment 1 of the next export = line 1 below, in this order.
+Until a new line is recorded the browser voice reads it.
+Lines marked (re-record) already have a file; the new one replaces it.
+
+== Tiny Toy Shop (8) ==
+1 teddy bear and 2 teddy bears. How many teddy bears?
+2 horses and 2 horses. How many horses?
+3 trains and 1 train. How many trains?
+2 balls and 2 balls. How many balls?
+3 drums and 2 drums. How many drums?
+4 teddy bears and 1 teddy bear. How many teddy bears?
+1 train and 4 trains. How many trains?
+3 balls and 2 balls. How many balls?
+
+== Word Builder (5 games) (1) ==
+Word Builder!
+
+== Rainbow Words: instructions and lesson names (14) ==
+Rainbow Words!
+You read every word!
+Red words! Let’s read!
+Orange words! Let’s read!
+Yellow words! Let’s read!
+Green words! Let’s read!
+Blue words! Let’s read!
+Indigo words! Let’s read!
+Violet words! Let’s read!
+This word is
+Tap the word to hear it!
+Find the word
+Tap every cloud that says
+Which word is missing?
+
+== Rainbow Words: the sight words (say each ONE word clearly, on its own) (19) ==
+I
+see
+a
+the
+is
+my
+go
+we
+like
+it
+look
+at
+this
+and
+has
+play
+to
+he
+little
+
+== Rainbow Words: the sentences (21) ==
+I see a cat.
+I see a dog.
+I see a bus.
+The dog is big.
+The bus is big.
+The bed is big.
+My dog can go.
+My cat can go.
+My bus can go.
+We like the hat.
+We like the cup.
+We like it.
+Look at the fox.
+Look at the hen.
+This is a box.
+The hen has a hat.
+The cat and the dog.
+The dog can play.
+I see the little hen.
+I go to the bus.
+He can go.
+
+== Our World (6 games) (23) ==
+Our World!
+You know where everything belongs!
+Animals! Farm or jungle?
+Sea and sky!
+On the road, or in the house?
+What do we eat?
+Clothes and toys!
+My body and my kitchen!
+Put each one where it belongs!
+Which one belongs here?
+Which one does not belong?
+On the farm
+In the jungle
+In the sea
+In the sky
+On the road
+In the house
+We eat it
+We do not eat it
+We wear it
+We play with it
+My body
+In the kitchen
+
+== Sticker Studio (6 games) (11) ==
+Sticker Studio!
+What a lovely picture!
+Let’s make a garden picture!
+Let’s make a space picture!
+Let’s make a farm picture!
+Let’s make a park picture!
+Let’s make a street picture!
+Let’s make a party picture!
+Put the
+in your picture!
+Now make your own picture! Tap Done when you finish.
+
+----------------------------------------
+WHERE EACH ONE GOES
+----------------------------------------
+  1. "1 teddy bear and 2 teddy bears. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-1-2-bear.mp3
+     id:   tys-add-1-2-bear
+  2. "2 horses and 2 horses. How many horses?"
+     file: public/audio/tiny-toy-shop/add-2-2-horse.mp3
+     id:   tys-add-2-2-horse
+  3. "3 trains and 1 train. How many trains?"
+     file: public/audio/tiny-toy-shop/add-3-1-train.mp3
+     id:   tys-add-3-1-train
+  4. "2 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-2-2-ball.mp3
+     id:   tys-add-2-2-ball
+  5. "3 drums and 2 drums. How many drums?"
+     file: public/audio/tiny-toy-shop/add-3-2-drum.mp3
+     id:   tys-add-3-2-drum
+  6. "4 teddy bears and 1 teddy bear. How many teddy bears?"
+     file: public/audio/tiny-toy-shop/add-4-1-bear.mp3
+     id:   tys-add-4-1-bear
+  7. "1 train and 4 trains. How many trains?"
+     file: public/audio/tiny-toy-shop/add-1-4-train.mp3
+     id:   tys-add-1-4-train
+  8. "3 balls and 2 balls. How many balls?"
+     file: public/audio/tiny-toy-shop/add-3-2-ball.mp3
+     id:   tys-add-3-2-ball
+  9. "Word Builder!"
+     file: public/audio/word-builder/welcome.mp3
+     id:   wbd-welcome
+ 10. "Rainbow Words!"
+     file: public/audio/rainbow-words/welcome.mp3
+     id:   rbw-welcome
+ 11. "You read every word!"
+     file: public/audio/rainbow-words/done.mp3
+     id:   rbw-done
+ 12. "Red words! Let’s read!"
+     file: public/audio/rainbow-words/mode-red.mp3
+     id:   rbw-mode-red
+ 13. "Orange words! Let’s read!"
+     file: public/audio/rainbow-words/mode-orange.mp3
+     id:   rbw-mode-orange
+ 14. "Yellow words! Let’s read!"
+     file: public/audio/rainbow-words/mode-yellow.mp3
+     id:   rbw-mode-yellow
+ 15. "Green words! Let’s read!"
+     file: public/audio/rainbow-words/mode-green.mp3
+     id:   rbw-mode-green
+ 16. "Blue words! Let’s read!"
+     file: public/audio/rainbow-words/mode-blue.mp3
+     id:   rbw-mode-blue
+ 17. "Indigo words! Let’s read!"
+     file: public/audio/rainbow-words/mode-indigo.mp3
+     id:   rbw-mode-indigo
+ 18. "Violet words! Let’s read!"
+     file: public/audio/rainbow-words/mode-violet.mp3
+     id:   rbw-mode-violet
+ 19. "This word is"
+     file: public/audio/rainbow-words/meet.mp3
+     id:   rbw-meet
+ 20. "Tap the word to hear it!"
+     file: public/audio/rainbow-words/tap.mp3
+     id:   rbw-tap
+ 21. "Find the word"
+     file: public/audio/rainbow-words/find.mp3
+     id:   rbw-find
+ 22. "Tap every cloud that says"
+     file: public/audio/rainbow-words/catch.mp3
+     id:   rbw-catch
+ 23. "Which word is missing?"
+     file: public/audio/rainbow-words/fill.mp3
+     id:   rbw-fill
+ 24. "I"
+     file: public/audio/sight-words/i.mp3
+     id:   sw-i
+ 25. "see"
+     file: public/audio/sight-words/see.mp3
+     id:   sw-see
+ 26. "a"
+     file: public/audio/sight-words/a.mp3
+     id:   sw-a
+ 27. "the"
+     file: public/audio/sight-words/the.mp3
+     id:   sw-the
+ 28. "is"
+     file: public/audio/sight-words/is.mp3
+     id:   sw-is
+ 29. "my"
+     file: public/audio/sight-words/my.mp3
+     id:   sw-my
+ 30. "go"
+     file: public/audio/sight-words/go.mp3
+     id:   sw-go
+ 31. "we"
+     file: public/audio/sight-words/we.mp3
+     id:   sw-we
+ 32. "like"
+     file: public/audio/sight-words/like.mp3
+     id:   sw-like
+ 33. "it"
+     file: public/audio/sight-words/it.mp3
+     id:   sw-it
+ 34. "look"
+     file: public/audio/sight-words/look.mp3
+     id:   sw-look
+ 35. "at"
+     file: public/audio/sight-words/at.mp3
+     id:   sw-at
+ 36. "this"
+     file: public/audio/sight-words/this.mp3
+     id:   sw-this
+ 37. "and"
+     file: public/audio/sight-words/and.mp3
+     id:   sw-and
+ 38. "has"
+     file: public/audio/sight-words/has.mp3
+     id:   sw-has
+ 39. "play"
+     file: public/audio/sight-words/play.mp3
+     id:   sw-play
+ 40. "to"
+     file: public/audio/sight-words/to.mp3
+     id:   sw-to
+ 41. "he"
+     file: public/audio/sight-words/he.mp3
+     id:   sw-he
+ 42. "little"
+     file: public/audio/sight-words/little.mp3
+     id:   sw-little
+ 43. "I see a cat."
+     file: public/audio/rainbow-words/s-red-1.mp3
+     id:   rbw-s-red-1
+ 44. "I see a dog."
+     file: public/audio/rainbow-words/s-red-2.mp3
+     id:   rbw-s-red-2
+ 45. "I see a bus."
+     file: public/audio/rainbow-words/s-red-3.mp3
+     id:   rbw-s-red-3
+ 46. "The dog is big."
+     file: public/audio/rainbow-words/s-orange-1.mp3
+     id:   rbw-s-orange-1
+ 47. "The bus is big."
+     file: public/audio/rainbow-words/s-orange-2.mp3
+     id:   rbw-s-orange-2
+ 48. "The bed is big."
+     file: public/audio/rainbow-words/s-orange-3.mp3
+     id:   rbw-s-orange-3
+ 49. "My dog can go."
+     file: public/audio/rainbow-words/s-yellow-1.mp3
+     id:   rbw-s-yellow-1
+ 50. "My cat can go."
+     file: public/audio/rainbow-words/s-yellow-2.mp3
+     id:   rbw-s-yellow-2
+ 51. "My bus can go."
+     file: public/audio/rainbow-words/s-yellow-3.mp3
+     id:   rbw-s-yellow-3
+ 52. "We like the hat."
+     file: public/audio/rainbow-words/s-green-1.mp3
+     id:   rbw-s-green-1
+ 53. "We like the cup."
+     file: public/audio/rainbow-words/s-green-2.mp3
+     id:   rbw-s-green-2
+ 54. "We like it."
+     file: public/audio/rainbow-words/s-green-3.mp3
+     id:   rbw-s-green-3
+ 55. "Look at the fox."
+     file: public/audio/rainbow-words/s-blue-1.mp3
+     id:   rbw-s-blue-1
+ 56. "Look at the hen."
+     file: public/audio/rainbow-words/s-blue-2.mp3
+     id:   rbw-s-blue-2
+ 57. "This is a box."
+     file: public/audio/rainbow-words/s-blue-3.mp3
+     id:   rbw-s-blue-3
+ 58. "The hen has a hat."
+     file: public/audio/rainbow-words/s-indigo-1.mp3
+     id:   rbw-s-indigo-1
+ 59. "The cat and the dog."
+     file: public/audio/rainbow-words/s-indigo-2.mp3
+     id:   rbw-s-indigo-2
+ 60. "The dog can play."
+     file: public/audio/rainbow-words/s-indigo-3.mp3
+     id:   rbw-s-indigo-3
+ 61. "I see the little hen."
+     file: public/audio/rainbow-words/s-violet-1.mp3
+     id:   rbw-s-violet-1
+ 62. "I go to the bus."
+     file: public/audio/rainbow-words/s-violet-2.mp3
+     id:   rbw-s-violet-2
+ 63. "He can go."
+     file: public/audio/rainbow-words/s-violet-3.mp3
+     id:   rbw-s-violet-3
+ 64. "Our World!"
+     file: public/audio/our-world/welcome.mp3
+     id:   owd-welcome
+ 65. "You know where everything belongs!"
+     file: public/audio/our-world/done.mp3
+     id:   owd-done
+ 66. "Animals! Farm or jungle?"
+     file: public/audio/our-world/mode-animals.mp3
+     id:   owd-mode-animals
+ 67. "Sea and sky!"
+     file: public/audio/our-world/mode-sea.mp3
+     id:   owd-mode-sea
+ 68. "On the road, or in the house?"
+     file: public/audio/our-world/mode-road.mp3
+     id:   owd-mode-road
+ 69. "What do we eat?"
+     file: public/audio/our-world/mode-food.mp3
+     id:   owd-mode-food
+ 70. "Clothes and toys!"
+     file: public/audio/our-world/mode-play.mp3
+     id:   owd-mode-play
+ 71. "My body and my kitchen!"
+     file: public/audio/our-world/mode-body.mp3
+     id:   owd-mode-body
+ 72. "Put each one where it belongs!"
+     file: public/audio/our-world/sort.mp3
+     id:   owd-sort
+ 73. "Which one belongs here?"
+     file: public/audio/our-world/pick.mp3
+     id:   owd-pick
+ 74. "Which one does not belong?"
+     file: public/audio/our-world/odd.mp3
+     id:   owd-odd
+ 75. "On the farm"
+     file: public/audio/our-world/place-farm.mp3
+     id:   owd-place-farm
+ 76. "In the jungle"
+     file: public/audio/our-world/place-jungle.mp3
+     id:   owd-place-jungle
+ 77. "In the sea"
+     file: public/audio/our-world/place-sea.mp3
+     id:   owd-place-sea
+ 78. "In the sky"
+     file: public/audio/our-world/place-sky.mp3
+     id:   owd-place-sky
+ 79. "On the road"
+     file: public/audio/our-world/place-road.mp3
+     id:   owd-place-road
+ 80. "In the house"
+     file: public/audio/our-world/place-home.mp3
+     id:   owd-place-home
+ 81. "We eat it"
+     file: public/audio/our-world/place-eat.mp3
+     id:   owd-place-eat
+ 82. "We do not eat it"
+     file: public/audio/our-world/place-no-eat.mp3
+     id:   owd-place-no-eat
+ 83. "We wear it"
+     file: public/audio/our-world/place-wear.mp3
+     id:   owd-place-wear
+ 84. "We play with it"
+     file: public/audio/our-world/place-toys.mp3
+     id:   owd-place-toys
+ 85. "My body"
+     file: public/audio/our-world/place-body.mp3
+     id:   owd-place-body
+ 86. "In the kitchen"
+     file: public/audio/our-world/place-kitchen.mp3
+     id:   owd-place-kitchen
+ 87. "Sticker Studio!"
+     file: public/audio/sticker-studio/welcome.mp3
+     id:   stk-welcome
+ 88. "What a lovely picture!"
+     file: public/audio/sticker-studio/done.mp3
+     id:   stk-done
+ 89. "Let’s make a garden picture!"
+     file: public/audio/sticker-studio/mode-garden.mp3
+     id:   stk-mode-garden
+ 90. "Let’s make a space picture!"
+     file: public/audio/sticker-studio/mode-space.mp3
+     id:   stk-mode-space
+ 91. "Let’s make a farm picture!"
+     file: public/audio/sticker-studio/mode-farm.mp3
+     id:   stk-mode-farm
+ 92. "Let’s make a park picture!"
+     file: public/audio/sticker-studio/mode-park.mp3
+     id:   stk-mode-park
+ 93. "Let’s make a street picture!"
+     file: public/audio/sticker-studio/mode-street.mp3
+     id:   stk-mode-street
+ 94. "Let’s make a party picture!"
+     file: public/audio/sticker-studio/mode-party.mp3
+     id:   stk-mode-party
+ 95. "Put the"
+     file: public/audio/sticker-studio/put.mp3
+     id:   stk-put
+ 96. "in your picture!"
+     file: public/audio/sticker-studio/in.mp3
+     id:   stk-in
+ 97. "Now make your own picture! Tap Done when you finish."
+     file: public/audio/sticker-studio/free.mp3
+     id:   stk-free

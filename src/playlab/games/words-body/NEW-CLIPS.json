@@ -1,0 +1,17 @@
+[
+  {
+    "id": "fw-clothes-welcome",
+    "file": "/audio/first-words/clothes-welcome.mp3",
+    "text": "First words! Clothes!"
+  },
+  {
+    "id": "fw-clothes-mode",
+    "file": "/audio/first-words/clothes-mode.mp3",
+    "text": "Let’s learn clothes words!"
+  },
+  {
+    "id": "fw-in-wardrobe",
+    "file": "/audio/first-words/in-wardrobe.mp3",
+    "text": "in the wardrobe!"
+  }
+]

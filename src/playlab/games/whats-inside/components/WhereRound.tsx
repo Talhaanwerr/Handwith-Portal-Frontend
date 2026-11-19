@@ -185,7 +185,15 @@ export function WhereRound({ round, title, onDone, onMiss, onHome, onExitPortal 
       world={<CoveWorld />}
       round={round}
       solved={solved}
-      say={say(clipText(phase === "ask" || phase === "found" ? whereClip(r.toy) : WATCH))}
+      say={say(
+        clipText(
+          phase === "ask" && opened.length > 0
+            ? EMPTY
+            : phase === "ask" || phase === "found"
+              ? whereClip(r.toy)
+              : WATCH
+        )
+      )}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

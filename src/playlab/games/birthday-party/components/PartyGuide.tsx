@@ -32,7 +32,7 @@ function PartyGuideFigure({
       <AnimatePresence>
         {say && (
           <motion.span
-            className="dc-teacher-says bdc-guide-says font-rounded font-black"
+            className="dc-teacher-says bdc-guide-says ng-says-keep font-rounded font-black"
             initial={{ opacity: 0, y: 8, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}

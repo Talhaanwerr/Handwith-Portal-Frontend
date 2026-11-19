@@ -1,0 +1,44 @@
+Welcome to Drum Beats!
+Little beats! Tap the drum.
+Big beats! Tap the drum.
+Tap the drum one time!
+Tap the drum two times!
+Tap the drum three times!
+Tap the drum four times!
+Now two more!
+Now three more!
+
+
+
+----------------------------------------
+WHERE EACH ONE GOES (for patching)
+----------------------------------------
+  1. "Welcome to Drum Beats!"
+     file: public/audio/drum-beats/welcome.mp3
+     id:   drb-welcome
+  2. "Little beats! Tap the drum."
+     file: public/audio/drum-beats/mode-little.mp3
+     id:   drb-mode-little
+  3. "Big beats! Tap the drum."
+     file: public/audio/drum-beats/mode-big.mp3
+     id:   drb-mode-big
+  4. "Tap the drum one time!"
+     file: public/audio/drum-beats/tap-1.mp3
+     id:   drb-tap-1
+  5. "Tap the drum two times!"
+     file: public/audio/drum-beats/tap-2.mp3
+     id:   drb-tap-2
+  6. "Tap the drum three times!"
+     file: public/audio/drum-beats/tap-3.mp3
+     id:   drb-tap-3
+  7. "Tap the drum four times!"
+     file: public/audio/drum-beats/tap-4.mp3
+     id:   drb-tap-4
+  8. "Now two more!"
+     file: public/audio/drum-beats/more-2.mp3
+     id:   drb-more-2
+  9. "Now three more!"
+     file: public/audio/drum-beats/more-3.mp3
+     id:   drb-more-3
+
+Already recorded, reused: "How many now?" and "One more!" (Pond Numbers), "You can add!" (Plus Tower), "Try again!", the numbers one to five, and the cheers.

@@ -2,56 +2,57 @@
 
 import { BurjTowerArt } from "@shared/components/dubai/BurjTower";
 import { fluentSrc } from "@shared/constants/fluent3d";
-import { COLOUR_PAINT, FLOOR_COLOURS, type ModuleId } from "@games/burj-lift/constants/rounds";
+import { KidArt } from "@games/burj-lift/components/KidArt";
+import {
+  COLOUR_PAINT,
+  FLOORS,
+  FLOOR_COLOURS,
+  FLOOR_PICS,
+  type ModuleId,
+} from "@games/burj-lift/constants/rounds";
 
-const RIDER = fluentSrc("penguin");
-
-/** A lift car with its rider, as plain SVG shapes (left edge `x`, bottom `y`). */
-function MiniCar({ x, y, w, h }: { x: number; y: number; w: number; h: number }) {
+/** A round button with a fat arrow, centred at (`x`, `y`). */
+function MiniButton({ x, y, up }: { x: number; y: number; up: boolean }) {
+  const s = up ? 1 : -1;
   return (
     <g>
-      <rect
-        x={x}
-        y={y - h}
-        width={w}
-        height={h}
-        rx="1.6"
-        fill="#cfeaf8"
-        stroke="#e0a632"
-        strokeWidth="1.8"
+      <circle cx={x} cy={y + 1.4} r="7.6" fill={up ? "#b07415" : "#23479a"} />
+      <circle
+        cx={x}
+        cy={y}
+        r="7.6"
+        fill={up ? "#e3a12f" : "#3a74d8"}
+        stroke="#ffffff"
+        strokeWidth="1.6"
       />
-      {RIDER && <image href={RIDER} x={x + 1.2} y={y - h + 1.6} width={w - 2.4} height={h - 2} />}
-      <rect x={x + w * 0.3} y={y - h - 2.4} width={w * 0.4} height="2.4" rx="0.8" fill="#c58a1e" />
-      <rect x={x - 0.8} y={y} width={w + 1.6} height="1.8" rx="0.6" fill="#c58a1e" />
+      <path
+        d={`M${x} ${y - 5 * s} L${x + 5} ${y} H${x + 2.2} V${y + 4.6 * s} H${x - 2.2} V${y} H${x - 5} Z`}
+        fill="#ffffff"
+      />
     </g>
   );
 }
 
-/** A fat arrow, its tip at (`x`, `y`), pointing up or down. */
-function MiniArrow({ x, y, up }: { x: number; y: number; up: boolean }) {
-  const s = up ? 1 : -1;
-  const d = `M${x} ${y} L${x + 11} ${y + 12 * s} H${x + 5} V${y + 24 * s} H${x - 5} V${
-    y + 12 * s
-  } H${x - 11} Z`;
-  return <path d={d} fill="#e3a12f" stroke="#b07415" strokeWidth="2" strokeLinejoin="round" />;
-}
-
 /**
- * A module in miniature for its home card: the tower in its own sky with
- * the glass lift on its side. Up or Down? — a sunny day and the two big
- * arrows; Picture Floors — the evening, coloured signs beside the floors and
- * a balloon over the lift. One SVG filling the card's picture box.
+ * A module in miniature for its home card and the star card: the tower in its
+ * own sky, a sign beside each of its four floors (the number, and the picture
+ * or the colour), the glass lift with the girl riding in it, the boy waiting
+ * on the sand with what he wants (a bubble, or a balloon), and the two big
+ * buttons. One SVG filling the card's picture box.
  */
 export function ModuleMini({ id }: { id: ModuleId }) {
   const day = id === "updown";
   const sky = `bjl-mini-sky-${id}`;
-  const u = 12;
+  const u = 12.5;
   const ground = 95;
-  const tx = 72;
-  const floors = 5;
+  const tx = 60;
   const podTop = ground - 0.5 * u;
   const railX = tx + 1.05 * u;
+  const carH = u * 0.92;
   const carBottom = podTop - 2 * u;
+  const floorTop = (n: number) => podTop - n * u;
+  const boyPic = FLOOR_PICS[2];
+  const boySrc = fluentSrc(boyPic);
   return (
     <span className="bjl-mini" aria-hidden="true">
       <svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice">
@@ -82,61 +83,137 @@ export function ModuleMini({ id }: { id: ModuleId }) {
           x={tx}
           ground={ground}
           unit={u}
-          floors={floors}
+          floors={FLOORS}
           time={day ? "day" : "dusk"}
-          spireUnits={1.6}
+          spireUnits={1.5}
         />
-        {/* the signs (Picture Floors: one colour a floor) */}
-        {!day &&
-          FLOOR_COLOURS.slice(0, floors).map((c, i) => (
-            <rect
-              key={c}
-              x={tx - 1.15 * u - 9}
-              y={podTop - (i + 1) * u + 1.5}
-              width="9"
-              height={u - 3}
-              rx="2"
-              fill={COLOUR_PAINT[c].face}
-              stroke={COLOUR_PAINT[c].edge}
-              strokeWidth="1"
-            />
-          ))}
-        {/* the rails and the car */}
-        <rect x={railX} y={podTop - 5.3 * u} width="1.4" height={5.8 * u} fill="#8a6a2a" />
+        {/* a sign beside every floor: its picture or colour, and its number */}
+        {Array.from({ length: FLOORS }, (_, i) => {
+          const y = floorTop(i + 1) + 1.6;
+          const x = tx - 1.05 * u - 21;
+          const src = fluentSrc(FLOOR_PICS[i]);
+          const paint = COLOUR_PAINT[FLOOR_COLOURS[i]];
+          return (
+            <g key={i}>
+              <rect
+                x={x}
+                y={y}
+                width="21"
+                height={u - 3.2}
+                rx="2.4"
+                fill="#ffffff"
+                stroke="#e0a632"
+                strokeWidth="1.1"
+              />
+              {day ? (
+                src && <image href={src} x={x + 1.4} y={y + 1} width="7.6" height="7.6" />
+              ) : (
+                <rect x={x + 1.6} y={y + 1.3} width="7.2" height="7" rx="1.6" fill={paint.face} />
+              )}
+              <circle cx={x + 15} cy={y + (u - 3.2) / 2} r="4.2" fill="#2f9e58" />
+              <text
+                x={x + 15}
+                y={y + (u - 3.2) / 2 + 2.3}
+                textAnchor="middle"
+                fontSize="6.4"
+                fontWeight="900"
+                fill="#ffffff"
+                fontFamily="Nunito, sans-serif"
+              >
+                {i + 1}
+              </text>
+            </g>
+          );
+        })}
+        {/* the rails and the car, the girl riding up */}
         <rect
-          x={railX + u - 1.4}
-          y={podTop - 5.3 * u}
+          x={railX}
+          y={floorTop(4) - 3}
           width="1.4"
-          height={5.8 * u}
+          height={ground - floorTop(4) + 3}
           fill="#8a6a2a"
         />
-        <MiniCar x={railX} y={carBottom} w={u} h={u * 0.92} />
+        <rect
+          x={railX + u - 1.4}
+          y={floorTop(4) - 3}
+          width="1.4"
+          height={ground - floorTop(4) + 3}
+          fill="#8a6a2a"
+        />
+        <rect
+          x={railX}
+          y={carBottom - carH}
+          width={u}
+          height={carH}
+          rx="1.6"
+          fill="#cfeaf8"
+          stroke="#e0a632"
+          strokeWidth="1.6"
+        />
+        <KidArt who="girl" x={railX + 1.6} y={carBottom - carH + 1} w={u - 3.2} h={carH - 1.6} />
+        <rect x={railX - 0.8} y={carBottom} width={u + 1.6} height="1.8" rx="0.6" fill="#c58a1e" />
+        {/* the boy waiting on the sand, and what he wants */}
+        <KidArt who="boy" x={railX + u + 3} y={ground - 25} w={16} h={25} />
         {day ? (
-          <>
-            <MiniArrow x={railX + u + 22} y={22} up />
-            <MiniArrow x={railX + u + 22} y={78} up={false} />
-          </>
+          <g>
+            <rect
+              x={railX + u + 1}
+              y={ground - 39}
+              width="20"
+              height="11"
+              rx="3"
+              fill="#ffffff"
+              stroke="#e0a632"
+              strokeWidth="1.1"
+            />
+            {boySrc && (
+              <image href={boySrc} x={railX + u + 2.4} y={ground - 38} width="8.6" height="8.6" />
+            )}
+            <circle cx={railX + u + 15.6} cy={ground - 33.5} r="3.8" fill="#2f9e58" />
+            <text
+              x={railX + u + 15.6}
+              y={ground - 31.4}
+              textAnchor="middle"
+              fontSize="5.8"
+              fontWeight="900"
+              fill="#ffffff"
+              fontFamily="Nunito, sans-serif"
+            >
+              3
+            </text>
+          </g>
         ) : (
           <g>
             <path
-              d={`M${railX + u * 0.7} ${carBottom - u * 0.6} Q${railX + u + 6} ${
-                carBottom - u * 1.4
-              } ${railX + u + 10} ${carBottom - u * 2}`}
+              d={`M${railX + u + 15} ${ground - 13} Q${railX + u + 19} ${ground - 22} ${railX + u + 17} ${ground - 30}`}
               fill="none"
               stroke="#fff1d6"
-              strokeWidth="1"
+              strokeWidth="0.9"
             />
             <ellipse
-              cx={railX + u + 10}
-              cy={carBottom - u * 2 - 9}
-              rx="8"
-              ry="9.6"
-              fill={COLOUR_PAINT.blue.face}
-              stroke={COLOUR_PAINT.blue.edge}
-              strokeWidth="1.2"
+              cx={railX + u + 17}
+              cy={ground - 38}
+              rx="6.4"
+              ry="7.8"
+              fill={COLOUR_PAINT.green.face}
+              stroke={COLOUR_PAINT.green.edge}
+              strokeWidth="1"
             />
           </g>
         )}
+        {/* the call buttons */}
+        <rect
+          x="113"
+          y="47"
+          width="24"
+          height="44"
+          rx="7"
+          fill="#fff8e6"
+          stroke="#e0a632"
+          strokeWidth="1.6"
+        />
+        <MiniButton x={125} y={60} up />
+        <MiniButton x={125} y={78} up={false} />
       </svg>
     </span>
   );

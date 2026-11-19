@@ -46,6 +46,7 @@ const ANIMAL_PHOTO: Readonly<Record<string, string>> = {
   bird: `${WORD}/bird.jpg`,
   bug: `${WORD}/bug.jpg`,
   cat: `${SPY}/cat.jpg`,
+  cow: `${WORD}/cow.jpg`,
   crab: `${WORD}/crab.jpg`,
   dog: `${SPY}/dog.jpg`,
   pup: `${SPY}/dog.jpg`,
@@ -55,6 +56,7 @@ const ANIMAL_PHOTO: Readonly<Record<string, string>> = {
   fox: `${WORD}/fox.jpg`,
   frog: `${SPY}/frog.jpg`,
   giraffe: `${SPY}/giraffe.jpg`,
+  goat: `${WORD}/goat.jpg`,
   hen: `${WORD}/hen.jpg`,
   horse: `${SPY}/horse.jpg`,
   jellyfish: `${SPY}/jellyfish.jpg`,
@@ -159,6 +161,7 @@ export type PictureId =
 /** Every id EXCEPT the two special-cased below is a plain Twemoji file. */
 function IconImg({ id }: { id: PictureId }) {
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img src={iconSrc(id)} alt="" className="br-pic-img" draggable={false} aria-hidden="true" />
   );
 }
@@ -201,8 +204,11 @@ function GlueArt() {
 function MiceArt() {
   return (
     <div className="br-pic-group" aria-hidden="true">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={iconSrc("mice")} alt="" className="br-pic-group-item" draggable={false} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={iconSrc("mice")} alt="" className="br-pic-group-item" draggable={false} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={iconSrc("mice")} alt="" className="br-pic-group-item" draggable={false} />
     </div>
   );

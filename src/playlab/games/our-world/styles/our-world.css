@@ -1,0 +1,261 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   OUR WORLD — six lessons, two places and eight things each. Every class is
+   `owd-`. Sizes come from the stage (`cqh` / `cqw`); a place's colour arrives
+   as --owd-accent / --owd-edge on its own element.
+   ───────────────────────────────────────────────────────────────────────── */
+.owd-play {
+  /* a thing card's side */
+  --owd-card: min(24cqh, 14cqw);
+  --owd-glow: #ffd84a;
+}
+.owd-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqh;
+  width: 100%;
+  height: 100%;
+}
+.owd-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.4cqw;
+}
+.owd-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* ─── A thing's card ───────────────────────────────────────────────────── */
+.owd-slot {
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--owd-card);
+  height: var(--owd-card);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.owd-drag {
+  cursor: grab;
+  touch-action: none;
+}
+.owd-slot.is-away {
+  visibility: hidden;
+}
+.owd-in,
+.owd-wiggle {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.owd-card {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 12%;
+  border-radius: 20%;
+  background: #ffffff;
+  box-shadow: 0 1.2cqh 0 #c9a26a;
+}
+.owd-card.is-found {
+  box-shadow:
+    0 1.2cqh 0 #c9a26a,
+    0 0 0 1.1cqh var(--owd-glow);
+}
+.owd-card.is-pulse {
+  animation: owd-pulse 1s ease-in-out infinite;
+}
+@keyframes owd-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+.owd-wiggle.is-wiggling {
+  animation: owd-wiggle 0.6s ease-in-out;
+}
+@keyframes owd-wiggle {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  20% {
+    transform: translateX(-7%) rotate(-5deg);
+  }
+  40% {
+    transform: translateX(7%) rotate(5deg);
+  }
+  60% {
+    transform: translateX(-4%) rotate(-3deg);
+  }
+  80% {
+    transform: translateX(4%) rotate(3deg);
+  }
+}
+.owd-carried {
+  left: calc(var(--owd-card) * -0.5);
+  top: calc(var(--owd-card) * -0.5);
+  width: var(--owd-card);
+  height: var(--owd-card);
+  pointer-events: none;
+}
+
+/* ─── A place: its sign and its name ───────────────────────────────────── */
+.owd-place {
+  display: flex;
+  align-items: center;
+  gap: 1.6cqw;
+}
+.owd-place-pic {
+  display: block;
+  flex: none;
+  width: calc(var(--owd-card) * 0.62);
+  height: calc(var(--owd-card) * 0.62);
+}
+.owd-place-name {
+  font-size: clamp(15px, min(5.4cqh, 3cqw), 40px);
+  line-height: 1.05;
+  color: var(--owd-edge);
+  text-align: left;
+}
+
+/* ─── 1 · Sort: two places side by side, the things below ──────────────── */
+.owd-bins {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 4cqw;
+}
+.owd-bin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4cqh;
+  width: min(40cqw, 76cqh);
+  min-height: 40cqh;
+  padding: 2cqh 2cqw;
+  border: max(4px, 0.9cqh) solid var(--owd-accent);
+  border-radius: 5cqh;
+  background: color-mix(in srgb, var(--owd-accent) 16%, #ffffff);
+  box-shadow: 0 1.4cqh 0 var(--owd-edge);
+  cursor: pointer;
+}
+.owd-bin.is-lit,
+.owd-bin.is-hint {
+  box-shadow:
+    0 1.4cqh 0 var(--owd-edge),
+    0 0 0 1.2cqh var(--owd-glow);
+}
+.owd-bin-things {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6cqw;
+  flex: 1;
+}
+.owd-bin-thing {
+  display: block;
+  width: calc(var(--owd-card) * 0.78);
+  height: calc(var(--owd-card) * 0.78);
+}
+
+/* ─── 2 · Pick: the place on a plate above the things ──────────────────── */
+.owd-play--pick,
+.owd-play--odd {
+  --owd-card: min(30cqh, 17cqw);
+}
+.owd-ask {
+  padding: 2cqh 3cqw;
+  border: max(4px, 0.9cqh) solid var(--owd-accent, #4caf6a);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 1.2cqh 0 rgba(60, 40, 20, 0.25);
+  cursor: pointer;
+}
+
+/* ─── A lesson's home card ─────────────────────────────────────────────── */
+.owd-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqh;
+}
+.owd-mini-card {
+  display: block;
+  width: 40cqh;
+  height: 40cqh;
+  padding: 5cqh;
+  border-radius: 9cqh;
+  background: #ffffff;
+  box-shadow: 0 1.6cqh 0 #c9a26a;
+}
+.owd-mini-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ─── A short screen (a phone on its side) ─────────────────────────────── */
+@container ng (max-height: 520px) {
+  .owd-board {
+    gap: 3cqh;
+  }
+  .owd-bin {
+    min-height: 36cqh;
+  }
+}
+
+/* ─── Upright ──────────────────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .owd-play {
+    --owd-card: min(20cqw, 13cqh);
+  }
+  .owd-play--pick,
+  .owd-play--odd {
+    --owd-card: min(27cqw, 16cqh);
+  }
+  .owd-bins {
+    gap: 3cqw;
+  }
+  .owd-bin {
+    width: 45cqw;
+    min-height: 30cqh;
+  }
+  .owd-place {
+    flex-direction: column;
+    gap: 0.6cqh;
+  }
+  .owd-place--ask {
+    flex-direction: row;
+    gap: 3cqw;
+  }
+  .owd-place-name {
+    font-size: clamp(14px, 4.4cqw, 26px);
+    text-align: center;
+  }
+  .owd-row {
+    gap: 2.4cqw;
+  }
+  .owd-play--odd .owd-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3cqh 6cqw;
+  }
+}

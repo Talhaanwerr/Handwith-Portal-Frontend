@@ -1,0 +1,6 @@
+{
+  "default": ["Listen to the two words.", "Tap thumbs up if they rhyme, thumbs down if not."],
+  "modules": {
+    "rhyme": ["Listen to the two words.", "Tap thumbs up if they rhyme, thumbs down if not."]
+  }
+}

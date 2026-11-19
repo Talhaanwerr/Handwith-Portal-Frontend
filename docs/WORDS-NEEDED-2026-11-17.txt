@@ -1,0 +1,255 @@
+WORDS FOR: Rhyme Games, Paint My Ride, First Words, Shapes, Word Builder
+Nov 17 2026 — single words only (no sentences or instructions)
+
+147 different words in these games.
+9 need recording or re-recording; the rest already have a recording.
+
+========================================
+TO RECORD (say each word once, clearly, on its own)
+========================================
+tree   (re-record)
+key   (re-record)
+rain   (re-record)
+vest   (re-record)
+eye   (re-record)
+duck   (re-record)
+bear   (re-record)
+cow   (re-record)
+door   (re-record)
+
+========================================
+EVERY WORD, BY GAME
+[ok] has a recording   [RECORD] none yet   [RE-RECORD] replace the one we have
+========================================
+
+== RHYME GAMES (9 games) — the rhyme words (55) ==
+[ok]        cat
+[ok]        hat
+[ok]        rat
+[ok]        dog
+[ok]        frog
+[ok]        log
+[ok]        car
+[ok]        star
+[ok]        jar
+[ok]        box
+[ok]        fox
+[ok]        drum
+[ok]        thumb
+[ok]        hen
+[ok]        pen
+[ok]        ten
+[ok]        van
+[ok]        can
+[ok]        fan
+[ok]        bug
+[ok]        mug
+[ok]        cake
+[ok]        snake
+[ok]        moon
+[ok]        spoon
+[ok]        house
+[ok]        mouse
+[RE-RECORD] tree
+[RE-RECORD] key
+[ok]        train
+[RE-RECORD] rain
+[ok]        egg
+[ok]        leg
+[ok]        nest
+[RE-RECORD] vest
+[ok]        tie
+[RE-RECORD] eye
+[ok]        cap
+[ok]        map
+[ok]        pin
+[ok]        bin
+[ok]        sun
+[ok]        bus
+[ok]        ball
+[ok]        cup
+[ok]        fish
+[RE-RECORD] duck
+[ok]        bed
+[ok]        lion
+[ok]        shoe
+[ok]        apple
+[ok]        whale
+[RE-RECORD] bear
+[RE-RECORD] cow
+[ok]        banana
+
+== PAINT MY RIDE (6 games) — the vehicles (34) ==
+[ok]        Car
+[ok]        Bus
+[ok]        Taxi
+[ok]        School bus
+[ok]        Ice cream van
+[ok]        Scooter
+[ok]        Sailboat
+[ok]        Speedboat
+[ok]        Fishing boat
+[ok]        Submarine
+[ok]        Ship
+[ok]        Ferry
+[ok]        Aeroplane
+[ok]        Helicopter
+[ok]        Biplane
+[ok]        Hot-air balloon
+[ok]        Airship
+[ok]        Rocket
+[ok]        Space shuttle
+[ok]        Satellite
+[ok]        Moon buggy
+[ok]        Flying saucer
+[ok]        Fire engine
+[ok]        Police car
+[ok]        Ambulance
+[ok]        Rescue helicopter
+[ok]        Lifeboat
+[ok]        Tow truck
+[ok]        Digger
+[ok]        Dump truck
+[ok]        Crane
+[ok]        Cement mixer
+[ok]        Bulldozer
+[ok]        Road roller
+
+== PAINT MY RIDE — the colours (10) ==
+[ok]        That one is red
+[ok]        That one is blue
+[ok]        That one is black
+[ok]        That one is yellow
+[ok]        That one is white
+[ok]        That one is orange
+[ok]        That one is pink
+[ok]        That one is green
+[ok]        That one is grey
+[ok]        That one is purple
+
+== FIRST WORDS: Animals (9) ==
+[RE-RECORD] cow
+[RE-RECORD] duck
+[ok]        dog
+[ok]        hen
+[ok]        cat
+[ok]        goat
+[ok]        frog
+[ok]        rabbit
+[ok]        fish
+
+== FIRST WORDS: Food (9) ==
+[ok]        apple
+[ok]        banana
+[ok]        cake
+[ok]        milk
+[ok]        egg
+[ok]        grapes
+[ok]        pizza
+[ok]        cheese
+[ok]        orange
+
+== FIRST WORDS: At Home (8) ==
+[ok]        bed
+[ok]        chair
+[ok]        cup
+[ok]        clock
+[RE-RECORD] door
+[RE-RECORD] key
+[ok]        spoon
+[ok]        bowl
+
+== FIRST WORDS: Out and About (10) ==
+[ok]        car
+[RE-RECORD] tree
+[ok]        ball
+[ok]        sun
+[ok]        bus
+[ok]        kite
+[ok]        flower
+[ok]        train
+[ok]        bike
+[ok]        umbrella
+
+== FIRST WORDS: Clothes (7) ==
+[ok]        hat
+[ok]        shoe
+[ok]        jacket
+[ok]        watch
+[ok]        cap
+[ok]        top
+[ok]        tie
+
+== SHAPES (5 games) — the shape names (6) ==
+[ok]        circle
+[ok]        square
+[ok]        triangle
+[ok]        rectangle
+[ok]        star
+[ok]        heart
+
+== SHAPES — the things that have the shape (16) ==
+[ok]        red
+[ok]        blue
+[ok]        yellow
+[ok]        banana
+[ok]        ball
+[ok]        shoe
+[ok]        car
+[ok]        orange
+[ok]        fish
+[ok]        box
+[ok]        house
+[ok]        pizza
+[RE-RECORD] duck
+[RE-RECORD] door
+[ok]        train
+[ok]        sky
+
+== WORD BUILDER (5 games) — the words (15) ==
+[ok]        cat
+[ok]        hat
+[ok]        bag
+[ok]        bed
+[ok]        hen
+[ok]        net
+[ok]        pin
+[ok]        lip
+[ok]        six
+[ok]        dog
+[ok]        box
+[ok]        pot
+[ok]        bus
+[ok]        cup
+[ok]        sun
+
+== WORD BUILDER — the letter SOUNDS (not the letter names) (16) ==
+[ok]        a  (the sound)
+[ok]        b  (the sound)
+[ok]        c  (the sound)
+[ok]        d  (the sound)
+[ok]        e  (the sound)
+[ok]        g  (the sound)
+[ok]        h  (the sound)
+[ok]        i  (the sound)
+[ok]        l  (the sound)
+[ok]        n  (the sound)
+[ok]        o  (the sound)
+[ok]        p  (the sound)
+[ok]        s  (the sound)
+[ok]        t  (the sound)
+[ok]        u  (the sound)
+[ok]        x  (the sound)
+
+========================================
+WHERE THE ONES TO RECORD GO
+========================================
+tree  ->  public/audio/treats/word-tree.mp3
+key  ->  public/audio/treats/word-key.mp3
+rain  ->  public/audio/treats/word-rain.mp3
+vest  ->  public/audio/treats/word-vest.mp3
+eye  ->  public/audio/treats/word-eye.mp3
+duck  ->  public/audio/treats/word-duck.mp3
+bear  ->  public/audio/treats/word-bear.mp3
+cow  ->  public/audio/treats/word-cow.mp3
+door  ->  public/audio/treats/word-door.mp3

@@ -107,6 +107,222 @@ const GAME_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   "plane-trip": lazy(() =>
     import("@games/plane-trip/PlaneTripGame").then((m) => ({ default: m.PlaneTripGame }))
   ),
+  "plane-snacks": lazy(() =>
+    import("@games/plane-snacks/PlaneSnacksGame").then((m) => ({ default: m.PlaneSnacksGame }))
+  ),
+  "rhyme-or-not": lazy(() =>
+    import("@games/rhyme-or-not/RhymeOrNotGame").then((m) => ({ default: m.RhymeOrNotGame }))
+  ),
+  "rhyme-match": lazy(() =>
+    import("@games/rhyme-match/RhymeMatchGame").then((m) => ({ default: m.RhymeMatchGame }))
+  ),
+  "rhyme-families": lazy(() =>
+    import("@games/rhyme-families/RhymeFamiliesGame").then((m) => ({
+      default: m.RhymeFamiliesGame,
+    }))
+  ),
+  "rhyme-rocket": lazy(() =>
+    import("@games/rhyme-rocket/RhymeRocketGame").then((m) => ({ default: m.RhymeRocketGame }))
+  ),
+  "silly-sandwich": lazy(() =>
+    import("@games/silly-sandwich/SillySandwichGame").then((m) => ({
+      default: m.SillySandwichGame,
+    }))
+  ),
+  "rhyme-detective": lazy(() =>
+    import("@games/rhyme-detective/RhymeDetectiveGame").then((m) => ({
+      default: m.RhymeDetectiveGame,
+    }))
+  ),
+  "finish-song": lazy(() =>
+    import("@games/finish-song/FinishSongGame").then((m) => ({ default: m.FinishSongGame }))
+  ),
+  "magic-hat": lazy(() =>
+    import("@games/magic-hat/MagicHatGame").then((m) => ({ default: m.MagicHatGame }))
+  ),
+  "rhyme-train": lazy(() =>
+    import("@games/rhyme-train/RhymeTrainGame").then((m) => ({ default: m.RhymeTrainGame }))
+  ),
+  "shape-circle": lazy(() =>
+    import("@games/shape-circle/ShapeCircleGame").then((m) => ({ default: m.ShapeCircleGame }))
+  ),
+  "shape-square": lazy(() =>
+    import("@games/shape-square/ShapeSquareGame").then((m) => ({ default: m.ShapeSquareGame }))
+  ),
+  "shape-triangle": lazy(() =>
+    import("@games/shape-triangle/ShapeTriangleGame").then((m) => ({
+      default: m.ShapeTriangleGame,
+    }))
+  ),
+  "shape-rectangle": lazy(() =>
+    import("@games/shape-rectangle/ShapeRectangleGame").then((m) => ({
+      default: m.ShapeRectangleGame,
+    }))
+  ),
+  "shape-star": lazy(() =>
+    import("@games/shape-star/ShapeStarGame").then((m) => ({ default: m.ShapeStarGame }))
+  ),
+  "words-animals": lazy(() =>
+    import("@games/words-animals/WordsAnimalsGame").then((m) => ({ default: m.WordsAnimalsGame }))
+  ),
+  "words-food": lazy(() =>
+    import("@games/words-food/WordsFoodGame").then((m) => ({ default: m.WordsFoodGame }))
+  ),
+  "words-home": lazy(() =>
+    import("@games/words-home/WordsHomeGame").then((m) => ({ default: m.WordsHomeGame }))
+  ),
+  "words-out": lazy(() =>
+    import("@games/words-out/WordsOutGame").then((m) => ({ default: m.WordsOutGame }))
+  ),
+  "words-body": lazy(() =>
+    import("@games/words-body/WordsBodyGame").then((m) => ({ default: m.WordsBodyGame }))
+  ),
+  "word-builder-a": lazy(() =>
+    import("@games/word-builder-a/WordBuilderAGame").then((m) => ({
+      default: m.WordBuilderAGame,
+    }))
+  ),
+  "word-builder-e": lazy(() =>
+    import("@games/word-builder-e/WordBuilderEGame").then((m) => ({
+      default: m.WordBuilderEGame,
+    }))
+  ),
+  "word-builder-i": lazy(() =>
+    import("@games/word-builder-i/WordBuilderIGame").then((m) => ({
+      default: m.WordBuilderIGame,
+    }))
+  ),
+  "word-builder-o": lazy(() =>
+    import("@games/word-builder-o/WordBuilderOGame").then((m) => ({
+      default: m.WordBuilderOGame,
+    }))
+  ),
+  "word-builder-u": lazy(() =>
+    import("@games/word-builder-u/WordBuilderUGame").then((m) => ({
+      default: m.WordBuilderUGame,
+    }))
+  ),
+  "rainbow-words-red": lazy(() =>
+    import("@games/rainbow-words-red/RainbowWordsRedGame").then((m) => ({
+      default: m.RainbowWordsRedGame,
+    }))
+  ),
+  "rainbow-words-orange": lazy(() =>
+    import("@games/rainbow-words-orange/RainbowWordsOrangeGame").then((m) => ({
+      default: m.RainbowWordsOrangeGame,
+    }))
+  ),
+  "rainbow-words-yellow": lazy(() =>
+    import("@games/rainbow-words-yellow/RainbowWordsYellowGame").then((m) => ({
+      default: m.RainbowWordsYellowGame,
+    }))
+  ),
+  "rainbow-words-green": lazy(() =>
+    import("@games/rainbow-words-green/RainbowWordsGreenGame").then((m) => ({
+      default: m.RainbowWordsGreenGame,
+    }))
+  ),
+  "rainbow-words-blue": lazy(() =>
+    import("@games/rainbow-words-blue/RainbowWordsBlueGame").then((m) => ({
+      default: m.RainbowWordsBlueGame,
+    }))
+  ),
+  "rainbow-words-indigo": lazy(() =>
+    import("@games/rainbow-words-indigo/RainbowWordsIndigoGame").then((m) => ({
+      default: m.RainbowWordsIndigoGame,
+    }))
+  ),
+  "rainbow-words-violet": lazy(() =>
+    import("@games/rainbow-words-violet/RainbowWordsVioletGame").then((m) => ({
+      default: m.RainbowWordsVioletGame,
+    }))
+  ),
+  "our-world-animals": lazy(() =>
+    import("@games/our-world-animals/OurWorldAnimalsGame").then((m) => ({
+      default: m.OurWorldAnimalsGame,
+    }))
+  ),
+  "our-world-sea": lazy(() =>
+    import("@games/our-world-sea/OurWorldSeaGame").then((m) => ({
+      default: m.OurWorldSeaGame,
+    }))
+  ),
+  "our-world-road": lazy(() =>
+    import("@games/our-world-road/OurWorldRoadGame").then((m) => ({
+      default: m.OurWorldRoadGame,
+    }))
+  ),
+  "our-world-food": lazy(() =>
+    import("@games/our-world-food/OurWorldFoodGame").then((m) => ({
+      default: m.OurWorldFoodGame,
+    }))
+  ),
+  "our-world-play": lazy(() =>
+    import("@games/our-world-play/OurWorldPlayGame").then((m) => ({
+      default: m.OurWorldPlayGame,
+    }))
+  ),
+  "our-world-body": lazy(() =>
+    import("@games/our-world-body/OurWorldBodyGame").then((m) => ({
+      default: m.OurWorldBodyGame,
+    }))
+  ),
+  "sticker-studio-garden": lazy(() =>
+    import("@games/sticker-studio-garden/StickerStudioGardenGame").then((m) => ({
+      default: m.StickerStudioGardenGame,
+    }))
+  ),
+  "sticker-studio-space": lazy(() =>
+    import("@games/sticker-studio-space/StickerStudioSpaceGame").then((m) => ({
+      default: m.StickerStudioSpaceGame,
+    }))
+  ),
+  "sticker-studio-farm": lazy(() =>
+    import("@games/sticker-studio-farm/StickerStudioFarmGame").then((m) => ({
+      default: m.StickerStudioFarmGame,
+    }))
+  ),
+  "sticker-studio-park": lazy(() =>
+    import("@games/sticker-studio-park/StickerStudioParkGame").then((m) => ({
+      default: m.StickerStudioParkGame,
+    }))
+  ),
+  "sticker-studio-street": lazy(() =>
+    import("@games/sticker-studio-street/StickerStudioStreetGame").then((m) => ({
+      default: m.StickerStudioStreetGame,
+    }))
+  ),
+  "sticker-studio-party": lazy(() =>
+    import("@games/sticker-studio-party/StickerStudioPartyGame").then((m) => ({
+      default: m.StickerStudioPartyGame,
+    }))
+  ),
+  "colours-road": lazy(() =>
+    import("@games/colours-road/ColoursRoadGame").then((m) => ({ default: m.ColoursRoadGame }))
+  ),
+  "colours-sea": lazy(() =>
+    import("@games/colours-sea/ColoursSeaGame").then((m) => ({ default: m.ColoursSeaGame }))
+  ),
+  "colours-sky": lazy(() =>
+    import("@games/colours-sky/ColoursSkyGame").then((m) => ({ default: m.ColoursSkyGame }))
+  ),
+  "colours-space": lazy(() =>
+    import("@games/colours-space/ColoursSpaceGame").then((m) => ({ default: m.ColoursSpaceGame }))
+  ),
+  "colours-emergency": lazy(() =>
+    import("@games/colours-emergency/ColoursEmergencyGame").then((m) => ({
+      default: m.ColoursEmergencyGame,
+    }))
+  ),
+  "colours-build": lazy(() =>
+    import("@games/colours-build/ColoursBuildGame").then((m) => ({ default: m.ColoursBuildGame }))
+  ),
+  "fruit-easy": lazy(() =>
+    import("@games/fruit-easy/FruitEasyGame").then((m) => ({ default: m.FruitEasyGame }))
+  ),
+  "fruit-tricky": lazy(() =>
+    import("@games/fruit-tricky/FruitTrickyGame").then((m) => ({ default: m.FruitTrickyGame }))
+  ),
   "math-maze": lazy(() =>
     import("@games/math-maze/MathMazeGame").then((m) => ({ default: m.MathMazeGame }))
   ),

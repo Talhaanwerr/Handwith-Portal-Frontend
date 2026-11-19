@@ -1,16 +1,16 @@
 {
   "default": [
-    "Look at the friend waiting in the glass lift.",
-    "Help them ride the lift to the right floor."
+    "Drag the child into the glass lift.",
+    "Press up once for every floor, then press down to bring the lift back."
   ],
   "modules": {
     "updown": [
-      "Look at the picture in the friend's bubble.",
-      "Press up or down to ride to that floor."
+      "Drag the child into the lift.",
+      "Press up until you reach the picture and number in the bubble."
     ],
     "match": [
-      "Look at the colour of the friend's balloon.",
-      "Tap the floor that has the same colour."
+      "Drag the child into the lift.",
+      "Press up until you reach the floor of the balloon's colour."
     ]
   }
 }

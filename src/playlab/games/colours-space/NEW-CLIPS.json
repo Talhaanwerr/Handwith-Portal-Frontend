@@ -1,0 +1,32 @@
+[
+  {
+    "id": "mgc-mode-space",
+    "file": "/audio/magic-colours/mode-space.mp3",
+    "text": "Off to space! Let's colour rockets."
+  },
+  {
+    "id": "mgc-name-rocket",
+    "file": "/audio/magic-colours/name-rocket.mp3",
+    "text": "Rocket!"
+  },
+  {
+    "id": "mgc-name-shuttle",
+    "file": "/audio/magic-colours/name-shuttle.mp3",
+    "text": "Space shuttle!"
+  },
+  {
+    "id": "mgc-name-satellite",
+    "file": "/audio/magic-colours/name-satellite.mp3",
+    "text": "Satellite!"
+  },
+  {
+    "id": "mgc-name-moon-buggy",
+    "file": "/audio/magic-colours/name-moon-buggy.mp3",
+    "text": "Moon buggy!"
+  },
+  {
+    "id": "mgc-name-ufo",
+    "file": "/audio/magic-colours/name-ufo.mp3",
+    "text": "Flying saucer!"
+  }
+]

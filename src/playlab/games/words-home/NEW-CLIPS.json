@@ -1,0 +1,17 @@
+[
+  {
+    "id": "fw-home-welcome",
+    "file": "/audio/first-words/home-welcome.mp3",
+    "text": "First words! At home!"
+  },
+  {
+    "id": "fw-home-mode",
+    "file": "/audio/first-words/home-mode.mp3",
+    "text": "Let’s learn words for home!"
+  },
+  {
+    "id": "fw-in-cupboard",
+    "file": "/audio/first-words/in-cupboard.mp3",
+    "text": "in the cupboard!"
+  }
+]

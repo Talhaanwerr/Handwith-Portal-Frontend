@@ -1,0 +1,32 @@
+[
+  {
+    "id": "msh-mode-triangle",
+    "file": "/audio/my-shapes/mode-triangle.mp3",
+    "text": "Triangle! Let's learn the triangle."
+  },
+  {
+    "id": "msh-done-triangle",
+    "file": "/audio/my-shapes/done-triangle.mp3",
+    "text": "Now you know triangles!"
+  },
+  {
+    "id": "msh-meet-triangle",
+    "file": "/audio/my-shapes/meet-triangle.mp3",
+    "text": "This is a triangle! Tap it."
+  },
+  {
+    "id": "msh-all-triangle",
+    "file": "/audio/my-shapes/all-triangle.mp3",
+    "text": "Tap all the triangles!"
+  },
+  {
+    "id": "msh-which-triangle",
+    "file": "/audio/my-shapes/which-triangle.mp3",
+    "text": "Which one is a triangle?"
+  },
+  {
+    "id": "msh-build-triangle",
+    "file": "/audio/my-shapes/build-triangle.mp3",
+    "text": "Put the sails on the boat!"
+  }
+]

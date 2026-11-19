@@ -711,6 +711,38 @@
   height: clamp(20px, min(6.6cqh, 3.4cqw), 46px);
 }
 
+/* a game of one module (NgShell `single`): no card — just the name and one
+   big green Play button on the game's own scene */
+/* a one-module game's name can be long ("Magic Colours: On the Road"):
+   it may wrap, balanced, rather than run off a phone */
+.ng-home--solo .ng-title {
+  white-space: normal;
+  text-align: center;
+  text-wrap: balance;
+}
+.ng-solo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  align-self: center;
+  min-height: 56px;
+  margin-top: 3cqh;
+  padding: 0.45em 1.3em 0.45em 1em;
+  border: 0;
+  border-radius: 9999px;
+  background: #3dab72;
+  color: #ffffff;
+  font-size: clamp(24px, min(10cqh, 5.4cqw), 64px);
+  line-height: 1.05;
+  box-shadow: 0 1.1cqh 0 #2b8a57;
+  cursor: pointer;
+}
+.ng-solo-btn svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
 /* each module in miniature (home card, finish card): a box of one shape,
    as big as the picture area allows, sized in that area's own units */
 .ng-mini {
@@ -849,6 +881,12 @@
   .ng-title-plate {
     padding: 0.8cqh 3cqh;
   }
+  /* a one-module game's long name would run under the corner pill: keep the
+     column under the pills' row */
+  .ng-home--solo .ng-home-col {
+    gap: 1.6cqh;
+    padding-top: 60px;
+  }
 }
 
 /* ─── Portrait: board on top, the teacher at the bottom-left with his bubble
@@ -964,6 +1002,9 @@
   .ng-mode-name {
     font-size: clamp(16px, 6.4cqw, 34px);
   }
+  .ng-solo-btn {
+    font-size: clamp(26px, 10cqw, 56px);
+  }
   .ng-teacher-slot--home .dc-teacher-says {
     display: none;
   }
@@ -978,4 +1019,71 @@
     width: 60cqw;
     height: 16cqh;
   }
+}
+
+/* ─── The guided layout (`<NgShell guided>`, see NgGuided.ts) ─────────────
+   The title screen, the board and the star card are centred on the STAGE,
+   not on what the teacher leaves of it (his corner took the left 22%, which
+   pushed every game a little to the right). The guide stands small in the
+   bottom-left corner. Its words are in the top guide bar, so the teacher's
+   bubble is hidden; a game whose own guide keeps a bubble marks it
+   `ng-says-keep`. */
+.ng-root--guided .ng-main {
+  left: 3cqw;
+  right: 3cqw;
+}
+.ng-root--guided .ng-home-col,
+.ng-root--guided .ng-done-center {
+  left: 3cqw;
+  right: 3cqw;
+}
+.ng-root--guided .ng-teacher-slot {
+  width: min(34cqh, 16cqw);
+  height: min(34cqh, 16cqw);
+}
+.ng-root--guided .ng-teacher-slot .dc-teacher-says:not(.ng-says-keep) {
+  display: none;
+}
+@media (orientation: portrait) {
+  .ng-root--guided .ng-teacher-slot {
+    width: min(16cqh, 28cqw);
+    height: min(18cqh, 34cqw);
+  }
+}
+
+/* ─── A long run's break card (NgCheckpoint) ───────────────────────────── */
+.ng-break-card {
+  gap: 3cqh;
+  padding: 5cqh 5cqh 5.5cqh;
+}
+.ng-break-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3cqh;
+  margin-top: 1cqh;
+}
+.ng-break-btn {
+  min-width: min(30cqw, 46cqh);
+  min-height: max(64px, 14cqh);
+  padding: 2cqh 5cqh;
+  border: 0;
+  border-radius: 9999px;
+  font-size: clamp(20px, 7cqh, 44px);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.12s ease;
+}
+.ng-break-btn:active {
+  transform: translateY(0.6cqh);
+}
+.ng-break-btn--go {
+  background: #3dab72;
+  color: #ffffff;
+  box-shadow: 0 1.2cqh 0 #2b8a57;
+}
+.ng-break-btn--back {
+  background: #fbeedd;
+  color: #8a5a2e;
+  box-shadow: 0 1.2cqh 0 #ecd6b8;
 }

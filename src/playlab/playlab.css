@@ -11,6 +11,7 @@
 @import "./shared/styles/utilities.css";
 @import "./shared/styles/how-to-play.css";
 @import "./shared/styles/dubai.css";
+@import "./shared/styles/guide-bar.css";
 @import "./games/letter-tracing/styles/letter-tracing.css";
 @import "./games/jungle-spy/styles/jungle-spy.css";
 @import "./games/letter-hunt/styles/letter-hunt.css";
@@ -53,6 +54,24 @@
 @import "./games/burj-towers/styles/burj-towers.css";
 @import "./games/plane-seats/styles/plane-seats.css";
 @import "./games/plane-trip/styles/plane-trip.css";
+@import "./games/plane-snacks/styles/plane-snacks.css";
+@import "./games/magic-colours/styles/magic-colours.css";
+@import "./games/fruit-puzzles/styles/fruit-puzzles.css";
+@import "./games/rhyme-or-not/styles/rhyme-or-not.css";
+@import "./games/rhyme-match/styles/rhyme-match.css";
+@import "./games/rhyme-families/styles/rhyme-families.css";
+@import "./games/rhyme-rocket/styles/rhyme-rocket.css";
+@import "./games/silly-sandwich/styles/silly-sandwich.css";
+@import "./games/rhyme-detective/styles/rhyme-detective.css";
+@import "./games/finish-song/styles/finish-song.css";
+@import "./games/magic-hat/styles/magic-hat.css";
+@import "./games/rhyme-train/styles/rhyme-train.css";
+@import "./games/shape-lesson/styles/shape-lesson.css";
+@import "./games/word-lesson/styles/word-lesson.css";
+@import "./games/word-builder/styles/word-builder.css";
+@import "./games/rainbow-words/styles/rainbow-words.css";
+@import "./games/our-world/styles/our-world.css";
+@import "./games/sticker-studio/styles/sticker-studio.css";
 /* Math Maze */
 @import "./games/math-maze/styles/math-maze.css";
 /* Sorting Food */

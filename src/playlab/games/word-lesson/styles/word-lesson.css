@@ -1,0 +1,600 @@
+/**
+ * My First Words (the five `words-*` lessons) — class prefix `wl-`. The shell,
+ * guide bar, drag ghost and celebrations are Count & Match's and the
+ * portal's (`ng-`, `pl-`). Sized in the `ng` container's units; sideways and
+ * upright phones at the bottom. Each lesson's colours come from its wrapper
+ * (`.wl-game--<scene>`).
+ */
+
+/* ─── Each lesson's colours ────────────────────────────────────────────── */
+.wl-game--barn {
+  --wl-edge: #a8323a;
+  --wl-glow: #ffd84a;
+}
+.wl-game--kitchen {
+  --wl-edge: #c46a12;
+  --wl-glow: #ff6f59;
+}
+.wl-game--living {
+  --wl-edge: #1f8074;
+  --wl-glow: #ffd84a;
+}
+.wl-game--park {
+  --wl-edge: #2a66a8;
+  --wl-glow: #ffd84a;
+}
+.wl-game--bedroom {
+  --wl-edge: #7a43c2;
+  --wl-glow: #ffd84a;
+}
+
+/* ─── The rooms ────────────────────────────────────────────────────────── */
+.wl-world {
+  position: absolute;
+  inset: 0;
+  background: #cdefff;
+}
+.wl-world--kitchen {
+  background: #ffe6a6;
+}
+.wl-world--living {
+  background: #bfe7e1;
+}
+.wl-world--bedroom {
+  background: #fad3e0;
+}
+.wl-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── A picture ────────────────────────────────────────────────────────── */
+.wl-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+/** A real animal photo: shown whole (never cropped), with soft corners, and
+ *  only a thin white edge of the card around it. */
+.wl-pic--photo {
+  object-fit: contain;
+  border-radius: 12%;
+}
+.wl-card:has(.wl-pic--photo) {
+  padding: 4%;
+}
+/** A shadow: the picture, all dark (static — never on a moving thing). */
+.wl-pic--dark {
+  filter: brightness(0);
+  opacity: 0.72;
+}
+
+/* ─── The board ────────────────────────────────────────────────────────── */
+.wl-play {
+  --wl-card: min(40cqh, 24cqw);
+  --wl-gap: 5cqw;
+}
+.wl-play--where2 {
+  --wl-card: min(46cqh, 30cqw);
+  --wl-gap: 9cqw;
+}
+.wl-play--shadow,
+.wl-play--put {
+  --wl-card: min(38cqh, 22cqw);
+}
+.wl-play--peek {
+  --wl-card: min(36cqh, 24cqw);
+}
+.wl-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--wl-gap) * 1.6);
+  width: 100%;
+  height: 100%;
+}
+.wl-row,
+.wl-targets,
+.wl-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wl-gap);
+}
+.wl-targets {
+  gap: calc(var(--wl-gap) * 0.8);
+}
+.wl-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── A card ───────────────────────────────────────────────────────────── */
+.wl-card-slot {
+  position: relative;
+  display: block;
+  width: var(--wl-card);
+  height: var(--wl-card);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.wl-card-slot--empty {
+  cursor: default;
+}
+.wl-drag {
+  cursor: grab;
+  touch-action: none;
+}
+.wl-drag.is-away {
+  visibility: hidden;
+}
+.wl-in,
+.wl-wiggle,
+.wl-bounce {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wl-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 13%;
+  border-radius: 20%;
+  background: #ffffff;
+  box-shadow: 0 1.4cqh 0 var(--wl-edge);
+  transition: box-shadow 0.2s ease;
+}
+.wl-card.is-done {
+  box-shadow:
+    0 1.4cqh 0 var(--wl-edge),
+    0 0 0 1cqh var(--wl-glow);
+}
+.wl-card.is-found {
+  box-shadow:
+    0 1.4cqh 0 var(--wl-edge),
+    0 0 0 1.2cqh var(--wl-glow),
+    0 0 5cqh 2cqh rgba(255, 224, 102, 0.7);
+}
+.wl-tick {
+  position: absolute;
+  right: -6%;
+  top: -6%;
+  display: block;
+  width: 26%;
+  height: 26%;
+  border-radius: 50%;
+  background: #3dab72;
+  box-shadow: 0 0.6cqh 0 #23784d;
+}
+.wl-tick::after {
+  content: "";
+  position: absolute;
+  left: 30%;
+  top: 18%;
+  width: 26%;
+  height: 46%;
+  border-right: max(3px, 0.9cqh) solid #ffffff;
+  border-bottom: max(3px, 0.9cqh) solid #ffffff;
+  transform: rotate(45deg);
+}
+
+/* the hint: the right one glows, then pulses big */
+.wl-card.is-hint,
+.wl-shadow.is-hint,
+.wl-spot.is-hint {
+  animation: wl-glow 1.1s ease-in-out infinite;
+}
+.wl-card.is-pulse,
+.wl-shadow.is-pulse,
+.wl-spot.is-pulse {
+  animation:
+    wl-glow 1.1s ease-in-out infinite,
+    wl-pulse 1.1s ease-in-out infinite;
+}
+@keyframes wl-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 1.4cqh 0 var(--wl-edge),
+      0 0 0 1cqh var(--wl-glow);
+  }
+  50% {
+    box-shadow:
+      0 1.4cqh 0 var(--wl-edge),
+      0 0 0 0.8cqh var(--wl-glow),
+      0 0 0 3cqh rgba(255, 224, 102, 0.45);
+  }
+}
+@keyframes wl-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+.wl-wiggle.is-wiggling {
+  animation: wl-wiggle 0.6s ease-in-out;
+}
+@keyframes wl-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-9deg);
+  }
+  45% {
+    transform: rotate(8deg);
+  }
+  70% {
+    transform: rotate(-4deg);
+  }
+}
+.wl-bounce.is-bouncing {
+  animation: wl-bounce 0.55s ease-out;
+}
+@keyframes wl-bounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-9%) scale(1.08, 0.94);
+  }
+  60% {
+    transform: translateY(2%) scale(0.97, 1.03);
+  }
+}
+
+/* ─── Page 4: a shadow ─────────────────────────────────────────────────── */
+.wl-shadow {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 13%;
+  border-radius: 20%;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1.4cqh 0 var(--wl-edge);
+  outline: max(3px, 0.7cqh) dashed rgba(0, 0, 0, 0.18);
+  outline-offset: -2.4cqh;
+}
+.wl-shadow.is-lit {
+  box-shadow:
+    0 1.4cqh 0 var(--wl-edge),
+    0 0 0 1.2cqh var(--wl-glow);
+}
+.wl-shadow.is-filled {
+  outline: none;
+  background: #ffffff;
+  box-shadow:
+    0 1.4cqh 0 var(--wl-edge),
+    0 0 0 1.2cqh var(--wl-glow),
+    0 0 5cqh 2cqh rgba(255, 224, 102, 0.7);
+}
+
+/* ─── Set lessons: a four-piece puzzle ─────────────────────────────────── */
+.wl-play--puzzle {
+  /* the whole picture's side; a piece is half of it */
+  --wl-puz: min(58cqh, 34cqw);
+}
+.wl-puz-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: var(--wl-puz);
+  height: var(--wl-puz);
+  border-radius: 9%;
+  background: #ffffff;
+  box-shadow: 0 1.4cqh 0 var(--wl-edge);
+  overflow: hidden;
+}
+.wl-puz-board.is-whole {
+  box-shadow:
+    0 1.4cqh 0 var(--wl-edge),
+    0 0 0 1.2cqh var(--wl-glow);
+}
+/* the faint whole picture that shows where the pieces go */
+.wl-puz-guide {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  pointer-events: none;
+}
+.wl-puz-guide .wl-pic--photo {
+  border-radius: 0;
+}
+.wl-puz-slot {
+  position: relative;
+  outline: max(2px, 0.5cqh) dashed rgba(0, 0, 0, 0.2);
+  outline-offset: -1px;
+}
+.wl-puz-slot.is-lit {
+  background: rgba(255, 224, 102, 0.45);
+}
+.wl-puz-slot.is-filled {
+  outline: none;
+}
+.wl-puz-tray {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--wl-puz) * 0.08);
+}
+.wl-puz-piece {
+  position: relative;
+  width: calc(var(--wl-puz) / 2);
+  height: calc(var(--wl-puz) / 2);
+}
+.wl-puz-carried {
+  left: calc(var(--wl-puz) * -0.25);
+  top: calc(var(--wl-puz) * -0.25);
+  width: calc(var(--wl-puz) / 2);
+  height: calc(var(--wl-puz) / 2);
+  pointer-events: none;
+}
+/* a quarter: a window half the picture's size, the picture twice the window */
+.wl-puz-win {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+}
+.wl-puz-piece .wl-puz-win,
+.wl-puz-carried .wl-puz-win {
+  border-radius: 10%;
+  box-shadow: 0 0.9cqh 0 var(--wl-edge);
+}
+.wl-puz-win .wl-pic {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  max-width: none;
+  border-radius: 0;
+}
+.wl-puz-win--0 .wl-pic {
+  left: 0;
+  top: 0;
+}
+.wl-puz-win--1 .wl-pic {
+  left: -100%;
+  top: 0;
+}
+.wl-puz-win--2 .wl-pic {
+  left: 0;
+  top: -100%;
+}
+.wl-puz-win--3 .wl-pic {
+  left: -100%;
+  top: -100%;
+}
+
+/* ─── Page 5: a hiding spot ────────────────────────────────────────────── */
+.wl-spot-slot {
+  position: relative;
+  display: block;
+  width: var(--wl-card);
+  height: calc(var(--wl-card) * 1.15);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.wl-spot {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 20%;
+}
+.wl-spot.is-hint,
+.wl-spot.is-pulse {
+  background: rgba(255, 255, 255, 0.35);
+}
+.wl-spot-thing {
+  position: absolute;
+  right: 0;
+  top: 9%;
+  display: block;
+  width: 62%;
+  height: 54%;
+}
+.wl-spot-tilt {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(16deg);
+  transition: transform 0.35s ease;
+}
+.wl-spot-tilt.is-straight {
+  transform: rotate(0);
+}
+.wl-spot.is-open .wl-spot-thing {
+  right: 19%;
+  top: 14%;
+}
+.wl-spot-cover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  height: 72%;
+}
+.wl-cover-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ─── Page 6: the container ────────────────────────────────────────────── */
+.wl-box-slot {
+  position: relative;
+  width: calc(var(--wl-card) * 1.35);
+  height: calc(var(--wl-card) * 1.35);
+}
+.wl-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 12%;
+  transition: box-shadow 0.2s ease;
+}
+.wl-box.is-lit {
+  box-shadow: 0 0 0 1.2cqh var(--wl-glow);
+  background: rgba(255, 255, 255, 0.3);
+}
+.wl-box-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.wl-box-front {
+  z-index: 2;
+}
+.wl-box-item {
+  position: absolute;
+  z-index: 1;
+  left: 31%;
+  top: 50%;
+  display: block;
+  width: 38%;
+  height: 38%;
+}
+.wl-box--kitchen .wl-box-item {
+  left: 27%;
+  top: 22%;
+  width: 46%;
+  height: 46%;
+}
+.wl-box--living .wl-box-item {
+  left: 30%;
+  top: 16%;
+  width: 40%;
+  height: 36%;
+}
+.wl-box--park .wl-box-item {
+  left: 26%;
+  top: 14%;
+  width: 48%;
+  height: 48%;
+}
+.wl-box--bedroom .wl-box-item {
+  left: 28%;
+  top: 30%;
+  width: 44%;
+  height: 50%;
+}
+
+/** The picture under the finger. */
+.wl-carried {
+  left: calc(var(--wl-card) * -0.5);
+  top: calc(var(--wl-card) * -0.5);
+  width: var(--wl-card);
+  height: var(--wl-card);
+  pointer-events: none;
+}
+
+/* ─── The home card's miniature ────────────────────────────────────────── */
+.wl-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqh;
+}
+.wl-mini-card {
+  display: block;
+  width: 40cqh;
+  height: 40cqh;
+  padding: 6cqh;
+  border-radius: 20%;
+  background: #ffffff;
+  box-shadow: 0 2cqh 0 var(--wl-edge);
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .wl-play {
+    --wl-card: min(42cqh, 24cqw);
+  }
+  .wl-play--where2 {
+    --wl-card: min(48cqh, 28cqw);
+  }
+  .wl-play--shadow,
+  .wl-play--put {
+    --wl-card: min(38cqh, 21cqw);
+  }
+  .wl-play--peek {
+    --wl-card: min(37cqh, 24cqw);
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .wl-play .ng-main {
+    bottom: 5cqh;
+  }
+  .wl-play--puzzle {
+    --wl-puz: min(60cqw, 34cqh);
+  }
+  .wl-board--puzzle {
+    flex-direction: column;
+    gap: 4cqh;
+  }
+  .wl-puz-tray {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3cqw;
+  }
+  .wl-play--puzzle .wl-puz-piece,
+  .wl-play--puzzle .wl-puz-carried {
+    width: calc(var(--wl-puz) / 2.7);
+    height: calc(var(--wl-puz) / 2.7);
+  }
+  .wl-play {
+    --wl-card: min(40cqw, 24cqh);
+    --wl-gap: 6cqw;
+  }
+  .wl-play--where2 {
+    --wl-card: min(46cqw, 27cqh);
+  }
+  .wl-play--shadow,
+  .wl-play--put {
+    --wl-card: min(40cqw, 22cqh);
+  }
+  .wl-play--peek {
+    --wl-card: min(40cqw, 21cqh);
+  }
+  .wl-board {
+    flex-direction: column;
+    gap: 5cqh;
+  }
+  .wl-row {
+    flex-wrap: wrap;
+    row-gap: 4cqh;
+    max-width: 92cqw;
+  }
+  .wl-board--put {
+    flex-direction: column-reverse;
+  }
+}

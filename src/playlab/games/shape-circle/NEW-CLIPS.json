@@ -1,0 +1,42 @@
+[
+  {
+    "id": "msh-welcome",
+    "file": "/audio/my-shapes/welcome.mp3",
+    "text": "Welcome to My Shapes!"
+  },
+  {
+    "id": "msh-puzzle",
+    "file": "/audio/my-shapes/puzzle.mp3",
+    "text": "Put it in its home!"
+  },
+  {
+    "id": "msh-mode-circle",
+    "file": "/audio/my-shapes/mode-circle.mp3",
+    "text": "Circle! Let's learn the circle."
+  },
+  {
+    "id": "msh-done-circle",
+    "file": "/audio/my-shapes/done-circle.mp3",
+    "text": "Now you know circles!"
+  },
+  {
+    "id": "msh-meet-circle",
+    "file": "/audio/my-shapes/meet-circle.mp3",
+    "text": "This is a circle! Tap it."
+  },
+  {
+    "id": "msh-all-circle",
+    "file": "/audio/my-shapes/all-circle.mp3",
+    "text": "Tap all the circles!"
+  },
+  {
+    "id": "msh-which-circle",
+    "file": "/audio/my-shapes/which-circle.mp3",
+    "text": "Which one is a circle?"
+  },
+  {
+    "id": "msh-build-circle",
+    "file": "/audio/my-shapes/build-circle.mp3",
+    "text": "Put the wheels on the car!"
+  }
+]

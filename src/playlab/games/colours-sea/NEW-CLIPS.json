@@ -1,0 +1,37 @@
+[
+  {
+    "id": "mgc-mode-sea",
+    "file": "/audio/magic-colours/mode-sea.mp3",
+    "text": "Out at sea! Let's colour boats and ships."
+  },
+  {
+    "id": "mgc-name-boat",
+    "file": "/audio/magic-colours/name-boat.mp3",
+    "text": "Sailboat!"
+  },
+  {
+    "id": "mgc-name-speedboat",
+    "file": "/audio/magic-colours/name-speedboat.mp3",
+    "text": "Speedboat!"
+  },
+  {
+    "id": "mgc-name-fishing-boat",
+    "file": "/audio/magic-colours/name-fishing-boat.mp3",
+    "text": "Fishing boat!"
+  },
+  {
+    "id": "mgc-name-submarine",
+    "file": "/audio/magic-colours/name-submarine.mp3",
+    "text": "Submarine!"
+  },
+  {
+    "id": "mgc-name-ship",
+    "file": "/audio/magic-colours/name-ship.mp3",
+    "text": "Ship!"
+  },
+  {
+    "id": "mgc-name-ferry",
+    "file": "/audio/magic-colours/name-ferry.mp3",
+    "text": "Ferry!"
+  }
+]

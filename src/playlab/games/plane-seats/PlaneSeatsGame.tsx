@@ -21,9 +21,10 @@ const ROUNDS: Record<ModuleId, ComponentType<RoundProps>> = {
  * numbered left to right: passengers walk up with boarding passes and sit
  * in the seat on their ticket (a numeral, or a little dot sum).
  *
- * Count & Match's shell; the cabin is drawn here; the passengers are the
- * portal's Fluent animals. No teacher on the stage (Apple Basket's
- * `.apa-game` hides him): the seats are the game.
+ * Count & Match's shell in its guided layout (centred screens, the line in
+ * the top bar, the hand on round one); the cabin is drawn here; the
+ * passengers are the portal's Fluent animals. No teacher on the stage
+ * (Apple Basket's `.apa-game` hides him): the seats are the game.
  */
 export function PlaneSeatsGame() {
   const store = usePlaneSeatsStore();
@@ -31,6 +32,7 @@ export function PlaneSeatsGame() {
     <div className="apa-game pls-game">
       <NgShell
         title="Plane Seats"
+        guided
         voice={VOICE}
         store={store}
         modules={MODULES}

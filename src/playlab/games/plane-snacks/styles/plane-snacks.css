@@ -1,0 +1,779 @@
+/**
+ * Snack Time in the Sky — class prefix `psn-`. Count & Match's shell
+ * (NgShell), so everything is sized in the `ng` container's units
+ * (1cqh = 1% of the stage's height). The teacher is hidden by `.apa-game`.
+ *
+ * The cabin, the seats and the passengers are Plane Seats' (`pls-` classes,
+ * global). Their sizes come from `--pls-*`, which are set here from our own
+ * sizes — only under `.psn-play`, so Plane Seats itself is never touched:
+ *   --psn-s     one seat's width (its height is 1.2 × that)
+ *   --psn-p     one snack on the trolley (a button)
+ *   --psn-aisle the trolley's height
+ *   --psn-g     between the seats and the trolley
+ *   --psn-lift  the board raised off the bottom (upright phones)
+ *   --psn-wh    Window Spy's window height
+ *   --psn-c     one picture choice (a button)
+ */
+
+.psn-play {
+  --psn-s: min(17cqw, 26cqh);
+  --psn-p: min(13cqh, 9cqw);
+  --psn-aisle: calc(var(--psn-p) * 2.1);
+  --psn-g: 3cqh;
+  --psn-gap: calc(var(--psn-s) * 0.42);
+  --psn-lift: 0px;
+  /* the stage's bottom to the board's (ng-main's bottom) */
+  --psn-main-b: 3cqh;
+  --psn-base: calc(var(--psn-main-b) + var(--psn-lift));
+  --psn-wh: min(50cqh, 36cqw);
+  --psn-wa: 1.3;
+  --psn-c: min(18cqh, 13cqw);
+  --psn-cg: 8cqh;
+  /* under Window Spy's pictures (they sit on the carpet) */
+  --psn-spy-pad: 3cqh;
+  --psn-again: max(44px, calc(var(--psn-wh) * 0.14));
+  /* Plane Seats' seat reads its width from here */
+  --pls-s: var(--psn-s);
+}
+
+/* the cabin lines up with our board: the carpet under the seats' feet, the
+   small windows just behind the headrests */
+.psn-play .pls-cabin {
+  --pls-s: var(--psn-s);
+  --pls-aisle: var(--psn-aisle);
+  --pls-g: var(--psn-g);
+  --pls-lift: var(--psn-lift);
+  --pls-base: var(--psn-base);
+}
+/* Window Spy: one big window instead of the row of small ones */
+.psn-play--window .pls-cabin {
+  --pls-floor: calc(var(--psn-main-b) + var(--psn-spy-pad) + var(--psn-c) + var(--psn-cg) * 0.5);
+}
+.psn-play--window .pls-cabin-windows {
+  display: none;
+}
+
+/* ── Snack Trolley: the row of seats, the trolley in the aisle ───────────── */
+
+.psn-board {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--psn-g);
+  padding-bottom: var(--psn-lift);
+}
+.psn-row {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--psn-gap);
+}
+.psn-aisle {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  height: var(--psn-aisle);
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* one seat (Plane Seats' art) — a picture here, not a button. The
+   passenger sits up tall, their head against the headrest. */
+.psn-seat .pls-seat-spot {
+  left: 14%;
+  top: 12%;
+  width: 72%;
+  height: calc(var(--psn-s) * 0.8);
+}
+.psn-pax {
+  display: block;
+}
+
+/** The thought bubble, over the headrest: what this passenger wants. */
+.psn-bubble {
+  position: absolute;
+  z-index: 4;
+  left: 60%;
+  bottom: 80%;
+  width: calc(var(--psn-s) * 0.66);
+  height: calc(var(--psn-s) * 0.56);
+  transform-origin: 12% 100%;
+  pointer-events: none;
+}
+.psn-bubble-cloud {
+  position: absolute;
+  left: 10%;
+  right: 0;
+  top: 0;
+  bottom: 16%;
+  display: grid;
+  place-items: center;
+  border-radius: 44%;
+  background: #ffffff;
+  box-shadow:
+    0 calc(var(--psn-s) * 0.03) 0 #d3dbe6,
+    0 calc(var(--psn-s) * 0.07) calc(var(--psn-s) * 0.1) rgba(20, 30, 70, 0.22);
+}
+.psn-bubble-pic {
+  display: block;
+  width: 64%;
+  height: 76%;
+}
+.psn-bubble-dot {
+  position: absolute;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 calc(var(--psn-s) * 0.015) 0 #d3dbe6;
+}
+.psn-bubble-dot--1 {
+  left: 4%;
+  bottom: 3%;
+  width: 13%;
+}
+.psn-bubble-dot--2 {
+  left: -5%;
+  bottom: -11%;
+  width: 8%;
+}
+
+/** The snack in the passenger's hands, in front of the cushion. */
+.psn-lap {
+  position: absolute;
+  z-index: 3;
+  left: 31%;
+  top: 59%;
+  display: block;
+  width: 38%;
+  height: calc(var(--psn-s) * 0.38);
+  pointer-events: none;
+}
+
+/** A happy passenger: two hearts float up. */
+.psn-hearts {
+  position: absolute;
+  z-index: 4;
+  right: -6%;
+  top: 6%;
+  width: 40%;
+  height: 34%;
+  pointer-events: none;
+}
+.psn-heart {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  width: 46%;
+  height: auto;
+  opacity: 0;
+  animation: psn-float 2.2s ease-out forwards;
+}
+.psn-heart--0 {
+  left: 0;
+}
+.psn-heart--1 {
+  right: 0;
+  width: 34%;
+  animation-delay: 0.3s;
+}
+@keyframes psn-float {
+  0% {
+    opacity: 0;
+    scale: 0.4;
+    translate: 0 0;
+  }
+  15% {
+    opacity: 1;
+    scale: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 1;
+    translate: 0 -130%;
+  }
+}
+
+/* ── The trolley ─────────────────────────────────────────────────────────── */
+
+/** It rolls in from the right at the start of a round. */
+.psn-cart {
+  position: relative;
+  animation: psn-roll-in 1.3s cubic-bezier(0.22, 0.8, 0.32, 1) both;
+}
+@keyframes psn-roll-in {
+  from {
+    translate: 80cqw 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+.psn-trolley {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-right: calc(var(--psn-p) * 0.2);
+}
+/** The top shelf the snacks stand on. */
+.psn-trolley-shelf {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  height: var(--psn-p);
+  align-items: flex-end;
+  gap: calc(var(--psn-p) * 0.14);
+  padding: 0 calc(var(--psn-p) * 0.26);
+}
+.psn-trolley-plate {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: calc(var(--psn-p) * 0.14);
+  margin-top: calc(var(--psn-p) * -0.05);
+  border-radius: calc(var(--psn-p) * 0.07);
+  background: linear-gradient(#ffffff, #d3d9e2 65%, #b3bcc9);
+  box-shadow: 0 calc(var(--psn-p) * 0.03) 0 #8f9aab;
+}
+.psn-trolley-body {
+  position: relative;
+  display: flex;
+  height: calc(var(--psn-p) * 0.78);
+  gap: calc(var(--psn-p) * 0.1);
+  margin: 0 calc(var(--psn-p) * 0.1);
+  padding: calc(var(--psn-p) * 0.17) calc(var(--psn-p) * 0.12) calc(var(--psn-p) * 0.1);
+  overflow: hidden;
+  border-radius: 0 0 calc(var(--psn-p) * 0.1) calc(var(--psn-p) * 0.1);
+  background: linear-gradient(
+    90deg,
+    #a7b1bf 0%,
+    #e9edf2 18%,
+    #d9dfe6 48%,
+    #f6f8fa 66%,
+    #c3cbd6 88%,
+    #a2acba 100%
+  );
+  box-shadow: inset 0 calc(var(--psn-p) * -0.05) 0 rgba(60, 70, 90, 0.22);
+}
+/** The airline's red stripe along the top of the cart. */
+.psn-trolley-stripe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--psn-p) * 0.03);
+  height: calc(var(--psn-p) * 0.06);
+  background: #e8574a;
+}
+.psn-trolley-drawer {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  border-radius: calc(var(--psn-p) * 0.05);
+  background: linear-gradient(#f5f7fa, #d4dae3);
+  box-shadow: inset 0 0 0 calc(var(--psn-p) * 0.018) #a9b3c1;
+}
+.psn-trolley-pull {
+  display: block;
+  width: 34%;
+  height: calc(var(--psn-p) * 0.06);
+  border-radius: 999px;
+  background: #8e99a9;
+}
+/** The push handle, on the right. */
+.psn-trolley-handle {
+  position: absolute;
+  right: 0;
+  top: calc(var(--psn-p) * 0.9);
+  display: block;
+  width: calc(var(--psn-p) * 0.3);
+  height: calc(var(--psn-p) * 0.62);
+  border: calc(var(--psn-p) * 0.065) solid #8e99a9;
+  border-left: 0;
+  border-radius: 0 calc(var(--psn-p) * 0.14) calc(var(--psn-p) * 0.14) 0;
+}
+.psn-trolley-wheels {
+  display: flex;
+  height: calc(var(--psn-p) * 0.22);
+  justify-content: space-between;
+  margin-top: calc(var(--psn-p) * -0.04);
+  padding: 0 calc(var(--psn-p) * 0.3);
+}
+.psn-wheel {
+  display: grid;
+  width: calc(var(--psn-p) * 0.24);
+  height: calc(var(--psn-p) * 0.24);
+  place-items: center;
+  border-radius: 50%;
+  background: #3e4552;
+  box-shadow: inset 0 0 0 calc(var(--psn-p) * 0.025) #596273;
+}
+/** A spoke: it spins while the trolley rolls. */
+.psn-wheel-hub {
+  display: block;
+  width: 64%;
+  height: 20%;
+  border-radius: 999px;
+  background: #c9d0da;
+}
+.psn-trolley--rolling .psn-wheel-hub {
+  animation: psn-spin 0.32s linear infinite;
+}
+@keyframes psn-spin {
+  to {
+    rotate: -1turn;
+  }
+}
+
+/* ── One snack on the trolley (a button) ─────────────────────────────────── */
+
+.psn-item {
+  position: relative;
+  display: block;
+  width: var(--psn-p);
+  height: var(--psn-p);
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.psn-item.psn-item--live {
+  cursor: pointer;
+}
+.psn-item-pic {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 2%;
+  bottom: 8%;
+  z-index: 1;
+  display: block;
+}
+.psn-item-shadow {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  bottom: 2%;
+  height: 12%;
+  border-radius: 50%;
+  background: rgba(40, 50, 70, 0.22);
+}
+/** The hint (after a miss, or a long wait): a gold glow round the snack. */
+.psn-item-ring {
+  position: absolute;
+  inset: -8%;
+  border-radius: 30%;
+  opacity: 0;
+  pointer-events: none;
+}
+.psn-item.psn-item--hint .psn-item-ring {
+  opacity: 1;
+  background: rgba(255, 214, 90, 0.4);
+  box-shadow:
+    0 0 0 0.6cqh #ffc93c,
+    0 0 2.6cqh 0.8cqh rgba(255, 201, 60, 0.7);
+  animation: psn-hint 1.2s ease-in-out infinite;
+}
+@keyframes psn-hint {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.07;
+  }
+}
+
+/* ── Window Spy: the big window, the pictures under it ───────────────────── */
+
+.psn-spy {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--psn-cg);
+  padding-bottom: var(--psn-spy-pad);
+}
+.psn-window {
+  position: relative;
+  flex: none;
+  height: var(--psn-wh);
+  aspect-ratio: var(--psn-wa);
+  padding: calc(var(--psn-wh) * 0.075);
+  border-radius: calc(var(--psn-wh) * 0.46);
+  background: linear-gradient(170deg, #fffdf8 0%, #f3ecdf 55%, #e3d8c3 100%);
+  box-shadow:
+    0 calc(var(--psn-wh) * 0.028) 0 #cbbda5,
+    0 calc(var(--psn-wh) * 0.06) calc(var(--psn-wh) * 0.09) rgba(70, 50, 20, 0.25);
+}
+/** The frame's inner step, down to the glass. */
+.psn-window-bevel {
+  position: absolute;
+  inset: calc(var(--psn-wh) * 0.04);
+  border-radius: calc(var(--psn-wh) * 0.42);
+  background: linear-gradient(#ddd1bb, #efe8da);
+}
+.psn-window-glass {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: calc(var(--psn-wh) * 0.385);
+  background: linear-gradient(180deg, #3f9fe8 0%, #84c7f3 42%, #c8ecff 78%, #e8f7ff 100%);
+}
+/** The blind, pulled almost all the way up. */
+.psn-window-blind {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: block;
+  height: 11%;
+  background: linear-gradient(#f7f2e8, #e7dece);
+  box-shadow: 0 calc(var(--psn-wh) * 0.012) 0 #d2c6b0;
+}
+.psn-window-tab {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--psn-wh) * -0.035);
+  display: block;
+  width: calc(var(--psn-wh) * 0.1);
+  height: calc(var(--psn-wh) * 0.035);
+  margin-left: calc(var(--psn-wh) * -0.05);
+  border-radius: 0 0 999px 999px;
+  background: #d2c6b0;
+}
+/** The glass: its shaded rim and a soft glint. */
+.psn-window-glint {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    transparent 58%,
+    rgba(255, 255, 255, 0.22) 60% 66%,
+    transparent 68%
+  );
+  box-shadow: inset 0 calc(var(--psn-wh) * 0.02) calc(var(--psn-wh) * 0.05) rgba(0, 40, 90, 0.35);
+  pointer-events: none;
+}
+
+/* the view outside */
+.psn-sky {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.psn-sky-sun {
+  position: absolute;
+  right: 12%;
+  top: 17%;
+  display: block;
+  width: 17%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffe27a 0 44%,
+    rgba(255, 226, 122, 0.4) 46% 64%,
+    transparent 66%
+  );
+}
+/** A cloud's track is the glass's width: it drifts right to left forever. */
+.psn-cloud-track {
+  position: absolute;
+  inset: 0;
+  display: block;
+  animation: psn-drift var(--psn-cloud-d) linear infinite;
+  animation-delay: var(--psn-cloud-at);
+}
+@keyframes psn-drift {
+  from {
+    translate: 100% 0;
+  }
+  to {
+    translate: -100% 0;
+  }
+}
+.psn-cloud {
+  position: absolute;
+  left: 30%;
+  display: block;
+  height: auto;
+}
+.psn-wing {
+  position: absolute;
+  z-index: 3;
+  left: -1%;
+  bottom: -1%;
+  display: block;
+  width: 72%;
+  height: 36%;
+}
+
+/** What flies past: a track as wide as the glass (framer moves it). */
+.psn-flight {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+.psn-flyer {
+  position: absolute;
+  left: 37%;
+  top: 20%;
+  display: block;
+  width: 26%;
+  aspect-ratio: 1;
+  animation: psn-bob 0.45s ease-in-out infinite alternate;
+}
+@keyframes psn-bob {
+  from {
+    translate: 0 -3%;
+  }
+  to {
+    translate: 0 3%;
+  }
+}
+/** Found: it waves as it flies past again. */
+.psn-flyer.psn-flyer--happy {
+  animation: psn-wave 0.5s ease-in-out infinite alternate;
+}
+@keyframes psn-wave {
+  from {
+    rotate: -14deg;
+    translate: 0 -4%;
+  }
+  to {
+    rotate: 14deg;
+    translate: 0 4%;
+  }
+}
+.psn-flyer-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.psn-flyer-pic.psn-flyer-pic--mirror {
+  scale: -1 1;
+}
+/* the home card's still bird */
+.psn-flight--still .psn-flyer {
+  left: 30%;
+  top: 22%;
+  animation: none;
+}
+
+/** "Look again": a pill sitting on the frame's bottom edge. */
+.psn-again {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 0;
+  display: flex;
+  height: var(--psn-again);
+  align-items: center;
+  gap: 0.45em;
+  padding: 0 1.1em;
+  translate: -50% 50%;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(#4a97ec, #2f7fd8);
+  box-shadow:
+    0 calc(var(--psn-again) * 0.1) 0 #1f5da6,
+    0 calc(var(--psn-again) * 0.22) calc(var(--psn-again) * 0.3) rgba(20, 40, 90, 0.3);
+  color: #ffffff;
+  font-size: max(15px, calc(var(--psn-again) * 0.4));
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0.6;
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  animation: psn-pop-in 0.35s ease-out both;
+}
+.psn-again.psn-again--live {
+  opacity: 1;
+  cursor: pointer;
+}
+.psn-eye {
+  display: block;
+  width: 1.5em;
+  height: auto;
+}
+@keyframes psn-pop-in {
+  from {
+    scale: 0.4;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+/* the three pictures */
+.psn-choices {
+  display: flex;
+  width: calc(var(--psn-c) * 3.6);
+  height: var(--psn-c);
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--psn-c) * 0.3);
+}
+.psn-card {
+  position: relative;
+  display: block;
+  width: var(--psn-c);
+  height: var(--psn-c);
+  flex: none;
+  padding: calc(var(--psn-c) * 0.12);
+  border: calc(var(--psn-c) * 0.04) solid #ffffff;
+  border-radius: calc(var(--psn-c) * 0.24);
+  background: linear-gradient(#ffffff, #e6f2ff);
+  box-shadow:
+    0 calc(var(--psn-c) * 0.06) 0 #b3c6dc,
+    0 calc(var(--psn-c) * 0.12) calc(var(--psn-c) * 0.16) rgba(20, 40, 80, 0.22);
+  cursor: default;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.psn-card.psn-card--live {
+  cursor: pointer;
+}
+.psn-card-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.psn-card-ring {
+  position: absolute;
+  inset: calc(var(--psn-c) * -0.1);
+  border-radius: calc(var(--psn-c) * 0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+.psn-card.psn-card--hint .psn-card-ring {
+  opacity: 1;
+  box-shadow:
+    0 0 0 calc(var(--psn-c) * 0.045) #ffc93c,
+    0 0 calc(var(--psn-c) * 0.2) calc(var(--psn-c) * 0.06) rgba(255, 201, 60, 0.7);
+  animation: psn-hint 1.2s ease-in-out infinite;
+}
+.psn-card.psn-card--right {
+  border-color: #34a95a;
+  background: linear-gradient(#f1fff5, #c6f0d4);
+  box-shadow:
+    0 calc(var(--psn-c) * 0.06) 0 #1c7a45,
+    0 calc(var(--psn-c) * 0.12) calc(var(--psn-c) * 0.16) rgba(20, 80, 40, 0.25);
+}
+
+/* ── A module in miniature (its home card's own size container) ──────────── */
+
+.psn-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5cqh;
+  padding-bottom: 9cqh;
+  --psn-s: 44cqh;
+  --pls-s: 44cqh;
+  --psn-p: 22cqh;
+  --psn-wh: 76cqh;
+  --psn-wa: 1.3;
+}
+.psn-mini.psn-mini--window {
+  align-items: center;
+  padding-bottom: 0;
+}
+.psn-mini-cart {
+  display: block;
+}
+/* a wide, short card picture (upright phones): draw the mini bigger */
+@container (min-aspect-ratio: 2 / 1) {
+  .psn-mini {
+    --psn-s: 60cqh;
+    --pls-s: 60cqh;
+    --psn-p: 30cqh;
+    --psn-wh: 90cqh;
+    padding-bottom: 6cqh;
+  }
+}
+
+/* ── A phone held sideways ───────────────────────────────────────────────── */
+
+@container ng (max-height: 520px) {
+  .psn-play {
+    --psn-s: min(15cqw, 28cqh);
+    --psn-p: min(15cqh, 10cqw);
+    --psn-g: 2.5cqh;
+    --psn-wh: min(64cqh, 44cqw);
+    --psn-c: min(21cqh, 13cqw);
+  }
+  /* the window on the left, the pictures in a column on its right; room
+     under the window for the Look again pill */
+  .psn-spy {
+    flex-direction: row;
+    justify-content: center;
+    gap: 7cqw;
+    padding-bottom: 0;
+  }
+  .psn-window {
+    margin-bottom: calc(var(--psn-again) * 0.5);
+  }
+  .psn-play--window .pls-cabin {
+    --pls-floor: 12cqh;
+  }
+  .psn-choices {
+    width: var(--psn-c);
+    height: calc(var(--psn-c) * 3.36);
+    flex-direction: column;
+    gap: calc(var(--psn-c) * 0.18);
+  }
+}
+
+/* ── A phone held upright: the seats across the middle, the trolley under;
+   the window on top, the pictures in a row under it ─────────────────────── */
+
+@container ng (orientation: portrait) {
+  .psn-play {
+    --psn-s: min(27cqw, 14cqh);
+    --psn-p: min(18cqw, 9cqh);
+    --psn-g: 3cqh;
+    --psn-gap: calc(var(--psn-s) * 0.2);
+    --psn-lift: 14cqh;
+    --psn-main-b: 4cqh;
+    --psn-wh: min(74cqw, 36cqh);
+    --psn-wa: 1.1;
+    --psn-c: min(25cqw, 13cqh);
+    --psn-cg: 7cqh;
+    --psn-spy-pad: 11cqh;
+  }
+  .psn-play .pls-cabin {
+    --pls-bins: 17cqh;
+    --pls-win: 40cqw;
+  }
+}
+@media (orientation: portrait) {
+  /* the teacher is hidden: the board may use the bottom of the screen */
+  .psn-game .ng-main {
+    bottom: 4cqh;
+  }
+}

@@ -1,165 +1,204 @@
 /**
  * Burj Lift — the board: Burj Khalifa's tower (its `bjk-` pieces, sized by
- * `--bjk-f` / `--bjk-u` set here), a sign beside every floor, the glass lift
- * on the tower's right side, and the call station with the two big buttons.
+ * `--bjk-f` / `--bjk-u` set here) on a short ground floor, a sign beside each
+ * of floors 1–4, the glass lift on the tower's right side, the child waiting
+ * on the sand by the lift, and the call station with the two big buttons.
  *
- * The game runs in Count & Match's shell, so everything is sized in the `ng`
- * container's units (1cqh = 1% of the stage's height). The board is laid out
- * from ONE line, the tower's centre (`--bjl-tc`): the signs stand left of it,
- * the lift's shaft right of it, in the tower's own units.
+ * The game runs in Count & Match's shell (guided: the guide bar is the top
+ * centre), so everything is sized in the `ng` container's units (1cqh = 1% of
+ * the stage's height). The sizes are set on the round's screen (`.bjl-play`)
+ * so the carried child in the overlay shares them. The board is ONE row,
+ * centred on the stage: signs · tower · shaft · the waiting child · station;
+ * the signs and the shaft tuck over the podium's ends by negative margins, so
+ * they sit at the tower's own distances (in width units from its centre).
+ *
+ * The lift's stops are evenly a floor apart: the ground (stop 0, the car on
+ * the sand) and floors 1–4 — so the lobby tier under floor 1 is a floor less
+ * the podium tall.
  */
 
-/* the board takes the whole stage; its parts keep clear of the pills */
+.bjl-play {
+  /* under the pills and the guide bar */
+  --bjl-top: 64px;
+  --bjl-bot: 1.2cqh;
+  --bjl-h: calc(100cqh - var(--bjl-top) - var(--bjl-bot));
+  /* one floor: five floors' height (the lobby and floors 1–4) and a spire
+     fit; on a 568 × 320 phone that is 44 px, and a taller stage gives the
+     spire more room before the floors grow */
+  --bjk-f: min(calc(var(--bjl-h) / 5.7), max(44px, calc(var(--bjl-h) / 6.5)), 13cqw);
+  --bjk-u: max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75));
+  /* the podium, the lobby, the car, a sign, the waiting child, a bubble */
+  --bjl-pod: calc(var(--bjk-u) * 0.5);
+  --bjl-lobby: calc(var(--bjk-f) - var(--bjl-pod));
+  --bjl-cw: calc(var(--bjk-u) * 1.08);
+  --bjl-ch: min(calc(var(--bjk-f) * 0.94), calc(var(--bjl-cw) * 1.45));
+  --bjl-plate: min(calc(var(--bjk-f) * 0.8), calc(var(--bjk-u) * 1.05));
+  --bjl-kid: min(calc(var(--bjk-f) * 1.45), calc(var(--bjk-u) * 1.8));
+  --bjl-wish: min(calc(var(--bjk-f) * 0.78), var(--bjk-u));
+  --bjl-yard: max(calc(var(--bjl-wish) * 2.05), calc(var(--bjl-kid) * 0.8), 52px);
+  --bjl-btn: max(56px, min(19cqh, 11cqw, 130px));
+}
+
+/* the board takes the stage under the top row; nothing else positions it */
 .apa-game .bjl-play .ng-main {
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: var(--bjl-top);
+  bottom: var(--bjl-bot);
   display: block;
 }
 .bjl-board {
-  /* one floor's height: six floors, the podium and the spire fit any
-     landscape stage, and floor six stays under the pills (a 568 × 320
-     phone: 38 px floors, floor six's top at 64 px) */
-  --bjk-f: min(12cqh, 9cqw);
-  --bjk-u: max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75));
-  /* the podium's height, the tower's centre line, the car, a sign, a button */
-  --bjl-pod: calc(var(--bjk-u) * 0.5);
-  --bjl-tc: 32cqw;
-  --bjl-cw: var(--bjk-u);
-  --bjl-ch: min(calc(var(--bjk-f) * 0.94), calc(var(--bjl-cw) * 1.3));
-  --bjl-sign: min(calc(var(--bjk-f) * 0.92), var(--bjk-u));
-  --bjl-bub: max(40px, min(var(--bjk-f), calc(var(--bjk-u) * 1.15)));
-  --bjl-btn: max(56px, min(21cqh, 12cqw, 140px));
   position: relative;
   width: 100%;
   height: 100%;
 }
-
-/* ── The tower ───────────────────────────────────────────────────────────── */
-
-/** As wide as the podium, centred on the tower's centre line. */
-.bjl-rig {
-  position: absolute;
-  left: calc(var(--bjl-tc) - var(--bjk-u) * 1.45);
-  width: calc(var(--bjk-u) * 2.9);
-  top: 1.5cqh;
-  bottom: 2cqh;
-}
-.bjl-towerbox {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-}
-.bjl-towerbox .bjl-spire-slot {
-  flex: 0 1 calc(var(--bjk-f) * 2.4);
-}
-
-/* ── The signs: one row a floor, the sign at its left ───────────────────── */
-
-.bjl-rows {
-  position: absolute;
-  z-index: 2;
-  left: calc(50% - var(--bjk-u) * 1.15 - var(--bjl-sign));
-  /* the rows reach right to the shaft, so a floor is one wide target */
-  right: calc(50% - var(--bjk-u) * 1.05);
-  bottom: var(--bjl-pod);
-  height: calc(var(--bjk-f) * 6);
-}
 .bjl-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+}
+
+/* ── The signs: one row a floor, the sign at its right ─────────────────── */
+
+.bjl-signs {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  width: calc(var(--bjl-plate) * 1.95);
+  height: calc(var(--bjk-f) * 4);
+  /* floor 1 starts a floor above the sand; the signs end 1.07 units left of
+     the tower's centre (the podium's edge is 1.45) */
+  margin-bottom: var(--bjk-f);
+  margin-right: calc(var(--bjk-u) * -0.38);
+}
+.bjl-signrow {
   position: absolute;
-  left: 0;
   right: 0;
   bottom: calc(var(--bjk-f) * var(--bjl-i));
   display: flex;
   align-items: center;
   height: var(--bjk-f);
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: inherit;
-}
-.bjl-row.bjl-row--tap {
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-.bjl-row.bjl-row--tap:focus-visible {
-  outline: 3px solid #ffffff;
-  outline-offset: -3px;
-  border-radius: calc(var(--bjl-sign) * 0.22);
 }
 
-/** One sign: a white plate in a gold frame (a picture), or a colour. */
+/** One sign: a white plate in a gold frame — the picture (or colour) and
+    the number in its green disc. */
 .bjl-sign {
+  --bjl-n: calc(var(--bjl-plate) * 0.66);
   position: relative;
-  display: block;
+  display: flex;
   flex: none;
+  align-items: center;
+  gap: calc(var(--bjl-plate) * 0.08);
   box-sizing: border-box;
-  width: var(--bjl-sign);
-  height: var(--bjl-sign);
-  /* (a % padding would be a share of the row's width, not the sign's) */
-  padding: calc(var(--bjl-sign) * 0.11);
-  border: max(2px, calc(var(--bjl-sign) * 0.07)) solid #e0a632;
-  border-radius: calc(var(--bjl-sign) * 0.22);
+  height: var(--bjl-plate);
+  padding: 0 calc(var(--bjl-plate) * 0.1);
+  border: max(2px, calc(var(--bjl-plate) * 0.07)) solid #e0a632;
+  border-radius: calc(var(--bjl-plate) * 0.24);
   background: #ffffff;
-  box-shadow: 0 calc(var(--bjl-sign) * 0.08) 0 #b07415;
+  box-shadow: 0 calc(var(--bjl-plate) * 0.08) 0 #b07415;
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
-.bjl-sign-pic {
+.bjl-sign-face,
+.bjl-wish-pic {
   display: block;
-  width: 100%;
-  height: 100%;
+  flex: none;
+  width: var(--bjl-n);
+  height: var(--bjl-n);
 }
-.bjl-sign.bjl-sign--colour {
-  padding: 0;
-  border-color: #ffffff;
-  background:
-    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.5) 0 18%, transparent 19%),
-    var(--bjl-face);
-  box-shadow: 0 calc(var(--bjl-sign) * 0.08) 0 var(--bjl-edge);
+/** The lift is standing at this floor: a warm gold halo. */
+.bjl-sign.bjl-sign--here {
+  box-shadow:
+    0 calc(var(--bjl-plate) * 0.08) 0 #b07415,
+    0 0 0 calc(var(--bjl-plate) * 0.1) rgba(255, 211, 77, 0.85);
 }
-/** The passenger's floor, after a miss (or while the hand shows it). */
-.bjl-sign--hint::after {
-  content: "";
-  position: absolute;
-  inset: calc(var(--bjl-sign) * -0.2);
-  border: max(3px, calc(var(--bjl-sign) * 0.1)) solid #ffd34d;
-  border-radius: calc(var(--bjl-sign) * 0.32);
-  pointer-events: none;
-  animation: bjl-pulse 1.2s ease-in-out infinite;
-}
-/** Arrived: a green frame. */
+/** A child got out here: a green frame. */
 .bjl-sign.bjl-sign--reached {
   border-color: #34a95a;
   box-shadow:
-    0 calc(var(--bjl-sign) * 0.08) 0 #1c7a45,
-    0 0 0 calc(var(--bjl-sign) * 0.1) rgba(52, 169, 90, 0.45);
+    0 calc(var(--bjl-plate) * 0.08) 0 #1c7a45,
+    0 0 0 calc(var(--bjl-plate) * 0.1) rgba(52, 169, 90, 0.45);
 }
-@keyframes bjl-pulse {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 1;
-  }
+
+/** A floor's number: white, big, in a green disc. */
+.bjl-num {
+  display: grid;
+  flex: none;
+  place-items: center;
+  box-sizing: border-box;
+  width: var(--bjl-n);
+  height: var(--bjl-n);
+  border: max(2px, calc(var(--bjl-n) * 0.08)) solid #ffffff;
+  border-radius: 50%;
+  background: #2f9e58;
+  box-shadow: 0 0 0 1px #1b6d3a;
+  color: #ffffff;
+  font-size: calc(var(--bjl-n) * 0.66);
+  line-height: 1;
+}
+/** A colour, as a glossy tile. */
+.bjl-swatch {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 24%;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.55) 0 16%, transparent 17%),
+    var(--bjl-face);
+  box-shadow: inset 0 calc(var(--bjl-n) * -0.09) 0 var(--bjl-edge);
+}
+
+/* ── The tower: spire, the lobby and floors 1–4, the podium ─────────────── */
+
+.bjl-towerbox {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: calc(var(--bjk-u) * 2.9);
+  height: 100%;
+}
+.bjl-towerbox .bjl-spire-slot {
+  flex: 0 1 calc(var(--bjk-f) * 2.4);
+}
+/** The ground floor: a floor less the podium tall, so the lift's stops are
+    all a floor apart. */
+.bjl-lobby {
+  --bjk-f: var(--bjl-lobby);
+}
+/** Colour Floors' evening halo, kept within the signs and the lift (so it
+    never widens the board one way). */
+.bjl-towerbox .bjl-glow {
+  width: calc(var(--bjk-u) * 4.2);
+}
+/** A child who got here, looking out of their floor's window. */
+.bjl-window-kid {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: calc(var(--bjk-f) * 0.1);
+  display: block;
+  width: calc(var(--bjk-u) * 0.86);
+  height: calc(var(--bjk-f) * 0.8);
+  margin-left: calc(var(--bjk-u) * -0.43);
+  pointer-events: none;
 }
 
 /* ── The lift ────────────────────────────────────────────────────────────── */
 
-/** The shaft: from the sand to just over floor six, right of the tower. */
+/** The shaft: from the sand to just over floor 4, right of the tower. */
 .bjl-shaft {
-  position: absolute;
+  position: relative;
   z-index: 3;
-  left: calc(50% + var(--bjk-u) * 1.05);
-  bottom: 0;
+  flex: none;
   width: var(--bjl-cw);
-  height: calc(var(--bjl-pod) + var(--bjk-f) * 6.25);
+  height: calc(var(--bjk-f) * 5.3);
+  margin-left: calc(var(--bjk-u) * -0.4);
   pointer-events: none;
 }
 .bjl-rail {
@@ -189,24 +228,25 @@
 .bjl-arm {
   position: absolute;
   right: calc(100% - 2px);
-  bottom: calc(var(--bjl-pod) + var(--bjk-f) * (var(--bjl-i) + 0.5));
+  bottom: calc(var(--bjk-f) * (var(--bjl-i) + 0.5));
   width: calc(var(--bjk-u) * var(--bjl-reach) + 2px);
   height: max(3px, calc(var(--bjk-f) * 0.07));
   border-radius: 2px;
   background: #b98a2c;
 }
 
-/** The car: its ride is a CSS tween of `translate` (its length set inline). */
+/** The car: its ride is a CSS tween of `translate`, one floor (`--bjk-f`) a
+    stop; 560 ms a floor, as MOVE_MS in LiftRound. */
 .bjl-car {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: var(--bjl-pod);
+  bottom: calc(var(--bjl-ch) * 0.08);
   z-index: 1;
   height: var(--bjl-ch);
   pointer-events: none;
-  transition-property: translate;
-  transition-timing-function: cubic-bezier(0.45, 0, 0.3, 1);
+  translate: 0 calc(var(--bjk-f) * var(--bjl-level, 0) * -1);
+  transition: translate 560ms cubic-bezier(0.45, 0, 0.3, 1);
 }
 .bjl-car-cap {
   position: absolute;
@@ -237,81 +277,151 @@
     transparent 1px 33.3%
   );
 }
-/** The passenger, standing on the cabin floor (framer moves it: no CSS
-    transform here). */
-.bjl-rider {
+/** Where a rider stands (framer moves the rider: no CSS transform here). */
+.bjl-rider-seat {
   position: absolute;
   left: 6%;
   right: 6%;
   bottom: 3%;
   z-index: 1;
   display: block;
-  height: 84%;
+  height: 90%;
+}
+.bjl-rider {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+/** The glass doors: they slide apart into the frame. */
+.bjl-car-doors {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.bjl-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: linear-gradient(rgba(226, 245, 255, 0.5), rgba(170, 214, 242, 0.42));
+  transition: translate 0.32s ease;
+}
+.bjl-door--l {
+  left: 0;
+  border-right: max(1px, calc(var(--bjk-u) * 0.03)) solid #e0a632;
+}
+.bjl-door--r {
+  right: 0;
+  border-left: max(1px, calc(var(--bjk-u) * 0.03)) solid #e0a632;
+}
+.bjl-door--l.bjl-door--open {
+  translate: -100% 0;
+}
+.bjl-door--r.bjl-door--open {
+  translate: 100% 0;
 }
 .bjl-car-glass {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   border-radius: inherit;
   background: linear-gradient(
     115deg,
     transparent 0 20%,
-    rgba(255, 255, 255, 0.5) 27%,
+    rgba(255, 255, 255, 0.45) 27%,
     transparent 36%,
     transparent 62%,
-    rgba(255, 255, 255, 0.3) 66%,
+    rgba(255, 255, 255, 0.26) 66%,
     transparent 72%
   );
+}
+/** A child is being carried: "drop me here" (brighter under the finger). */
+.bjl-car-cabin--open::after,
+.bjl-car-cabin--over::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--bjk-u) * -0.2);
+  z-index: 4;
+  border: max(3px, calc(var(--bjk-u) * 0.09)) solid #ffd34d;
+  border-radius: calc(var(--bjk-u) * 0.26);
+  animation: bjl-pulse 1.1s ease-in-out infinite;
+}
+.bjl-car-cabin--over::after {
+  border-color: #ffbf1f;
+  box-shadow: 0 0 calc(var(--bjk-u) * 0.3) rgba(255, 200, 60, 0.9);
+  animation: none;
 }
 .bjl-car-sill {
   position: absolute;
   top: 100%;
   left: -8%;
   right: -8%;
-  height: calc(var(--bjl-ch) * 0.1);
+  height: calc(var(--bjl-ch) * 0.08);
   border-radius: 0 0 3px 3px;
   background: linear-gradient(#e7b84c, #a8741a);
 }
-
-/** Up or Down?: the bubble beside the car shows the floor's picture. */
-.bjl-bubble {
+/** What the rider wants, riding beside the car (a bubble pointing at it). */
+.bjl-car-wish {
   position: absolute;
   left: calc(100% + var(--bjk-u) * 0.24);
-  top: 0;
-  bottom: 0;
-  display: grid;
-  place-items: center;
-  width: var(--bjl-bub);
-  height: var(--bjl-bub);
-  margin: auto 0;
-  border: max(2px, calc(var(--bjl-bub) * 0.06)) solid #e0a632;
-  border-radius: 28%;
-  background: #ffffff;
-  box-shadow: 0 calc(var(--bjl-bub) * 0.07) 0 rgba(120, 80, 20, 0.35);
+  bottom: calc((var(--bjl-ch) - var(--bjl-wish)) / 2);
+  display: flex;
+  align-items: flex-end;
 }
-.bjl-bubble::before {
-  content: "";
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  margin-top: calc(var(--bjl-bub) * -0.13);
-  border: calc(var(--bjl-bub) * 0.13) solid transparent;
-  border-right-color: #e0a632;
+.bjl-car-wish .bjl-wish--balloon {
+  margin-bottom: calc(var(--bjl-wish) * -0.3);
 }
-.bjl-bubble-pic {
-  display: block;
-  width: 78%;
-  height: 78%;
+@keyframes bjl-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-/** Picture Floors: the balloon, held up beside the car, bobbing. */
-.bjl-balloon {
+/* ── What a child wants ──────────────────────────────────────────────────── */
+
+/** Up or Down?: a bubble with the floor's picture and number. */
+.bjl-wish--bubble {
+  --bjl-n: calc(var(--bjl-wish) * 0.66);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--bjl-wish) * 0.08);
+  box-sizing: border-box;
+  height: var(--bjl-wish);
+  padding: 0 calc(var(--bjl-wish) * 0.12);
+  border: max(2px, calc(var(--bjl-wish) * 0.06)) solid #e0a632;
+  border-radius: calc(var(--bjl-wish) * 0.32);
+  background: #ffffff;
+  box-shadow: 0 calc(var(--bjl-wish) * 0.07) 0 rgba(120, 80, 20, 0.35);
+}
+.bjl-wish--bubble::before {
+  content: "";
   position: absolute;
-  left: calc(100% + var(--bjk-u) * 0.06);
-  bottom: 0;
+  border: calc(var(--bjl-wish) * 0.14) solid transparent;
+}
+.bjl-wish--down::before {
+  left: 50%;
+  top: 100%;
+  margin-left: calc(var(--bjl-wish) * -0.14);
+  border-top-color: #e0a632;
+}
+.bjl-wish--left::before {
+  right: 100%;
+  top: 50%;
+  margin-top: calc(var(--bjl-wish) * -0.14);
+  border-right-color: #e0a632;
+}
+/** Colour Floors: a balloon on its string (the string's end at the bottom). */
+.bjl-wish--balloon {
   display: block;
-  width: calc(var(--bjk-u) * 0.62);
-  height: calc(var(--bjk-u) * 1.08);
+  width: calc(var(--bjl-wish) * 0.7);
+  height: calc(var(--bjl-wish) * 1.58);
   animation: bjl-bob 1.8s ease-in-out infinite;
 }
 .bjl-balloon-art {
@@ -325,44 +435,124 @@
     translate: 0 0;
   }
   50% {
-    translate: 0 calc(var(--bjk-u) * -0.06);
+    translate: 0 calc(var(--bjl-wish) * -0.06);
   }
 }
 
-/* ── Beside the tower: who rides next, and the call station ─────────────── */
+/* ── The child waiting on the sand (and carried) ────────────────────────── */
+
+.bjl-kid-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bjl-pax {
+  position: relative;
+  display: block;
+  width: calc(var(--bjl-kid) * 0.62);
+  height: var(--bjl-kid);
+}
+.bjl-pax-fig {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+/* the bubble over the head, centred however wide it is */
+.bjl-pax .bjl-wish--bubble {
+  position: absolute;
+  left: -300%;
+  right: -300%;
+  bottom: calc(100% + var(--bjl-wish) * 0.24);
+  width: max-content;
+  margin: 0 auto;
+}
+/* the balloon's string in the right hand */
+.bjl-pax .bjl-wish--balloon {
+  position: absolute;
+  left: calc(70% - var(--bjl-wish) * 0.35);
+  bottom: 34%;
+}
+.bjl-yard {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  justify-content: center;
+  width: var(--bjl-yard);
+  margin-left: calc(var(--bjk-u) * 0.2);
+}
+.bjl-pax-btn {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0 max(4px, calc((48px - var(--bjl-kid) * 0.62) / 2));
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* a soft shadow on the sand */
+.bjl-pax-btn::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--bjl-kid) * -0.03);
+  width: calc(var(--bjl-kid) * 0.5);
+  height: calc(var(--bjl-kid) * 0.07);
+  margin-left: calc(var(--bjl-kid) * -0.25);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(90, 60, 20, 0.32), transparent);
+}
+.bjl-pax-btn.is-away {
+  visibility: hidden;
+}
+.bjl-pax-btn:focus-visible {
+  outline: 3px solid #2d4a7a;
+  outline-offset: 2px;
+}
+/* walking up: a little bob */
+.bjl-pax-btn--walk .bjl-pax-fig {
+  animation: bjl-walk 0.3s ease-in-out infinite;
+}
+@keyframes bjl-walk {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 calc(var(--bjl-kid) * -0.04);
+  }
+}
+/** The child under the finger (and flying): centred on the point. */
+.bjl-carried {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  margin-left: calc(var(--bjl-kid) * -0.31);
+  margin-top: calc(var(--bjl-kid) * -0.5);
+}
+.pl-drag-ghost .bjl-carried {
+  filter: drop-shadow(0 1.2cqh 1cqh rgba(40, 30, 60, 0.3));
+}
+
+/* ── The call station ────────────────────────────────────────────────────── */
 
 .bjl-side {
-  position: absolute;
-  left: 58cqw;
-  right: 3cqw;
-  top: max(72px, 18cqh);
-  bottom: 3cqh;
   display: flex;
+  flex: none;
   align-items: flex-end;
-  justify-content: center;
-  gap: 4cqw;
-}
-/* the queue takes the room left of the station, so the buttons never move
-   as it empties */
-.bjl-queue {
-  display: flex;
-  flex: 1 1 0;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 1.4cqh;
-  padding-bottom: 0.6cqh;
-}
-.bjl-queue-pic {
-  display: block;
-  width: min(14cqh, 8cqw);
-  height: min(14cqh, 8cqw);
 }
 .bjl-station {
+  position: relative;
+  z-index: 2;
   display: flex;
+  flex: none;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  height: 100%;
+  margin-left: calc(var(--bjk-u) * 0.3);
 }
 /** The brass panel holding the two buttons. */
 .bjl-panel {
@@ -377,9 +567,8 @@
 }
 .bjl-post {
   display: block;
-  flex: 0 1 10cqh;
   width: 2.6cqh;
-  min-height: 2cqh;
+  height: 6cqh;
   border-radius: 0 0 1cqh 1cqh;
   background: linear-gradient(90deg, #8a6a2a, #f0d27a 45%, #8a6a2a);
 }
@@ -399,7 +588,7 @@
   box-shadow: 0 calc(var(--bjl-btn) * 0.09) 0 #b07415;
   color: #ffffff;
   cursor: default;
-  opacity: 0.82;
+  opacity: 0.7;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition:
@@ -455,70 +644,56 @@
   height: 100%;
 }
 
-/* ── A phone held upright: the tower left, tall slender floors; the bubble
-   over the car; the station (or the queue) on the sand at the right ─────── */
+/* ── A screen held upright: the tower sized by the width, the floors taller;
+   the station stands over the waiting child in one column, so the right of
+   the board is never empty (centred whether a child waits or rides), and
+   the riding child's bubble goes over the car ──────────────────────────── */
 
 @container ng (orientation: portrait) {
-  .bjl-board {
-    --bjk-f: min(calc((100cqh - 110px) / 7.6), 22cqw);
-    --bjk-u: min(12cqw, max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
-    --bjl-tc: 34cqw;
-    --bjl-sign: min(calc(var(--bjk-f) * 0.9), calc(var(--bjk-u) * 1.05));
-    --bjl-btn: max(56px, min(24cqw, 11cqh));
+  .bjl-play {
+    --bjl-btn: max(56px, min(17cqw, 9cqh, 110px));
+    /* the tower, the shaft and the column are about 8.2 width units wide */
+    --bjl-uw: calc((100cqw - 24px) / 8.2);
+    --bjk-f: min(calc(var(--bjl-h) / 6.2), calc(var(--bjl-uw) * 2));
+    --bjk-u: min(var(--bjl-uw), max(min(var(--bjk-f), 44px), calc(var(--bjk-f) * 0.75)));
   }
-  .bjl-rig {
-    top: 72px;
+  .bjl-side {
+    flex-direction: column-reverse;
+    gap: 3cqh;
+    margin-left: calc(var(--bjk-u) * 0.2);
   }
-  .bjl-bubble {
-    left: 0;
+  .bjl-yard,
+  .bjl-station {
+    margin-left: 0;
+  }
+  .bjl-panel {
+    gap: 1.6cqh;
+    padding: 1.2cqh;
+    border-width: 0.4cqh;
+    border-radius: 2cqh;
+  }
+  .bjl-post {
+    display: none;
+  }
+  .bjl-car-wish {
+    left: auto;
     right: 0;
-    top: auto;
     bottom: calc(100% + var(--bjl-ch) * 0.24);
-    margin: 0 auto;
   }
-  .bjl-bubble::before {
-    right: auto;
-    left: 50%;
+  .bjl-car-wish .bjl-wish--left::before {
+    left: auto;
+    right: calc(var(--bjl-cw) * 0.5 - var(--bjl-wish) * 0.14);
     top: 100%;
     margin-top: 0;
-    margin-left: calc(var(--bjl-bub) * -0.13);
     border-right-color: transparent;
     border-top-color: #e0a632;
   }
-  .bjl-side {
-    left: calc(var(--bjl-tc) + var(--bjk-u) * 2.2);
-    right: 2cqw;
-    top: 30cqh;
-    bottom: 2cqh;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 3cqh;
+  .bjl-car-wish .bjl-wish--balloon {
+    margin-bottom: calc(var(--bjl-wish) * -0.4);
   }
-  .bjl-station {
-    height: auto;
-  }
-  .bjl-play--updown .bjl-queue {
-    display: none;
-  }
-  .bjl-queue {
-    flex: none;
-    flex-direction: column;
-    gap: 1cqh;
-  }
-  .bjl-queue-pic {
-    width: 17cqw;
-    height: 17cqw;
-  }
-  .bjl-panel {
-    gap: 2.4cqw;
-    padding: 2.4cqw;
-    border-width: 1.2cqw;
-    border-radius: 5cqw;
-  }
-  .bjl-post {
-    flex: none;
-    width: 4cqw;
-    height: 6cqh;
+} /* a phone held upright: the guide bar drops under the pills */
+@container ng (max-width: 480px) {
+  .bjl-play {
+    --bjl-top: 120px;
   }
 }

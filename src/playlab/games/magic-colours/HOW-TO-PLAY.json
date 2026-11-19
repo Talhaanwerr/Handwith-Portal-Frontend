@@ -1,0 +1,7 @@
+{
+  "default": ["Tap each white part.", "Watch the colour pop in!"],
+  "modules": {
+    "roads": ["Tap each part to colour it.", "Then watch it drive away!"],
+    "sky-sea": ["Tap each part to colour it.", "Then watch it fly or sail!"]
+  }
+}

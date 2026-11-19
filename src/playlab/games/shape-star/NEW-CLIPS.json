@@ -1,0 +1,32 @@
+[
+  {
+    "id": "msh-mode-star",
+    "file": "/audio/my-shapes/mode-star.mp3",
+    "text": "Star! Let's learn the star."
+  },
+  {
+    "id": "msh-done-star",
+    "file": "/audio/my-shapes/done-star.mp3",
+    "text": "Now you know stars!"
+  },
+  {
+    "id": "msh-meet-star",
+    "file": "/audio/my-shapes/meet-star.mp3",
+    "text": "This is a star! Tap it."
+  },
+  {
+    "id": "msh-all-star",
+    "file": "/audio/my-shapes/all-star.mp3",
+    "text": "Tap all the stars!"
+  },
+  {
+    "id": "msh-which-star",
+    "file": "/audio/my-shapes/which-star.mp3",
+    "text": "Which one is a star?"
+  },
+  {
+    "id": "msh-build-star",
+    "file": "/audio/my-shapes/build-star.mp3",
+    "text": "Put the stars in the sky!"
+  }
+]

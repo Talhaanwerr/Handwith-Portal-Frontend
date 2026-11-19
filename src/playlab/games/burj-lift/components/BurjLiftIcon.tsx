@@ -1,11 +1,12 @@
 import { BurjTowerArt } from "@shared/components/dubai/BurjTower";
+import { KidArt } from "@games/burj-lift/components/KidArt";
 
 /**
  * The Library card's scene for Burj Lift — a sunny Dubai sky, a low skyline
  * and the sand, the Burj Khalifa in the middle with its glass lift on the
- * side, a penguin riding in it and an up arrow beside. Inline SVG only (the
- * Library page does not load playlab.css); the penguin is the portal's
- * Fluent picture. Nothing moves.
+ * side, the girl riding in it and an up arrow beside. Inline SVG only (the
+ * Library page does not load playlab.css); the girl is the game's own
+ * KidArt. Nothing moves.
  */
 export function BurjLiftIcon() {
   const u = 12;
@@ -55,6 +56,7 @@ export function BurjLiftIcon() {
           fill="#c58a1e"
         />
         <rect x={rail - 0.8} y={carBottom} width={u + 1.6} height="1.8" fill="#c58a1e" />
+        <KidArt who="girl" x={rail + 1.4} y={carBottom - carH + 1} w={u - 2.8} h={carH - 1.6} />
         {/* the big up arrow */}
         <path
           d="M80 36 L92 50 H85 V64 H75 V50 H68 Z"
@@ -64,19 +66,6 @@ export function BurjLiftIcon() {
           strokeLinejoin="round"
         />
       </svg>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/games/fluent3d/penguin.png"
-        alt=""
-        className="absolute"
-        style={{
-          left: `${rail + 1}%`,
-          top: `${carBottom - carH + 1.4}%`,
-          width: `${u - 2}%`,
-          height: `${carH - 2}%`,
-          objectFit: "contain",
-        }}
-      />
     </div>
   );
 }

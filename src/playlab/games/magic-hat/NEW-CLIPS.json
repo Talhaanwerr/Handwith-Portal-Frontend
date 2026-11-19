@@ -1,0 +1,15 @@
+[
+  {
+    "id": "mht-welcome",
+    "file": "/audio/magic-hat/welcome.mp3",
+    "text": "Welcome to Magic Hat Swap!"
+  },
+  { "id": "mht-done", "file": "/audio/magic-hat/done.mp3", "text": "What a magic wizard you are!" },
+  {
+    "id": "mht-mode-swap",
+    "file": "/audio/magic-hat/mode-swap.mp3",
+    "text": "Magic Hat Swap! Put a letter in the hat to make a new word."
+  },
+  { "id": "mht-make", "file": "/audio/magic-hat/make.mp3", "text": "Can you make" },
+  { "id": "mht-all-rhyme", "file": "/audio/magic-hat/all-rhyme.mp3", "text": "They all rhyme!" }
+]

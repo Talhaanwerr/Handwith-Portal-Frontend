@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { playIncorrectSound, playStarPop } from "@shared/audio/sfx";
-import { clipText, playClip, playSequence } from "@shared/audio/voice";
+import { clipText, playClip, playSequence, sayAfter } from "@shared/audio/voice";
 import { useIdleHand } from "@shared/hooks/useIdleHand";
 import { TeachingHand } from "@shared/components/game/TeachingHand";
 import { NgStage } from "@games/number-groups/components/NgStage";
@@ -89,12 +89,18 @@ export function TicketRoundOf({
     onDone,
   });
 
-  // the passenger walks up the aisle, then the line
+  /** The passenger whose question has been said to its end (-1: none yet). */
+  const [heard, setHeard] = useState(-1);
+
+  // the passenger walks up the aisle, then the line — after whatever is being
+  // said (on round one, the module's name), never over it
   useEffect(() => {
     const t = setTimeout(
       () => {
         setArrived(step);
-        void playSequence([findClip(module)]);
+        void sayAfter(findClip(module)).then(() => {
+          if (alive.current) setHeard(step);
+        });
       },
       step === 0 ? WALK_MS + 250 : WALK_MS
     );
@@ -137,8 +143,9 @@ export function TicketRoundOf({
     [live, isSolved, seatedIn, trip, step, sat, trips.length, onMiss, burst, finish]
   );
 
-  // the idle hand (and a miss) points at the seat on the ticket
-  const idle = useIdleHand(live, `${step}-${sat}`);
+  // the idle hand (and a miss) points at the seat on the ticket — its clock
+  // starts once the question has been heard (on round one it comes quickly)
+  const idle = useIdleHand(live && heard === step, `${step}-${sat}`);
   const hint = live && (idle || miss?.step === step);
   const [hand, setHand] = useState<{ x: number; y: number } | null>(null);
   useEffect(() => {
@@ -151,6 +158,9 @@ export function TicketRoundOf({
 
   const paxId = (i: number) => `pls-pax-${module}-${round}-${i}`;
   const walking = arrived !== step;
+  /** The guide bar's line: the passenger's question, or "Try again!" after
+   *  a wrong seat, until the right one is tapped. */
+  const line = miss?.step === step ? "instr-try-again" : findClip(module);
 
   return (
     <NgStage
@@ -159,7 +169,7 @@ export function TicketRoundOf({
       world={<CabinWorld />}
       round={round}
       solved={solved}
-      say={say(clipText(findClip(module)))}
+      say={say(clipText(line))}
       title={title}
       onHome={onHome}
       onExitPortal={onExitPortal}

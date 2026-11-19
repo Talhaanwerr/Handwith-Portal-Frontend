@@ -1,0 +1,27 @@
+[
+  {
+    "id": "psn-welcome",
+    "file": "/audio/plane-snacks/welcome.mp3",
+    "text": "Welcome aboard! It's snack time in the sky!"
+  },
+  {
+    "id": "psn-done",
+    "file": "/audio/plane-snacks/done.mp3",
+    "text": "What a happy flight!"
+  },
+  {
+    "id": "psn-mode-snacks",
+    "file": "/audio/plane-snacks/mode-snacks.mp3",
+    "text": "Snack Trolley! Give each friend the snack they want."
+  },
+  {
+    "id": "psn-mode-window",
+    "file": "/audio/plane-snacks/mode-window.mp3",
+    "text": "Window Spy! Watch what flies past the window."
+  },
+  {
+    "id": "psn-what-want",
+    "file": "/audio/plane-snacks/what-want.mp3",
+    "text": "What does this friend want?"
+  }
+]

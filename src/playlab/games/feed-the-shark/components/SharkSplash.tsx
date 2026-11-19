@@ -63,13 +63,13 @@ export function SharkSplash({ onStart, onExitPortal, hasProgress }: SharkSplashP
               Letters A–Z
             </h1>
             <p className="font-rounded text-sm font-bold text-white/90 drop-shadow-md md:text-base">
-              Feed the shark by matching big and small letters
+              Feed the shark by matching uppercase and lowercase letters
             </p>
             <h2 className="fs-subtitle font-rounded text-2xl font-black md:text-4xl">
               Feed the Shark
             </h2>
             <p className="font-rounded text-plum/70 mt-1 rounded-full bg-white/80 px-4 py-1 text-xs font-bold md:text-sm">
-              Match BIG letters with little letters
+              Match uppercase letters with lowercase letters
             </p>
           </motion.div>
 

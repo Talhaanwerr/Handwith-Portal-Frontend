@@ -101,7 +101,8 @@ export function BeatRoundOf({
     return () => cancelAnimationFrame(raf);
   }, [idle]);
 
-  const prompt = clipText(beats < r.a ? firstClip(r.a) : moreClip(r.b));
+  // the guide bar: "Now … more!" only once it is said (after the rest)
+  const prompt = clipText(more ? moreClip(r.b) : firstClip(r.a));
 
   return (
     <NgStage

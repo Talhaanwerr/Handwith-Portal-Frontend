@@ -560,6 +560,13 @@
 .rkc-lever:disabled {
   cursor: default;
 }
+/* before the first cell: there, but faded and asleep */
+.rkc-lever {
+  transition: opacity 0.3s ease;
+}
+.rkc-lever.is-asleep {
+  opacity: 0.35;
+}
 .rkc-lever-stick {
   position: absolute;
   left: 50%;
@@ -820,4 +827,23 @@
 }
 .rkc-game .ng-main {
   left: 3cqw;
+}
+
+/* Guided (everything centred on the stage): the rocket leans out to the left
+   of its own column, so Count Down's board is set a touch to the right to put
+   what the eye sees — rocket, tower, planet — in the middle (Fuel the
+   Rocket's too, lying down; upright its rocket stands over the crate). */
+.rkc-game .ng-root--guided .rkc-count-board {
+  left: 2.5cqw;
+}
+.rkc-game .ng-root--guided .rkc-fuel-board {
+  left: 2cqw;
+}
+@media (orientation: portrait) {
+  .rkc-game .ng-root--guided .rkc-fuel-board {
+    left: 0;
+  }
+  .rkc-game .ng-root--guided .rkc-count-board {
+    left: 3.6cqw;
+  }
 }

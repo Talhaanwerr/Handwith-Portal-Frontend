@@ -1,0 +1,397 @@
+/**
+ * Magic Hat Swap — class prefix `mht-`. The shell, guide bar, drag ghost and
+ * celebrations are Count & Match's and the portal's (`ng-`, `pl-`); the
+ * pictures are Rhyme Time's (`.ryn-pic-img`). Sized in the `ng` container's
+ * units; sideways and upright phones at the bottom.
+ */
+
+/* ─── The tower room ───────────────────────────────────────────────────── */
+.mht-world {
+  position: absolute;
+  inset: 0;
+  background: #4a2e88;
+}
+.mht-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The board: card and hat side by side, the letter blocks below ────── */
+.mht-play {
+  --mht-card: min(44cqh, 30cqw);
+  --mht-hat: min(34cqh, 24cqw);
+  --mht-tile: max(64px, min(20cqh, 13cqw));
+}
+.mht-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+  width: 100%;
+  height: 100%;
+}
+.mht-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 7cqw;
+}
+
+/** The word card on its easel. */
+.mht-easel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mht-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--mht-card) * 0.03);
+  width: var(--mht-card);
+  height: calc(var(--mht-card) * 1.08);
+  padding: calc(var(--mht-card) * 0.05);
+  border: calc(var(--mht-card) * 0.035) solid #ffc93d;
+  border-radius: calc(var(--mht-card) * 0.09);
+  background: #fff6e0;
+  box-shadow:
+    inset 0 0 0 calc(var(--mht-card) * 0.015) #f3d48a,
+    0 1.2cqh 0 #2a1a5a;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.mht-card-pic {
+  display: block;
+  width: 62%;
+  aspect-ratio: 1;
+}
+.mht-word {
+  display: flex;
+  align-items: baseline;
+  font-size: calc(var(--mht-card) * 0.22);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #3a2a8c;
+  perspective: 300px;
+}
+.mht-first {
+  display: inline-block;
+  color: #e0408a;
+}
+.mht-word--small {
+  font-size: calc(var(--mht-card) * 0.1);
+}
+/** The family, all made: in a row on the card. */
+.mht-family {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--mht-card) * 0.03);
+  width: 100%;
+}
+.mht-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--mht-card) * 0.03);
+}
+.mht-member-pic {
+  display: block;
+  width: calc(var(--mht-card) * 0.27);
+  height: calc(var(--mht-card) * 0.27);
+}
+.mht-card.is-family {
+  box-shadow:
+    0 0 0 1cqh rgba(255, 201, 61, 0.45),
+    0 1.2cqh 0 #2a1a5a;
+}
+/** The easel's two legs under the card. */
+.mht-legs {
+  display: block;
+  width: calc(var(--mht-card) * 0.62);
+  height: calc(var(--mht-card) * 0.14);
+  margin-top: -0.6cqh;
+  background:
+    linear-gradient(#7a4a2a, #7a4a2a) left / calc(var(--mht-card) * 0.06) 100% no-repeat,
+    linear-gradient(#7a4a2a, #7a4a2a) right / calc(var(--mht-card) * 0.06) 100% no-repeat;
+}
+
+/** The hat and its wish bubble. */
+.mht-hat-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1cqh;
+}
+.mht-wish {
+  position: relative;
+  display: block;
+  width: calc(var(--mht-hat) * 0.5);
+  height: calc(var(--mht-hat) * 0.5);
+  padding: calc(var(--mht-hat) * 0.07);
+  border: 0.6cqh dashed #b48cff;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0.8cqh 0 rgba(30, 14, 70, 0.45);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.mht-wish::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--mht-hat) * -0.11);
+  width: calc(var(--mht-hat) * 0.07);
+  height: calc(var(--mht-hat) * 0.07);
+  margin-left: calc(var(--mht-hat) * -0.035);
+  border-radius: 50%;
+  background: #ffffff;
+}
+.mht-wish.is-hidden {
+  visibility: hidden;
+}
+.mht-wish-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mht-hat {
+  position: relative;
+  width: var(--mht-hat);
+  height: calc(var(--mht-hat) * 0.82);
+  border-radius: 30%;
+}
+.mht-hat::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 233, 140, 0.85), rgba(255, 233, 140, 0));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.mht-hat.is-lit::before,
+.mht-hat.is-poof::before {
+  opacity: 1;
+}
+.mht-hat-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  height: calc(var(--mht-hat) * 1);
+  transform-origin: 50% 90%;
+}
+.mht-hat.is-poof .mht-hat-body {
+  animation: mht-poof 0.6s ease-out;
+}
+.mht-hat-body.is-shake {
+  animation: mht-shake 0.5s ease-in-out;
+}
+.mht-hat-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes mht-poof {
+  0% {
+    transform: scale(1, 1);
+  }
+  30% {
+    transform: scale(1.12, 0.88);
+  }
+  60% {
+    transform: scale(0.94, 1.08);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes mht-shake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+  75% {
+    transform: rotate(-3deg);
+  }
+}
+
+/* ─── The wooden letter blocks ─────────────────────────────────────────── */
+.mht-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 5cqw;
+  transition: opacity 0.25s ease;
+}
+.mht-tiles.is-resting {
+  opacity: 0.55;
+}
+.mht-tiles.is-gone {
+  visibility: hidden;
+}
+.mht-tile {
+  position: relative;
+  width: var(--mht-tile);
+  height: var(--mht-tile);
+  border-radius: 16%;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.mht-tile.is-away {
+  visibility: hidden;
+}
+.mht-tile.is-hint {
+  animation: mht-hint 1.1s ease-in-out infinite;
+}
+@keyframes mht-hint {
+  0%,
+  100% {
+    outline: 0.8cqh solid rgba(255, 201, 61, 0.95);
+    outline-offset: 0.4cqh;
+  }
+  50% {
+    outline: 0.8cqh solid rgba(255, 201, 61, 0.2);
+    outline-offset: 1.6cqh;
+  }
+}
+.mht-tile-in {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.mht-block {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: max(3px, 0.5cqh) solid #a86b33;
+  border-radius: 16%;
+  background: linear-gradient(160deg, #f9dfab 0%, #eebf7c 100%);
+  box-shadow: 0 max(5px, 0.9cqh) 0 #6e421d;
+}
+.mht-block-face {
+  position: absolute;
+  inset: 9%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: max(2px, 0.35cqh) solid rgba(168, 107, 51, 0.5);
+  border-radius: 12%;
+  font-size: calc(var(--mht-tile) * 0.6);
+  font-weight: 900;
+  line-height: 1;
+}
+/** The block under the finger: the same block, lifted. */
+.mht-carried {
+  left: calc(var(--mht-tile) * -0.5);
+  top: calc(var(--mht-tile) * -0.5);
+  width: var(--mht-tile);
+  height: var(--mht-tile);
+  pointer-events: none;
+}
+
+/* ─── The home card's miniature (its own size container) ───────────────── */
+.mht-mini {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8cqh;
+  padding-bottom: 6cqh;
+  --mht-tile: 26cqh;
+}
+.mht-mini-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 52cqh;
+  padding: 4cqh;
+  border: 2.4cqh solid #ffc93d;
+  border-radius: 7cqh;
+  background: #fff6e0;
+}
+.mht-mini-pic {
+  display: block;
+  width: 34cqh;
+  height: 34cqh;
+}
+.mht-mini-word {
+  font-size: 14cqh;
+  font-weight: 900;
+  line-height: 1;
+  color: #3a2a8c;
+}
+.mht-mini-hat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 56cqh;
+}
+.mht-mini-block {
+  width: 26cqh;
+  height: 26cqh;
+  margin-bottom: -4cqh;
+}
+.mht-mini-hat .mht-hat-svg {
+  height: 52cqh;
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .mht-play {
+    --mht-card: min(40cqh, 26cqw);
+    --mht-hat: min(31cqh, 21cqw);
+    --mht-tile: max(64px, min(20cqh, 12cqw));
+  }
+  .mht-board {
+    gap: 2.5cqh;
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .mht-play .ng-main {
+    bottom: 5cqh;
+  }
+  .mht-play {
+    --mht-card: min(56cqw, 30cqh);
+    --mht-hat: min(40cqw, 22cqh);
+    --mht-tile: max(64px, min(24cqw, 12cqh));
+  }
+  .mht-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 2cqh;
+  }
+  .mht-hat-col {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 3cqw;
+  }
+  .mht-wish::after {
+    left: auto;
+    right: calc(var(--mht-hat) * -0.06);
+    bottom: calc(var(--mht-hat) * 0.04);
+  }
+  .mht-board {
+    gap: 4cqh;
+  }
+  .mht-tiles {
+    gap: 6cqw;
+  }
+}

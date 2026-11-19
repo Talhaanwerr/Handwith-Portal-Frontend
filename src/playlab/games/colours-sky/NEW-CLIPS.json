@@ -1,0 +1,32 @@
+[
+  {
+    "id": "mgc-mode-sky",
+    "file": "/audio/magic-colours/mode-sky.mp3",
+    "text": "Up in the sky! Let's colour things that fly."
+  },
+  {
+    "id": "mgc-name-plane",
+    "file": "/audio/magic-colours/name-plane.mp3",
+    "text": "Aeroplane!"
+  },
+  {
+    "id": "mgc-name-helicopter",
+    "file": "/audio/magic-colours/name-helicopter.mp3",
+    "text": "Helicopter!"
+  },
+  {
+    "id": "mgc-name-biplane",
+    "file": "/audio/magic-colours/name-biplane.mp3",
+    "text": "Biplane!"
+  },
+  {
+    "id": "mgc-name-balloon",
+    "file": "/audio/magic-colours/name-balloon.mp3",
+    "text": "Hot-air balloon!"
+  },
+  {
+    "id": "mgc-name-airship",
+    "file": "/audio/magic-colours/name-airship.mp3",
+    "text": "Airship!"
+  }
+]

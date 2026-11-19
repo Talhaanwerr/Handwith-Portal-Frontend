@@ -5,18 +5,26 @@
  * never shown or said as numbers.
  *
  *   • "tallshort" — TALL OR SHORT? (a sunny day): two towers of clearly
- *                   different heights, one gold glass and one silver. Two or
- *                   three questions a round, mixed: "Which tower is taller?" /
- *                   "Which tower is shorter?" — tap a tower (the whole tower
- *                   is the button). Right: it glows and a gold star pops on
- *                   its spire, then the next question. Wrong: it shakes, "Try
- *                   again!", and the right one glows.
+ *                   different heights, one gold glass and one silver, and a
+ *                   big gold star waiting in its little holder on the sand
+ *                   between them. Two or three questions a round, mixed:
+ *                   "Which tower is taller?" / "Which tower is shorter?" —
+ *                   DRAG the star onto that tower (a tower lights up while
+ *                   the star is over it). Right: the star sticks on its spire
+ *                   and it glows, then a new star comes for the next
+ *                   question. A wrong tower: the star slides home, the tower
+ *                   shakes, "Try again!", and the right one glows. Dropped on
+ *                   the sand: it only slides home.
  *   • "order"     — LINE THEM UP (the evening): three towers of different
- *                   heights in a jumbled row. "Put them in order, from short
- *                   to tall!" — tap the shortest and it slides onto the first
- *                   place of the stand, then the middle one, then the tallest.
- *                   A wrong pick shakes and the right one glows. Lined up,
- *                   their spires light one after another.
+ *                   heights in a jumbled row, a stand of three places beside
+ *                   them, and in the top-right corner a little tilted
+ *                   polaroid of the same three towers already lined up short
+ *                   to tall — the picture to copy. "Put them in order, from
+ *                   short to tall!" — DRAG the shortest onto the first place
+ *                   of the stand (the next empty place glows), then the
+ *                   middle one, then the tallest. A wrong tower or a wrong
+ *                   place: it slides back, "Try again!", and the right tower
+ *                   glows. Lined up, their spires light one after another.
  */
 
 import {
@@ -102,6 +110,8 @@ export const ORDER_ROUNDS: readonly OrderRound[] = [
 export const askClip = (ask: Ask): string => `bjt-which-${ask}`;
 /** "Put them in order, from short to tall!" */
 export const ORDER_CLIP = "bjt-order";
+/** "Try again!" — after a wrong drop (recorded for the whole portal). */
+export const TRY_AGAIN_CLIP = "instr-try-again";
 /** "Short, taller, tallest!" — said as the spires light up. */
 export const LINED_CLIP = "bjt-in-order";
 
@@ -120,7 +130,8 @@ const inFloors = (n: number, max: number) => Number.isInteger(n) && n >= MIN_FLO
 
 /** Self-check: four rounds a module, all different, sizes in range and
  *  clearly different, both questions in every Tall or Short? round, the
- *  answer on both sides and in both colours, no row already in order. */
+ *  answer on both sides and in both colours, no row already in order (the
+ *  polaroid would show the row itself), every line recorded or listed. */
 export function checkRounds(has: (id: string) => boolean): string[] {
   const { problems, need } = roundChecker();
 
@@ -130,6 +141,7 @@ export function checkRounds(has: (id: string) => boolean): string[] {
     "tallshort: a round repeats"
   );
   need(has(askClip("taller")) && has(askClip("shorter")), "tallshort: a question has no line");
+  need(has(TRY_AGAIN_CLIP), "a wrong drop has no line");
   const answers: Side[] = [];
   const goldRight: boolean[] = [];
   for (const r of TALLSHORT_ROUNDS) {

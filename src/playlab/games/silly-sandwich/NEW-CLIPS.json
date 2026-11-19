@@ -1,0 +1,25 @@
+[
+  {
+    "id": "ssw-welcome",
+    "file": "/audio/silly-sandwich/welcome.mp3",
+    "text": "Welcome to Silly Sandwich!"
+  },
+  {
+    "id": "ssw-done",
+    "file": "/audio/silly-sandwich/done.mp3",
+    "text": "Yum! Munch is full. Thank you!"
+  },
+  {
+    "id": "ssw-mode-make",
+    "file": "/audio/silly-sandwich/mode-make.mp3",
+    "text": "Silly Sandwich! Give Munch things that rhyme."
+  },
+  {
+    "id": "ssw-want",
+    "file": "/audio/silly-sandwich/want.mp3",
+    "text": "I want something that rhymes with"
+  },
+  { "id": "ssw-more", "file": "/audio/silly-sandwich/more.mp3", "text": "Yum! One more!" },
+  { "id": "ssw-yuck", "file": "/audio/silly-sandwich/yuck.mp3", "text": "Yuck! Silly!" },
+  { "id": "ssw-bite", "file": "/audio/silly-sandwich/bite.mp3", "text": "Big bite! Chomp!" }
+]

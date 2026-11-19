@@ -189,16 +189,3 @@ export const Sheen = ({ d, opacity = 1 }: { d: string; opacity?: number }) => (
 export const Shade = ({ x, y, rx = 26, ry = 6 }: Pt & { rx?: number; ry?: number }) => (
   <ellipse cx={x} cy={y} rx={rx} ry={ry} fill="url(#cg-shadow)" />
 );
-
-/** Cool rim light on the shadow side: a thin stroke that lifts the form off
- *  the background without an outline. */
-export const Rim = ({ d, width = 2 }: { d: string; width?: number }) => (
-  <path
-    d={d}
-    stroke="#FFFFFF"
-    strokeWidth={width}
-    strokeOpacity="0.35"
-    fill="none"
-    strokeLinecap="round"
-  />
-);

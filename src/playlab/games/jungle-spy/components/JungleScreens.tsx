@@ -205,8 +205,8 @@ export function JungleSplash({ onExitPortal }: { onExitPortal?: () => void }) {
 
         <div className="relative z-10 flex gap-5">
           {[
-            { c: "upper" as const, label: "ABC", aria: "Play with big letters" },
-            { c: "lower" as const, label: "abc", aria: "Play with small letters" },
+            { c: "upper" as const, label: "ABC", aria: "Play with uppercase letters" },
+            { c: "lower" as const, label: "abc", aria: "Play with lowercase letters" },
           ].map((b, i) => (
             <motion.button
               key={b.c}
@@ -390,7 +390,7 @@ export function JungleGrid({ onExitPortal = () => {} }: { onExitPortal?: () => v
                     : "text-jungle-muted bg-transparent"
                 }`}
                 aria-pressed={letterCase === c}
-                aria-label={c === "upper" ? "Big letters" : "Small letters"}
+                aria-label={c === "upper" ? "Uppercase letters" : "Lowercase letters"}
               >
                 {c === "upper" ? "ABC" : "abc"}
               </button>

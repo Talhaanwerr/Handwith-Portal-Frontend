@@ -1,0 +1,213 @@
+/**
+ * Rhyme Houses — class prefix `ryh-`. The shell, guide bar, drag ghost and
+ * celebrations are Count & Match's and the portal's (`ng-`, `pl-`); the
+ * pictures are Rhyme Time's (`.ryn-pic-img`). Sized in the `ng` container's
+ * units; sideways and upright phones at the bottom.
+ */
+
+/* ─── Rhyme Street ─────────────────────────────────────────────────────── */
+.ryh-world {
+  position: absolute;
+  inset: 0;
+  background: #c3ebfb;
+}
+.ryh-world svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── The board: the houses, and the path below them ───────────────────── */
+.ryh-play {
+  --ryh-house: min(37cqh, 24cqw);
+  --ryh-piece: max(76px, min(24cqh, 15cqw));
+}
+.ryh-play--3 {
+  --ryh-house: min(35cqh, 20cqw);
+}
+.ryh-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4.5cqh;
+  width: 100%;
+  height: 100%;
+}
+.ryh-houses {
+  display: flex;
+  align-items: flex-end;
+  gap: 4cqw;
+}
+
+/** A house: the drawing, its family's picture on the round sign, and the
+ *  pictures already taken in, standing along the front. */
+.ryh-house {
+  position: relative;
+  display: block;
+  width: var(--ryh-house);
+  height: calc(var(--ryh-house) * 1.2);
+  padding: 0;
+  border: 0;
+  border-radius: 3cqh;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+.ryh-house.is-lit {
+  background: rgba(255, 236, 150, 0.45);
+  box-shadow: 0 0 0 1cqh rgba(255, 210, 61, 0.7);
+}
+.ryh-house.is-hint {
+  animation: ryh-hint 1.1s ease-in-out infinite;
+}
+@keyframes ryh-hint {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0.8cqh rgba(255, 210, 61, 0.95);
+    background-color: rgba(255, 236, 150, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 2cqh rgba(255, 210, 61, 0.15);
+    background-color: rgba(255, 236, 150, 0.1);
+  }
+}
+.ryh-house-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ryh-roof {
+  fill: var(--ryh-roof, #f2734b);
+}
+.ryh-sign {
+  position: absolute;
+  left: 31%;
+  top: 43.5%;
+  width: 38%;
+  height: 31.7%;
+  display: block;
+}
+.ryh-guests {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  bottom: -5%;
+  height: 27%;
+  display: flex;
+  justify-content: center;
+  gap: 4%;
+  pointer-events: none;
+}
+.ryh-guest {
+  display: block;
+  height: 100%;
+  aspect-ratio: 1;
+  padding: 4%;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0.6cqh 0 rgba(60, 110, 40, 0.35);
+}
+
+/* ─── The path: the picture that has just come up ──────────────────────── */
+.ryh-path {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--ryh-piece);
+}
+.ryh-piece {
+  position: relative;
+  width: var(--ryh-piece);
+  height: var(--ryh-piece);
+  border-radius: 24%;
+  background: #ffffff;
+  box-shadow: 0 1cqh 0 rgba(150, 110, 40, 0.4);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ryh-piece.is-away {
+  visibility: hidden;
+}
+.ryh-piece-pic {
+  position: absolute;
+  inset: 11%;
+  display: block;
+}
+/** The picture under the finger: the same card, lifted. */
+.ryh-carried {
+  left: calc(var(--ryh-piece) * -0.5);
+  top: calc(var(--ryh-piece) * -0.5);
+  width: var(--ryh-piece);
+  height: var(--ryh-piece);
+  padding: calc(var(--ryh-piece) * 0.11);
+  border-radius: 24%;
+  background: #ffffff;
+  box-shadow: 0 1.6cqh 2cqh rgba(60, 50, 20, 0.3);
+  pointer-events: none;
+}
+
+/* ─── The home card's miniature (its own size container) ───────────────── */
+.ryh-mini {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5cqw;
+  padding-bottom: 8cqh;
+}
+.ryh-mini-house {
+  position: relative;
+  display: block;
+  width: 52cqh;
+  height: 62.4cqh;
+}
+.ryh-mini-pic {
+  display: block;
+  width: 28cqh;
+  height: 28cqh;
+  padding: 3cqh;
+  border-radius: 24%;
+  background: #ffffff;
+}
+
+/* ─── A phone held sideways ────────────────────────────────────────────── */
+@container ng (max-height: 520px) {
+  .ryh-play {
+    --ryh-house: min(37cqh, 22cqw);
+    --ryh-piece: max(76px, min(25cqh, 14cqw));
+  }
+  .ryh-play--3 {
+    --ryh-house: min(35cqh, 19cqw);
+  }
+  .ryh-board {
+    gap: 4cqh;
+  }
+}
+
+/* ─── A phone held upright ─────────────────────────────────────────────── */
+@container ng (orientation: portrait) {
+  .apa-game .ryh-play .ng-main {
+    bottom: 5cqh;
+  }
+  .ryh-play {
+    --ryh-house: min(40cqw, 24cqh);
+    --ryh-piece: max(76px, min(28cqw, 15cqh));
+  }
+  .ryh-play--3 {
+    --ryh-house: 29cqw;
+  }
+  .ryh-houses {
+    gap: 3cqw;
+  }
+  .ryh-board {
+    gap: 9cqh;
+  }
+}

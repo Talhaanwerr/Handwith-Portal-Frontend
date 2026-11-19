@@ -30,7 +30,11 @@ export function HuntComplete({ onExitPortal }: HuntCompleteProps) {
     <AlphabetFinale
       symbols={lower ? LOWER : UPPER}
       headline={clipText("cheer-amazing")}
-      subline={lower ? "You hunted down every little letter!" : "You hunted down every BIG letter!"}
+      subline={
+        lower
+          ? "You hunted down every lowercase letter!"
+          : "You hunted down every uppercase letter!"
+      }
       clipId="cheer-amazing"
       mascot={
         <div className="hunt-finale-mascot">
@@ -43,7 +47,7 @@ export function HuntComplete({ onExitPortal }: HuntCompleteProps) {
       tileClassName="bg-plum"
       primaryClassName="bg-plum"
       onPlayAgain={playAgain}
-      playAgainLabel={lower ? "Hunt little letters again" : "Hunt BIG letters again"}
+      playAgainLabel={lower ? "Hunt lowercase letters again" : "Hunt uppercase letters again"}
       onExitPortal={onExitPortal}
     />
   );

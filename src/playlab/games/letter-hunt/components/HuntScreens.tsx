@@ -177,7 +177,7 @@ export function HuntHome({ onExitPortal }: { onExitPortal?: () => void }) {
                   : "text-plum-muted bg-transparent"
               }`}
               aria-pressed={letterCase === c}
-              aria-label={c === "upper" ? "Big letters" : "Little letters"}
+              aria-label={c === "upper" ? "Uppercase letters" : "Lowercase letters"}
             >
               {c === "upper" ? "ABC" : "abc"}
             </button>

@@ -12,11 +12,19 @@ import { useHowToPlay } from "@shared/components/ui/HowToPlayGate";
 import { NgGuide } from "@games/number-groups/components/NgGuide";
 import type { ModuleInfo } from "@games/number-groups/constants/kit";
 
+/** "Tap Play to start." — the single-module title screen's ask. */
+const PLAY_CLIP = "instr-tap-play";
+
 /**
  * THE TITLE SCREEN — Pond Numbers' home: the game's name on a plate, the
  * teacher at the side, and the game's two modules as two big picture cards
  * side by side (stacked when upright) — each its scene in miniature, its name
  * and the best stars so far.
+ *
+ * `single` (a game of one module): no choosing and no card — the name, then
+ * ONE big green Play button on the game's own scene. The game's
+ * welcome and the module's own line are said, then "Tap Play to start.", and
+ * a tap goes straight into the rounds (through the How to Play card).
  */
 export function NgHome<Id extends string>({
   title,
@@ -28,6 +36,7 @@ export function NgHome<Id extends string>({
   onPick,
   onExitPortal,
   beforeStart,
+  single = false,
 }: {
   title: string;
   /** Said as the screen lands, before "Pick one!". */
@@ -41,16 +50,20 @@ export function NgHome<Id extends string>({
   /** A game may step in when a card is picked (e.g. to ask for a level
    *  first): return true and call `go` when ready. Default: start at once. */
   beforeStart?: (m: Id, go: () => void) => boolean;
+  /** One module, one Play card (see above). */
+  single?: boolean;
 }) {
-  useSayOnEnter([welcomeClip, "mouse-pick-one"]);
+  const only = single ? modules[0] : undefined;
+  const ask = only ? PLAY_CLIP : "mouse-pick-one";
+  useSayOnEnter(only ? [welcomeClip, only.clip, PLAY_CLIP] : [welcomeClip, ask]);
   const { gate } = useHowToPlay();
 
   return (
-    <div className="ng-screen ng-home">
+    <div className={`ng-screen ng-home ${only ? "ng-home--solo" : ""}`}>
       {world}
 
       <div className="ng-teacher-slot ng-teacher-slot--home" aria-hidden="true">
-        <NgGuide cheer={false} say={clipText("mouse-pick-one")} />
+        <NgGuide cheer={false} say={clipText(ask)} />
       </div>
 
       <div className="ng-home-col">
@@ -63,42 +76,68 @@ export function NgHome<Id extends string>({
           <h1 className="ng-title font-rounded font-black">{title}</h1>
         </motion.div>
 
-        <div className="ng-modes">
-          {modules.map((m, i) => (
-            <motion.button
-              key={m.id}
-              type="button"
-              className="ng-mode"
-              data-module={m.id}
-              style={cssVars({ "--ng-accent": m.accent, "--ng-edge": m.edge })}
-              onClick={() => {
-                playClickSound();
-                // drop the welcome still queued, then name the module; the
-                // round's prompt queues after it
-                stopVoice();
-                const go = () =>
-                  gate(() => {
-                    void playClip(m.clip);
-                    onPick(m.id);
-                  }, m.id);
-                if (!beforeStart?.(m.id, go)) go();
-              }}
-              initial={{ y: 24, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.08 + i * 0.08, type: "spring", stiffness: 220, damping: 19 }}
-              whileTap={{ scale: 0.96 }}
-              aria-label={`${m.name}: ${m.tag}`}
-            >
-              <span className="ng-mode-pic">
-                <Mini id={m.id} />
-              </span>
-              <span className="ng-mode-name font-rounded font-black">{m.name}</span>
-              <span className="ng-mode-stars">
-                <StarRow earned={best[m.id] ?? 0} total={3} />
-              </span>
-            </motion.button>
-          ))}
-        </div>
+        {only ? (
+          <motion.button
+            type="button"
+            className="ng-solo-btn font-rounded font-black"
+            data-module={only.id}
+            onClick={() => {
+              playClickSound();
+              // the welcome and the module's line were said here already:
+              // drop what is still queued and go — the round says its prompt
+              stopVoice();
+              const go = () => gate(() => onPick(only.id));
+              if (!beforeStart?.(only.id, go)) go();
+            }}
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.08, type: "spring", stiffness: 220, damping: 19 }}
+            whileTap={{ scale: 0.94 }}
+            aria-label={`Play ${title}`}
+          >
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M6,3.5 L16.5,10 L6,16.5 Z" fill="currentColor" />
+            </svg>
+            Play
+          </motion.button>
+        ) : (
+          <div className="ng-modes">
+            {modules.map((m, i) => (
+              <motion.button
+                key={m.id}
+                type="button"
+                className="ng-mode"
+                data-module={m.id}
+                style={cssVars({ "--ng-accent": m.accent, "--ng-edge": m.edge })}
+                onClick={() => {
+                  playClickSound();
+                  // drop the welcome still queued, then name the module; the
+                  // round's prompt queues after it
+                  stopVoice();
+                  const go = () =>
+                    gate(() => {
+                      void playClip(m.clip);
+                      onPick(m.id);
+                    }, m.id);
+                  if (!beforeStart?.(m.id, go)) go();
+                }}
+                initial={{ y: 24, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.08 + i * 0.08, type: "spring", stiffness: 220, damping: 19 }}
+                whileTap={{ scale: 0.96 }}
+                aria-label={`${m.name}: ${m.tag}`}
+              >
+                <span className="ng-mode-pic">
+                  <Mini id={m.id} />
+                </span>
+                <span className="ng-mode-name font-rounded font-black">{m.name}</span>
+                <span className="ng-mode-stars">
+                  <StarRow earned={best[m.id] ?? 0} total={3} />
+                </span>
+              </motion.button>
+            ))}
+          </div>
+        )}
       </div>
 
       <NavPillButton

@@ -18,13 +18,15 @@ const ROUNDS: Record<ModuleId, ComponentType<RoundProps>> = {
 
 /**
  * BURJ LIFT — a thinking game with the glass lift that runs up the outside
- * of the Burj Khalifa. Three passengers a round, each wanting a floor. Up or
- * Down?: their bubble shows the picture of their floor — press up or down.
- * Picture Floors: they hold a balloon — tap the floor of the same colour.
- * The lift rides there and the passenger hops out happy.
+ * of the Burj Khalifa. A girl and a boy take turns, three rides a round: drag
+ * the child into the open lift, press up once for every floor until it stops
+ * at theirs (Up or Down?: the picture and number in their bubble; Colour
+ * Floors: the colour of their balloon), then press down to bring the empty
+ * lift back for the next one.
  *
- * Count & Match's shell (title screen, How to Play, rounds, star card); the
- * Dubai world and the tower are Burj Khalifa's art, reused as they are.
+ * Count & Match's shell in its guided layout (centred, the guide bar on top,
+ * the hand showing each move by itself in the first round); the Dubai world
+ * and the tower are Burj Khalifa's art, reused as they are.
  */
 export function BurjLiftGame() {
   const store = useBurjLiftStore();
@@ -32,6 +34,7 @@ export function BurjLiftGame() {
     <div className="apa-game">
       <NgShell
         title="Burj Lift"
+        guided
         voice={VOICE}
         store={store}
         modules={MODULES}

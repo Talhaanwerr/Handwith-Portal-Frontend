@@ -1,0 +1,18 @@
+[
+  {
+    "id": "rym-welcome",
+    "file": "/audio/rhyme-match/welcome.mp3",
+    "text": "Welcome to Rhyme Match!"
+  },
+  { "id": "rym-done", "file": "/audio/rhyme-match/done.mp3", "text": "You found every rhyme!" },
+  {
+    "id": "rym-mode-match",
+    "file": "/audio/rhyme-match/mode-match.mp3",
+    "text": "Rhyme Match! Drag the picture that rhymes."
+  },
+  {
+    "id": "rym-find",
+    "file": "/audio/rhyme-match/find.mp3",
+    "text": "Find the one that rhymes with"
+  }
+]

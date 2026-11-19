@@ -1,0 +1,17 @@
+[
+  {
+    "id": "fw-out-welcome",
+    "file": "/audio/first-words/out-welcome.mp3",
+    "text": "First words! Out and about!"
+  },
+  {
+    "id": "fw-out-mode",
+    "file": "/audio/first-words/out-mode.mp3",
+    "text": "Let’s learn words for outside!"
+  },
+  {
+    "id": "fw-in-wagon",
+    "file": "/audio/first-words/in-wagon.mp3",
+    "text": "in the wagon!"
+  }
+]

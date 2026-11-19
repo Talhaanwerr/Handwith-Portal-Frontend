@@ -22,9 +22,10 @@ const ROUNDS: Record<ModuleId, ComponentType<RoundProps>> = {
  * suitcase off the baggage belt to the passenger whose tag shows it, and
  * pack the sunny-trip and snowy-trip suitcases before the plane takes off.
  *
- * Count & Match's shell; the airport and the plane are drawn here; the
- * passengers are Plane Seats' (Fluent animals on drawn bodies). No teacher
- * on the stage (`.apa-game` hides him).
+ * Count & Match's shell in its guided layout (centred screens, the line in
+ * the top bar, the hand on round one); the airport and the plane are drawn
+ * here; the passengers are Plane Seats' (Fluent animals on drawn bodies).
+ * No teacher on the stage (`.apa-game` hides him).
  */
 export function PlaneTripGame() {
   const store = usePlaneTripStore();
@@ -32,6 +33,7 @@ export function PlaneTripGame() {
     <div className="apa-game ptr-game">
       <NgShell
         title="Plane Trip"
+        guided
         voice={VOICE}
         store={store}
         modules={MODULES}

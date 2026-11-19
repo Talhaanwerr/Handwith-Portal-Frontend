@@ -24,8 +24,8 @@ export function DinoCaseSelect() {
   };
 
   const options: { c: LetterCase; title: string; preview: string; aria: string }[] = [
-    { c: "upper", title: "BIG LETTERS", preview: "ABC", aria: "Play with big letters" },
-    { c: "lower", title: "small letters", preview: "abc", aria: "Play with small letters" },
+    { c: "upper", title: "UPPERCASE", preview: "ABC", aria: "Play with uppercase letters" },
+    { c: "lower", title: "lowercase", preview: "abc", aria: "Play with lowercase letters" },
   ];
 
   return (

@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LitSign, ShowPicture, ShowStage } from "@games/phonics-show/components/ShowStage";
+import { ShowGuideBar, ShowHand, lineText } from "@games/phonics-show/components/ShowGuide";
 import { ROUNDS, TOTAL_ROUNDS, answerOf, askLines } from "@games/sound-show/constants/rounds";
 import { NavPillButton } from "@shared/components/ui/NavPillButton";
 import { useAfterVoice } from "@shared/hooks/useAfterVoice";
-import { useIdleHand } from "@shared/hooks/useIdleHand";
+import { FirstPlayHand, useIdleHand } from "@shared/hooks/useIdleHand";
 import { wordClip } from "@shared/audio/wordClips";
 import { cheerFor } from "@shared/audio/cheers";
-import { playClip, playSequence, stopVoice } from "@shared/audio/voice";
+import { clipText, playClip, playSequence, stopVoice } from "@shared/audio/voice";
 import { playClickSound, playCorrectSound, playIncorrectSound } from "@shared/audio/sfx";
 
 /** The quiet beat before a round's first sound, and between its two sounds. */
@@ -28,9 +29,6 @@ interface RoundScreenProps {
   onExitPortal: () => void;
 }
 
-/** 1…10, built once rather than on every render. */
-const SLOTS = Array.from({ length: TOTAL_ROUNDS }, (_, i) => i);
-
 /**
  * ONE ROUND, slowly — paced for a toddler.
  *
@@ -46,6 +44,11 @@ const SLOTS = Array.from({ length: TOTAL_ROUNDS }, (_, i) => i);
  * then "Try again!", and the right picture starts to glow. Left alone for a
  * while, the ask is said again and the right picture glows. Tapping the
  * letter says its sound again at any time.
+ *
+ * The guide bar at the top shows the progress and the line being said. The
+ * teaching hand taps the right picture whenever it glows for a wait — on the
+ * run's first round after a moment (see FirstPlayHand); the ask itself is
+ * said again only after the full wait, every round.
  */
 export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScreenProps) {
   const round = ROUNDS[index];
@@ -59,8 +62,17 @@ export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScre
   const ready = readyFor === index;
   const [chosen, setChosen] = useState<string | null>(null);
   const [wrong, setWrong] = useState<readonly string[]>([]);
+  /** The bar's line, once something other than the round's own steps has been said. */
+  const [line, setLine] = useState<{ index: number; text: string } | null>(null);
   const missed = useRef(false);
+  const screenRef = useRef<HTMLDivElement>(null);
+  const answerRef = useRef<HTMLButtonElement>(null);
   const { thenAfter } = useAfterVoice();
+
+  // the bar: "s … s" while the sound is taught, then the ask
+  const askText = `${clipText("instr-find-starts-with")} ${clipText(sound)}`;
+  const stepText = phase === "teach" ? lineText([sound, sound]) : askText;
+  const barText = line?.index === index ? line.text : stepText;
 
   // a new letter: teach its sound, then bring the pictures out and ask
   useEffect(() => {
@@ -78,10 +90,8 @@ export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScre
   }, [index, round, sound, thenAfter]);
 
   // the right picture glows after a miss, or when a toddler sits still a while
-  const idle = useIdleHand(ready && !chosen, `${index}-${wrong.length}`, HINT_MS);
-  useEffect(() => {
-    if (idle) void playSequence(askLines(round), 200);
-  }, [idle, round]);
+  const handKey = `${index}-${wrong.length}`;
+  const idle = useIdleHand(ready && !chosen, handKey, HINT_MS);
   const hint = !chosen && (idle || wrong.length > 0);
 
   const pick = useCallback(
@@ -92,14 +102,18 @@ export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScre
         missed.current = true;
         setWrong((w) => [...w, picture]);
         playIncorrectSound();
-        void playSequence([...(said ? [said] : []), "instr-try-again"], 250);
+        const lines = [...(said ? [said] : []), "instr-try-again"];
+        setLine({ index, text: lineText(lines) });
+        void playSequence(lines, 250);
         return;
       }
       setChosen(picture);
       playCorrectSound();
       const firstTap = !missed.current;
+      const lines = [sound, ...(said ? [said] : []), cheerFor(index + 3)];
+      setLine({ index, text: lineText(lines) });
       thenAfter(
-        [sound, ...(said ? [said] : []), cheerFor(index + 3)],
+        lines,
         () => {
           setChosen(null);
           setWrong([]);
@@ -113,7 +127,7 @@ export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScre
   );
 
   return (
-    <div className="pgs-screen snd-screen">
+    <div className="pgs-screen snd-screen" ref={screenRef}>
       <ShowStage />
 
       <NavPillButton
@@ -141,28 +155,18 @@ export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScre
         Back to Games
       </button>
 
-      <div className="pgs-topbar snd-topbar">
-        <div
-          className="pgs-progress"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={TOTAL_ROUNDS}
-          aria-valuenow={index}
-          aria-label={`${index} of ${TOTAL_ROUNDS} sounds done`}
-        >
-          {SLOTS.map((slot) => (
-            <span
-              key={slot}
-              className={`pgs-progress-seg ${slot < index ? "pgs-progress-seg--done" : ""} ${
-                slot === index ? "pgs-progress-seg--now" : ""
-              }`}
-            />
-          ))}
-        </div>
-        <span className="pgs-count font-rounded font-black">
-          {index + 1} <span className="pgs-count-of">of {TOTAL_ROUNDS}</span>
-        </span>
-      </div>
+      {/* the guide bar sits BETWEEN the two pinned pills, at the top centre */}
+      <ShowGuideBar index={index} total={TOTAL_ROUNDS} solved={chosen !== null} text={barText} />
+
+      {/* the ask again after a long wait: its own clock, never the first play's quick one */}
+      <FirstPlayHand on={false}>
+        <AskAgain
+          armed={ready && !chosen}
+          resetKey={handKey}
+          lines={askLines(round)}
+          onAsk={() => setLine({ index, text: askText })}
+        />
+      </FirstPlayHand>
 
       <div className="snd-board" key={index}>
         <motion.div
@@ -198,6 +202,7 @@ export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScre
                   transition={{ delay: i * 0.18, type: "spring", stiffness: 200, damping: 18 }}
                 >
                   <button
+                    ref={picture === answer ? answerRef : undefined}
                     type="button"
                     className={`snd-card ${chosen === picture ? "snd-card--right" : ""} ${
                       wrong.includes(picture) ? "snd-card--wrong" : ""
@@ -215,6 +220,39 @@ export function RoundScreen({ index, onSolved, onBack, onExitPortal }: RoundScre
           )}
         </AnimatePresence>
       </div>
+
+      <ShowHand show={idle} resetKey={handKey} root={screenRef} target={answerRef} />
     </div>
   );
+}
+
+/**
+ * The ask said again once a toddler has sat still for the full wait — the
+ * same clock as the glow, but kept outside the first play's quick one (its
+ * parent sets `FirstPlayHand on={false}`), so the line is never repeated a
+ * moment after it was heard, nor cuts off "Try again!".
+ */
+function AskAgain({
+  armed,
+  resetKey,
+  lines,
+  onAsk,
+}: {
+  armed: boolean;
+  resetKey: string;
+  lines: string[];
+  onAsk: () => void;
+}) {
+  const idle = useIdleHand(armed, resetKey, HINT_MS);
+  const said = lines.join("|");
+  const onAskRef = useRef(onAsk);
+  useEffect(() => {
+    onAskRef.current = onAsk;
+  });
+  useEffect(() => {
+    if (!idle) return;
+    onAskRef.current();
+    void playSequence(said.split("|"), 200);
+  }, [idle, said]);
+  return null;
 }

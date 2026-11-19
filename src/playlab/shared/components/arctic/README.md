@@ -5,26 +5,24 @@ Second consumer of the shared-theme architecture the Pirate World established.
 
 ## What exists
 
-| Piece       | File                | Exports                                                                                                                                                                                                                                               |
-| ----------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sky system  | `ArcticSky.tsx`     | `ArcticSky` (`moon?`), `ArcticAurora` (`shimmer?`), `ArcticCloud`, `Snowfall` (`count?`)                                                                                                                                                              |
-| Land & ice  | `ArcticLand.tsx`    | `SnowGround`, `Iceberg` (`variant: tall\|flat\|jagged\|round`), `IceCliff`, `FrozenLake` (`cracked?`), `FloatingIce`, `SnowMound`, `ArcticRock` (`variant: flat\|jagged\|buried`), `Icicles`, `IceCrystal` (`cluster?`), `Igloo` (`glow?`), `IceCave` |
-| Animals     | `ArcticAnimals.tsx` | `PolarBear` (`pose: standing\|sitting\|waving`, `cub?`), `Penguin` (`pose: standing\|sliding\|chick`), `ArcticFox` (`pose: sitting\|curled`), `ArcticSeal` (`pup?`)                                                                                   |
-| More life   | `ArcticLife.tsx`    | `SnowyOwl`, `Narwhal`, `ArcticHare`, `OrcaFin`, `WhaleTail`, `Footprints` (`kind: penguin\|bear\|boots`)                                                                                                                                              |
-| Camp        | `ArcticCamp.tsx`    | `ArcticTent` (`glow?`), `Campfire` (`lit?`, `flicker?`), `ArcticSled`, `Snowman`, `ArcticPine` (`small?`)                                                                                                                                             |
-| Art palette | `palette.ts`        | `A` — every illustration colour (art direction, per tokens.ts rule)                                                                                                                                                                                   |
+Only the pieces a game uses are kept (unused art was removed on 16 Nov 2026; it is in git history if a new game needs it).
+
+| Piece       | File                | Exports                                                                                               |
+| ----------- | ------------------- | ----------------------------------------------------------------------------------------------------- |
+| Sky system  | `ArcticSky.tsx`     | `ArcticSky` (`moon?`), `ArcticAurora` (`shimmer?`), `ArcticCloud`, `Snowfall` (`count?`)              |
+| Land & ice  | `ArcticLand.tsx`    | `SnowGround`, `Iceberg` (`variant: tall\|flat\|jagged\|round`), `IceCliff`, `Igloo` (`glow?`)         |
+| Animals     | `ArcticAnimals.tsx` | `PolarBear` (`pose: standing\|sitting\|waving`, `cub?`), `Penguin` (`pose: standing\|sliding\|chick`) |
+| Camp        | `ArcticCamp.tsx`    | `Snowman`, `ArcticPine` (`small?`)                                                                    |
+| Art palette | `palette.ts`        | `A` — every illustration colour                                                                       |
 
 ## Deliberate REUSE, not redrawn
 
-The expedition kit already exists in `shared/components/pirate/` — wood-and-brass
-belongs to both worlds. Reach for: `PirateCompass`, `TreasureMap`, `RopeCoil`,
-`PirateLantern`, `WoodenSign`, `PirateBarrel` (as a supply crate). Sled and camp
-wood use the SAME wood colours. Celebration = the shared `Confetti` + sparkle
-canvas, as everywhere.
+Wood-and-brass belongs to both worlds: reuse the pirate set in
+`shared/components/pirate/` before drawing anything new. Celebration = the
+shared `Confetti` + sparkle canvas, as everywhere.
 
 ## UI treatment
 
-- Chrome tokens: the `arctic` family in `shared/styles/tokens.ts` → `bg-arctic-*` + `text-arctic-ink` etc.
 - Surfaces & scoped paint: `shared/styles/arctic.css` — `ac-panel-frost`, `ac-panel-ice`, `ac-trim-ice`, `ac-pill`, `ac-progress-fill`; put `ac-world` on a screen root to paint the shared case plates. Paint uses LITERAL hexes (the pirate lesson: paint never depends on the token-var pipeline).
 - `NavPillButton` accepts `tone="arctic"`.
 

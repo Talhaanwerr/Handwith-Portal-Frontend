@@ -53,8 +53,6 @@ export type FloorVariant = "glass" | "gold";
 export const BURJ_BASE = 1.9;
 /** The core's width, in width units (the spire's foot is as wide). */
 export const CORE_W = 0.5;
-/** The podium's width and height, in width units. */
-export const PODIUM_W = 2.9;
 export const PODIUM_H = 0.5;
 
 /**
@@ -173,27 +171,6 @@ export function BurjFloor({
   );
 }
 
-/** A tier not built yet: the same shape, as a dashed see-through outline. */
-export function BurjGhostFloor({
-  index,
-  floors,
-  className = "",
-}: {
-  index: number;
-  floors: number;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`bjk-floor bjk-floor--ghost ${className}`}
-      style={shapeStyle(index, floors)}
-      aria-hidden="true"
-    >
-      <TierArt panes={false} />
-    </span>
-  );
-}
-
 /**
  * THE SPIRE — a stepped crown narrowing into the long needle, the core's
  * bright spine running up it, and the red aviation light blinking on its tip
@@ -218,15 +195,6 @@ export function BurjSpire({ time = "day" }: { time?: BurjTime }) {
         <rect className="bjk-sp-spine" x="19.3" y="14" width="1.4" height="186" />
       </svg>
       {time !== "day" && <span className="bjk-spire-beacon" />}
-    </span>
-  );
-}
-
-/** The spire not built yet: its dashed see-through outline, the same size. */
-export function BurjGhostSpire() {
-  return (
-    <span className="bjk-spire-ghost" aria-hidden="true">
-      <BurjSpire />
     </span>
   );
 }
